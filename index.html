@@ -362,11 +362,36 @@
 .reference-title{color:#c4e988;font-weight:800;font-size:12px;margin-bottom:7px}
 .reference-text{font-size:13px;font-weight:700;line-height:1.6}
 .reference-caveat{font-size:10px;color:#a9c6b7;line-height:1.6;margin:7px 0 0}
+
+/* Post-discard S42 and CPU comparison; never show recommendations before choice. */
+#gameScreen .coach-flash{display:flex;align-items:center;gap:5px;min-width:0;padding:6px 8px;margin-bottom:5px;background:#193d34;border-color:#59846d;color:#f1fae7}
+#gameScreen .coach-flash.hidden{display:none}
+#gameScreen .coach-flash.warn{border-color:#af9960;background:#343f2f}
+#gameScreen .coach-inline-main{min-width:0;flex:1;display:flex;flex-direction:column;gap:2px}
+#gameScreen .inline-choice-row{display:flex;align-items:center;gap:4px;min-width:0;flex-wrap:nowrap}
+#gameScreen .inline-choice{display:inline-flex;align-items:center;gap:3px;min-width:0;white-space:nowrap}
+#gameScreen .inline-label{font-size:10px;color:#c6dcca}
+#gameScreen .inline-name{font-size:11px;font-weight:700}
+#gameScreen .inline-tile{width:17px;height:24px;object-fit:fill;border-radius:2px}
+#gameScreen .inline-arrow{font-size:10px;color:#729f90}
+#gameScreen .inline-status{font-size:9px;padding:2px 4px;border-radius:4px;font-weight:800;white-space:nowrap;background:#305d44;color:#cbf4b6}
+#gameScreen .inline-status.disagree{background:#544b32;color:#fbe1a7}
+#gameScreen .inline-metric{font-size:10px;line-height:1.3;color:#bad2c0;white-space:normal}
+#gameScreen #coachDetailBtn{font-size:11px;font-weight:700;padding:6px 5px;text-decoration:none;white-space:nowrap;color:#d5f29e;align-self:center}
+.mortal-setup{margin-top:12px;padding:11px 13px;border:1px solid #5b8a78;border-radius:12px;background:#17362e;color:#e8f2e7;display:flex;flex-direction:column;gap:7px}
+.mortal-setup-title{font-weight:850;font-size:14px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.mortal-file{font-size:12px;width:100%;max-width:100%;color:#e8f2e7}
+.mortal-help{font-size:11px;color:#a9d0b6;line-height:1.5}
+.mortal-live{font-size:10px;font-weight:700;color:#b4ecc2}
+.mortal-detail{border:1px solid #6b907c;border-radius:10px;padding:10px 12px;margin:10px 0;background:#19382d}
+.mortal-detail h3{font-size:13px;margin:0 0 7px;color:#c6f2bc}
+.mortal-detail .mortal-caveat{font-size:11px;color:#bfd3c2;line-height:1.5}
+@media(max-width:375px){#gameScreen .inline-label{font-size:9px}#gameScreen .inline-name{font-size:10px}#gameScreen .inline-tile{width:15px;height:21px}#gameScreen .inline-metric{font-size:9px}}
 </style>
-  <title>麻雀LAB — Phase 1.8.1</title>
+  <title>麻雀LAB — Phase 2.4 S42</title>
 </head>
 <body>
-  <header class="site-header"><div class="logo"><span class="logo-mark">牌</span><span>麻雀<span class="logo-lab">LAB</span></span></div><span class="phase">PHASE 2.0 · CPU REFERENCE</span></header>
+  <header class="site-header"><div class="logo"><span class="logo-mark">牌</span><span>麻雀<span class="logo-lab">LAB</span></span></div><span class="phase">PHASE 2.4 · MORTAL-S42</span></header>
   <main id="startScreen" class="home">
     <div class="eyebrow"><span class="eyedot"></span> MAHJONG LAB</div>
     <h1 class="home-compact-title">対局設定</h1>
@@ -384,7 +409,7 @@
         <label><input type="radio" name="recordMode" value="practice" checked><span><strong>練習対局</strong><small>記録しない・コーチあり</small></span></label>
         <label><input type="radio" name="recordMode" value="measure"><span><strong>計測用対局</strong><small>完走分を保存・コーチあり</small></span></label>
       </div>
-      <button class="primary big" id="startBtn" type="button">対局をはじめる <span>→</span></button>
+      <button class="primary big" id="startBtn" type="button">対局をはじめる <span>→</span></button><div class="mortal-setup"><div class="mortal-setup-title"><span>Mortal-S42 AIコーチ</span><span id="mortalLive" class="mortal-live">準備中</span></div><div id="mortalStatus" class="mortal-help">端末内AIの準備中です</div><input id="mortalModelFile" type="file" class="mortal-file" accept=".onnx,application/octet-stream" aria-label="S42学習済みモデルを選択"><div class="mortal-help">初回のみ学習済みモデルを選択してください。端末内に保存します。対局情報やモデルを外部へ送信しません。未設定時も従来の牌効率コーチ・CPU参考判断が使用できます。</div></div>
     </section>
     <section class="stat-card">
       <div class="section-heading"><h2>計測成績</h2><span>この端末だけに保存</span></div>
@@ -426,7 +451,7 @@
         <div class="event-banner hidden" id="eventBanner" role="status" aria-live="polite"></div>
       </div>
     </div>
-    <div class="hand-zone"><div class="hand-header"><span id="turnHint">対局開始</span><span id="handInfo" class="hand-info"></span></div><div class="coach-flash hidden" id="coachFlash"><span id="coachFlashText"></span><button type="button" id="coachDetailBtn">解説を見る</button></div><div class="my-hand" id="myHand"></div><div class="call-tray hidden" id="callTray" aria-label="鳴き・ロンの選択"><div class="call-tray-head" id="callTrayHead"></div><div class="call-tray-options" id="callTrayOptions"></div></div><div class="actions" id="actionBar"></div></div>
+    <div class="hand-zone"><div class="hand-header"><span id="turnHint">対局開始</span><span id="handInfo" class="hand-info"></span></div><div class="coach-flash hidden" id="coachFlash" aria-live="polite"><div id="coachFlashMain" class="coach-inline-main"></div><button type="button" id="coachDetailBtn" aria-label="打牌選択の詳細を確認">詳しく ›</button></div><div class="my-hand" id="myHand"></div><div class="call-tray hidden" id="callTray" aria-label="鳴き・ロンの選択"><div class="call-tray-head" id="callTrayHead"></div><div class="call-tray-options" id="callTrayOptions"></div></div><div class="actions" id="actionBar"></div></div>
     <div class="coach" id="coachPanel"><div class="coach-top"><div><span class="spark">✧</span> 牌効率メモ <span class="beta">基礎版</span></div><button id="toggleCoach" class="coach-toggle" type="button">非表示</button></div><div id="coachBody"><p>自分のツモ番になると、打牌候補の受け入れを表示します。</p></div></div>
     <div id="gameToast" role="status" aria-live="polite" class="toast"></div>
   </main>
@@ -4640,6 +4665,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     action_hule() {} action_pingju() {} action_jieju() {}
   }
   let referenceAI=null, referenceCurrent=null, referenceReaction=null;
+  let mortalClient=null, mortalStatusText='初期化中';
   const mirrorAudit={packets:0, errors:0, matchedSelf:0, selfMismatch:0, wallAccess:0};
   function safeReferenceEvent(msg) {
     if (!referenceAI) return;
@@ -4660,12 +4686,18 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
   function referenceDiscard() {
     if(!checkReferenceState())return null;
     try{
-      const pick=referenceAI.select_dapai();
+      const trace=[];
+      const pick=referenceAI.select_dapai(trace);
       if(!pick || typeof pick!=='string')return null;
       const all=human.get_dapai(human.shoupai)||[];
       // A reference proposal must be one of the human's actual legal discards.
       if(!all.includes(pick.replace(/\*$/,'')))return null;
-      return {p:pick.slice(0,2),riichi:pick.includes('*')};
+      const assessments=trace.filter(x=>!x.m&&x.p).map(x=>({
+        p:String(x.p).slice(0,2),
+        heuristic:Number.isFinite(x.ev)?Number(x.ev):null,
+        danger:Number.isFinite(x.weixian)?Number(x.weixian):null
+      }));
+      return {p:pick.slice(0,2),riichi:pick.includes('*'),assessments};
     }catch(e){mirrorAudit.errors++;console.warn('参考CPU打牌評価失敗',e);return null;}
   }
   function referenceCall(dapai){
@@ -4678,11 +4710,12 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
   }
   class Human extends M.Player {
     action(msg,callback){
+      try{mortalClient?.ingest(msg);}catch(e){console.warn('S42の付加評価のみ停止',e);}
       safeReferenceEvent(msg);
       return super.action(msg,callback);
     }
     action_kaiju() { this._callback({}); }
-    action_qipai() { pending = null; riichiMode = false; this._callback({}); redrawSoon(); }
+    action_qipai() { pending = null; riichiMode = false; lastFeedback=null;lastCandidateInfo=[];referenceCurrent=null; this._callback({}); redrawSoon(); }
     action_zimo(zimo) {
       if (zimo.l !== this._menfeng) { this._callback({}); return; }
       const options = this.get_dapai(this.shoupai) || [];
@@ -5117,6 +5150,9 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
         shanten:current.shanten, ukeire:current.ukeire,
         best:good?.p, bestShanten:good?.shanten,bestUkeire:good?.ukeire,
         riichi:riichiMode,reference:referenceCurrent?{...referenceCurrent}:null,
+        selfMetric:{p:current.p,shanten:current.shanten,ukeire:current.ukeire},
+        mortalDecision:mortalClient?.decision??null,
+        mortalOpinion:mortalClient?.current?.id===mortalClient?.decision?{...mortalClient.current}:null,
       };
       lastFeedback=info;lastCandidateInfo=candidateInfo.slice();
       decisionLog.push(info);if(decisionLog.length>1000)decisionLog.shift();
@@ -5171,18 +5207,58 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     return `<p class="coach-callout">直前の打牌：${esc(a)} · ${x.shanten}向聴 · 受け入れ ${x.ukeire}枚</p><p>${esc(msg)}</p>`;
   }
   const esc = s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+  // Passive opinions are revealed after the human discards; never on decision input.
+  function renderInlineCoach() {
+    const flash=$('coachFlash'),content=$('coachFlashMain');content.replaceChildren();
+    if(!lastFeedback){flash.classList.add('hidden');return;}
+    const x=lastFeedback,ref=x.reference,op=x.mortalOpinion;
+    flash.classList.remove('hidden');
+    const row=el('div','inline-choice-row');
+    const tilePair=(label,tile,kind)=>{
+      const cell=el('div','inline-choice '+kind);
+      cell.append(el('span','inline-label',label));
+      if(tile)cell.append(tileImg(tile,'inline-tile'));
+      cell.append(el('span','inline-name',tile?tileName(tile):'—'));
+      return cell;
+    };
+    row.append(tilePair('あなた',x.discard,'self'),el('span','inline-arrow','/'));
+    if(op){
+      const ai=el('div','inline-choice ai');
+      ai.append(el('span','inline-label','S42'));
+      if(op.tile)ai.append(tileImg(op.tile,'inline-tile'));
+      ai.append(el('span','inline-name',op.label||'合法手'));
+      row.append(ai);
+      const same=op.tile && normalized(op.tile)===normalized(x.discard);
+      if(op.tile)row.append(el('span','inline-status '+(same?'agree':'disagree'),same?'一致':'別の選択'));
+    }else if(mortalClient?.workerReady){
+      row.append(el('span','inline-label','S42解析中／非対応局面'));
+    }else if(ref){
+      row.append(tilePair('CPU参考',ref.p,'reference'));
+      const same=normalized(ref.p)===normalized(x.discard);
+      row.append(el('span','inline-status '+(same?'agree':'disagree'),same?'一致':'別の選択'));
+    }else row.append(el('span','inline-label','牌効率のみ'));
+    content.append(row);
+    const note=el('div','inline-metric'),own=lastCandidateInfo.find(v=>v.p===x.discard)||x.selfMetric;
+    const suggestion=op?.tile?lastCandidateInfo.find(v=>normalized(v.p)===normalized(op.tile)):null;
+    const baseline=!op&&ref?lastCandidateInfo.find(v=>normalized(v.p)===normalized(ref.p)):null;
+    const cmp=suggestion||baseline;
+    if(own&&cmp){
+      const diff=cmp.ukeire-own.ukeire;
+      note.textContent='向聴 '+own.shanten+'→'+cmp.shanten+' ／ 有効牌 '+own.ukeire+'→'+cmp.ukeire+'枚（差 '+(diff>0?'+':'')+diff+'枚）';
+      flash.classList.toggle('warn',cmp.shanten<own.shanten||(cmp.shanten===own.shanten&&diff>=5));
+    }else{
+      note.textContent=op?'S42は期待点数ではなく行動選択を評価':ref?'電脳麻将CPUの参考判断':'牌効率評価のみ';
+      flash.classList.remove('warn');
+    }
+    content.append(note);
+  }
   function renderCoach() {
     const inReaction=pending?.type==='reaction';
     $('coachPanel').classList.toggle('reaction-quiet',inReaction);
     const flash=$('coachFlash');
     flash.classList.toggle('reaction-quiet',inReaction);
-    if(lastFeedback) {
-      const gap=lastFeedback.ukeire<lastFeedback.bestUkeire?lastFeedback.bestUkeire-lastFeedback.ukeire:0;
-      const shantenLoss=lastFeedback.shanten>lastFeedback.bestShanten;
-      flash.classList.remove('hidden');flash.classList.toggle('warn',shantenLoss||gap>=5);
-      $('coachFlashText').textContent=shantenLoss?`牌効率に改善余地：最良候補より向聴数が増加`:
-        gap>=5?`牌効率に改善余地：受け入れ${gap}枚差`:`牌効率：大きな受け入れ差なし（${lastFeedback.ukeire}枚）`;
-    } else flash.classList.add('hidden');
+    renderInlineCoach();
     const body=$('coachBody');body.classList.toggle('hidden',coachCollapsed);
     $('toggleCoach').textContent=coachCollapsed?'表示':'非表示';
     if(coachCollapsed) return;
@@ -5273,13 +5349,33 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     const body=$('coachModalBody');body.replaceChildren();
     const summary=el('p','coach-callout',`直前の打牌：${tileName(x.discard)} · ${x.shanten}向聴 · 受け入れ ${x.ukeire}枚`);
     body.append(summary);
+    if(x.mortalOpinion){
+      const op=x.mortalOpinion,panel=el('section','mortal-detail');
+      panel.append(el('h3','','学習済みMortal-S42の判断'));
+      panel.append(el('div','', 'S42推奨：'+op.label));
+      if(op.tile)panel.append(el('div','', '自分 '+tileName(x.discard)+' ／ S42 '+tileName(op.tile)));
+      panel.append(el('p','mortal-caveat','S42のQ値は局収支・和了率・放銃率の値ではありません。判断根拠や誤打の断定はしません。'));
+      body.append(panel);
+    }else if(mortalClient?.workerReady){
+      body.append(el('p','mortal-caveat','この打牌時点のS42の評価値は未取得です。推奨牌を補完・推測しません。'));
+    }
     const ref=x.reference;
     if(ref){
       const wrap=el('div','reference-note');
       const line=el('div','reference-title','現行CPUの参考判断（強さ未検証）');
       const detail=el('div','reference-text',`CPUなら ${tileName(ref.p)} を切る${ref.riichi?'（リーチ宣言）':''} ／ あなたの打牌と${normalized(ref.p)===normalized(x.discard)?'同じ牌種':'異なる牌種'}`);
       wrap.append(line,detail);
-      wrap.append(el('div','reference-caveat','牌効率だけでなく危険度・手役などを考慮する既存CPUの提案です。Mortal・期待値・最善手の保証ではありません。'));
+      const ownCandidate=lastCandidateInfo.find(v=>v.p===x.discard);
+      const refCandidate=lastCandidateInfo.find(v=>v.p.slice(0,2)===ref.p);
+      if(ownCandidate&&refCandidate){
+        wrap.append(el('div','reference-text','牌効率：自分 '+ownCandidate.shanten+'向聴／'+ownCandidate.ukeire+'枚、CPU '+refCandidate.shanten+'向聴／'+refCandidate.ukeire+'枚'));
+      }
+      const trace=ref.assessments||[];
+      const selfTrace=trace.find(v=>v.p===x.discard.slice(0,2));
+      const refTrace=trace.find(v=>v.p===ref.p);
+      if(refTrace?.heuristic!=null)wrap.append(el('div','reference-text','CPU内部手牌指標：自分 '+(selfTrace?.heuristic?.toFixed(1)??'算出なし')+' ／ CPU '+refTrace.heuristic.toFixed(1)));
+      if(refTrace?.danger!=null)wrap.append(el('div','reference-text','CPU内部危険度指標：自分 '+(selfTrace?.danger?.toFixed(1)??'算出なし')+' ／ CPU '+refTrace.danger.toFixed(1)));
+      wrap.append(el('div','reference-caveat','内部数値は電脳麻将CPU固有の尺度であり、期待点数・放銃確率・判断の正しさではありません。'));
       body.append(wrap);
     }else{
       body.append(el('p','reference-caveat','CPU参考判断はこの局面では取得できませんでした。'));
@@ -5416,6 +5512,33 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
   $('restartBtn').addEventListener('click',initGame);
   $('homeBtn').addEventListener('click',goHome);
   renderStats();
+  function initMortalClient() {
+    const setStatus=msg=>{
+      mortalStatusText=String(msg);
+      $('mortalStatus').textContent=mortalStatusText;
+      $('mortalLive').textContent=/準備完了/.test(mortalStatusText)?'有効':/失敗|停止|エラー/.test(mortalStatusText)?'基礎版':'未設定';
+    };
+    import('./src/mortal/mortal-client.mjs').then(async ({MortalClient})=>{
+      const client=new MortalClient({
+        onStatus:setStatus,
+        onOpinion:o=>{
+          if(lastFeedback && lastFeedback.mortalDecision===o.id){
+            lastFeedback.mortalOpinion={...o};
+            redrawSoon();
+          }
+        }
+      });
+      mortalClient=client;
+      try{await client.loadEncoder();}catch(e){setStatus('S42局面変換器の起動に失敗しました');return;}
+      await client.restoreModel();
+    }).catch(e=>{console.warn('S42コーチの起動失敗。牌効率は継続します',e);setStatus('S42未利用（基礎版コーチは使用できます）');});
+    $('mortalModelFile').addEventListener('change',async e=>{
+      const file=e.target.files?.[0];if(!file)return;
+      if(!mortalClient){setStatus('局面変換器の準備後にファイルを選択してください');return;}
+      try{await mortalClient.importModel(file);}catch(e){console.warn('S42ファイルは読み込めませんでした',e);}
+    });
+  }
+  initMortalClient();
   window.addEventListener('resize',fitBoard);
   if(typeof ResizeObserver!=='undefined')new ResizeObserver(fitBoard).observe($('tableWrap'));
   if('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
@@ -5445,6 +5568,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     wallPresent:!!(referenceAI?._model?.shan?._pai),
     lastReference:referenceCurrent
   });
+  window.MahjongLabS42Debug=()=>({status:mortalStatusText,ready:!!mortalClient?.workerReady,broken:!!mortalClient?.broken,decision:mortalClient?.decision??0,latest:mortalClient?.current?.label||null,afterDiscard:lastFeedback?.mortalOpinion?.label||null,modelImported:!!mortalClient?.worker});
   window.MahjongLabDebug = {testScenario,parseMeld,visibleRiver,state:()=>({started:!!game,phase:game?game._status:null,pending:pending?.type||null,round:game?.model?.jushu,turn:game?.model?.lunban,own:ownSeat(),decisions:decisionLog.length,finished:gameEnded}),choose:p=>chooseDiscard(p),answer:p=>answer(p),testStep:(randomize=false)=>{debugUsed=true;if(pending?.type==='turn'){if(pending.win&&randomize)return answer({hule:'-'});if(randomize&&pending.gang.length&&Math.random()<0.10)return answer({gang:pending.gang[0]});const choices=pending.options;const p=randomize?choices[Math.floor(Math.random()*choices.length)]:choices[0];if(randomize&&game.allow_lizhi(p)&&Math.random()<0.25)riichiMode=true;chooseDiscard(p);}else if(pending?.type==='reaction'){if(pending.win&&randomize)return answer({hule:'-'});const melds=[...pending.gang,...pending.peng,...pending.chi];if(randomize&&melds.length&&Math.random()<0.55)return answer({fulou:melds[0]});answer({});}},testDwell:ms=>{debugUsed=true;if(game)game.dwell=ms;},testContinue:()=>{debugUsed=true;if(game&&!gameEnded){readyToNext=false;game.start();}},testPaipu:()=>game?._paipu,inspect:()=>({latestDiscard,lastFeedback,hasReaction:!$('callTray').classList.contains('hidden'),speed:game?._dwell})};
 })();
 

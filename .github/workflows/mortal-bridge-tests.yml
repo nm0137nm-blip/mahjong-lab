@@ -1,0 +1,18 @@
+name: Mortal Majiang MJAI bridge regressions
+on:
+  push:
+    branches: [dev/mortal-ai-checkpoint-20261118]
+    paths:
+      - src/mortal/mjai-bridge.mjs
+      - tests/mortal/bridge.test.mjs
+      - .github/workflows/mortal-bridge-tests.yml
+permissions: {}
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    steps:
+      - name: Validate bridge using only fictional hands
+        run: |
+          git clone --depth=1 --branch dev/mortal-ai-checkpoint-20261118 https://github.com/nm0137nm-blip/mahjong-lab.git /tmp/lab
+          node /tmp/lab/tests/mortal/bridge.test.mjs

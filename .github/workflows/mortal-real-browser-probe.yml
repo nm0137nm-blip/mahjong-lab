@@ -1,0 +1,41 @@
+name: Real Mortal-S42 browser ONNX inference (fictional scene)
+on:
+  push:
+    branches: [dev/mortal-ai-checkpoint-20261118]
+    paths:
+      - tests/mortal/browser-probe.html
+      - tests/mortal/run-browser-probe.cjs
+      - .github/workflows/mortal-real-browser-probe.yml
+permissions: {}
+jobs:
+  probe:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - name: Checkout development branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git clone --depth=1 --branch dev/mortal-ai-checkpoint-20261118 https://github.com/nm0137nm-blip/mahjong-lab.git /tmp/lab
+          test -f /tmp/lab/assets/ort/ort.min.mjs
+          test -f /tmp/lab/assets/ort/ort-wasm-simd-threaded.wasm
+      - name: Fetch PUBLIC checkpoint only, check exact digest
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 2 --silent --show-error --max-time 160 \
+            'https://huggingface.co/xzhe121/Mortal-S42-onnx/resolve/main/model.onnx' \
+            -o /tmp/lab/tests/mortal/model.onnx
+          echo '30381bf21389e2d25d3edf48fed11bf772336ef3daeee67d1bdae7fb9dd30cb4  /tmp/lab/tests/mortal/model.onnx' | sha256sum --check
+          echo "Public model digest PASS; model will NEVER be committed"
+      - name: Run real Web ONNX inference in Chromium
+        shell: bash
+        run: |
+          set -euo pipefail
+          command -v google-chrome || command -v chromium
+          mkdir /tmp/probe && cd /tmp/probe
+          npm init -y >/dev/null
+          npm install --ignore-scripts --no-audit --no-fund playwright-core@1.57.0 >/dev/null
+          (cd /tmp/lab && python3 -m http.server 8788 --bind 127.0.0.1 > /tmp/server-log 2>&1) &
+          sleep 3
+          node /tmp/lab/tests/mortal/run-browser-probe.cjs

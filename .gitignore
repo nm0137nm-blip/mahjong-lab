@@ -1,0 +1,11 @@
+# Never commit user-supplied model files, raw observation arrays or secrets.
+*.onnx
+*.pth
+*.pt
+*.npz
+*.npy
+.env
+*.pem
+*.key
+__pycache__/
+*.pyc
