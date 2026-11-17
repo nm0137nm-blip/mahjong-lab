@@ -38,6 +38,8 @@ const {chromium}=require('/tmp/probe/node_modules/playwright-core');
       const state=await page.evaluate(()=>({status:MahjongLabDebug.state(),s42:MahjongLabS42Debug(),pending:MahjongLabDebug.inspect().lastFeedback?.mortalDecision,overlay:document.querySelector('#resultOverlay')?.className}));
       throw Error('Measuring match did not finish: '+JSON.stringify({decisions,results,state}));
     }
+    // Game renders the finish screen before its asynchronous completion callback persists stats.
+    await page.waitForFunction(()=>{try{return JSON.parse(localStorage.getItem('mahjonglab-measured-v2')||'[]').length===1}catch{return false}},{timeout:15000});
     const finished=await page.evaluate(()=>({
       stats:document.querySelector('#s42EndSummary')?.textContent,
       record:JSON.parse(localStorage.getItem('mahjonglab-measured-v2')||'[]'),
