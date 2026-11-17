@@ -5488,6 +5488,16 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
       ['判断指数',review.index+'/100']
     ].forEach(([l,v])=>{const c=el('div','s42-review-metric');c.append(el('strong','',v),el('small','',l));met.append(c);});
     target.append(met);
+    // Exact DQN v4 dueling decomposition on the LEGAL action set:
+    // Q(s,a) = V(s) + [A(s,a) - mean(legal A)], and V(s)=mean(legal Q).
+    const decomposition=el('div','s42-info');
+    decomposition.append(el('strong','','S42の行動Q値の構造（Dueling DQN v4）'));
+    decomposition.append(el('div','','Q = 局面基礎値 V ＋ 行動の相対優位度'));
+    decomposition.append(el('div','','局面基礎値 V ≒ '+review.stateValue.toFixed(3)+'（合法手Q値の平均）'));
+    decomposition.append(el('div','','あなたの行動：'+review.chosenQ.toFixed(3)+' = '+review.stateValue.toFixed(3)+' + ('+review.chosenAdvantage.toFixed(3)+')'));
+    decomposition.append(el('div','','S42の最良行動：'+review.bestQ.toFixed(3)+' = '+review.stateValue.toFixed(3)+' + ('+review.bestAdvantage.toFixed(3)+')'));
+    decomposition.append(el('p','s42-analysis-note','ここでの V はモデルの内部的な局面価値、括弧内は合法手平均に対する相対優位度です。どちらも期待点数ではありません。モデルのDQN v4の計算構造に沿った分解です。'));
+    target.append(decomposition);
     target.append(el('p','s42-analysis-note','相対Q差 '+(100*review.relativeGap).toFixed(1)+'%。悪手候補（暫定30%基準）：'+(review.badCandidate?'該当':'非該当')+'。これは局面内のQ値の相対比較であり、点棒損失や確定的な悪手ではありません。'));
     const table=el('table','s42-data-table'),head=el('tr','');
     ['順位','合法行動','モデルQ値','比較'].forEach(t=>head.append(el('th','',t)));table.append(head);
@@ -5505,7 +5515,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     });
     target.append(table);
     const note=el('div','s42-info');
-    note.append(el('strong','','「牌効率・守備・打点」の点数への因数分解はできません。'));
+    note.append(el('strong','','局面価値と相対優位度には分けられますが、「牌効率・守備・打点」への正確な分解はできません。'));
     note.append(el('p','s42-analysis-note','Mortal-S42のQ値は、手牌、河、副露、ドラ、点棒などの観測情報をニューラルネットワークに入力して推定した行動価値です。牌効率点＋安全度点＋期待打点という独立したスコアを加算しているわけではありません。将来、同一局面の条件を一つずつ変えて再評価する感度分析は可能ですが、これは正確な寄与度分解とは異なります。'));
     target.append(note);
   }
