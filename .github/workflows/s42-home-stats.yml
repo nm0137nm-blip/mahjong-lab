@@ -1,0 +1,25 @@
+name: Phase 2.5 home statistics device-local integration
+on:
+  push:
+    branches: [dev/s42-analysis-20261118]
+    paths:
+      - index.html
+      - tests/mortal/run-s42-home-stats.cjs
+      - .github/workflows/s42-home-stats.yml
+permissions: {}
+jobs:
+  run:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Validate seeded fictional history, no user data
+        shell: bash
+        run: |
+          set -euo pipefail
+          git clone --depth=1 --branch dev/s42-analysis-20261118 https://github.com/nm0137nm-blip/mahjong-lab.git /tmp/lab
+          mkdir -p /tmp/probe && cd /tmp/probe
+          npm init -y >/dev/null
+          npm install --ignore-scripts --no-audit --no-fund playwright-core@1.57.0 >/dev/null
+          (cd /tmp/lab && python3 -m http.server 8788 --bind 127.0.0.1 >/tmp/serve.log 2>&1) &
+          sleep 2
+          node /tmp/lab/tests/mortal/run-s42-home-stats.cjs
