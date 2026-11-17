@@ -5300,7 +5300,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
   function renderInlineCoach() {
     const flash=$('coachFlash'),content=$('coachFlashMain');content.replaceChildren();
     if(!lastFeedback){flash.classList.add('hidden');return;}
-    const x=lastFeedback,ref=x.reference,op=x.mortalOpinion;
+    const x=lastFeedback,op=x.mortalOpinion;
     flash.classList.remove('hidden');
     const row=el('div','inline-choice-row');
     const tilePair=(label,tile,kind)=>{
@@ -5317,26 +5317,23 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
       if(op.tile)ai.append(tileImg(op.tile,'inline-tile'));
       ai.append(el('span','inline-name',op.label||'合法手'));
       row.append(ai);
-      const same=op.tile && normalized(op.tile)===normalized(x.discard);
-      if(op.tile)row.append(el('span','inline-status '+(same?'agree':'disagree'),same?'一致':'別の選択'));
-    }else if(mortalClient?.workerReady){
-      row.append(el('span','inline-label','S42解析中／非対応局面'));
-    }else if(ref){
-      row.append(tilePair('CPU参考',ref.p,'reference'));
-      const same=normalized(ref.p)===normalized(x.discard);
-      row.append(el('span','inline-status '+(same?'agree':'disagree'),same?'一致':'別の選択'));
-    }else row.append(el('span','inline-label','牌効率のみ'));
-    content.append(row);
-    const note=el('div','inline-metric'),own=lastCandidateInfo.find(v=>v.p===x.discard)||x.selfMetric;
-    const suggestion=op?.tile?lastCandidateInfo.find(v=>normalized(v.p)===normalized(op.tile)):null;
-    const baseline=!op&&ref?lastCandidateInfo.find(v=>normalized(v.p)===normalized(ref.p)):null;
-    const cmp=suggestion||baseline;
-    if(own&&cmp){
-      const diff=cmp.ukeire-own.ukeire;
-      note.textContent='向聴 '+own.shanten+'→'+cmp.shanten+' ／ 有効牌 '+own.ukeire+'→'+cmp.ukeire+'枚（差 '+(diff>0?'+':'')+diff+'枚）';
-      flash.classList.toggle('warn',cmp.shanten<own.shanten||(cmp.shanten===own.shanten&&diff>=5));
+      if(x.s42Review)row.append(el('span','inline-status '+(x.s42Review.agreement?'agree':'disagree'),x.s42Review.agreement?'一致':'別の選択'));
     }else{
-      note.textContent=op?'S42は期待点数ではなく行動選択を評価':ref?'電脳麻将CPUの参考判断':'牌効率評価のみ';
+      row.append(el('span','inline-label',mortalClient?.workerReady?'S42解析中／比較対象外':'S42未設定'));
+    }
+    content.append(row);
+    const note=el('div','inline-metric');
+    const own=(x.candidates||[]).find(v=>v.p===x.discard)||x.selfMetric;
+    const suggestion=op?.tile?(x.candidates||[]).find(v=>v.p.slice(0,2)===op.tile.slice(0,2)):null;
+    if(own&&suggestion){
+      const diff=suggestion.ukeire-own.ukeire;
+      note.textContent='向聴 '+own.shanten+'→'+suggestion.shanten+' ／ 有効牌 '+own.ukeire+'→'+suggestion.ukeire+'枚（差 '+(diff>0?'+':'')+diff+'枚）';
+      flash.classList.toggle('warn',suggestion.shanten<own.shanten||(suggestion.shanten===own.shanten&&diff>=5));
+    }else if(op){
+      note.textContent=x.s42Review?'S42判断指数 '+x.s42Review.index+'/100 · Q差 '+x.s42Review.gap.toFixed(2):'S42は期待点数ではなく行動価値Qを評価';
+      flash.classList.remove('warn');
+    }else{
+      note.textContent='牌効率コーチは利用可能 · S42の値は未取得';
       flash.classList.remove('warn');
     }
     content.append(note);
