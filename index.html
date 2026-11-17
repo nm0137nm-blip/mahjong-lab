@@ -387,11 +387,42 @@
 .mortal-detail h3{font-size:13px;margin:0 0 7px;color:#c6f2bc}
 .mortal-detail .mortal-caveat{font-size:11px;color:#bfd3c2;line-height:1.5}
 @media(max-width:375px){#gameScreen .inline-label{font-size:9px}#gameScreen .inline-name{font-size:10px}#gameScreen .inline-tile{width:15px;height:21px}#gameScreen .inline-metric{font-size:9px}}
+
+/* Phase 2.5: S42-only review, explicit efficiency/Q-value separation */
+.s42-analysis-head{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.s42-tabs{display:flex;gap:8px;margin:10px 0;flex-wrap:wrap}
+.s42-tabs button{flex:1;padding:10px 7px;border:1px solid #4a796a;border-radius:10px;background:#173e35;color:#d9f0dc;font-weight:700;font-size:12px}
+.s42-tabs button[aria-selected="true"]{background:#b5e0b7;color:#17382f;border-color:#b5e0b7}
+.s42-analysis-note{color:#d0ddd2;font-size:12px;line-height:1.65;margin:8px 0 12px}
+.s42-data-table{width:100%;border-collapse:collapse;font-size:12px;text-align:left}
+.s42-data-table th,.s42-data-table td{padding:8px 4px;border-bottom:1px solid #365f51}
+.s42-data-table th{color:#b9dbb9}
+.s42-data-table tr.selected{background:#2b5548}
+.s42-data-table tr.best{font-weight:800}
+.s42-info{padding:10px;background:#183f35;border:1px solid #557e67;border-radius:10px;margin:10px 0;color:#e4efdf;font-size:12px;line-height:1.6}
+.s42-review-pane{margin:12px 0 8px}
+.s42-review-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0}
+.s42-review-metric{border:1px solid #477565;border-radius:10px;padding:9px 5px;text-align:center;background:#1e433a}
+.s42-review-metric strong{display:block;font-size:20px;color:#e9f8df}
+.s42-review-metric small{display:block;font-size:10px;line-height:1.4;color:#bcd1c1}
+.s42-review-control{display:flex;gap:8px;flex-wrap:wrap}
+.s42-review-control button{flex:1;min-width:72px}
+#endOverlay .modal,#s42ReviewOverlay .modal{max-height:88dvh;overflow-y:auto}
+.s42-replay-hand{display:flex;gap:2px;flex-wrap:wrap;margin:8px 0}
+.s42-replay-hand img{width:23px;height:32px;object-fit:contain}
+.s42-replay-rivers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:12px 0}
+.s42-replay-river{min-width:0;padding:7px;background:#163d34;border-radius:9px}
+.s42-replay-river h4{font-size:11px;margin:0 0 4px;color:#c8e7ca}
+.s42-replay-river img{width:16px;height:22px;object-fit:contain}
+.s42-replay-river-tiles{display:flex;flex-wrap:wrap;gap:2px}
+.s42-replay-title{font-size:12px;color:#cfe5ce;margin:8px 0}
+.s42-hidden{display:none!important}
+@media(max-width:375px){.s42-review-metric strong{font-size:17px}.s42-replay-hand img{width:20px;height:28px}}
 </style>
-  <title>麻雀LAB — Phase 2.4 S42</title>
+  <title>麻雀LAB — Phase 2.5 S42 REVIEW</title>
 </head>
 <body>
-  <header class="site-header"><div class="logo"><span class="logo-mark">牌</span><span>麻雀<span class="logo-lab">LAB</span></span></div><span class="phase">PHASE 2.4 · MORTAL-S42</span></header>
+  <header class="site-header"><div class="logo"><span class="logo-mark">牌</span><span>麻雀<span class="logo-lab">LAB</span></span></div><span class="phase">PHASE 2.5 · S42 REVIEW</span></header>
   <main id="startScreen" class="home">
     <div class="eyebrow"><span class="eyedot"></span> MAHJONG LAB</div>
     <h1 class="home-compact-title">対局設定</h1>
@@ -409,7 +440,7 @@
         <label><input type="radio" name="recordMode" value="practice" checked><span><strong>練習対局</strong><small>記録しない・コーチあり</small></span></label>
         <label><input type="radio" name="recordMode" value="measure"><span><strong>計測用対局</strong><small>完走分を保存・コーチあり</small></span></label>
       </div>
-      <button class="primary big" id="startBtn" type="button">対局をはじめる <span>→</span></button><div class="mortal-setup"><div class="mortal-setup-title"><span>Mortal-S42 AIコーチ</span><span id="mortalLive" class="mortal-live">準備中</span></div><div id="mortalStatus" class="mortal-help">端末内AIの準備中です</div><input id="mortalModelFile" type="file" class="mortal-file" accept=".onnx,application/octet-stream" aria-label="S42学習済みモデルを選択"><div class="mortal-help">初回のみ学習済みモデルを選択してください。端末内に保存します。対局情報やモデルを外部へ送信しません。未設定時も従来の牌効率コーチ・CPU参考判断が使用できます。</div></div>
+      <button class="primary big" id="startBtn" type="button">対局をはじめる <span>→</span></button><div class="mortal-setup"><div class="mortal-setup-title"><span>Mortal-S42 AIコーチ</span><span id="mortalLive" class="mortal-live">準備中</span></div><div id="mortalStatus" class="mortal-help">端末内AIの準備中です</div><input id="mortalModelFile" type="file" class="mortal-file" accept=".onnx,application/octet-stream" aria-label="S42学習済みモデルを選択"><div class="mortal-help">初回のみ学習済みモデルを選択してください。端末内に保存します。対局情報やモデルを外部へ送信しません。未設定時も牌効率コーチが使用できます。</div></div>
     </section>
     <section class="stat-card">
       <div class="section-heading"><h2>計測成績</h2><span>この端末だけに保存</span></div>
@@ -419,7 +450,7 @@
       </div>
       <div class="stats" id="homeStats"></div>
       <div id="detailStats" class="stats-content"></div>
-      <p class="stats-note">※ 計測用対局の完走分のみ。率は総局数を基準（ツモ率のみ自分の和了数を基準）。旧版の対局・練習・途中中断・自動テストは対象外です。牌効率コーチは基礎版で、期待収支は未計算です。</p>
+      <p class="stats-note">※ 計測用対局の完走分のみ。率は総局数を基準（ツモ率のみ自分の和了数を基準）。旧版の対局・練習・途中中断・自動テストは対象外です。牌効率とS42のQ値は別の評価です。S42指標は解析済みの新しい対局から集計します。</p>
     </section>
 
     <div class="home-footer">電脳麻将 / majiang-core / majiang-ai を利用 · MIT License</div>
@@ -459,7 +490,8 @@
   <div id="decisionOverlay" class="hidden" aria-hidden="true"></div>
   <div class="overlay coach-overlay hidden" id="coachOverlay" role="dialog" aria-modal="true" aria-label="牌効率の解説"><div class="modal coach-modal"><div class="modal-label">牌効率メモ</div><h2>直前の打牌を確認</h2><div id="coachModalBody"></div><button class="primary" id="closeCoachBtn" type="button">対局に戻る</button></div></div>
   <div class="overlay hidden" id="resultOverlay" role="dialog" aria-modal="true" aria-labelledby="resultTitle"><div class="modal"><div class="modal-label" id="resultTag">局の結果</div><h2 id="resultTitle">流局</h2><p id="resultDetails"></p><div id="resultHandDetail" class="result-detail"></div><div id="resultScores" class="result-scores"></div><button id="continueBtn" class="primary" type="button">次の局へ →</button></div></div>
-  <div class="overlay hidden" id="endOverlay" role="dialog" aria-modal="true" aria-labelledby="endTitle"><div class="modal"><div class="modal-label">FINISH</div><h2 id="endTitle">対局終了</h2><div id="endScores" class="result-scores"></div><p class="end-note">AIコーチの高度な期待値評価は次フェーズで追加予定です。</p><button id="restartBtn" class="primary" type="button">もう一度対局する →</button><button id="homeBtn" class="secondary" type="button">トップに戻る</button></div></div>
+  <div class="overlay hidden" id="endOverlay" role="dialog" aria-modal="true" aria-labelledby="endTitle"><div class="modal"><div class="modal-label">FINISH</div><h2 id="endTitle">対局終了</h2><div id="endScores" class="result-scores"></div><div id="s42EndSummary" class="s42-review-pane"></div><button id="s42ReviewBtn" class="secondary" type="button" hidden>S42の大差候補局面を振り返る</button><p class="end-note">S42判断指数は独自の暫定指標です。段位・期待点数・悪手の確定判定ではありません。</p><button id="restartBtn" class="primary" type="button">もう一度対局する →</button><button id="homeBtn" class="secondary" type="button">トップに戻る</button></div></div>
+<div class="overlay hidden" id="s42ReviewOverlay" role="dialog" aria-modal="true" aria-labelledby="s42ReviewTitle"><div class="modal"><div class="modal-label">S42 REVIEW</div><h2 id="s42ReviewTitle">局面の振り返り</h2><div id="s42ReviewBody"></div><div class="s42-review-control"><button id="s42ReviewPrev" class="secondary" type="button">← 前</button><button id="s42ReviewNext" class="secondary" type="button">次 →</button></div><button id="s42ReviewClose" class="primary" type="button">閉じる</button></div></div>
 <script>
 /* Original engine and CPU: Satoshi Kobayashi; MIT licensed. See vendor/*.txt */
 (function(root){
