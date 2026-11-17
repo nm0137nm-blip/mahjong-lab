@@ -3,10 +3,11 @@
 import { readFileSync } from 'node:fs';
 import { inflateSync } from 'node:zlib';
 import { createHash } from 'node:crypto';
-const [wasmPath,fixturePath]=process.argv.slice(2);
+import { pathToFileURL } from 'node:url';
+const [jsPath,wasmPath,fixturePath]=process.argv.slice(2);
 const wasm=readFileSync(wasmPath);
-const {instance}=await WebAssembly.instantiate(wasm,{});
-const e=instance.exports;
+const js=await import(pathToFileURL(jsPath).href);
+const e=await js.default(wasm);
 for(const k of ['memory','new_state','alloc_bytes','free_bytes','apply_event','encode_state','drop_state']){
   if(!(k in e))throw Error('Missing WASM export: '+k);
 }
