@@ -34,9 +34,14 @@ export function analyzeDecision(op,chosen,riichi=false){
   const range=Math.max(1e-9,sorted[0].q-sorted[sorted.length-1].q);
   const relativeGap=Math.max(0,Math.min(1,gap/range));
   const rank=sorted.findIndex(x=>x.index===action)+1;
+  // Mortal DQN V4 dueling head: mean of legal Q equals V(s), since action advantages are centered.
+  const stateValue=sorted.reduce((sum,x)=>sum+x.q,0)/sorted.length;
+  const chosenAdvantage=picked.q-stateValue;
+  const bestAdvantage=sorted[0].q-stateValue;
   return {
     action,rank,legal:sorted.length,
     best:op.best,chosenQ:picked.q,bestQ:sorted[0].q,
+    stateValue,chosenAdvantage,bestAdvantage,
     gap,relativeGap,
     agreement:action===op.best,
     // Predeclared heuristic threshold, NOT empirically calibrated mahjong mistakes.
