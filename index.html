@@ -357,11 +357,16 @@
 .stats-note{font-size:10px;color:#a6c2b3;line-height:1.65;margin:11px 0 0}
 #recordModeBadge{font-size:10px;letter-spacing:0;white-space:nowrap}
 @media(max-width:390px){.home{padding:19px 12px}.record-choose span{padding:8px!important}.record-choose small{font-size:9px!important}.stat-card .stat-val{font-size:19px}.stat-detail-value{font-size:18px}}
+
+.reference-note{padding:10px 12px;border:1px solid #79ac94;background:#193b32;border-radius:10px;margin:12px 0;color:#e5f1da}
+.reference-title{color:#c4e988;font-weight:800;font-size:12px;margin-bottom:7px}
+.reference-text{font-size:13px;font-weight:700;line-height:1.6}
+.reference-caveat{font-size:10px;color:#a9c6b7;line-height:1.6;margin:7px 0 0}
 </style>
   <title>麻雀LAB — Phase 1.8.1</title>
 </head>
 <body>
-  <header class="site-header"><div class="logo"><span class="logo-mark">牌</span><span>麻雀<span class="logo-lab">LAB</span></span></div><span class="phase">PHASE 1.8.1 · COACH FOR ALL</span></header>
+  <header class="site-header"><div class="logo"><span class="logo-mark">牌</span><span>麻雀<span class="logo-lab">LAB</span></span></div><span class="phase">PHASE 2.0 · CPU REFERENCE</span></header>
   <main id="startScreen" class="home">
     <div class="eyebrow"><span class="eyedot"></span> MAHJONG LAB</div>
     <h1 class="home-compact-title">対局設定</h1>
@@ -4626,7 +4631,56 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     return id===0?'あなた':NAMES[id];
   }
 
+  // A separate, non-playing copy of the ordinary CPU. It receives ONLY the
+  // exact per-human event packet, never game.model or the wall. This is a
+  // baseline opinion, not Mortal, not calibrated EV, and not a correct-answer oracle.
+  class PassiveReferenceAI extends AI {
+    action_kaiju() {} action_qipai() {} action_zimo() {}
+    action_dapai() {} action_fulou() {} action_gang() {}
+    action_hule() {} action_pingju() {} action_jieju() {}
+  }
+  let referenceAI=null, referenceCurrent=null, referenceReaction=null;
+  const mirrorAudit={packets:0, errors:0, matchedSelf:0, selfMismatch:0, wallAccess:0};
+  function safeReferenceEvent(msg) {
+    if (!referenceAI) return;
+    try {
+      // json roundtrip strips object identity and makes it impossible for the
+      // passive CPU to hold a reference to the actual game state.
+      const packet=JSON.parse(JSON.stringify(msg));
+      referenceAI.action(packet, ()=>{});
+      mirrorAudit.packets++;
+    } catch(e) { mirrorAudit.errors++;console.warn('参考CPU同期失敗',e); }
+  }
+  function checkReferenceState() {
+    if (!referenceAI || !human || !referenceAI.shoupai || !human.shoupai) return false;
+    const ok=referenceAI.shoupai.toString()===human.shoupai.toString();
+    if(ok)mirrorAudit.matchedSelf++;else mirrorAudit.selfMismatch++;
+    return ok;
+  }
+  function referenceDiscard() {
+    if(!checkReferenceState())return null;
+    try{
+      const pick=referenceAI.select_dapai();
+      if(!pick || typeof pick!=='string')return null;
+      const all=human.get_dapai(human.shoupai)||[];
+      // A reference proposal must be one of the human's actual legal discards.
+      if(!all.includes(pick.replace(/\*$/,'')))return null;
+      return {p:pick.slice(0,2),riichi:pick.includes('*')};
+    }catch(e){mirrorAudit.errors++;console.warn('参考CPU打牌評価失敗',e);return null;}
+  }
+  function referenceCall(dapai){
+    if(!checkReferenceState())return null;
+    try {
+      if(referenceAI.select_hule(dapai))return {kind:'ロン',m:''};
+      const m=referenceAI.select_fulou(dapai);
+      return {kind:m?(m.replace(/0/g,'5').match(/^[mpsz](\d)\1\1/) ? 'ポン':'チー'):'スルー',m:m||''};
+    }catch(e){mirrorAudit.errors++;return null;}
+  }
   class Human extends M.Player {
+    action(msg,callback){
+      safeReferenceEvent(msg);
+      return super.action(msg,callback);
+    }
     action_kaiju() { this._callback({}); }
     action_qipai() { pending = null; riichiMode = false; this._callback({}); redrawSoon(); }
     action_zimo(zimo) {
@@ -4635,6 +4689,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
       const gang = this.get_gang_mianzi(this.shoupai) || [];
       pending = { type: 'turn', options, gang, win: this.allow_hule(this.shoupai), nine: this.allow_pingju(this.shoupai) };
       candidateInfo = scoreCandidates(options);
+      referenceCurrent = referenceDiscard();
       redrawSoon();
     }
     action_dapai(dapai) {
@@ -4648,12 +4703,14 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
       if (!win && !peng.length && !gang.length && !chi.length) { this._callback({}); return; }
       if (callMode()==='auto' && !win) { this._callback({}); return; }
       pending = { type: 'reaction', from: dapai.l, p: dapai.p, win, chi, peng, gang };
+      referenceReaction=referenceCall(dapai);
       redrawSoon();
     }
     action_fulou(fulou) {
       if (fulou.l !== this._menfeng || fulou.m.match(/^[mpsz]\d{4}/)) { this._callback({}); return; }
       pending = { type: 'turn', options: this.get_dapai(this.shoupai) || [], gang: [], win: false, nine: false, afterCall: true };
       candidateInfo = scoreCandidates(pending.options);
+      referenceCurrent = referenceDiscard();
       redrawSoon();
     }
     action_gang(gang) {
@@ -4746,7 +4803,10 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     debugUsed = false;
     $('recordModeBadge').textContent=recordMode==='measure'?'計測中':'練習';
     selectedRule = M.rule({'配給原点':25000,'赤牌':{m:1,p:1,s:1},'場数':Number(mode),'延長戦方式':0,'オーラス止めあり':false,'順位点':['0.0','0.0','0.0','0.0']});
-    human = new Human(); pending = null; gameEnded = false; readyToNext = false;
+    human = new Human(); referenceAI = new PassiveReferenceAI();
+    referenceCurrent=null;referenceReaction=null;
+    Object.assign(mirrorAudit,{packets:0,errors:0,matchedSelf:0,selfMismatch:0,wallAccess:0});
+    pending = null; gameEnded = false; readyToNext = false;
     riichiMode = false; candidateInfo = []; lastCandidateInfo = []; lastFeedback = null;
     decisionLog = []; lastAction = ''; latestDiscard=null;
     $('eventBanner').classList.add('hidden'); $('callTray').classList.add('hidden'); $('coachOverlay').classList.add('hidden');
@@ -5056,7 +5116,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
         round:`${F[game.model.zhuangfeng]}${game.model.jushu+1}局`, discard:p,
         shanten:current.shanten, ukeire:current.ukeire,
         best:good?.p, bestShanten:good?.shanten,bestUkeire:good?.ukeire,
-        riichi:riichiMode,
+        riichi:riichiMode,reference:referenceCurrent?{...referenceCurrent}:null,
       };
       lastFeedback=info;lastCandidateInfo=candidateInfo.slice();
       decisionLog.push(info);if(decisionLog.length>1000)decisionLog.shift();
@@ -5213,11 +5273,25 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     const body=$('coachModalBody');body.replaceChildren();
     const summary=el('p','coach-callout',`直前の打牌：${tileName(x.discard)} · ${x.shanten}向聴 · 受け入れ ${x.ukeire}枚`);
     body.append(summary);
+    const ref=x.reference;
+    if(ref){
+      const wrap=el('div','reference-note');
+      const line=el('div','reference-title','現行CPUの参考判断（強さ未検証）');
+      const detail=el('div','reference-text',`CPUなら ${tileName(ref.p)} を切る${ref.riichi?'（リーチ宣言）':''} ／ あなたの打牌と${normalized(ref.p)===normalized(x.discard)?'同じ牌種':'異なる牌種'}`);
+      wrap.append(line,detail);
+      wrap.append(el('div','reference-caveat','牌効率だけでなく危険度・手役などを考慮する既存CPUの提案です。Mortal・期待値・最善手の保証ではありません。'));
+      body.append(wrap);
+    }else{
+      body.append(el('p','reference-caveat','CPU参考判断はこの局面では取得できませんでした。'));
+    }
     const shortlisted=coachCandidateShortlist(lastCandidateInfo,x.discard);
     const list=el('div','coach-candidate-list');
     const chosenAtFront=shortlisted.length===4 && shortlisted[0]?.p.slice(0,2)===x.discard.slice(0,2);
     shortlisted.forEach((v,i)=>list.append(renderCoachCandidate(v,x.discard,i-(chosenAtFront?1:0))));
     body.append(list);
+    if(referenceReaction && referenceReaction.kind){
+      body.append(el('p','reference-caveat',`直近の鳴き場面・現行CPU参考：${referenceReaction.kind}。局面は変化している場合があります。`));
+    }
     body.append(el('p','coach-details-note','※ 受け入れ＝その牌を引くと向聴数が改善する牌の見かけ上の残り枚数。手牌・公開情報から数えた推定上限で、実際の山に残る枚数や和了率・期待値ではありません。向聴据置の手牌改良牌は対象外です。5の残り枚数は赤5を含めた合計です。'));
     $('coachOverlay').classList.remove('hidden');
   }
@@ -5363,6 +5437,14 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     redrawSoon();
   }
   // Facilitate lightweight browser checks without opening a debugging interface.
+  window.MahjongLabReferenceAudit=()=>({
+    ...mirrorAudit,
+    available:!!referenceAI,
+    own:referenceAI?.shoupai?.toString()||null,
+    otherHands:referenceAI?referenceAI._model.shoupai.map((hand,l)=>l===referenceAI._menfeng?'own':hand?.toString()):[],
+    wallPresent:!!(referenceAI?._model?.shan?._pai),
+    lastReference:referenceCurrent
+  });
   window.MahjongLabDebug = {testScenario,parseMeld,visibleRiver,state:()=>({started:!!game,phase:game?game._status:null,pending:pending?.type||null,round:game?.model?.jushu,turn:game?.model?.lunban,own:ownSeat(),decisions:decisionLog.length,finished:gameEnded}),choose:p=>chooseDiscard(p),answer:p=>answer(p),testStep:(randomize=false)=>{debugUsed=true;if(pending?.type==='turn'){if(pending.win&&randomize)return answer({hule:'-'});if(randomize&&pending.gang.length&&Math.random()<0.10)return answer({gang:pending.gang[0]});const choices=pending.options;const p=randomize?choices[Math.floor(Math.random()*choices.length)]:choices[0];if(randomize&&game.allow_lizhi(p)&&Math.random()<0.25)riichiMode=true;chooseDiscard(p);}else if(pending?.type==='reaction'){if(pending.win&&randomize)return answer({hule:'-'});const melds=[...pending.gang,...pending.peng,...pending.chi];if(randomize&&melds.length&&Math.random()<0.55)return answer({fulou:melds[0]});answer({});}},testDwell:ms=>{debugUsed=true;if(game)game.dwell=ms;},testContinue:()=>{debugUsed=true;if(game&&!gameEnded){readyToNext=false;game.start();}},testPaipu:()=>game?._paipu,inspect:()=>({latestDiscard,lastFeedback,hasReaction:!$('callTray').classList.contains('hidden'),speed:game?._dwell})};
 })();
 
