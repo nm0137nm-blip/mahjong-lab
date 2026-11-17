@@ -165,11 +165,132 @@
   .meld .river-tile{width:11px;height:16px}
 }
 
+
+/* Phase 1.4 call fix overrides */
+.seat .melds{position:absolute;display:flex;gap:4px;flex-wrap:nowrap;justify-content:flex-start;align-items:flex-end;margin:0;z-index:1}
+.seat-top .melds{top:34px;left:-62px;transform:rotate(180deg);transform-origin:left top}
+.seat-right .melds{top:-10px;right:6px;transform:rotate(-90deg);transform-origin:right top}
+.seat-left .melds{bottom:-4px;left:8px;transform:rotate(90deg);transform-origin:left bottom}
+.seat-bottom .melds{bottom:28px;right:18px;transform:none;transform-origin:right bottom}
+.meld{display:inline-flex;align-items:flex-end;gap:1px;padding:1px 2px;border-radius:4px;background:#113d3490}
+.meld .river-tile{width:12px;height:17px}
+.meld-tile.called .river-tile{transform:rotate(90deg);transform-origin:center center;top:0}
+#tableActionToast{display:none!important}
+.call-option{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:88px;padding:10px 12px}
+.call-option .kind{font-size:14px;font-weight:800;color:var(--cream);line-height:1}
+.call-option .preview{display:flex;align-items:flex-end;gap:2px;justify-content:center;min-height:42px}
+.call-option .preview img{width:26px;height:36px;object-fit:fill;border-radius:2px}
+.call-option .preview .called img{transform:rotate(90deg);transform-origin:center center}
+.call-option.pass{min-height:54px;justify-content:center}
+.result-detail .tile-strip{display:flex;flex-wrap:nowrap;gap:2px;align-items:flex-start;overflow-x:auto;padding-bottom:2px}
+.result-detail .tile-strip img{flex:0 0 auto}
+.result-detail .tile-strip.result-concealed{gap:2px}
+.result-detail .section-block{margin-bottom:6px}
+@media(max-width:530px){
+  .seat-top .melds{left:-54px;top:30px}
+  .seat-right .melds{top:-8px;right:4px}
+  .seat-left .melds{left:6px;bottom:-2px}
+  .seat-bottom .melds{right:8px;bottom:26px}
+  .meld .river-tile{width:11px;height:16px}
+  .call-option{min-height:80px;padding:10px 10px}
+  .call-option .preview img{width:23px;height:32px}
+}
+
+
+/* Version 0.6 — UI Specification v2.1, strict seat-local layout */
+#gameScreen.game:not(.hidden){height:calc(100svh - 55px - env(safe-area-inset-top));min-height:0;display:flex;flex-direction:column;gap:4px;overflow:hidden;padding:3px 6px calc(4px + env(safe-area-inset-bottom))}
+#gameScreen .game-head{min-height:28px;height:28px;flex:0 0 28px}
+#gameScreen .score-row{margin:1px 0 2px;flex:0 0 auto}
+#gameScreen .score-card{padding:5px 3px}
+#gameScreen .table-controls{margin:0;flex:0 0 auto}
+#gameScreen .river-legend{margin:0;flex:0 0 auto;font-size:9px}
+#gameScreen .table-wrap{position:relative;flex:1 1 0;min-height:180px;border-radius:11px;overflow:hidden}
+#gameScreen .table-felt{position:absolute;left:50%;top:50%;width:390px;height:430px;min-height:0;transform:translate(-50%,-50%) scale(var(--board-scale,1));transform-origin:center center;overflow:hidden}
+#gameScreen .table-felt:before{inset:7px}
+#gameScreen .seat{position:absolute;transform:none;z-index:1;display:block;text-align:center}
+#gameScreen .seat-label{font-size:10px;font-weight:800;line-height:1.2;white-space:nowrap}
+#gameScreen .seat-top{top:3px;left:100px;width:190px;right:auto}
+#gameScreen .seat-top .concealed{display:flex;flex-wrap:nowrap;gap:1px;justify-content:center;max-width:190px;margin:8px auto 0}
+#gameScreen .seat-top .back{width:12px;height:16px}
+#gameScreen .seat-left{top:105px;left:1px;width:75px;right:auto}
+#gameScreen .seat-right{top:105px;left:314px;width:75px;right:auto}
+#gameScreen .seat-left .concealed,#gameScreen .seat-right .concealed{display:flex;flex-direction:column;flex-wrap:nowrap;max-width:none;gap:1px;align-items:center;margin:10px auto 0}
+#gameScreen .seat-left .concealed .back,#gameScreen .seat-right .concealed .back{width:10px;height:12px}
+#gameScreen .seat-bottom{left:135px;right:auto;top:404px;bottom:auto;width:120px}
+#gameScreen .river-area{--tileW:16px;--tileH:23px;--tileGap:1px;position:absolute;display:grid;grid-template-columns:repeat(6,var(--tileW));grid-auto-rows:var(--tileH);gap:var(--tileGap);width:max-content;height:max-content;left:auto;right:auto;top:auto;bottom:auto;z-index:2;pointer-events:none}
+#gameScreen .river-top{left:195px;top:100px;transform:translateX(-50%) rotate(180deg)}
+#gameScreen .river-bottom{left:195px;top:264px;transform:translateX(-50%)}
+#gameScreen .river-left{left:108px;top:215px;transform:translate(-50%,-50%) rotate(90deg)}
+#gameScreen .river-right{left:282px;top:215px;transform:translate(-50%,-50%) rotate(-90deg)}
+#gameScreen .river-area .river-cell{width:var(--tileW);height:var(--tileH)}
+#gameScreen .center-mark{left:195px;top:218px;width:70px;height:70px;transform:translate(-50%,-50%);z-index:4}
+#gameScreen .center-mark>span{font-size:17px}
+#gameScreen .center-mark small{font-size:8px}
+#gameScreen .indicator .river-tile{width:13px;height:18px}
+#gameScreen .table-felt.long-rivers .river-area{--tileW:15px;--tileH:18px;--tileGap:1px}
+#gameScreen .table-felt.long-rivers .river-top{top:102px}
+#gameScreen .table-felt.long-rivers .river-bottom{top:257px}
+#gameScreen .table-felt.long-rivers .river-left,#gameScreen .table-felt.long-rivers .river-right{top:215px}
+#gameScreen .meld-dock{position:absolute;z-index:4;display:flex;align-items:center;justify-content:center;gap:1px;pointer-events:none;overflow:visible}
+#gameScreen .dock-top{left:7px;top:18px;width:66px;height:80px;flex-direction:column-reverse}
+#gameScreen .dock-bottom{right:7px;bottom:8px;width:66px;height:80px;flex-direction:column-reverse}
+#gameScreen .dock-right{right:7px;top:18px;width:80px;height:66px;flex-direction:row}
+#gameScreen .dock-left{left:7px;bottom:8px;width:80px;height:66px;flex-direction:row-reverse}
+#gameScreen .meld-slot{position:relative;flex:0 0 auto;width:65px;height:19px;border-radius:3px;background:#0a3029a3}
+#gameScreen .dock-left .meld-slot,#gameScreen .dock-right .meld-slot{width:19px;height:65px}
+#gameScreen .meld-rotator{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(var(--angle,0deg));display:flex;gap:0;align-items:center;justify-content:center;white-space:nowrap}
+#gameScreen .dock-top{--angle:180deg}
+#gameScreen .dock-left{--angle:90deg}
+#gameScreen .dock-right{--angle:-90deg}
+#gameScreen .dock-bottom{--angle:0deg}
+#gameScreen .meld-tile{display:flex;align-items:center;justify-content:center;width:15px;height:17px;position:relative}
+#gameScreen .meld-tile img{display:block;width:12px;height:17px;object-fit:fill;max-width:none;filter:drop-shadow(0 1px 1px #0018)}
+#gameScreen .meld-tile.called img{transform:rotate(90deg) scale(.90)}
+#gameScreen .meld-tile.concealed-kan .back{display:block;width:12px;height:17px;background:linear-gradient(140deg,#82b58b,#246a53);border:1px solid #c5e0ac;border-radius:2px}
+#gameScreen .meld-tile.added-kan:after{content:'+';color:#ffe398;position:absolute;right:0;top:-6px;font-size:9px;font-weight:900}
+#gameScreen .event-banner{top:90px;left:195px;transform:translate(-50%,-50%);z-index:7;opacity:.97}
+#gameScreen .hand-zone{margin:0;padding:5px 8px 6px;flex:0 0 auto;min-height:0;border-radius:11px}
+#gameScreen .hand-header{min-height:18px;margin-bottom:2px;font-size:11px}
+#gameScreen .my-hand{min-height:0;padding:3px 0 4px;gap:1px;overflow-x:visible;justify-content:center}
+#gameScreen .my-hand .tile-btn img{width:clamp(19px,6.3vw,30px)}
+#gameScreen .my-hand .tile-btn.drawn{margin-left:4px}
+#gameScreen .actions{min-height:0;margin-top:2px;gap:4px}
+#gameScreen .actions:empty{display:none}
+#gameScreen .wall-message{margin:0;font-size:10px}
+#gameScreen .coach{margin:0;padding:5px 9px;flex:0 0 auto;min-height:0}
+#gameScreen .coach-top{font-size:11px}
+#gameScreen .coach-flash{padding:5px 7px;margin-bottom:4px;font-size:11px}
+#gameScreen .call-tray{margin:3px 0 2px;padding:5px;background:#1a4838;border:1px solid #a8df85;border-radius:9px}
+#gameScreen .call-tray-head{font-size:11px;color:#dcf4c5;font-weight:800;margin:0 0 4px}
+#gameScreen .call-tray-options{display:flex;gap:5px;overflow-x:auto;scrollbar-width:thin;padding:1px 1px 3px}
+#gameScreen .call-option{flex:0 0 auto;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:2px;padding:4px 8px;min-width:60px;min-height:46px;font-size:11px;white-space:nowrap;border:1px solid #7baa88;border-radius:7px;background:#264c3c;color:#fff}
+#gameScreen .call-option.important{background:#c4e988;color:#12382a}
+#gameScreen .call-option.pass{background:#304a44}
+#gameScreen .call-option .kind{font-size:12px;line-height:1.1}
+#gameScreen .call-option .preview{display:flex;align-items:center;gap:1px;min-height:20px}
+#gameScreen .call-option .preview .preview-tile{display:inline-flex;justify-content:center;align-items:center;width:15px;height:20px}
+#gameScreen .call-option .preview img{width:14px;height:19px;object-fit:fill}
+#gameScreen .call-option .preview .called img{transform:rotate(90deg) scale(.9)}
+#gameScreen .river-area .river-cell.call-target{outline:2px solid #ffe08c;outline-offset:1px}
+#gameScreen .coach.reaction-quiet{display:none}
+#gameScreen .coach-flash.reaction-quiet{display:none}
+.result-detail .winning-line{display:flex;flex-wrap:nowrap;align-items:flex-end;gap:1px;width:100%;overflow:hidden;padding:3px 0}
+.result-detail .winning-line .result-tile{width:min(21px,calc((100vw - 114px)/15));height:auto;aspect-ratio:80/112;display:block;flex:0 0 auto}
+.result-detail .winning-line .winning-tile{margin-left:5px;padding-left:5px;border-left:2px solid #c4e988;display:flex;align-items:flex-end}
+.result-detail .result-meld-row{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.result-detail .result-meld{display:flex;gap:2px;border-radius:5px;padding:3px;background:#20483b}
+.result-detail .result-meld .meld-tile{width:19px;height:27px;display:flex;align-items:center;justify-content:center}
+.result-detail .result-meld .result-tile{width:17px;height:24px}
+.result-detail .result-meld .meld-tile.called img{transform:rotate(90deg) scale(.92)}
+.result-detail .result-meld .meld-tile.concealed-kan .back{width:17px;height:24px}
+.result-detail .tile-strip{flex-wrap:nowrap;overflow-x:auto}
+@media(max-width:530px){#gameScreen .table-felt{height:430px;min-height:0}#gameScreen .table-wrap{min-height:180px}#gameScreen .hand-zone{padding:5px 5px 6px}}
+@media(max-width:375px){#gameScreen .table-felt{height:430px;min-height:0}#gameScreen .my-hand .tile-btn img{width:clamp(18px,6.2vw,25px)}}
 </style>
-  <title>麻雀LAB — Phase 1.3</title>
+  <title>麻雀LAB — Phase 1.5</title>
 </head>
 <body>
-  <header class="site-header"><div class="logo"><span class="logo-mark">牌</span><span>麻雀<span class="logo-lab">LAB</span></span></div><span class="phase">PHASE 1.3 · MIAI LAYOUT</span></header>
+  <header class="site-header"><div class="logo"><span class="logo-mark">牌</span><span>麻雀<span class="logo-lab">LAB</span></span></div><span class="phase">PHASE 1.5 · UI v2.1</span></header>
   <main id="startScreen" class="home">
     <div class="eyebrow"><span class="eyedot"></span> THINK BEFORE YOU DISCARD</div>
     <h1>一打ずつ、<br><span>強くなる。</span></h1>
@@ -197,12 +318,16 @@
       <label for="callMode">鳴き <select id="callMode"><option value="ask" selected>毎回確認</option><option value="auto">自動スルー（ロン除く）</option></select></label>
     </div>
     <div class="river-legend"><span><b class="legend-tsumo">●</b> ツモ切り</span><span><b class="legend-riichi">▰</b> リーチ宣言牌</span><span><b class="legend-latest">▢</b> 最新の打牌</span></div>
-    <div class="table-wrap">
-      <div class="table-felt">
-        <div class="seat seat-top"><div class="seat-label" id="op-top-label">対面</div><div class="concealed" id="hand-top"></div><div class="melds" id="meld-top"></div></div>
-        <div class="seat seat-left"><div class="seat-label" id="op-left-label">上家</div><div class="concealed small" id="hand-left"></div><div class="melds" id="meld-left"></div></div>
-        <div class="seat seat-right"><div class="seat-label" id="op-right-label">下家</div><div class="concealed small" id="hand-right"></div><div class="melds" id="meld-right"></div></div>
-        <div class="seat seat-bottom"><div class="seat-label" id="own-label">あなた</div><div class="melds" id="meld-bottom"></div></div>
+    <div class="table-wrap" id="tableWrap">
+      <div class="table-felt" id="tableFelt">
+        <div class="seat seat-top"><div class="seat-label" id="op-top-label">対面</div><div class="concealed" id="hand-top"></div></div>
+        <div class="seat seat-left"><div class="seat-label" id="op-left-label">上家</div><div class="concealed small" id="hand-left"></div></div>
+        <div class="seat seat-right"><div class="seat-label" id="op-right-label">下家</div><div class="concealed small" id="hand-right"></div></div>
+        <div class="seat seat-bottom"><div class="seat-label" id="own-label">あなた</div></div>
+        <div class="meld-dock dock-top" id="meld-top" aria-label="対面の副露"></div>
+        <div class="meld-dock dock-right" id="meld-right" aria-label="下家の副露"></div>
+        <div class="meld-dock dock-bottom" id="meld-bottom" aria-label="自分の副露"></div>
+        <div class="meld-dock dock-left" id="meld-left" aria-label="上家の副露"></div>
         <div class="river-area river-top" id="river-top" aria-label="対面の河"></div>
         <div class="river-area river-left" id="river-left" aria-label="上家の河"></div>
         <div class="river-area river-right" id="river-right" aria-label="下家の河"></div>
@@ -211,12 +336,12 @@
         <div class="event-banner hidden" id="eventBanner" role="status" aria-live="polite"></div>
       </div>
     </div>
-    <div class="hand-zone"><div class="hand-header"><span id="turnHint">対局開始</span><span id="handInfo" class="hand-info"></span></div><div class="coach-flash hidden" id="coachFlash"><span id="coachFlashText"></span><button type="button" id="coachDetailBtn">解説を見る</button></div><div class="my-hand" id="myHand"></div><div class="actions" id="actionBar"></div></div>
+    <div class="hand-zone"><div class="hand-header"><span id="turnHint">対局開始</span><span id="handInfo" class="hand-info"></span></div><div class="coach-flash hidden" id="coachFlash"><span id="coachFlashText"></span><button type="button" id="coachDetailBtn">解説を見る</button></div><div class="my-hand" id="myHand"></div><div class="call-tray hidden" id="callTray" aria-label="鳴き・ロンの選択"><div class="call-tray-head" id="callTrayHead"></div><div class="call-tray-options" id="callTrayOptions"></div></div><div class="actions" id="actionBar"></div></div>
     <div class="coach" id="coachPanel"><div class="coach-top"><div><span class="spark">✧</span> 牌効率メモ <span class="beta">基礎版</span></div><button id="toggleCoach" class="coach-toggle" type="button">非表示</button></div><div id="coachBody"><p>自分のツモ番になると、打牌候補の受け入れを表示します。</p></div></div>
     <div id="gameToast" role="status" aria-live="polite" class="toast"></div>
   </main>
 
-  <div class="overlay decision-overlay hidden" id="decisionOverlay" role="dialog" aria-modal="true" aria-label="鳴き・ロンの選択"><div class="modal decision-modal"><div class="modal-label">いま判断してください</div><h2 id="decisionTitle">鳴き判断</h2><div class="decision-tile" id="decisionTile"></div><p id="decisionDescription">チー・ポン・カンの選択</p><div id="decisionActions" class="decision-actions"></div><p class="decision-footnote">スルーも選択できます。ロンの確認は自動スルー設定時も表示します。</p></div></div>
+  <div id="decisionOverlay" class="hidden" aria-hidden="true"></div>
   <div class="overlay coach-overlay hidden" id="coachOverlay" role="dialog" aria-modal="true" aria-label="牌効率の解説"><div class="modal coach-modal"><div class="modal-label">牌効率メモ</div><h2>直前の打牌を確認</h2><div id="coachModalBody"></div><button class="primary" id="closeCoachBtn" type="button">対局に戻る</button></div></div>
   <div class="overlay hidden" id="resultOverlay" role="dialog" aria-modal="true" aria-labelledby="resultTitle"><div class="modal"><div class="modal-label" id="resultTag">局の結果</div><h2 id="resultTitle">流局</h2><p id="resultDetails"></p><div id="resultHandDetail" class="result-detail"></div><div id="resultScores" class="result-scores"></div><button id="continueBtn" class="primary" type="button">次の局へ →</button></div></div>
   <div class="overlay hidden" id="endOverlay" role="dialog" aria-modal="true" aria-labelledby="endTitle"><div class="modal"><div class="modal-label">FINISH</div><h2 id="endTitle">対局終了</h2><div id="endScores" class="result-scores"></div><p class="end-note">AIコーチの高度な期待値評価は次フェーズで追加予定です。</p><button id="restartBtn" class="primary" type="button">もう一度対局する →</button><button id="homeBtn" class="secondary" type="button">トップに戻る</button></div></div>
@@ -4473,7 +4598,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     human = new Human(); pending = null; gameEnded = false; readyToNext = false;
     riichiMode = false; candidateInfo = []; lastCandidateInfo = []; lastFeedback = null;
     decisionLog = []; lastAction = ''; latestDiscard=null;
-    $('eventBanner').classList.add('hidden'); $('decisionOverlay').classList.add('hidden'); $('coachOverlay').classList.add('hidden');
+    $('eventBanner').classList.add('hidden'); $('callTray').classList.add('hidden'); $('coachOverlay').classList.add('hidden');
     const players = [human,new AI(),new AI(),new AI()];
     game = new M.Game(players, onFinished, selectedRule, '麻雀LAB');
     game.model.player = NAMES.slice();
@@ -4494,7 +4619,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
           latestDiscard={l:d.l,p:d.p};
           const info=(d.p.includes('_')?'ツモ切り':'手出し')+(d.p.includes('*')?'・リーチ':'');
           lastAction=`${userLabel(d.l)}：${tileName(d.p)}（${info}）`;
-          if(d.l!==ownSeat()) announce(lastAction,d.p.includes('*'));
+          if(d.p.includes('*')) announce(`${userLabel(d.l)}：リーチ`, true);
         }
         if(msg?.fulou) {
           const f=msg.fulou;
@@ -4521,7 +4646,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     renderStats();
   }
   function ownSeat() { return game ? game.model.player_id.indexOf(0) : 0; }
-  function ownShoupai() { return human && human.shoupai; }
+  function ownShoupai() { try {return human && human.shoupai;} catch {return null;} }
   function tileImg(p, cls='river-tile') {
     const img=el('img',cls);img.src=IMG(p);img.alt=tileName(p);img.decoding='async';img.draggable=false;return img;
   }
@@ -4555,30 +4680,77 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     for(let i=0;i<count;i++) holder.append(el('div','back'));
   }
   function meldTiles(m) {const suit=m[0];return [...m.slice(1).matchAll(/\d/g)].map(x=>suit+x[0]);}
+  // Convert core's meld representation into player's local visual order.
+  // Core marker -/=/+ means kamicha/toimen/shimocha. Separate this from the tile's numerical sort.
   function parseMeld(m) {
-    const suit=m[0]; const tiles=[];
+    const suit=m[0];
+    const raw=[];
     for (const ch of m.slice(1)) {
-      if (/\d/.test(ch)) tiles.push({p:suit+ch, called:false, from:''});
-      else if (/[+\-=]/.test(ch) && tiles.length) {
-        tiles[tiles.length-1].called=true;
-        tiles[tiles.length-1].from = ch==='+' ? '下家' : ch==='=' ? '対面' : '上家';
+      if (/\d/.test(ch)) raw.push({p:suit+ch,called:false,from:'',faceDown:false});
+      else if (/[+\-=]/.test(ch) && raw.length) {
+        raw[raw.length-1].called=true;
+        raw[raw.length-1].from=ch==='-'?'上家':ch==='='?'対面':'下家';
+        raw[raw.length-1].marker=ch;
       }
     }
-    return tiles;
+    if(!raw.length) return [];
+    const called=raw.find(x=>x.called);
+    if (!called) {
+      // A closed kan: the two end tiles show their backs.
+      if (raw.length===4) {raw[0].faceDown=true;raw[3].faceDown=true;}
+      return raw;
+    }
+    const rest=raw.filter(x=>x!==called);
+    // For a kakan, place the added fourth tile with the original call, without losing any tile.
+    let index=called.marker==='-'?0:called.marker==='='?Math.floor((raw.length-1)/2):raw.length-1;
+    rest.splice(index,0,called);
+    if(raw.length===4 && /[+\-=]/.test(m.slice(1,-1))) rest[rest.length-1].added=true;
+    return rest;
+  }
+  function fitBoard() {
+    const wrap=$('tableWrap');const board=$('tableFelt');
+    if (!wrap || !board || $('gameScreen').classList.contains('hidden'))return;
+    const rect=wrap.getBoundingClientRect();
+    if(rect.width<=0||rect.height<=0)return;
+    const scale=Math.min(rect.width/390,rect.height/430);
+    board.style.setProperty('--board-scale',String(Math.max(.3,Math.min(1.8,scale))));
   }
   function riverTilesFor(l) {
     return (game.model.he[l]?._pai || []).filter(p=>!(/[+\-=]$/.test(p)));
   }
+
+  function callOptionButton(kind, meld, payload) {
+    const b=el('button','action-btn call-option'); b.type='button';
+    const k=el('span','kind',kind);
+    const preview=el('div','preview');
+    for (const info of parseMeld(meld)) {
+      const box=el('span', info.called ? 'called' : '');
+      box.append(tileImg(info.p));
+      preview.append(box);
+    }
+    b.append(k, preview);
+    b.addEventListener('click',()=>answer(payload));
+    return b;
+  }
+  function appendMeldTiles(target,m,scope='board') {
+    const tiles=parseMeld(m);
+    for(const info of tiles) {
+      const cell=el('div','meld-tile'+(info.called?' called':'')+(info.faceDown?' concealed-kan':'')+(info.added?' added-kan':''));
+      if(info.faceDown)cell.append(el('div','back'));
+      else cell.append(tileImg(info.p, scope==='result'?'result-tile':'river-tile'));
+      if(info.called)cell.title=`${tileName(info.p)} · ${info.from}から取得`;
+      target.append(cell);
+    }
+  }
   function renderMelds(pos,l) {
     const holder=$('meld-'+pos);holder.replaceChildren();
-    for (const m of game.model.shoupai[l]?._fulou || []) {
-      const row=el('div','meld');
-      for(const info of parseMeld(m)) {
-        const box=el('div','meld-tile'+(info.called?' called':''));
-        box.append(tileImg(info.p));
-        row.append(box);
-      }
-      holder.append(row);
+    const melds=game.model.shoupai[l]?._fulou || [];
+    holder.dataset.count=String(melds.length);
+    for(const m of melds) {
+      const slot=el('div','meld-slot');
+      const row=el('div','meld-rotator');
+      appendMeldTiles(row,m);
+      slot.append(row);holder.append(slot);
     }
   }
   function renderRiver(pos,l) {
@@ -4588,7 +4760,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     for (let i=0;i<river.length;i++) {
       const p=river[i];
       const isLatest=latestDiscard?.l===l && latestDiscard.p===p && i===river.length-1;
-      const cell=el('div','river-cell'+(p.includes('*')?' riichi':'')+(p.includes('_')?' tsumogiri':'')+(isLatest?' latest':''));
+      const cell=el('div','river-cell'+(p.includes('*')?' riichi':'')+(p.includes('_')?' tsumogiri':'')+(isLatest?' latest':'')+(pending?.type==='reaction' && pending.from===l && p===pending.p && i===river.length-1?' call-target':''));
       cell.title=`${tileName(p)}・${p.includes('_')?'ツモ切り':'手出し'}${p.includes('*')?'・立直':''}`;
       cell.append(tileImg(p));holder.append(cell);
     }
@@ -4609,6 +4781,8 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
       const w=el('span','score-wind',WINDS[l]||'');name.append(w);
       const score=el('div','score-num',fmt(m.defen[id]));c.append(name,score);$('scores').append(c);
     }
+    const longest=Math.max(...m.he.map(h=>(h?._pai||[]).filter(p=>!(/[+\-=]$/.test(p))).length));
+    $('tableFelt').classList.toggle('long-rivers',longest>=19);
     for(const [pos,id] of [['top',2],['left',3],['right',1],['bottom',0]]) {
       const l=m.player_id.indexOf(id);
       renderRiver(pos,l);renderMelds(pos,l);
@@ -4622,6 +4796,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
         if(isRiichi) label.append(el('span','riichi-chip','リーチ'));
       }
     }
+    fitBoard();
   }
   function renderHand() {
     const holder=$('myHand');holder.replaceChildren();
@@ -4643,8 +4818,8 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     const msg=$('turnHint');
     if(gameEnded) msg.textContent='対局終了';
     else if(pending?.type==='turn') msg.textContent=riichiMode?'立直する牌を選択してください':'捨てる牌をタップ';
-    else if(pending?.type==='reaction') msg.textContent='鳴き・ロンの判断';
-    else msg.textContent=lastAction || 'CPUの手番';
+    else if(pending?.type==='reaction') msg.textContent='鳴くかどうかを選択してください';
+    else msg.textContent='CPUの手番';
     const shanten=M.Util.xiangting(sh);
     $('handInfo').textContent=(shanten===-1?'和了形':shanten===0?'テンパイ':`${shanten}向聴`) + (sh.lizhi?' · リーチ中':'');
   }
@@ -4662,31 +4837,35 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
       }
     }
     if (pending.type==='reaction') {
-      holder.append(el('span','wall-message','鳴き・ロンの選択画面で判断してください'));
+      // Call choices appear below the still-visible hand, not in a modal.
     }
   }
   function renderReaction() {
-    const dialog=$('decisionOverlay');
-    if(pending?.type!=='reaction') { dialog.classList.add('hidden'); return; }
-    dialog.classList.remove('hidden');
-    $('decisionTitle').textContent=pending.win?'ロンできます':'鳴きますか？';
-    $('decisionDescription').textContent=`${userLabel(pending.from)} が ${tileName(pending.p)} を切りました`;
-    const tile=$('decisionTile');tile.replaceChildren(tileImg(pending.p));
-    const options=$('decisionActions');options.replaceChildren();
-    const btn=(label,payload,cls='')=>{
-      const b=el('button','action-btn '+cls,label);b.type='button';
-      b.addEventListener('click',()=>answer(payload));options.append(b);
+    const tray=$('callTray');const opts=$('callTrayOptions');
+    if(pending?.type!=='reaction'){tray.classList.add('hidden');return;}
+    tray.classList.remove('hidden');
+    $('callTrayHead').textContent=`${userLabel(pending.from)}の${tileName(pending.p)}：鳴きますか？（進行停止中）`;
+    opts.replaceChildren();
+    const make=(kind,m,payload,cls='')=>{
+      const btn=el('button','call-option '+cls);btn.type='button';
+      btn.append(el('span','kind',kind));
+      if(m){const pv=el('div','preview');for(const info of parseMeld(m)){
+        const box=el('span','preview-tile'+(info.called?' called':''));
+        box.append(info.faceDown?el('span','back'):tileImg(info.p));pv.append(box);
+      } btn.append(pv);}
+      btn.addEventListener('click',()=>answer(payload));opts.append(btn);
     };
-    if(pending.win) btn('ロン', {hule:'-'},'important');
-    for(const m of pending.gang) btn('カン '+meldTiles(m).map(tileName).join(''),{fulou:m});
-    for(const m of pending.peng) btn('ポン '+meldTiles(m).map(tileName).join(''),{fulou:m});
-    for(const m of pending.chi) btn('チー '+meldTiles(m).map(tileName).join(''),{fulou:m});
-    btn('スルー',{},'pass');
+    if(pending.win)make('ロン',null,{hule:'-'},'important');
+    for(const m of pending.chi)make('チー',m,{fulou:m});
+    for(const m of pending.peng)make('ポン',m,{fulou:m});
+    for(const m of pending.gang)make('カン',m,{fulou:m});
+    make('スルー',null,{},'pass');
+    requestAnimationFrame(fitBoard);
   }
   function answer(payload) {
     if(!pending || !human) return;
     const cb=human._callback;pending=null;riichiMode=false;candidateInfo=[];
-    $('decisionOverlay').classList.add('hidden');
+    $('callTray').classList.add('hidden');
     try { cb(payload); } catch(err) { notify('操作でエラーが発生しました: '+err.message); console.error(err); }
     redrawSoon();
   }
@@ -4747,7 +4926,10 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
   }
   const esc = s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   function renderCoach() {
+    const inReaction=pending?.type==='reaction';
+    $('coachPanel').classList.toggle('reaction-quiet',inReaction);
     const flash=$('coachFlash');
+    flash.classList.toggle('reaction-quiet',inReaction);
     if(lastFeedback) {
       const gap=lastFeedback.ukeire<lastFeedback.bestUkeire?lastFeedback.bestUkeire-lastFeedback.ukeire:0;
       const shantenLoss=lastFeedback.shanten>lastFeedback.bestShanten;
@@ -4770,7 +4952,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     body.innerHTML=html;
   }
   let redrawQueued=false;
-  function redrawSoon() { if(redrawQueued) return;redrawQueued=true;requestAnimationFrame(()=>{redrawQueued=false;if(!game||!$('gameScreen').classList.contains('hidden')){try{renderTable();renderHand();renderActions();renderReaction();renderCoach();}catch(e){notify('画面表示エラー: '+e.message);console.error(e);}}}); }
+  function redrawSoon() { if(redrawQueued) return;redrawQueued=true;requestAnimationFrame(()=>{redrawQueued=false;if(!game||!$('gameScreen').classList.contains('hidden')){try{renderTable();renderHand();renderActions();renderReaction();renderCoach();fitBoard();}catch(e){notify('画面表示エラー: '+e.message);console.error(e);}}}); }
   function notify(msg) {const t=$('gameToast');t.textContent=msg;if(toastTimer)clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.textContent='',3300);}
   function limitName(data) {
     const yakuman = (data.hupai||[]).reduce((s,y)=> s + (y.fanshu==='**'?2:y.fanshu==='*'?1:0), 0);
@@ -4798,47 +4980,42 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
   }
   function renderResultDetails(data) {
     const area=$('resultHandDetail');area.replaceChildren();
-    if(!data?.shoupai) return;
+    if(!data?.shoupai)return;
     const addHeading=t=>area.append(el('h3','',t));
     const addTiles=(pais,cls='')=>{
       const strip=el('div','tile-strip '+cls);
-      for(const p of pais) strip.append(tileImg(p,'result-tile'));
+      for(const p of pais)strip.append(tileImg(p,'result-tile'));
       area.append(strip);
     };
     const sh=M.Shoupai.fromString(data.shoupai);
-    const won=(data.baojia==null?game.model.shoupai[data.l]?._zimo:(game._hule_option==='qianggang'?(game._gang?.[0]||'')+(game._gang?.slice(-1)||''):game._dapai?.slice(0,2))) || '';
+    const won=(sh._zimo?.length===2?sh._zimo:(data.baojia==null?game.model.shoupai[data.l]?._zimo:game._dapai?.slice(0,2))) || '';
     let concealed=tileList(sh).map(p=>p.slice(0,2));
     if(won.length>=2){
-      const idx=concealed.indexOf(won.slice(0,2));
-      if(idx>=0) concealed.splice(idx,1);
+      let ix=concealed.lastIndexOf(won.slice(0,2));
+      if(ix<0 && won[1]==='5')ix=concealed.lastIndexOf(won[0]+'0');
+      if(ix<0 && won[1]==='0')ix=concealed.lastIndexOf(won[0]+'5');
+      if(ix>=0)concealed.splice(ix,1);
     }
-    addHeading('和了手牌'); addTiles(concealed,'result-concealed');
-    if(sh._fulou?.length) {
-      addHeading('副露');
-      for(const meld of sh._fulou) {
-        const row=el('div','tile-strip');
-        for(const info of parseMeld(meld)) {
-          const box=el('div','meld-tile'+(info.called?' called':''));
-          if (info.called) box.dataset.from = info.from;
-          box.append(tileImg(info.p,'result-tile'));
-          row.append(box);
-        }
-        area.append(row);
-      }
+    addHeading('和了手牌（和了牌は右端に分離）');
+    const line=el('div','winning-line');
+    for(const p of concealed)line.append(tileImg(p,'result-tile'));
+    if(won.length>=2){const right=el('div','winning-tile');right.append(tileImg(won.slice(0,2),'result-tile'));line.append(right);}
+    area.append(line);
+    if(sh._fulou?.length){
+      addHeading('副露');const groups=el('div','result-meld-row');
+      for(const meld of sh._fulou){const row=el('div','result-meld');appendMeldTiles(row,meld,'result');groups.append(row);}
+      area.append(groups);
     }
-    if(won.length>=2) { addHeading('和了牌'); addTiles([won.slice(0,2)]); }
-    addHeading('成立役・ドラ');
-    const names=el('div','yaku-row');
-    for(const y of data.hupai||[]) names.append(el('span','',`${y.name} ${y.fanshu==='*'?'役満':y.fanshu==='**'?'ダブル役満':y.fanshu+'翻'}`));
-    if(!names.children.length) names.append(el('span','', '役の表示情報なし'));
+    addHeading('成立役・ドラ');const names=el('div','yaku-row');
+    for(const y of data.hupai||[])names.append(el('span','',`${y.name} ${y.fanshu==='*'?'役満':y.fanshu==='**'?'ダブル役満':y.fanshu+'翻'}`));
+    if(!names.children.length)names.append(el('span','', '役の表示情報なし'));
     area.append(names);
     const point=el('div','point-line');
     point.append(el('span','tag',`${data.fu||'-'}符 ${data.fanshu||'-'}翻`));
-    const lim=limitName(data); if(lim) point.append(el('span','tag',lim));
-    point.append(el('span','tag',`${fmt(data.defen)}点`));
-    area.append(point);
-    addHeading('ドラ表示牌'); addTiles(game.model.shan?.baopai || [],'indicators');
-    if(data.fubaopai?.length) { addHeading('裏ドラ表示牌'); addTiles(data.fubaopai,'indicators'); }
+    const lim=limitName(data);if(lim)point.append(el('span','tag',lim));
+    point.append(el('span','tag',`${fmt(data.defen)}点`));area.append(point);
+    addHeading('ドラ表示牌');addTiles(game.model.shan?.baopai || [],'indicators');
+    if(data.fubaopai?.length){addHeading('裏ドラ表示牌');addTiles(data.fubaopai,'indicators');}
     else area.append(el('p','subtitle','裏ドラ表示牌：該当なし（リーチ和了時のみ公開）'));
   }
   function showResult(msg) {
@@ -4873,7 +5050,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     if(game && !gameEnded) {try{game.stop(()=>{});}catch{}}
     gameEnded=true;pending=null;readyToNext=false;
     $('gameScreen').classList.add('hidden');$('endOverlay').classList.add('hidden');$('resultOverlay').classList.add('hidden');
-    $('decisionOverlay').classList.add('hidden');$('coachOverlay').classList.add('hidden');
+    $('callTray').classList.add('hidden');$('coachOverlay').classList.add('hidden');
     $('startScreen').classList.remove('hidden');renderStats();
   }
   $('startBtn').addEventListener('click',initGame);
@@ -4886,11 +5063,27 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
   $('restartBtn').addEventListener('click',initGame);
   $('homeBtn').addEventListener('click',goHome);
   renderStats();
+  window.addEventListener('resize',fitBoard);
+  if(typeof ResizeObserver!=='undefined')new ResizeObserver(fitBoard).observe($('tableWrap'));
   if('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
     window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js').catch(()=>{}));
   }
+  function testScenario({n=4,rivers=18,call=false}={}) {
+    if(!game)return;
+    const model=game.model;
+    const sets=['s56-7','z666=','p111+','m9999'];
+    for(let l=0;l<4;l++) {
+      if(model.shoupai[l])model.shoupai[l]._fulou=sets.slice(0,n);
+      if(model.he[l])model.he[l]._pai=Array.from({length:rivers},(_,i)=>['m1','m2','p3','s7','z1','z6'][i%6]+(i%4===0?'_':''));
+    }
+    if(call) {
+      const from=(ownSeat()+3)%4;
+      pending={type:'reaction',from,p:'s6',win:false,chi:['s56-7','s6-78'],peng:[],gang:[]};
+    } else pending=null;
+    redrawSoon();
+  }
   // Facilitate lightweight browser checks without opening a debugging interface.
-  window.MahjongLabDebug = {state:()=>({started:!!game,phase:game?game._status:null,pending:pending?.type||null,round:game?.model?.jushu,turn:game?.model?.lunban,own:ownSeat(),decisions:decisionLog.length,finished:gameEnded}),choose:p=>chooseDiscard(p),answer:p=>answer(p),testStep:(randomize=false)=>{if(pending?.type==='turn'){if(pending.win&&randomize)return answer({hule:'-'});if(randomize&&pending.gang.length&&Math.random()<0.10)return answer({gang:pending.gang[0]});const choices=pending.options;const p=randomize?choices[Math.floor(Math.random()*choices.length)]:choices[0];if(randomize&&game.allow_lizhi(p)&&Math.random()<0.25)riichiMode=true;chooseDiscard(p);}else if(pending?.type==='reaction'){if(pending.win&&randomize)return answer({hule:'-'});const melds=[...pending.gang,...pending.peng,...pending.chi];if(randomize&&melds.length&&Math.random()<0.55)return answer({fulou:melds[0]});answer({});}},testDwell:ms=>{if(game)game.dwell=ms;},testContinue:()=>{if(game&&!gameEnded){readyToNext=false;game.start();}},testPaipu:()=>game?._paipu,inspect:()=>({latestDiscard,lastFeedback,hasReaction:!$('decisionOverlay').classList.contains('hidden'),speed:game?._dwell})};
+  window.MahjongLabDebug = {testScenario,parseMeld,state:()=>({started:!!game,phase:game?game._status:null,pending:pending?.type||null,round:game?.model?.jushu,turn:game?.model?.lunban,own:ownSeat(),decisions:decisionLog.length,finished:gameEnded}),choose:p=>chooseDiscard(p),answer:p=>answer(p),testStep:(randomize=false)=>{if(pending?.type==='turn'){if(pending.win&&randomize)return answer({hule:'-'});if(randomize&&pending.gang.length&&Math.random()<0.10)return answer({gang:pending.gang[0]});const choices=pending.options;const p=randomize?choices[Math.floor(Math.random()*choices.length)]:choices[0];if(randomize&&game.allow_lizhi(p)&&Math.random()<0.25)riichiMode=true;chooseDiscard(p);}else if(pending?.type==='reaction'){if(pending.win&&randomize)return answer({hule:'-'});const melds=[...pending.gang,...pending.peng,...pending.chi];if(randomize&&melds.length&&Math.random()<0.55)return answer({fulou:melds[0]});answer({});}},testDwell:ms=>{if(game)game.dwell=ms;},testContinue:()=>{if(game&&!gameEnded){readyToNext=false;game.start();}},testPaipu:()=>game?._paipu,inspect:()=>({latestDiscard,lastFeedback,hasReaction:!$('callTray').classList.contains('hidden'),speed:game?._dwell})};
 })();
 
 </script>

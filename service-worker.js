@@ -1,5 +1,5 @@
-// Mahjong LAB offline cache v0.4: Network-first online, cache-first offline.
-const CACHE = 'mahjong-lab-iphone-v04';
+// Mahjong LAB offline cache v0.6: Network-first online, cache-first offline.
+const CACHE = 'mahjong-lab-iphone-v06';
 const FILES = ['./', './index.html'];
 self.addEventListener('install',event=>{
   event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(FILES)).then(()=>self.skipWaiting()));
