@@ -60,6 +60,7 @@ jobs:
           if ! git -C /tmp/lab diff --cached --quiet; then
             git -C /tmp/lab commit -m 'build: verified AGPL Mortal browser encoder assets'
             git -C /tmp/lab remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/nm0137nm-blip/mahjong-lab.git"
+            git -C /tmp/lab pull --rebase origin dev/mortal-ai-checkpoint-20261118
             git -C /tmp/lab push origin HEAD:dev/mortal-ai-checkpoint-20261118
           fi
       - name: Save compiler output for checkpoint (public only)
