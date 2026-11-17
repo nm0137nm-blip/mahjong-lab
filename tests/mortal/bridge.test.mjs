@@ -1,0 +1,28 @@
+import assert from 'node:assert/strict';
+import { MortalMjaiBridge,handToMjai,toMjai,splitMeld } from '../../src/mortal/mjai-bridge.mjs';
+assert.equal(toMjai('m0'),'5mr');
+assert.equal(toMjai('z6'),'F');
+assert.equal(handToMjai('m123456789p123z1').length,13);
+assert.deepEqual(splitMeld('s56-7').map(x=>x.tile),['5s','6s','7s']);
+const p=new MortalMjaiBridge();
+const initial=p.receive({qipai:{zhuangfeng:0,jushu:0,changbang:0,lizhibang:0,defen:[25000,25000,25000,25000],baopai:'s7',
+ shoupai:['m123456789p123z1','','','']}});
+assert.equal(initial.reset,true);
+assert.equal(initial.seat,0);
+assert.equal(initial.events[1].tehais[0].length,13);
+for(let i=1;i<4;i++)assert(initial.events[1].tehais[i].every(x=>x==='?'));
+const a=p.receive({zimo:{l:0,p:'s5'}});
+assert.equal(a.events[0].pai,'5s');
+assert.equal(a.events[0].actor,0);
+const b=p.receive({dapai:{l:0,p:'m1_'}});
+assert.deepEqual(b.events,[{type:'dahai',actor:0,pai:'1m',tsumogiri:true}]);
+const c=p.receive({zimo:{l:1,p:''}});
+assert.equal(c.events[0].pai,'?');
+const d=p.receive({dapai:{l:1,p:'m0*'}});
+assert.deepEqual(d.events.map(x=>x.type),['reach','dahai']);
+assert.equal(d.events[1].pai,'5mr');
+const next=p.receive({zimo:{l:2,p:''}});
+assert.equal(next.events[0].type,'reach_accepted');
+assert.equal(next.events[1].pai,'?');
+assert.equal(p.seat,0);
+console.log('PASS_MJAI_BRIDGE_TESTS');
