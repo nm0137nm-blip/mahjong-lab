@@ -4686,12 +4686,18 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
   function referenceDiscard() {
     if(!checkReferenceState())return null;
     try{
-      const pick=referenceAI.select_dapai();
+      const trace=[];
+      const pick=referenceAI.select_dapai(trace);
       if(!pick || typeof pick!=='string')return null;
       const all=human.get_dapai(human.shoupai)||[];
       // A reference proposal must be one of the human's actual legal discards.
       if(!all.includes(pick.replace(/\*$/,'')))return null;
-      return {p:pick.slice(0,2),riichi:pick.includes('*')};
+      const assessments=trace.filter(x=>!x.m&&x.p).map(x=>({
+        p:String(x.p).slice(0,2),
+        heuristic:Number.isFinite(x.ev)?Number(x.ev):null,
+        danger:Number.isFinite(x.weixian)?Number(x.weixian):null
+      }));
+      return {p:pick.slice(0,2),riichi:pick.includes('*'),assessments};
     }catch(e){mirrorAudit.errors++;console.warn('参考CPU打牌評価失敗',e);return null;}
   }
   function referenceCall(dapai){
@@ -5359,7 +5365,17 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
       const line=el('div','reference-title','現行CPUの参考判断（強さ未検証）');
       const detail=el('div','reference-text',`CPUなら ${tileName(ref.p)} を切る${ref.riichi?'（リーチ宣言）':''} ／ あなたの打牌と${normalized(ref.p)===normalized(x.discard)?'同じ牌種':'異なる牌種'}`);
       wrap.append(line,detail);
-      wrap.append(el('div','reference-caveat','牌効率だけでなく危険度・手役などを考慮する既存CPUの提案です。Mortal・期待値・最善手の保証ではありません。'));
+      const ownCandidate=lastCandidateInfo.find(v=>v.p===x.discard);
+      const refCandidate=lastCandidateInfo.find(v=>v.p.slice(0,2)===ref.p);
+      if(ownCandidate&&refCandidate){
+        wrap.append(el('div','reference-text','牌効率：自分 '+ownCandidate.shanten+'向聴／'+ownCandidate.ukeire+'枚、CPU '+refCandidate.shanten+'向聴／'+refCandidate.ukeire+'枚'));
+      }
+      const trace=ref.assessments||[];
+      const selfTrace=trace.find(v=>v.p===x.discard.slice(0,2));
+      const refTrace=trace.find(v=>v.p===ref.p);
+      if(refTrace?.heuristic!=null)wrap.append(el('div','reference-text','CPU内部手牌指標：自分 '+(selfTrace?.heuristic?.toFixed(1)??'算出なし')+' ／ CPU '+refTrace.heuristic.toFixed(1)));
+      if(refTrace?.danger!=null)wrap.append(el('div','reference-text','CPU内部危険度指標：自分 '+(selfTrace?.danger?.toFixed(1)??'算出なし')+' ／ CPU '+refTrace.danger.toFixed(1)));
+      wrap.append(el('div','reference-caveat','内部数値は電脳麻将CPU固有の尺度であり、期待点数・放銃確率・判断の正しさではありません。'));
       body.append(wrap);
     }else{
       body.append(el('p','reference-caveat','CPU参考判断はこの局面では取得できませんでした。'));
