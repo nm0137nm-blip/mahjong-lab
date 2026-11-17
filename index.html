@@ -325,15 +325,47 @@
 .coach-hand-melds .meld-tile.called img{transform:rotate(90deg) scale(.9)}
 .coach-hand-melds .meld-group{display:flex;gap:1px;padding:2px;border-radius:4px;background:#245244}
 @media(max-width:390px){.coach-hand-strip img{width:clamp(15px,5.1vw,20px)}}
+
+/* v0.9.1: both practice and measured matches provide the same coaching UI. */
+#recordModeBadge{color:var(--accent);border:1px solid #7f9e70;border-radius:20px;padding:3px 6px;font-size:9px;font-weight:800;background:#203b30}
+#gameScreen .game-head .round{font-size:16px;white-space:nowrap}
+.home{padding-top:22px}
+.home-compact-title{font-size:clamp(29px,6vw,42px)!important;line-height:1.2!important;margin:10px 0 8px!important;letter-spacing:-.03em!important}
+.home .intro{margin:0 0 15px;font-size:12px;line-height:1.5}
+.home .start-card,.home .stat-card{padding:16px;margin-bottom:12px}
+.home .start-card .hint{margin:5px 0 11px}
+.home .choose span{height:75px;padding:10px}
+.home .rule-line{margin:13px 0}
+.home .primary.big{margin-top:13px}
+.section-subtitle{font-size:13px;margin:12px 0 8px;color:var(--cream)}
+.record-choose span{height:72px!important}
+.record-choose strong{font-size:14px!important}
+.record-choose small{font-size:10px!important}
+.stat-tabs{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:13px}
+.stat-tab{padding:8px 10px;background:#10332b;border:1px solid #385d50;color:#b8d3c6;border-radius:8px;font-size:13px;font-weight:700}
+.stat-tab.active{background:#294737;border:1px solid var(--accent);color:var(--accent)}
+.stat-card .stats{margin-top:12px;padding:8px 0 11px;border-bottom:1px solid #426255}
+.stats-content{display:block}
+.detail-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}
+.stat-detail{padding:10px 11px;border:1px solid #31574b;border-radius:8px;background:#0d2c26}
+.stat-detail-value{font-weight:800;font-size:19px;color:#e8f2e3;font-variant-numeric:tabular-nums}
+.stat-detail-label{font-size:11px;color:#9cc2b1;margin-top:3px}
+.rank-rates{margin-top:12px;display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
+.rank-rate{text-align:center;background:#19382f;border-radius:8px;padding:8px 3px}
+.rank-rate strong{display:block;font-size:16px;color:#d7e9c6}
+.rank-rate small{font-size:10px;color:#9fc1b1}
+.stats-note{font-size:10px;color:#a6c2b3;line-height:1.65;margin:11px 0 0}
+#recordModeBadge{font-size:10px;letter-spacing:0;white-space:nowrap}
+@media(max-width:390px){.home{padding:19px 12px}.record-choose span{padding:8px!important}.record-choose small{font-size:9px!important}.stat-card .stat-val{font-size:19px}.stat-detail-value{font-size:18px}}
 </style>
-  <title>麻雀LAB — Phase 1.7</title>
+  <title>麻雀LAB — Phase 1.8.1</title>
 </head>
 <body>
-  <header class="site-header"><div class="logo"><span class="logo-mark">牌</span><span>麻雀<span class="logo-lab">LAB</span></span></div><span class="phase">PHASE 1.7 · CALL & HAND</span></header>
+  <header class="site-header"><div class="logo"><span class="logo-mark">牌</span><span>麻雀<span class="logo-lab">LAB</span></span></div><span class="phase">PHASE 1.8.1 · COACH FOR ALL</span></header>
   <main id="startScreen" class="home">
-    <div class="eyebrow"><span class="eyedot"></span> THINK BEFORE YOU DISCARD</div>
-    <h1>一打ずつ、<br><span>強くなる。</span></h1>
-    <p class="intro">CPU3人と実戦形式で対局。まずはルールと操作を整え、牌効率の「見える化」から始めます。</p>
+    <div class="eyebrow"><span class="eyedot"></span> MAHJONG LAB</div>
+    <h1 class="home-compact-title">対局設定</h1>
+    <p class="intro">練習・成績計測を選び、CPU3人と対局します。</p>
     <section class="start-card">
       <h2>新しい対局</h2>
       <p class="hint">東風戦／半荘戦を選択してください。</p>
@@ -342,15 +374,29 @@
         <label><input type="radio" name="length" value="2"><span><strong>半荘戦</strong><small>東場＋南場</small></span></label>
       </div>
       <div class="rule-line"><span>4人打ち</span><span>赤ドラ各1枚</span><span>25,000点持ち</span></div>
+      <h3 class="section-subtitle">記録モード</h3>
+      <div class="choose record-choose" role="group" aria-label="記録するか選択">
+        <label><input type="radio" name="recordMode" value="practice" checked><span><strong>練習対局</strong><small>記録しない・コーチあり</small></span></label>
+        <label><input type="radio" name="recordMode" value="measure"><span><strong>計測用対局</strong><small>完走分を保存・コーチあり</small></span></label>
+      </div>
       <button class="primary big" id="startBtn" type="button">対局をはじめる <span>→</span></button>
     </section>
-    <section class="stat-card"><div class="section-heading"><h2>対戦成績</h2><span>この端末に保存</span></div><div class="stats" id="homeStats"></div></section>
-    <section class="info-card"><div class="pill">この試作版について</div><h3>コーチはまだ基礎段階です</h3><p>打牌候補ごとの向聴数・受け入れ枚数を参考表示します。<strong>期待収支・放銃率・魂天水準の評価は未実装</strong>です。数値を期待値と誤認しないよう区別しています。</p></section>
+    <section class="stat-card">
+      <div class="section-heading"><h2>計測成績</h2><span>この端末だけに保存</span></div>
+      <div class="stat-tabs" role="group" aria-label="対局形式別成績">
+        <button id="statsEast" class="stat-tab active" type="button" aria-pressed="true">東風戦</button>
+        <button id="statsHalf" class="stat-tab" type="button" aria-pressed="false">半荘戦</button>
+      </div>
+      <div class="stats" id="homeStats"></div>
+      <div id="detailStats" class="stats-content"></div>
+      <p class="stats-note">※ 計測用対局の完走分のみ。率は総局数を基準（ツモ率のみ自分の和了数を基準）。旧版の対局・練習・途中中断・自動テストは対象外です。牌効率コーチは基礎版で、期待収支は未計算です。</p>
+    </section>
+
     <div class="home-footer">電脳麻将 / majiang-core / majiang-ai を利用 · MIT License</div>
   </main>
 
   <main id="gameScreen" class="game hidden">
-    <div class="game-head"><button class="text-btn" id="exitBtn" type="button">‹ 終了</button><div class="round" id="roundTitle">東1局</div><div class="deck-count" id="deckCount">残り -- 枚</div></div>
+    <div class="game-head"><button class="text-btn" id="exitBtn" type="button">‹ 終了</button><div class="round" id="roundTitle">東1局</div><span id="recordModeBadge" aria-label="現在の記録モード">練習</span><div class="deck-count" id="deckCount">残り -- 枚</div></div>
     <div class="score-row" id="scores"></div>
     <div class="table-controls">
       <label for="speedSelect">CPU速度 <select id="speedSelect"><option value="1400">ゆっくり</option><option value="850" selected>標準</option><option value="300">速い</option></select></label>
@@ -4623,19 +4669,82 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     action_jieju() { this._callback({}); }
   }
 
+  // New versioned key: pre-v0.9 history is intentionally excluded from measured results.
+  const RECORD_KEY = 'mahjonglab-measured-v2';
+  let recordMode = 'practice', statsMode = 1, debugUsed = false;
+  function summarizeMatch(paipu) {
+    const out={
+      at:new Date().toISOString(),mode:Number(mode),rank:Number(paipu.rank?.[0]),
+      score:Number(paipu.defen?.[0]),hands:0,wins:0,tsumoWins:0,
+      dealIns:0,openHands:0,riichiHands:0,winPoints:0
+    };
+    if(!Array.isArray(paipu.log))throw Error('牌譜の局記録がありません');
+    for(const round of paipu.log) {
+      const q=round?.find(x=>x.qipai)?.qipai;
+      if(!q)continue;
+      const ownL=(4*4-(Number(paipu.qijia)+Number(q.jushu)))%4;
+      out.hands++;
+      let won=false,tsumo=false,dealt=false,open=false,riichi=false;
+      for(const event of round) {
+        if(event.dapai?.l===ownL && String(event.dapai.p).includes('*'))riichi=true;
+        if(event.fulou?.l===ownL && /[+\-=]/.test(event.fulou.m||''))open=true;
+        if(event.hule) {
+          const h=event.hule;
+          if(h.l===ownL) {won=true;tsumo=tsumo||h.baojia==null;out.winPoints+=Number(h.defen||0);}
+          if(h.baojia===ownL && h.l!==ownL)dealt=true;
+        }
+      }
+      if(won)out.wins++;
+      if(tsumo)out.tsumoWins++;
+      if(dealt)out.dealIns++;
+      if(open)out.openHands++;
+      if(riichi)out.riichiHands++;
+    }
+    return out;
+  }
   function renderStats() {
-    const history = store.read('mahjonglab-records-v1', []);
-    const n = history.length;
-    const avg = n ? (history.reduce((a,x)=>a + x.rank,0)/n).toFixed(2) : '—';
-    const wins = n ? Math.round(100 * history.filter(x=>x.rank===1).length/n)+'%' : '—';
-    $('homeStats').replaceChildren();
-    [['対局数',String(n)],['平均順位',avg],['トップ率',wins]].forEach(([name,v])=>{
-      const b=el('div','stat-item');b.append(el('div','stat-val',v),el('div','stat-lab',name));$('homeStats').append(b);
+    const all=store.read(RECORD_KEY,[]).filter(x=>x?.mode===statsMode && x?.rank>=1 && x?.rank<=4);
+    const total=all.length;
+    const sum=k=>all.reduce((a,x)=>a+Number(x[k]||0),0);
+    const hands=sum('hands'),wins=sum('wins');
+    const rate=(num,den)=>den?((100*num/den).toFixed(1)+'%'):'—';
+    const avg=total?(sum('rank')/total).toFixed(2):'—';
+    const root=$('homeStats');root.replaceChildren();
+    [['対局数',fmt(total)],['平均順位',avg],['平均素点',total?fmt(Math.round(sum('score')/total)):'—']].forEach(([name,v])=>{
+      const b=el('div','stat-item');b.append(el('div','stat-val',v),el('div','stat-lab',name));root.append(b);
     });
+    const detail=$('detailStats');detail.replaceChildren();
+    const rates=el('div','rank-rates');
+    for(let i=1;i<=4;i++){
+      const n=all.filter(x=>x.rank===i).length;
+      const cell=el('div','rank-rate');cell.append(el('strong','',rate(n,total)),el('small','',`${i}着率`));rates.append(cell);
+    }
+    detail.append(rates);
+    const grid=el('div','detail-stats');
+    [
+      ['総局数',fmt(hands)],
+      ['和了率',rate(wins,hands)],
+      ['放銃率',rate(sum('dealIns'),hands)],
+      ['副露率',rate(sum('openHands'),hands)],
+      ['立直率',rate(sum('riichiHands'),hands)],
+      ['ツモ率（和了中）',rate(sum('tsumoWins'),wins)],
+      ['平均和了打点',wins?fmt(Math.round(sum('winPoints')/wins))+'点':'—'],
+      ['トップ率',rate(all.filter(x=>x.rank===1).length,total)]
+    ].forEach(([label,value])=>{
+      const cell=el('div','stat-detail');cell.append(el('div','stat-detail-value',value),el('div','stat-detail-label',label));grid.append(cell);
+    });
+    detail.append(grid);
+    $('statsEast').classList.toggle('active',statsMode===1);
+    $('statsHalf').classList.toggle('active',statsMode===2);
+    $('statsEast').setAttribute('aria-pressed',String(statsMode===1));
+    $('statsHalf').setAttribute('aria-pressed',String(statsMode===2));
   }
   function initGame() {
     if (game && !gameEnded) { try { game.stop(()=>{}); } catch {} }
     mode = document.querySelector('input[name="length"]:checked')?.value || '1';
+    recordMode = document.querySelector('input[name="recordMode"]:checked')?.value || 'practice';
+    debugUsed = false;
+    $('recordModeBadge').textContent=recordMode==='measure'?'計測中':'練習';
     selectedRule = M.rule({'配給原点':25000,'赤牌':{m:1,p:1,s:1},'場数':Number(mode),'延長戦方式':0,'オーラス止めあり':false,'順位点':['0.0','0.0','0.0','0.0']});
     human = new Human(); pending = null; gameEnded = false; readyToNext = false;
     riichiMode = false; candidateInfo = []; lastCandidateInfo = []; lastFeedback = null;
@@ -4680,11 +4789,20 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     game.kaiju(); redrawSoon();
   }
   function onFinished(paipu) {
-    if (!paipu) return;
-    const history = store.read('mahjonglab-records-v1', []);
-    history.push({at:new Date().toISOString(),mode:Number(mode),rank:paipu.rank[0],score:paipu.defen[0],decisions:decisionLog.length});
-    store.save('mahjonglab-records-v1',history.slice(-500));
-    store.save('mahjonglab-last-decisions-v1',decisionLog.slice(-100));
+    if(!paipu)return;
+    // Save only explicitly opted-in, complete, non-debug matches.
+    if(recordMode==='measure' && !debugUsed) {
+      try {
+        const summary=summarizeMatch(paipu);
+        if(summary.hands>0 && Number.isFinite(summary.score)) {
+          const history=store.read(RECORD_KEY,[]);
+          history.push(summary);
+          store.save(RECORD_KEY,history.slice(-500));
+        }
+      }catch(e){console.error('成績集計を保存できませんでした',e);}
+    }
+    // Per-discard notes are not league statistics.
+    if(!debugUsed)store.save('mahjonglab-last-decisions-v1',decisionLog.slice(-100));
     renderStats();
   }
   function ownSeat() { return game ? game.model.player_id.indexOf(0) : 0; }
@@ -5075,7 +5193,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
       }
       card.append(sets);
     }
-    card.append(el('div','coach-accept-title','受け入れ牌（見えていない推定枚数）'));
+    card.append(el('div','coach-accept-title','直接有効牌（向聴数が下がる牌）'));
     const grid=el('div','coach-accept-grid');
     const details=v.usefulDetails || (v.useful||[]).map(p=>({p:normalized(p),count:null}));
     if(!details.length)grid.append(el('span','coach-accept-empty','有効牌なし'));
@@ -5100,7 +5218,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     const chosenAtFront=shortlisted.length===4 && shortlisted[0]?.p.slice(0,2)===x.discard.slice(0,2);
     shortlisted.forEach((v,i)=>list.append(renderCoachCandidate(v,x.discard,i-(chosenAtFront?1:0))));
     body.append(list);
-    body.append(el('p','coach-details-note','※ 受け入れ＝その牌を引くと向聴数が改善する牌の見かけ上の残り枚数。手牌・公開情報から数えた推定上限で、実際の山に残る枚数や和了率・期待値ではありません。5の残り枚数は赤5を含めた合計です。'));
+    body.append(el('p','coach-details-note','※ 受け入れ＝その牌を引くと向聴数が改善する牌の見かけ上の残り枚数。手牌・公開情報から数えた推定上限で、実際の山に残る枚数や和了率・期待値ではありません。向聴据置の手牌改良牌は対象外です。5の残り枚数は赤5を含めた合計です。'));
     $('coachOverlay').classList.remove('hidden');
   }
   function resultPaymentLabel(data) {
@@ -5156,6 +5274,26 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     if(data.fubaopai?.length){addHeading('裏ドラ表示牌');addTiles(data.fubaopai,'indicators');}
     else area.append(el('p','subtitle','裏ドラ表示牌：該当なし（リーチ和了時のみ公開）'));
   }
+  function willFinishAfterResult() {
+    if(!game || game._hule?.length)return false; // More winners may still be processed.
+    const model=game.model, rule=game._rule;
+    if(!model || !rule || !game._fenpei)return false;
+    let j=model.jushu,z=model.zhuangfeng;
+    if(!game._lianzhuang){j++;z+=Math.floor(j/4);j%=4;}
+    const projected=model.defen.slice();
+    for(let l=0;l<4;l++)projected[model.player_id[l]]+=Number(game._fenpei[l]||0);
+    if(projected.some(x=>x<0) && rule['トビ終了あり'])return true;
+    const sum=z*4+j;
+    if(sum>15 || sum>(Number(rule['場数'])+1)*4-1)return true;
+    const champion=projected.some(x=>x>=30000);
+    if(game._max_jushu<sum)return Number(rule['延長戦方式'])===0 || Number(rule['場数'])===0 || champion;
+    if(game._max_jushu===sum && rule['オーラス止めあり'] && game._lianzhuang && !game._no_game){
+      let top=-1,topScore=-Infinity;
+      for(let i=0;i<4;i++)if(projected[i]>topScore){top=i;topScore=projected[i];}
+      return top===model.player_id[0] && champion;
+    }
+    return false;
+  }
   function showResult(msg) {
     const data=msg.hule||msg.pingju;
     $('resultTag').textContent=msg.hule?'和了':'流局';
@@ -5171,6 +5309,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
       const name=el('span','',NAMES[id]);const score=el('span','',fmt(game.model.defen[id]+gain));
       const move=el('span','move',(gain>=0?'+':'')+fmt(gain));score.append(move);row.append(name,score);$('resultScores').append(row);
     }
+    $('continueBtn').textContent=willFinishAfterResult()?'終局 →':'次の局へ →';
     $('resultOverlay').classList.remove('hidden');
   }
   function showEnd(paipu) {
@@ -5191,6 +5330,8 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     $('callTray').classList.add('hidden');$('coachOverlay').classList.add('hidden');
     $('startScreen').classList.remove('hidden');renderStats();
   }
+  $('statsEast').addEventListener('click',()=>{statsMode=1;renderStats();});
+  $('statsHalf').addEventListener('click',()=>{statsMode=2;renderStats();});
   $('startBtn').addEventListener('click',initGame);
   $('speedSelect').addEventListener('change',()=>{if(game)game.dwell=speedValue();});
   $('coachDetailBtn').addEventListener('click',openCoachDetails);
@@ -5208,6 +5349,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
   }
   function testScenario({n=4,rivers=18,call=false}={}) {
     if(!game)return;
+    debugUsed=true;
     const model=game.model;
     const sets=['s56-7','z666=','p111+','m9999'];
     for(let l=0;l<4;l++) {
@@ -5221,7 +5363,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     redrawSoon();
   }
   // Facilitate lightweight browser checks without opening a debugging interface.
-  window.MahjongLabDebug = {testScenario,parseMeld,visibleRiver,state:()=>({started:!!game,phase:game?game._status:null,pending:pending?.type||null,round:game?.model?.jushu,turn:game?.model?.lunban,own:ownSeat(),decisions:decisionLog.length,finished:gameEnded}),choose:p=>chooseDiscard(p),answer:p=>answer(p),testStep:(randomize=false)=>{if(pending?.type==='turn'){if(pending.win&&randomize)return answer({hule:'-'});if(randomize&&pending.gang.length&&Math.random()<0.10)return answer({gang:pending.gang[0]});const choices=pending.options;const p=randomize?choices[Math.floor(Math.random()*choices.length)]:choices[0];if(randomize&&game.allow_lizhi(p)&&Math.random()<0.25)riichiMode=true;chooseDiscard(p);}else if(pending?.type==='reaction'){if(pending.win&&randomize)return answer({hule:'-'});const melds=[...pending.gang,...pending.peng,...pending.chi];if(randomize&&melds.length&&Math.random()<0.55)return answer({fulou:melds[0]});answer({});}},testDwell:ms=>{if(game)game.dwell=ms;},testContinue:()=>{if(game&&!gameEnded){readyToNext=false;game.start();}},testPaipu:()=>game?._paipu,inspect:()=>({latestDiscard,lastFeedback,hasReaction:!$('callTray').classList.contains('hidden'),speed:game?._dwell})};
+  window.MahjongLabDebug = {testScenario,parseMeld,visibleRiver,state:()=>({started:!!game,phase:game?game._status:null,pending:pending?.type||null,round:game?.model?.jushu,turn:game?.model?.lunban,own:ownSeat(),decisions:decisionLog.length,finished:gameEnded}),choose:p=>chooseDiscard(p),answer:p=>answer(p),testStep:(randomize=false)=>{debugUsed=true;if(pending?.type==='turn'){if(pending.win&&randomize)return answer({hule:'-'});if(randomize&&pending.gang.length&&Math.random()<0.10)return answer({gang:pending.gang[0]});const choices=pending.options;const p=randomize?choices[Math.floor(Math.random()*choices.length)]:choices[0];if(randomize&&game.allow_lizhi(p)&&Math.random()<0.25)riichiMode=true;chooseDiscard(p);}else if(pending?.type==='reaction'){if(pending.win&&randomize)return answer({hule:'-'});const melds=[...pending.gang,...pending.peng,...pending.chi];if(randomize&&melds.length&&Math.random()<0.55)return answer({fulou:melds[0]});answer({});}},testDwell:ms=>{debugUsed=true;if(game)game.dwell=ms;},testContinue:()=>{debugUsed=true;if(game&&!gameEnded){readyToNext=false;game.start();}},testPaipu:()=>game?._paipu,inspect:()=>({latestDiscard,lastFeedback,hasReaction:!$('callTray').classList.contains('hidden'),speed:game?._dwell})};
 })();
 
 </script>
