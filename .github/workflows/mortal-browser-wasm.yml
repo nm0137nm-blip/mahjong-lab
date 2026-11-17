@@ -14,7 +14,7 @@ permissions: {}
 jobs:
   build-and-verify:
     runs-on: ubuntu-24.04
-    timeout-minutes: 22
+    timeout-minutes: 27
     steps:
       - name: Checkout public code only
         run: |
@@ -31,10 +31,18 @@ jobs:
           cd /tmp/browser-encoder
           cargo build --lib --release --target wasm32-unknown-unknown 2>&1 | tee /tmp/cargo-build.log
           ls -lh target/wasm32-unknown-unknown/release/*.wasm
+      - name: Generate browser JavaScript loader
+        shell: bash
+        run: |
+          set -euo pipefail
+          cargo install wasm-bindgen-cli --version 0.2.130 --locked
+          wasm-bindgen --target web --out-dir /tmp/encoder-pkg /tmp/browser-encoder/target/wasm32-unknown-unknown/release/mahjong_lab_mortal_encoder.wasm
+          printf '{"type":"module"}\n' > /tmp/encoder-pkg/package.json
+          ls -lh /tmp/encoder-pkg
       - name: Compare encoded tensor to authentic reference
         shell: bash
         run: |
-          node /tmp/lab/tests/mortal/verify_wasm_encoder.mjs /tmp/browser-encoder/target/wasm32-unknown-unknown/release/mahjong_lab_mortal_encoder.wasm /tmp/lab/tests/fixtures/synthetic_libriichi_v4_obs.b64
+          node /tmp/lab/tests/mortal/verify_wasm_encoder.mjs /tmp/encoder-pkg/mahjong_lab_mortal_encoder.js /tmp/encoder-pkg/mahjong_lab_mortal_encoder_bg.wasm /tmp/lab/tests/fixtures/synthetic_libriichi_v4_obs.b64
       - name: Save compiler output for checkpoint (public only)
         if: always()
         shell: bash
