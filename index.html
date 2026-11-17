@@ -4697,7 +4697,8 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     action_hule() {} action_pingju() {} action_jieju() {}
   }
   let referenceAI=null, referenceCurrent=null, referenceReaction=null;
-  let mortalClient=null, mortalStatusText='初期化中';
+  let mortalClient=null, mortalStatusText='初期化中',s42Analytics=null;
+  let s42ReviewRows=[],s42ReviewCursor=0;
   const mirrorAudit={packets:0, errors:0, matchedSelf:0, selfMismatch:0, wallAccess:0};
   function safeReferenceEvent(msg) {
     if (!referenceAI) return;
@@ -4743,7 +4744,6 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
   class Human extends M.Player {
     action(msg,callback){
       try{mortalClient?.ingest(msg);}catch(e){console.warn('S42の付加評価のみ停止',e);}
-      safeReferenceEvent(msg);
       return super.action(msg,callback);
     }
     action_kaiju() { this._callback({}); }
@@ -4754,7 +4754,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
       const gang = this.get_gang_mianzi(this.shoupai) || [];
       pending = { type: 'turn', options, gang, win: this.allow_hule(this.shoupai), nine: this.allow_pingju(this.shoupai) };
       candidateInfo = scoreCandidates(options);
-      referenceCurrent = referenceDiscard();
+      referenceCurrent = null;
       redrawSoon();
     }
     action_dapai(dapai) {
@@ -4768,7 +4768,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
       if (!win && !peng.length && !gang.length && !chi.length) { this._callback({}); return; }
       if (callMode()==='auto' && !win) { this._callback({}); return; }
       pending = { type: 'reaction', from: dapai.l, p: dapai.p, win, chi, peng, gang };
-      referenceReaction=referenceCall(dapai);
+      referenceReaction=null;
       redrawSoon();
     }
     action_fulou(fulou) {
@@ -4793,6 +4793,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
 
   // New versioned key: pre-v0.9 history is intentionally excluded from measured results.
   const RECORD_KEY = 'mahjonglab-measured-v2';
+  const S42_REVIEW_KEY='mahjonglab-s42-reviews-last-v1';
   let recordMode = 'practice', statsMode = 1, debugUsed = false;
   function summarizeMatch(paipu) {
     const out={
@@ -4856,6 +4857,18 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
       const cell=el('div','stat-detail');cell.append(el('div','stat-detail-value',value),el('div','stat-detail-label',label));grid.append(cell);
     });
     detail.append(grid);
+    const reviewed=s42Analytics?s42Analytics.combineAggregates(all.map(x=>x.s42)):{count:0,index:null,agreementRate:null,badCandidateRate:null};
+    const statBox=el('section','s42-review-pane');
+    statBox.append(el('h3','', 'S42基準・学習指標'));
+    const statGrid=el('div','s42-review-grid');
+    [
+      ['平均判断指数',reviewed.index==null?'—':reviewed.index+'/100'],
+      ['S42一致率',s42Analytics?s42Analytics.PERCENT(reviewed.agreementRate):'—'],
+      ['悪手候補率（暫定）',s42Analytics?s42Analytics.PERCENT(reviewed.badCandidateRate):'—']
+    ].forEach(([label,value])=>{const b=el('div','s42-review-metric');b.append(el('strong','',value),el('small','',label));statGrid.append(b);});
+    statBox.append(statGrid);
+    statBox.append(el('p','s42-analysis-note','評価対象 '+reviewed.count+'打牌。指数＝合法手Q値の最良・最悪間で相対化した値。悪手候補＝相対Q差30%以上。独自の暫定定義で、段位・期待点数・確定的な悪手率ではありません。旧対局はS42評価の集計対象外です。'));
+    detail.append(statBox);
     $('statsEast').classList.toggle('active',statsMode===1);
     $('statsHalf').classList.toggle('active',statsMode===2);
     $('statsEast').setAttribute('aria-pressed',String(statsMode===1));
@@ -4868,12 +4881,12 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     debugUsed = false;
     $('recordModeBadge').textContent=recordMode==='measure'?'計測中':'練習';
     selectedRule = M.rule({'配給原点':25000,'赤牌':{m:1,p:1,s:1},'場数':Number(mode),'延長戦方式':0,'オーラス止めあり':false,'順位点':['0.0','0.0','0.0','0.0']});
-    human = new Human(); referenceAI = new PassiveReferenceAI();
+    human = new Human(); referenceAI = null;
     referenceCurrent=null;referenceReaction=null;
     Object.assign(mirrorAudit,{packets:0,errors:0,matchedSelf:0,selfMismatch:0,wallAccess:0});
     pending = null; gameEnded = false; readyToNext = false;
     riichiMode = false; candidateInfo = []; lastCandidateInfo = []; lastFeedback = null;
-    decisionLog = []; lastAction = ''; latestDiscard=null;
+    decisionLog = []; s42ReviewRows=[]; lastAction = ''; latestDiscard=null;
     $('eventBanner').classList.add('hidden'); $('callTray').classList.add('hidden'); $('coachOverlay').classList.add('hidden');
     const players = [human,new AI(),new AI(),new AI()];
     game = new M.Game(players, onFinished, selectedRule, '麻雀LAB');
@@ -4919,6 +4932,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     if(recordMode==='measure' && !debugUsed) {
       try {
         const summary=summarizeMatch(paipu);
+        summary.s42=s42Aggregated();
         if(summary.hands>0 && Number.isFinite(summary.score)) {
           const history=store.read(RECORD_KEY,[]);
           history.push(summary);
@@ -4927,8 +4941,12 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
       }catch(e){console.error('成績集計を保存できませんでした',e);}
     }
     // Per-discard notes are not league statistics.
-    if(!debugUsed)store.save('mahjonglab-last-decisions-v1',decisionLog.slice(-100));
+    if(!debugUsed){
+      store.save('mahjonglab-last-decisions-v1',decisionLog.slice(-100).map(x=>({round:x.round,discard:x.discard,shanten:x.shanten,ukeire:x.ukeire,s42Review:x.s42Review})));
+      store.save(S42_REVIEW_KEY,s42ReviewList());
+    }
     renderStats();
+    if(gameEnded)renderS42End();
   }
   function ownSeat() { return game ? game.model.player_id.indexOf(0) : 0; }
   function ownShoupai() { try {return human && human.shoupai;} catch {return null;} }
@@ -5171,6 +5189,41 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     try { cb(payload); } catch(err) { notify('操作でエラーが発生しました: '+err.message); console.error(err); }
     redrawSoon();
   }
+
+  // Snapshot consists ONLY of the human hand and publicly visible table state.
+  // Opponent concealed hands and wall tiles are intentionally never copied.
+  function captureS42Scene(){
+    if(!game||!human)return null;
+    const model=game.model;
+    return {
+      hand:tileList(human.shoupai).map(p=>p.slice(0,2)),
+      selfMelds:(human.shoupai._fulou||[]).slice(),
+      rivers:Array.from({length:4},(_,l)=>({
+        name:userLabel(l),tiles:(model.he[l]?._pai||[]).map(p=>p.slice(0,2)).filter(p=>/^[mpsz][0-9]$/.test(p)),
+        melds:(model.shoupai[l]?._fulou||[]).slice()
+      })),
+      dora:(model.shan?.baopai||[]).map(p=>p.slice(0,2)),
+      scores:model.defen.map(Number),
+      remaining:model.shan?.paishu??null
+    };
+  }
+  function s42Aggregated(){
+    return s42Analytics?s42Analytics.aggregateDecisions(decisionLog):
+      {version:'S42-relative-Q-v1',count:0,agreements:0,suspected:0,index:null,agreementRate:null,badCandidateRate:null};
+  }
+  function s42ReviewList(){
+    return decisionLog.filter(x=>x?.s42Review?.badCandidate && x?.scene)
+      .sort((a,b)=>(b.s42Review.relativeGap||0)-(a.s42Review.relativeGap||0))
+      .slice(0,25);
+  }
+  function attachS42Opinion(op){
+    const entry=decisionLog.find(x=>x.mortalDecision===op.id);
+    if(!entry)return;
+    entry.mortalOpinion={...op};
+    if(s42Analytics)entry.s42Review=s42Analytics.analyzeDecision(op,entry.discard,entry.riichi);
+    if(lastFeedback===entry)redrawSoon();
+  }
+
   function chooseDiscard(p) {
     if(pending?.type!=='turn' || !pending.options.includes(p)) return;
     if(riichiMode && !game.allow_lizhi(p)) return;
@@ -5181,11 +5234,14 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
         round:`${F[game.model.zhuangfeng]}${game.model.jushu+1}局`, discard:p,
         shanten:current.shanten, ukeire:current.ukeire,
         best:good?.p, bestShanten:good?.shanten,bestUkeire:good?.ukeire,
-        riichi:riichiMode,reference:referenceCurrent?{...referenceCurrent}:null,
+        riichi:riichiMode,reference:null,scene:captureS42Scene(),
+        candidates:candidateInfo.map(v=>({p:v.p,shanten:v.shanten,ukeire:v.ukeire,usefulDetails:v.usefulDetails?.map(d=>({...d}))||[],handTiles:v.handTiles?.slice()||[],melds:v.melds?.slice()||[]})),
         selfMetric:{p:current.p,shanten:current.shanten,ukeire:current.ukeire},
         mortalDecision:mortalClient?.decision??null,
         mortalOpinion:mortalClient?.current?.id===mortalClient?.decision?{...mortalClient.current}:null,
+        s42Review:null,
       };
+      if(info.mortalOpinion && s42Analytics)info.s42Review=s42Analytics.analyzeDecision(info.mortalOpinion,p,riichiMode);
       lastFeedback=info;lastCandidateInfo=candidateInfo.slice();
       decisionLog.push(info);if(decisionLog.length>1000)decisionLog.shift();
     }
@@ -5523,6 +5579,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
       const row=el('div','result-score'+(x.id===0?' me':''));
       row.append(el('span','',`${x.rank}着 · ${NAMES[x.id]}`),el('span','',fmt(x.score)+'点'));$('endScores').append(row);
     }
+    renderS42End();
     $('endOverlay').classList.remove('hidden');
   }
   function goHome() {
@@ -5550,15 +5607,11 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
       $('mortalStatus').textContent=mortalStatusText;
       $('mortalLive').textContent=/準備完了/.test(mortalStatusText)?'有効':/失敗|停止|エラー/.test(mortalStatusText)?'基礎版':'未設定';
     };
-    import('./src/mortal/mortal-client.mjs').then(async ({MortalClient})=>{
+    Promise.all([import('./src/mortal/mortal-client.mjs'),import('./src/mortal/s42-analytics.mjs')]).then(async ([{MortalClient},analytics])=>{
+      s42Analytics=analytics;renderStats();
       const client=new MortalClient({
         onStatus:setStatus,
-        onOpinion:o=>{
-          if(lastFeedback && lastFeedback.mortalDecision===o.id){
-            lastFeedback.mortalOpinion={...o};
-            redrawSoon();
-          }
-        }
+        onOpinion:o=>attachS42Opinion(o)
       });
       mortalClient=client;
       try{await client.loadEncoder();}catch(e){setStatus('S42局面変換器の起動に失敗しました');return;}
