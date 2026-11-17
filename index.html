@@ -4666,7 +4666,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
 
   let game = null, human = null, pending = null, mode = '1';
   let riichiMode = false, coachCollapsed = true, candidateInfo = [];
-  let lastFeedback = null, decisionLog = [], gameEnded = false;
+  let lastFeedback = null, decisionLog = [], gameEnded = false, matchSaved = false;
   let readyToNext = false, selectedRule = null, lastAction = '';
   let toastTimer = null, bannerTimer = null, latestDiscard = null;
   let lastCandidateInfo = [];
@@ -4878,7 +4878,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     if (game && !gameEnded) { try { game.stop(()=>{}); } catch {} }
     mode = document.querySelector('input[name="length"]:checked')?.value || '1';
     recordMode = document.querySelector('input[name="recordMode"]:checked')?.value || 'practice';
-    debugUsed = false;
+    debugUsed = false; matchSaved = false;
     $('recordModeBadge').textContent=recordMode==='measure'?'計測中':'練習';
     selectedRule = M.rule({'配給原点':25000,'赤牌':{m:1,p:1,s:1},'場数':Number(mode),'延長戦方式':0,'オーラス止めあり':false,'順位点':['0.0','0.0','0.0','0.0']});
     human = new Human(); referenceAI = null;
@@ -4920,14 +4920,15 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
         if(msg?.hule || msg?.pingju) { pending = null; readyToNext = false; $('continueBtn').disabled = true; game.stop(()=>{readyToNext = true; $('continueBtn').disabled = false;}); showResult(msg); }
         redrawSoon();
       },
-      summary: paipu => { gameEnded = true; readyToNext = false; pending = null; showEnd(paipu); redrawSoon(); }
+      summary: paipu => { gameEnded = true; readyToNext = false; pending = null; onFinished(paipu); showEnd(paipu); redrawSoon(); }
     };
     $('startScreen').classList.add('hidden'); $('gameScreen').classList.remove('hidden');
     $('resultOverlay').classList.add('hidden'); $('endOverlay').classList.add('hidden');
     game.kaiju(); redrawSoon();
   }
   function onFinished(paipu) {
-    if(!paipu)return;
+    if(!paipu || matchSaved)return;
+    matchSaved = true;
     // Save only explicitly opted-in, complete, non-debug matches.
     if(recordMode==='measure' && !debugUsed) {
       try {
