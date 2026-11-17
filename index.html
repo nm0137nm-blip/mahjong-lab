@@ -448,7 +448,7 @@
         <button id="statsEast" class="stat-tab active" type="button" aria-pressed="true">東風戦</button>
         <button id="statsHalf" class="stat-tab" type="button" aria-pressed="false">半荘戦</button>
       </div>
-      <div class="stats" id="homeStats"></div>
+      <div class="stats" id="homeStats"></div><div id="homeS42Stats"></div>
       <div id="detailStats" class="stats-content"></div>
       <p class="stats-note">※ 計測用対局の完走分のみ。率は総局数を基準（ツモ率のみ自分の和了数を基準）。旧版の対局・練習・途中中断・自動テストは対象外です。牌効率とS42のQ値は別の評価です。S42指標は解析済みの新しい対局から集計します。</p>
     </section>
@@ -4868,7 +4868,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     ].forEach(([label,value])=>{const b=el('div','s42-review-metric');b.append(el('strong','',value),el('small','',label));statGrid.append(b);});
     statBox.append(statGrid);
     statBox.append(el('p','s42-analysis-note','評価対象 '+reviewed.count+'打牌。指数＝合法手Q値の最良・最悪間で相対化した値。悪手候補＝相対Q差30%以上。独自の暫定定義で、段位・期待点数・確定的な悪手率ではありません。旧対局はS42評価の集計対象外です。'));
-    detail.append(statBox);
+    $('homeS42Stats').replaceChildren(statBox);
     $('statsEast').classList.toggle('active',statsMode===1);
     $('statsHalf').classList.toggle('active',statsMode===2);
     $('statsEast').setAttribute('aria-pressed',String(statsMode===1));
@@ -5203,7 +5203,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
         melds:(model.shoupai[l]?._fulou||[]).slice()
       })),
       dora:(model.shan?.baopai||[]).map(p=>p.slice(0,2)),
-      scores:model.defen.map(Number),
+      scores:model.player_id.map(id=>({name:NAMES[id],points:Number(model.defen[id])})),
       remaining:model.shan?.paishu??null
     };
   }
@@ -5452,7 +5452,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
       if(!v)return;
       const key=v.p.slice(0,2);
       const existing=viewed.find(x=>x.v.p.slice(0,2)===key);
-      if(existing){if(label==='S42の選択')existing.label+='・S42も選択';return;}
+      if(existing){if(label==='S42の選択')existing.label+='・S42も選択';if(label.startsWith('牌効率'))existing.label+='・'+label;return;}
       seen.add(key);viewed.push({v,label});
     }
     put(own,'あなたの選択');
@@ -5462,11 +5462,13 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     }else if(x.mortalOpinion?.tile&&!ai){
       target.append(el('p','s42-analysis-note','S42の切り牌は、打牌前に記録した候補から特定できませんでした。受け入れ枚数は推測して補いません。'));
     }
-    let count=0;
+    const efficiencySeen=new Set();
+    let efficiencyRank=0;
     for(const v of ranked){
-      if(count>=3)break;
-      if(seen.has(v.p.slice(0,2)))continue;
-      put(v,'牌効率上位 '+(count+1));count++;
+      if(efficiencyRank>=3)break;
+      if(efficiencySeen.has(v.p.slice(0,2)))continue;
+      efficiencySeen.add(v.p.slice(0,2));
+      put(v,'牌効率'+(++efficiencyRank)+'位');
     }
     for(const o of viewed)target.append(renderCoachCandidate(o.v,x.discard,0,o.label));
     target.append(el('p','s42-analysis-note','※ 受け入れ＝その牌を引くと向聴数が下がる場合の見かけ上の残り枚数。手牌・公開牌から計算した推定上限で、山の実際の残り・和了確率ではありません。赤5は通常5と合算します。'));
@@ -5670,7 +5672,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
         box.append(s42TilesRow(river.tiles,'s42-replay-river-tiles'));rivers.append(box);
       }
       body.append(rivers);
-      if(view.scores?.length)body.append(el('div','s42-analysis-note','点棒：'+view.scores.map(v=>fmt(v)).join(' / ')+'点 · 残り '+(view.remaining??'—')+'枚'));
+      if(view.scores?.length)body.append(el('div','s42-analysis-note','点棒：'+view.scores.map(v=>v.name+' '+fmt(v.points)).join(' / ')+' · 残り '+(view.remaining??'—')+'枚'));
     }
     const top=score?.top||[];
     if(top.length){
