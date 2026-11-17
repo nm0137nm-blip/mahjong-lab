@@ -362,11 +362,36 @@
 .reference-title{color:#c4e988;font-weight:800;font-size:12px;margin-bottom:7px}
 .reference-text{font-size:13px;font-weight:700;line-height:1.6}
 .reference-caveat{font-size:10px;color:#a9c6b7;line-height:1.6;margin:7px 0 0}
+
+/* Post-discard S42 and CPU comparison; never show recommendations before choice. */
+#gameScreen .coach-flash{display:flex;align-items:center;gap:5px;min-width:0;padding:6px 8px;margin-bottom:5px;background:#193d34;border-color:#59846d;color:#f1fae7}
+#gameScreen .coach-flash.hidden{display:none}
+#gameScreen .coach-flash.warn{border-color:#af9960;background:#343f2f}
+#gameScreen .coach-inline-main{min-width:0;flex:1;display:flex;flex-direction:column;gap:2px}
+#gameScreen .inline-choice-row{display:flex;align-items:center;gap:4px;min-width:0;flex-wrap:nowrap}
+#gameScreen .inline-choice{display:inline-flex;align-items:center;gap:3px;min-width:0;white-space:nowrap}
+#gameScreen .inline-label{font-size:10px;color:#c6dcca}
+#gameScreen .inline-name{font-size:11px;font-weight:700}
+#gameScreen .inline-tile{width:17px;height:24px;object-fit:fill;border-radius:2px}
+#gameScreen .inline-arrow{font-size:10px;color:#729f90}
+#gameScreen .inline-status{font-size:9px;padding:2px 4px;border-radius:4px;font-weight:800;white-space:nowrap;background:#305d44;color:#cbf4b6}
+#gameScreen .inline-status.disagree{background:#544b32;color:#fbe1a7}
+#gameScreen .inline-metric{font-size:10px;line-height:1.3;color:#bad2c0;white-space:normal}
+#gameScreen #coachDetailBtn{font-size:11px;font-weight:700;padding:6px 5px;text-decoration:none;white-space:nowrap;color:#d5f29e;align-self:center}
+.mortal-setup{margin-top:12px;padding:11px 13px;border:1px solid #5b8a78;border-radius:12px;background:#17362e;color:#e8f2e7;display:flex;flex-direction:column;gap:7px}
+.mortal-setup-title{font-weight:850;font-size:14px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.mortal-file{font-size:12px;width:100%;max-width:100%;color:#e8f2e7}
+.mortal-help{font-size:11px;color:#a9d0b6;line-height:1.5}
+.mortal-live{font-size:10px;font-weight:700;color:#b4ecc2}
+.mortal-detail{border:1px solid #6b907c;border-radius:10px;padding:10px 12px;margin:10px 0;background:#19382d}
+.mortal-detail h3{font-size:13px;margin:0 0 7px;color:#c6f2bc}
+.mortal-detail .mortal-caveat{font-size:11px;color:#bfd3c2;line-height:1.5}
+@media(max-width:375px){#gameScreen .inline-label{font-size:9px}#gameScreen .inline-name{font-size:10px}#gameScreen .inline-tile{width:15px;height:21px}#gameScreen .inline-metric{font-size:9px}}
 </style>
-  <title>麻雀LAB — Phase 1.8.1</title>
+  <title>麻雀LAB — Phase 2.4 S42</title>
 </head>
 <body>
-  <header class="site-header"><div class="logo"><span class="logo-mark">牌</span><span>麻雀<span class="logo-lab">LAB</span></span></div><span class="phase">PHASE 2.0 · CPU REFERENCE</span></header>
+  <header class="site-header"><div class="logo"><span class="logo-mark">牌</span><span>麻雀<span class="logo-lab">LAB</span></span></div><span class="phase">PHASE 2.4 · MORTAL-S42</span></header>
   <main id="startScreen" class="home">
     <div class="eyebrow"><span class="eyedot"></span> MAHJONG LAB</div>
     <h1 class="home-compact-title">対局設定</h1>
@@ -384,7 +409,7 @@
         <label><input type="radio" name="recordMode" value="practice" checked><span><strong>練習対局</strong><small>記録しない・コーチあり</small></span></label>
         <label><input type="radio" name="recordMode" value="measure"><span><strong>計測用対局</strong><small>完走分を保存・コーチあり</small></span></label>
       </div>
-      <button class="primary big" id="startBtn" type="button">対局をはじめる <span>→</span></button>
+      <button class="primary big" id="startBtn" type="button">対局をはじめる <span>→</span></button><div class="mortal-setup"><div class="mortal-setup-title"><span>Mortal-S42 AIコーチ</span><span id="mortalLive" class="mortal-live">準備中</span></div><div id="mortalStatus" class="mortal-help">端末内AIの準備中です</div><input id="mortalModelFile" type="file" class="mortal-file" accept=".onnx,application/octet-stream" aria-label="S42学習済みモデルを選択"><div class="mortal-help">初回のみ学習済みモデルを選択してください。端末内に保存します。対局情報やモデルを外部へ送信しません。未設定時も従来の牌効率コーチ・CPU参考判断が使用できます。</div></div>
     </section>
     <section class="stat-card">
       <div class="section-heading"><h2>計測成績</h2><span>この端末だけに保存</span></div>
@@ -426,7 +451,7 @@
         <div class="event-banner hidden" id="eventBanner" role="status" aria-live="polite"></div>
       </div>
     </div>
-    <div class="hand-zone"><div class="hand-header"><span id="turnHint">対局開始</span><span id="handInfo" class="hand-info"></span></div><div class="coach-flash hidden" id="coachFlash"><span id="coachFlashText"></span><button type="button" id="coachDetailBtn">解説を見る</button></div><div class="my-hand" id="myHand"></div><div class="call-tray hidden" id="callTray" aria-label="鳴き・ロンの選択"><div class="call-tray-head" id="callTrayHead"></div><div class="call-tray-options" id="callTrayOptions"></div></div><div class="actions" id="actionBar"></div></div>
+    <div class="hand-zone"><div class="hand-header"><span id="turnHint">対局開始</span><span id="handInfo" class="hand-info"></span></div><div class="coach-flash hidden" id="coachFlash" aria-live="polite"><div id="coachFlashMain" class="coach-inline-main"></div><button type="button" id="coachDetailBtn" aria-label="打牌選択の詳細を確認">詳しく ›</button></div><div class="my-hand" id="myHand"></div><div class="call-tray hidden" id="callTray" aria-label="鳴き・ロンの選択"><div class="call-tray-head" id="callTrayHead"></div><div class="call-tray-options" id="callTrayOptions"></div></div><div class="actions" id="actionBar"></div></div>
     <div class="coach" id="coachPanel"><div class="coach-top"><div><span class="spark">✧</span> 牌効率メモ <span class="beta">基礎版</span></div><button id="toggleCoach" class="coach-toggle" type="button">非表示</button></div><div id="coachBody"><p>自分のツモ番になると、打牌候補の受け入れを表示します。</p></div></div>
     <div id="gameToast" role="status" aria-live="polite" class="toast"></div>
   </main>
