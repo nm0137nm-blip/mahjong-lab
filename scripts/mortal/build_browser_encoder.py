@@ -13,7 +13,7 @@ def patch(f,fn):
     p=src/f; p.write_text(fn(p.read_text()))
 def strip_pyo3(s):
     s=re.sub(r'^use pyo3::prelude::\*;\n','',s,flags=re.M)
-    return re.sub(r'^#\[(?:pyclass|pymethods|getter|new|pyo3\([^\n]*?\))\]\n','',s,flags=re.M)
+    return re.sub(r'^[ \\t]*#\\[(?:pyclass|pymethods|getter|new|pyfunction|pyo3\\([^\\n]*?\\))\\][ \\t]*\\n','',s,flags=re.M)
 patch('state/player_state.rs',strip_pyo3)
 patch('state/getter.rs',strip_pyo3)
 patch('state/action.rs',strip_pyo3)
@@ -39,7 +39,7 @@ def consts(s):
 patch('consts.rs',consts)
 (src/'lib.rs').write_text(r'''
 #![allow(dead_code, unused_imports)]
-mod array; mod consts; mod macros; mod vec_ops;
+mod array; mod consts; mod macros; mod vec_ops; mod rankings;
 pub mod algo; pub mod chi_type; pub mod hand; pub mod mjai;
 pub mod state; pub mod tile;
 use state::PlayerState;
@@ -120,6 +120,7 @@ ahash="0.8"
 parking_lot="0.12"
 crossbeam="0.8"
 log="0.4"
+indicatif="0.17"
 getrandom={version="0.3",features=["wasm_js"]}
 """.strip()+"\n")
 print('Generated pure Rust encoder',out)
