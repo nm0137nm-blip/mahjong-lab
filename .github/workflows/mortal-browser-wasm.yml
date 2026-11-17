@@ -9,7 +9,8 @@ on:
       - .github/workflows/mortal-browser-wasm.yml
   workflow_dispatch:
 
-permissions: {}
+permissions:
+  contents: write
 
 jobs:
   build-and-verify:
@@ -43,6 +44,24 @@ jobs:
         shell: bash
         run: |
           node /tmp/lab/tests/mortal/verify_wasm_encoder.mjs /tmp/encoder-pkg/mahjong_lab_mortal_encoder.js /tmp/encoder-pkg/mahjong_lab_mortal_encoder_bg.wasm /tmp/lab/tests/fixtures/synthetic_libriichi_v4_obs.b64
+      - name: Preserve verified public browser encoder on development branch
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/lab/assets/mortal
+          cp /tmp/encoder-pkg/mahjong_lab_mortal_encoder.js /tmp/lab/assets/mortal/encoder.js
+          cp /tmp/encoder-pkg/mahjong_lab_mortal_encoder_bg.wasm /tmp/lab/assets/mortal/encoder_bg.wasm
+          cp /tmp/Mortal/LICENSE /tmp/lab/assets/mortal/LICENSE.AGPL
+          git -C /tmp/lab config user.name 'github-actions[bot]'
+          git -C /tmp/lab config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git -C /tmp/lab add assets/mortal/encoder.js assets/mortal/encoder_bg.wasm assets/mortal/LICENSE.AGPL
+          if ! git -C /tmp/lab diff --cached --quiet; then
+            git -C /tmp/lab commit -m 'build: verified AGPL Mortal browser encoder assets'
+            git -C /tmp/lab remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/nm0137nm-blip/mahjong-lab.git"
+            git -C /tmp/lab push origin HEAD:dev/mortal-ai-checkpoint-20261118
+          fi
       - name: Save compiler output for checkpoint (public only)
         if: always()
         shell: bash
