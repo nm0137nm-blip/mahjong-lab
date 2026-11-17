@@ -1,0 +1,38 @@
+name: Phase 2.5 S42 analytics regression and syntax (no paid services)
+on:
+  push:
+    branches: [dev/s42-analysis-20261118]
+    paths:
+      - index.html
+      - src/mortal/**
+      - tests/mortal/analytics.test.mjs
+      - .github/workflows/s42-analysis-ci.yml
+  workflow_dispatch:
+permissions: {}
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 4
+    steps:
+      - name: Checkout development source and test (no model download)
+        shell: bash
+        run: |
+          set -euo pipefail
+          git clone --depth=1 --branch dev/s42-analysis-20261118 https://github.com/nm0137nm-blip/mahjong-lab.git /tmp/lab
+          cd /tmp/lab
+          node --check src/mortal/s42-analytics.mjs
+          node --check src/mortal/mortal-client.mjs
+          node --check src/mortal/mortal-worker.mjs
+          node --check src/mortal/mjai-bridge.mjs
+          node tests/mortal/analytics.test.mjs
+          node tests/mortal/bridge.test.mjs
+          python3 - <<'PY'
+          import re,pathlib
+          s=pathlib.Path('index.html').read_text('utf8')
+          js=re.findall(r'<script[^>]*>(.*?)</script>',s,re.S)[-1]
+          pathlib.Path('/tmp/s42-game.js').write_text(js,'utf8')
+          assert 'S42の定量評価' in s and 's42ReviewOverlay' in s
+          assert 'CPU参考' not in s[s.index('function renderInlineCoach()'):s.index('function renderCoach()')]
+          print('INLINE_SCRIPT_BYTES',len(js))
+          PY
+          node --check /tmp/s42-game.js
