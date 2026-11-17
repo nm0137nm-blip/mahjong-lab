@@ -4665,6 +4665,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     action_hule() {} action_pingju() {} action_jieju() {}
   }
   let referenceAI=null, referenceCurrent=null, referenceReaction=null;
+  let mortalClient=null, mortalStatusText='初期化中';
   const mirrorAudit={packets:0, errors:0, matchedSelf:0, selfMismatch:0, wallAccess:0};
   function safeReferenceEvent(msg) {
     if (!referenceAI) return;
@@ -4703,6 +4704,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
   }
   class Human extends M.Player {
     action(msg,callback){
+      try{mortalClient?.ingest(msg);}catch(e){console.warn('S42の付加評価のみ停止',e);}
       safeReferenceEvent(msg);
       return super.action(msg,callback);
     }
@@ -5494,6 +5496,33 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
   $('restartBtn').addEventListener('click',initGame);
   $('homeBtn').addEventListener('click',goHome);
   renderStats();
+  function initMortalClient() {
+    const setStatus=msg=>{
+      mortalStatusText=String(msg);
+      $('mortalStatus').textContent=mortalStatusText;
+      $('mortalLive').textContent=/準備完了/.test(mortalStatusText)?'有効':/失敗|停止|エラー/.test(mortalStatusText)?'基礎版':'未設定';
+    };
+    import('./src/mortal/mortal-client.mjs').then(async ({MortalClient})=>{
+      const client=new MortalClient({
+        onStatus:setStatus,
+        onOpinion:o=>{
+          if(lastFeedback && lastFeedback.mortalDecision===o.id){
+            lastFeedback.mortalOpinion={...o};
+            redrawSoon();
+          }
+        }
+      });
+      mortalClient=client;
+      try{await client.loadEncoder();}catch(e){setStatus('S42局面変換器の起動に失敗しました');return;}
+      await client.restoreModel();
+    }).catch(e=>{console.warn('S42コーチの起動失敗。牌効率は継続します',e);setStatus('S42未利用（基礎版コーチは使用できます）');});
+    $('mortalModelFile').addEventListener('change',async e=>{
+      const file=e.target.files?.[0];if(!file)return;
+      if(!mortalClient){setStatus('局面変換器の準備後にファイルを選択してください');return;}
+      try{await mortalClient.importModel(file);}catch(e){console.warn('S42ファイルは読み込めませんでした',e);}
+    });
+  }
+  initMortalClient();
   window.addEventListener('resize',fitBoard);
   if(typeof ResizeObserver!=='undefined')new ResizeObserver(fitBoard).observe($('tableWrap'));
   if('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
