@@ -1,0 +1,86 @@
+name: Mortal libriichi encoder verification (public synthetic only)
+
+on:
+  push:
+    branches:
+      - dev/mortal-ai-checkpoint-20261118
+    paths:
+      - .github/workflows/mortal-encoder-validation.yml
+
+permissions: {}
+
+jobs:
+  encode-synthetic-scene:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - name: Fetch public upstream code and compile libriichi
+        shell: bash
+        run: |
+          set -euo pipefail
+          git clone --depth 1 https://github.com/Equim-chan/Mortal.git /tmp/Mortal
+          cd /tmp/Mortal
+          echo "Upstream Mortal commit: $(git rev-parse HEAD)"
+          python3 -m venv /tmp/mahjong-venv
+          source /tmp/mahjong-venv/bin/activate
+          python -m pip install --disable-pip-version-check 'numpy==2.2.6'
+          export PYO3_PYTHON=/tmp/mahjong-venv/bin/python
+          cargo build -p libriichi --lib --release --locked
+          cp target/release/libriichi.so /tmp/libriichi.so
+
+      - name: Export synthetic V4 observation (never user data)
+        shell: bash
+        run: |
+          set -euo pipefail
+          source /tmp/mahjong-venv/bin/activate
+          cd /tmp
+          python - <<'PY'
+          import base64, hashlib, json, zlib
+          import numpy as np
+          from libriichi.mjai import Bot
+
+          class Recorder:
+              name='synthetic-observation-probe'
+              is_oracle=False
+              version=4
+              enable_quick_eval=False
+              enable_rule_based_agari_guard=False
+              calls=0
+              def react_batch(self, observations, masks, invisible_observations):
+                  assert invisible_observations is None, 'oracle observation is forbidden'
+                  answers=[]; qs=[]; ms=[]; gs=[]
+                  for obs,mask in zip(observations,masks):
+                      o=np.asarray(obs, dtype=np.float32)
+                      m=np.asarray(mask, dtype=np.bool_)
+                      assert o.shape == (1012,34), o.shape
+                      assert m.shape == (46,), m.shape
+                      assert np.isfinite(o).all()
+                      legal=np.flatnonzero(m).tolist()
+                      assert legal and all(0 <= i < 46 for i in legal)
+                      raw=o.tobytes(order='C') + m.astype(np.uint8).tobytes()
+                      digest=hashlib.sha256(raw).hexdigest()
+                      packed=base64.b64encode(zlib.compress(raw,9)).decode('ascii')
+                      print('SYNTHETIC_OBSERVATION_SHA256='+digest, flush=True)
+                      print('SYNTHETIC_OBSERVATION_LEGAL='+json.dumps(legal),flush=True)
+                      print('SYNTHETIC_OBSERVATION_COMPRESSED_B64='+packed,flush=True)
+                      answers.append(legal[0])
+                      qs.append([0.0 if x else -1e9 for x in m.tolist()])
+                      ms.append(m.tolist()); gs.append(True)
+                      self.calls+=1
+                  return answers,qs,ms,gs
+
+          engine=Recorder()
+          bot=Bot(engine, 0)
+          events=[
+            {'type':'start_game','names':['Synthetic A','Synthetic B','Synthetic C','Synthetic D']},
+            {'type':'start_kyoku','bakaze':'E','dora_marker':'7s','kyoku':1,'honba':0,
+             'kyotaku':0,'oya':0,'scores':[25000]*4,'tehais':[
+                ['1m','2m','3m','4m','5m','6m','7m','8m','9m','1p','2p','3p','E'],
+                ['?']*13,['?']*13,['?']*13]},
+            {'type':'tsumo','actor':0,'pai':'5s'},
+          ]
+          for event in events:
+              bot.react(json.dumps(event,separators=(',',':')))
+          assert engine.calls >= 1, 'encoder was not called'
+          print('LIBRIICHI_REAL_ENCODER_PASS decisions='+str(engine.calls),flush=True)
+          PY
