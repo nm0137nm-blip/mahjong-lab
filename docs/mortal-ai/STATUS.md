@@ -1,33 +1,29 @@
-# Mortal AI integration — development checkpoint
+# 麻雀LAB Mortal AI — Development status
 
-Updated: 2026-11-18 (JST)
+Updated: 2026-11-18 JST. Branch: `dev/mortal-ai-checkpoint-20261118` (public `main` unchanged).
 
-## Goal
+## Completed
 
-Add a verified strong mahjong decision engine to Mahjong LAB's existing real-time tile-efficiency coach, while preserving the playable GitHub Pages app and the existing CPU as a baseline.
+1. **Verified the user-provided Mortal-S42-ONNX checkpoint** by SHA-256. Weights were NOT uploaded or committed.
+2. **Executed genuine learned ONNX inference** via locally installed ONNX Runtime **1.21.0** using the versioned C API (Python ctypes; no pip/network required).
+3. Verified input/output interface `obs[1,1012,34]` float32 / `mask[1,46]` bool -> `q[1,46]`. 11/11 synthetic-input regression checks passed, including forced legal-action masks and deterministic repeats.
+4. Measured synthetic-input desktop Linux CPU latency (35 repetitions after 5 warm-ups): median ~61.9ms, p95 ~124ms. This is **not iPhone performance**.
+5. Added source reproduction: `scripts/mortal/standalone_ort_smoke.py` and `docs/mortal-ai/CP2.2.3-REAL-INFERENCE.md`.
+6. Added `.gitignore` to reduce accidental uploads of weights, raw observations and secret files.
 
-## Confirmed
+## NOT achieved
 
-- A development branch exists: `dev/mortal-ai-checkpoint-20261118`; the public `main` branch is not being modified.
-- GitHub App access is restricted to `nm0137nm-blip/mahjong-lab`.
-- A user-supplied `model.onnx` for the Mortal-S42 ONNX candidate was received in the ChatGPT development conversation. A prior verification reported a SHA-256 match to the published file (43,673,425 bytes). The weights themselves are **not** stored in this repository.
-- Local proof-of-concept work covers MJAI conversion/static validation, model interface checks with mock inputs, and information separation between players; these do **not** yet establish real model inference or playing strength.
+- The Rust `libriichi` observation encoder has **not** been compiled or run in this environment; real mahjong states are NOT connected to inference.
+- Mortal-S42 strength vs existing CPU or against high-dan players has **not** been demonstrated.
+- Browser ONNX Web + offline iPhone implementation has **not** been tested.
+- No inference Q-value should be presented as expected score, win rate or deal-in probability.
 
-## Still required before shipping
+## Release gates
 
-1. Run the authentic ONNX model with a compatible runtime, record runtime and exact model hash.
-2. Feed feature tensors produced by the genuine Mortal / libriichi feature encoder; validate live observations and legal-action masks against the reference implementation.
-3. Confirm action indexing, dealer and round context, riichi/call/kan handling, and hidden-information separation.
-4. Compare actions and gameplay outcomes against existing CPUs using statistically sufficient, seat-rotated trials and fixed seeds where possible.
-5. Verify performance and offline availability on iPhone Safari before enabling the new model in the public app.
+Actual legitimate MJAI -> exact `libriichi` observation and mask -> real model output -> rule-conformance tests -> competitive tests -> iPhone browser tests -> license review -> only then deploy.
 
-## Release safety
+## Privacy, billing and scope
 
-- Do not claim the present CPU is a high-dan-level coach.
-- Do not label Mortal Q-values as expected hand scores or winning probabilities.
-- Do not put the ~44 MB weights into the public deployment without checking license, provenance, and deployment behavior.
-- Preserve the currently playable `main` branch until comprehensive tests succeed.
+All tests used synthetic arrays and local runtime. No personal details, user scores, screenshots, secrets or model weights have been committed. No payment, subscription, paid compute service, or GitHub Actions run was initiated. All GitHub writes are on the development branch; no public gameplay deployment change.
 
-## Next development step
-
-Establish reproducible real inference and genuinely encoded observations; report pass/fail evidence before deploying any AI replacement.
+See `CP2.2.3-REAL-INFERENCE.md` for verification details and limitations.
