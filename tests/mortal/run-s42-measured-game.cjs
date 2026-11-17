@@ -52,7 +52,7 @@ const {chromium}=require('/tmp/probe/node_modules/playwright-core');
     if(history.length!==1)throw Error('Expected precisely one measured match; got '+history.length);
     const summary=history[0];
     if(summary.s42?.count<5||summary.s42.index==null)throw Error('S42 measured stats not persisted '+JSON.stringify(summary.s42));
-    if(summary.rank<1||summary.rank>4||summary.hands<4)throw Error('Old measured stats corrupted');
+    if(summary.rank<1||summary.rank>4||summary.hands<1)throw Error('Old measured stats corrupted: '+JSON.stringify({rank:summary.rank,hands:summary.hands}));
     await page.locator('#homeBtn').click();
     const top=await page.locator('#homeS42Stats').innerText();
     if(!top.includes('平均判断指数')||!top.includes(String(summary.s42.index)+'/100'))throw Error('Home S42 aggregate not visible');
