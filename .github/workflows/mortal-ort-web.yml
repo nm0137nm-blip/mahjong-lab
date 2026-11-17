@@ -32,7 +32,8 @@ jobs:
           set -euo pipefail
           git clone --depth=1 --branch dev/mortal-ai-checkpoint-20261118 https://github.com/nm0137nm-blip/mahjong-lab.git /tmp/lab
           mkdir -p /tmp/lab/assets/ort
-          cp /tmp/ortpkg/node_modules/onnxruntime-web/dist/ort.min.mjs /tmp/lab/assets/ort/ort.min.mjs
+          cp /tmp/ortpkg/node_modules/onnxruntime-web/dist/ort.wasm.min.mjs /tmp/lab/assets/ort/ort.min.mjs
+          cp /tmp/ortpkg/node_modules/onnxruntime-web/dist/ort-wasm-simd-threaded.mjs /tmp/lab/assets/ort/
           cp /tmp/ortpkg/node_modules/onnxruntime-web/dist/ort-wasm-simd-threaded.wasm /tmp/lab/assets/ort/
           curl --fail --location --silent --show-error https://raw.githubusercontent.com/microsoft/onnxruntime/v1.21.0/LICENSE --output /tmp/lab/assets/ort/LICENSE.MIT
           test -s /tmp/lab/assets/ort/LICENSE.MIT
