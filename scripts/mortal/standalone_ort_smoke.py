@@ -50,7 +50,7 @@ def main(path):
         started = time.perf_counter()
         check(f(I['session'], c.c_void_p, c.c_void_p, c.c_char_p, c.c_void_p, c.POINTER(c.c_void_p))(env, str(model).encode(), opt, c.byref(sess)))
         load_ms = 1000 * (time.perf_counter() - started)
-        check(f(I['memory'], c.c_void_p, c.c_int, c.c_int, c.POINTER(c.c_void_p))(0, 0, c.byref(mem))
+        check(f(I['memory'], c.c_void_p, c.c_int, c.c_int, c.POINTER(c.c_void_p))(0, 0, c.byref(mem)))
 
         obs = (c.c_float * (1012 * 34))()
         obs_dims = (c.c_int64 * 3)(1, 1012, 34)
