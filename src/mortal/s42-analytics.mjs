@@ -24,9 +24,9 @@ export function actionForDiscard(tile,riichi=false){
 export function analyzeDecision(op,chosen,riichi=false){
   if(!op||!Array.isArray(op.qLegal)||op.qLegal.length!==46||!Number.isInteger(op.best))return null;
   const action=actionForDiscard(chosen,riichi);
-  if(action==null||!Number.isFinite(op.qLegal[action]))return null;
-  const sorted=op.qLegal.map((q,i)=>({index:i,q:Number(q)}))
-    .filter(x=>Number.isFinite(x.q)).sort((a,b)=>b.q-a.q||a.index-b.index);
+  if(action==null||typeof op.qLegal[action]!=='number'||!Number.isFinite(op.qLegal[action]))return null;
+  const sorted=op.qLegal.map((q,i)=>({index:i,q}))
+    .filter(x=>typeof x.q==='number'&&Number.isFinite(x.q)).sort((a,b)=>b.q-a.q||a.index-b.index);
   if(sorted.length<2||sorted[0].index!==op.best)return null;
   const picked=sorted.find(x=>x.index===action);
   if(!picked)return null;
