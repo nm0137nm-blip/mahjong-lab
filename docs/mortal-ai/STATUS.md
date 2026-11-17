@@ -1,29 +1,29 @@
-# 麻雀LAB Mortal AI — Development status
+# 麻雀LAB / Mortal AI — Current checkpoint
 
-Updated: 2026-11-18 JST. Branch: `dev/mortal-ai-checkpoint-20261118` (public `main` unchanged).
+Last updated: 2026-11-18 JST. All changes limited to `dev/mortal-ai-checkpoint-20261118`.
 
-## Completed
+## Completed / verified
 
-1. **Verified the user-provided Mortal-S42-ONNX checkpoint** by SHA-256. Weights were NOT uploaded or committed.
-2. **Executed genuine learned ONNX inference** via locally installed ONNX Runtime **1.21.0** using the versioned C API (Python ctypes; no pip/network required).
-3. Verified input/output interface `obs[1,1012,34]` float32 / `mask[1,46]` bool -> `q[1,46]`. 11/11 synthetic-input regression checks passed, including forced legal-action masks and deterministic repeats.
-4. Measured synthetic-input desktop Linux CPU latency (35 repetitions after 5 warm-ups): median ~61.9ms, p95 ~124ms. This is **not iPhone performance**.
-5. Added source reproduction: `scripts/mortal/standalone_ort_smoke.py` and `docs/mortal-ai/CP2.2.3-REAL-INFERENCE.md`.
-6. Added `.gitignore` to reduce accidental uploads of weights, raw observations and secret files.
+- **CP2.2.3**: Genuine user-provided Mortal-S42 ONNX weights ran through local ONNX Runtime 1.21 C API (not a mock). 11/11 synthetic-input regression checks passed; Linux CPU median ~61.9ms after warmups. See `CP2.2.3-REAL-INFERENCE.md`.
+- **CP2.2.4**: Built the **authentic Rust libriichi V4 observation encoder** on a free, standard GitHub-hosted Ubuntu runner and captured one *fictional MJAI scene* as `obs[1012,34]` and `mask[46]`. Encoder code matched the user's provided Mortal source at four verified Git blob SHAs.
+- Fed the exact encoder-generated feature bytes into the actual trained Mortal-S42 model on local CPU; validated digest `b6499f28617d477298e1aa4834633f962359194f7d17024e44460feea06d9c5b` and computed 46 Q values. Best legal action for this deliberately synthetic case was 37 (riichi); **not a general strategy assertion**.
+- A reproduction workflow is in `.github/workflows/mortal-encoder-validation.yml`. Successful public GitHub Actions run: https://github.com/nm0137nm-blip/mahjong-lab/actions/runs/44184696820 .
+- `tests/fixtures/synthetic_libriichi_v4_obs.b64` contains **only fictional model features**, not any user data. Never commit actual model weights.
 
-## NOT achieved
+## NOT achieved / deployment blockers
 
-- The Rust `libriichi` observation encoder has **not** been compiled or run in this environment; real mahjong states are NOT connected to inference.
-- Mortal-S42 strength vs existing CPU or against high-dan players has **not** been demonstrated.
-- Browser ONNX Web + offline iPhone implementation has **not** been tested.
-- No inference Q-value should be presented as expected score, win rate or deal-in probability.
+1. Live Mahjong LAB state -> MJAI -> Rust feature encoder -> Mortal decision handling over diverse gameplay, including pon/chi/kans, riichi acceptance, red fives and final scoring.
+2. Strength evaluation of the specific Mortal-S42 checkpoint vs present CPU; no high-rank/strong-AI claim yet.
+3. iPhone browser ONNX inference, offline data cache, frame-rate/memory impact.
+4. License review of model weights and any redistributed runtime/source.
 
-## Release gates
+Raw Q values are **not** point EV, win percentage, or deal-in probability. The current public Mahjong LAB coach remains unchanged.
 
-Actual legitimate MJAI -> exact `libriichi` observation and mask -> real model output -> rule-conformance tests -> competitive tests -> iPhone browser tests -> license review -> only then deploy.
+## Security and billing guarantees for this checkpoint
 
-## Privacy, billing and scope
+- No payment, purchase, subscription, billing setting change, paid runner or paid service initiated.
+- Only free standard GitHub Actions in a **public** repo. No uploaded model, personal data, user hand histories, user images, secrets, or workflow artifacts.
+- Workflow has `permissions: {}`, only public synthetic information and upstream source. Existing deployed `main` app remains unchanged.
+- `.gitignore` protects against accidental weights/secret file additions; public commits are also manually reviewed.
 
-All tests used synthetic arrays and local runtime. No personal details, user scores, screenshots, secrets or model weights have been committed. No payment, subscription, paid compute service, or GitHub Actions run was initiated. All GitHub writes are on the development branch; no public gameplay deployment change.
-
-See `CP2.2.3-REAL-INFERENCE.md` for verification details and limitations.
+Details: `CP2.2.4-ENCODER-TO-INFERENCE.md`.
