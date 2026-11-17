@@ -1,0 +1,24 @@
+<!doctype html><html><head><meta charset="utf-8"></head><body><pre id="status">PENDING</pre><script type="module">
+import * as ort from '../../assets/ort/ort.min.mjs';
+window.probeResult={status:'RUNNING'};
+try{
+  const started=performance.now();
+  ort.env.wasm.numThreads=1;ort.env.wasm.proxy=false;ort.env.wasm.wasmPaths=new URL('../../assets/ort/',import.meta.url).href;
+  const result=await fetch('./model.onnx');if(!result.ok)throw Error('model missing HTTP '+result.status);
+  const weights=await result.arrayBuffer();
+  const sess=await ort.InferenceSession.create(new Uint8Array(weights),{executionProviders:['wasm'],graphOptimizationLevel:'all'});
+  const rt=await fetch('../../tests/fixtures/synthetic_libriichi_v4_obs.b64');if(!rt.ok)throw Error('fixture missing');
+  const txt=(await rt.text()).trim();
+  const raw=Uint8Array.from(atob(txt),c=>c.charCodeAt(0));
+  const stream=new Blob([raw]).stream().pipeThrough(new DecompressionStream('deflate'));
+  const expected=new Uint8Array(await new Response(stream).arrayBuffer());
+  const obs=new Float32Array(expected.buffer,expected.byteOffset,1012*34);
+  const mask=expected.slice(1012*34*4,1012*34*4+46);
+  const outputs=await sess.run({obs:new ort.Tensor('float32',obs,[1,1012,34]),mask:new ort.Tensor('bool',mask,[1,46])});
+  const q=outputs.q.data;let best=-1,bval=-Infinity;
+  for(let i=0;i<46;i++)if(mask[i]&&q[i]>bval){best=i;bval=Number(q[i]);}
+  if(best!==37)throw Error('Expected action 37 on official fixture, got '+best);
+  window.probeResult={status:'PASS_REAL_S42_BROWSER_INFERENCE',ms:Math.round(performance.now()-started),q_best:bval,best:best,model_size:weights.byteLength,origin:location.origin};
+}catch(e){window.probeResult={status:'FAIL',error:String(e?.stack||e).slice(0,1000)};}
+document.querySelector('#status').textContent=JSON.stringify(window.probeResult);
+</script></body></html>
