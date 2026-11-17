@@ -1,0 +1,42 @@
+name: Browser Mortal encoder WASM parity (synthetic only)
+on:
+  push:
+    branches:
+      - dev/mortal-ai-checkpoint-20261118
+    paths:
+      - scripts/mortal/build_browser_encoder.py
+      - tests/mortal/verify_wasm_encoder.mjs
+      - .github/workflows/mortal-browser-wasm.yml
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  build-and-verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 22
+    steps:
+      - name: Checkout public code only
+        run: |
+          git clone --depth=1 --branch dev/mortal-ai-checkpoint-20261118 https://github.com/nm0137nm-blip/mahjong-lab.git /tmp/lab
+          git clone https://github.com/Equim-chan/Mortal.git /tmp/Mortal
+          git -C /tmp/Mortal checkout 0cff2b52982be5b1163aa9a62fb01f03ce91e0d2
+          git -C /tmp/Mortal rev-parse HEAD
+      - name: Compile browser encoder (no Python runtime, no model weights)
+        shell: bash
+        run: |
+          set -euo pipefail
+          rustup target add wasm32-unknown-unknown
+          python3 /tmp/lab/scripts/mortal/build_browser_encoder.py /tmp/Mortal /tmp/browser-encoder
+          cd /tmp/browser-encoder
+          cargo build --release --target wasm32-unknown-unknown 2>&1 | tee /tmp/cargo-build.log
+          ls -lh target/wasm32-unknown-unknown/release/*.wasm
+      - name: Compare encoded tensor to authentic reference
+        shell: bash
+        run: |
+          node /tmp/lab/tests/mortal/verify_wasm_encoder.mjs /tmp/browser-encoder/target/wasm32-unknown-unknown/release/mahjong_lab_mortal_encoder.wasm /tmp/lab/tests/fixtures/synthetic_libriichi_v4_obs.b64
+      - name: Save compiler output for checkpoint (public only)
+        if: always()
+        shell: bash
+        run: |
+          echo "Branch-only browser WASM verification. No private data, no model weights, no payments."
