@@ -10,6 +10,12 @@ const {chromium}=require('/tmp/probe/node_modules/playwright-core');
     await page.locator('input[name="recordMode"][value="measure"]').check();
     await page.locator('#startBtn').click();
     await page.locator('#speedSelect').selectOption('300');
+    // Reduce only the local browser's artificial animation delays for this synthetic CI match.
+    // It does not alter the game engine source, scoring logic or debugUsed flag.
+    await page.evaluate(()=>{
+      const native=window.setTimeout.bind(window);
+      window.setTimeout=(fn,ms,...args)=>native(fn,typeof ms==='number' && ms>120?120:ms,...args);
+    });
     let decisions=0,results=0,ended=false;
     for(let i=0;i<1900;i++){
       const state=await page.evaluate(()=>MahjongLabDebug.state());
@@ -25,9 +31,13 @@ const {chromium}=require('/tmp/probe/node_modules/playwright-core');
         if(picked)decisions++;
       }else if(state.pending==='reaction'){
         await page.evaluate(()=>MahjongLabDebug.answer({}));
-      }else await page.waitForTimeout(65);
+      }else await page.waitForTimeout(45);
+      if(i%150===0)console.log('MEASURE_PROGRESS='+JSON.stringify({i,decisions,results,state}));
     }
-    if(!ended)throw Error('Measuring match did not finish');
+    if(!ended){
+      const state=await page.evaluate(()=>({status:MahjongLabDebug.state(),s42:MahjongLabS42Debug(),pending:MahjongLabDebug.inspect().lastFeedback?.mortalDecision,overlay:document.querySelector('#resultOverlay')?.className}));
+      throw Error('Measuring match did not finish: '+JSON.stringify({decisions,results,state}));
+    }
     const finished=await page.evaluate(()=>({
       stats:document.querySelector('#s42EndSummary')?.textContent,
       record:JSON.parse(localStorage.getItem('mahjonglab-measured-v2')||'[]'),
