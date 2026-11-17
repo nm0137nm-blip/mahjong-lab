@@ -138,7 +138,8 @@ export class MortalClient {
         const {best,q,legal,elapsed}=data;
         if(!legal[best])return;
         const opinion={id:info.decision,best,label:labelAction(best),tile:actionToMajiangTile(best),
-          qBest:Number(q[best]),elapsed,source:'Mortal-S42'};
+          qBest:Number(q[best]),elapsed,source:'Mortal-S42',
+          qLegal:q.map((v,i)=>legal[i]&&Number.isFinite(Number(v))?Number(v):null)};
         this.current=opinion;this.onOpinion(opinion);
       }
     };

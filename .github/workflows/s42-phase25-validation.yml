@@ -1,0 +1,24 @@
+name: Phase 2.5 S42 insights static and analytics regression
+on:
+  push:
+    branches: [dev/s42-analysis-20261118]
+    paths:
+      - index.html
+      - src/mortal/**
+      - tests/mortal/analytics.test.mjs
+      - tests/mortal/check-phase25.cjs
+      - .github/workflows/s42-phase25-validation.yml
+permissions: {}
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 4
+    steps:
+      - name: Check publicly reproducible app scripts (no model required)
+        shell: bash
+        run: |
+          set -euo pipefail
+          git clone --depth=1 --branch dev/s42-analysis-20261118 https://github.com/nm0137nm-blip/mahjong-lab.git /tmp/lab
+          node /tmp/lab/tests/mortal/check-phase25.cjs
+          node /tmp/lab/tests/mortal/analytics.test.mjs
+          node /tmp/lab/tests/mortal/bridge.test.mjs

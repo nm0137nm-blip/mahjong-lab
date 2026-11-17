@@ -1,9 +1,10 @@
-// Mahjong LAB PWA — v2.4: fully local gameplay; S42 model saved only in device IndexedDB.
-const CACHE='mahjong-lab-iphone-v240';
+// Mahjong LAB PWA — v2.5: fully local gameplay; S42 model saved only in device IndexedDB.
+const CACHE='mahjong-lab-iphone-v250';
 const SHELL=['./','./index.html'];
 const RESOURCES=[
  './src/mortal/mjai-bridge.mjs',
  './src/mortal/mortal-client.mjs',
+ './src/mortal/s42-analytics.mjs',
  './src/mortal/mortal-worker.mjs',
  './assets/mortal/encoder.js',
  './assets/mortal/encoder_bg.wasm',

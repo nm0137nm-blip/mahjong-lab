@@ -387,11 +387,42 @@
 .mortal-detail h3{font-size:13px;margin:0 0 7px;color:#c6f2bc}
 .mortal-detail .mortal-caveat{font-size:11px;color:#bfd3c2;line-height:1.5}
 @media(max-width:375px){#gameScreen .inline-label{font-size:9px}#gameScreen .inline-name{font-size:10px}#gameScreen .inline-tile{width:15px;height:21px}#gameScreen .inline-metric{font-size:9px}}
+
+/* Phase 2.5: S42-only review, explicit efficiency/Q-value separation */
+.s42-analysis-head{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.s42-tabs{display:flex;gap:8px;margin:10px 0;flex-wrap:wrap}
+.s42-tabs button{flex:1;padding:10px 7px;border:1px solid #4a796a;border-radius:10px;background:#173e35;color:#d9f0dc;font-weight:700;font-size:12px}
+.s42-tabs button[aria-selected="true"]{background:#b5e0b7;color:#17382f;border-color:#b5e0b7}
+.s42-analysis-note{color:#d0ddd2;font-size:12px;line-height:1.65;margin:8px 0 12px}
+.s42-data-table{width:100%;border-collapse:collapse;font-size:12px;text-align:left}
+.s42-data-table th,.s42-data-table td{padding:8px 4px;border-bottom:1px solid #365f51}
+.s42-data-table th{color:#b9dbb9}
+.s42-data-table tr.selected{background:#2b5548}
+.s42-data-table tr.best{font-weight:800}
+.s42-info{padding:10px;background:#183f35;border:1px solid #557e67;border-radius:10px;margin:10px 0;color:#e4efdf;font-size:12px;line-height:1.6}
+.s42-review-pane{margin:12px 0 8px}
+.s42-review-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0}
+.s42-review-metric{border:1px solid #477565;border-radius:10px;padding:9px 5px;text-align:center;background:#1e433a}
+.s42-review-metric strong{display:block;font-size:20px;color:#e9f8df}
+.s42-review-metric small{display:block;font-size:10px;line-height:1.4;color:#bcd1c1}
+.s42-review-control{display:flex;gap:8px;flex-wrap:wrap}
+.s42-review-control button{flex:1;min-width:72px}
+#endOverlay .modal,#s42ReviewOverlay .modal{max-height:88dvh;overflow-y:auto}
+.s42-replay-hand{display:flex;gap:2px;flex-wrap:wrap;margin:8px 0}
+.s42-replay-hand img{width:23px;height:32px;object-fit:contain}
+.s42-replay-rivers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:12px 0}
+.s42-replay-river{min-width:0;padding:7px;background:#163d34;border-radius:9px}
+.s42-replay-river h4{font-size:11px;margin:0 0 4px;color:#c8e7ca}
+.s42-replay-river img{width:16px;height:22px;object-fit:contain}
+.s42-replay-river-tiles{display:flex;flex-wrap:wrap;gap:2px}
+.s42-replay-title{font-size:12px;color:#cfe5ce;margin:8px 0}
+.s42-hidden{display:none!important}
+@media(max-width:375px){.s42-review-metric strong{font-size:17px}.s42-replay-hand img{width:20px;height:28px}}
 </style>
-  <title>麻雀LAB — Phase 2.4 S42</title>
+  <title>麻雀LAB — Phase 2.5 S42 REVIEW</title>
 </head>
 <body>
-  <header class="site-header"><div class="logo"><span class="logo-mark">牌</span><span>麻雀<span class="logo-lab">LAB</span></span></div><span class="phase">PHASE 2.4 · MORTAL-S42</span></header>
+  <header class="site-header"><div class="logo"><span class="logo-mark">牌</span><span>麻雀<span class="logo-lab">LAB</span></span></div><span class="phase">PHASE 2.5 · S42 REVIEW</span></header>
   <main id="startScreen" class="home">
     <div class="eyebrow"><span class="eyedot"></span> MAHJONG LAB</div>
     <h1 class="home-compact-title">対局設定</h1>
@@ -409,7 +440,7 @@
         <label><input type="radio" name="recordMode" value="practice" checked><span><strong>練習対局</strong><small>記録しない・コーチあり</small></span></label>
         <label><input type="radio" name="recordMode" value="measure"><span><strong>計測用対局</strong><small>完走分を保存・コーチあり</small></span></label>
       </div>
-      <button class="primary big" id="startBtn" type="button">対局をはじめる <span>→</span></button><div class="mortal-setup"><div class="mortal-setup-title"><span>Mortal-S42 AIコーチ</span><span id="mortalLive" class="mortal-live">準備中</span></div><div id="mortalStatus" class="mortal-help">端末内AIの準備中です</div><input id="mortalModelFile" type="file" class="mortal-file" accept=".onnx,application/octet-stream" aria-label="S42学習済みモデルを選択"><div class="mortal-help">初回のみ学習済みモデルを選択してください。端末内に保存します。対局情報やモデルを外部へ送信しません。未設定時も従来の牌効率コーチ・CPU参考判断が使用できます。</div></div>
+      <button class="primary big" id="startBtn" type="button">対局をはじめる <span>→</span></button><div class="mortal-setup"><div class="mortal-setup-title"><span>Mortal-S42 AIコーチ</span><span id="mortalLive" class="mortal-live">準備中</span></div><div id="mortalStatus" class="mortal-help">端末内AIの準備中です</div><input id="mortalModelFile" type="file" class="mortal-file" accept=".onnx,application/octet-stream" aria-label="S42学習済みモデルを選択"><div class="mortal-help">初回のみ学習済みモデルを選択してください。端末内に保存します。対局情報やモデルを外部へ送信しません。未設定時も牌効率コーチが使用できます。</div></div>
     </section>
     <section class="stat-card">
       <div class="section-heading"><h2>計測成績</h2><span>この端末だけに保存</span></div>
@@ -417,9 +448,9 @@
         <button id="statsEast" class="stat-tab active" type="button" aria-pressed="true">東風戦</button>
         <button id="statsHalf" class="stat-tab" type="button" aria-pressed="false">半荘戦</button>
       </div>
-      <div class="stats" id="homeStats"></div>
+      <div class="stats" id="homeStats"></div><div id="homeS42Stats"></div>
       <div id="detailStats" class="stats-content"></div>
-      <p class="stats-note">※ 計測用対局の完走分のみ。率は総局数を基準（ツモ率のみ自分の和了数を基準）。旧版の対局・練習・途中中断・自動テストは対象外です。牌効率コーチは基礎版で、期待収支は未計算です。</p>
+      <p class="stats-note">※ 計測用対局の完走分のみ。率は総局数を基準（ツモ率のみ自分の和了数を基準）。旧版の対局・練習・途中中断・自動テストは対象外です。牌効率とS42のQ値は別の評価です。S42指標は解析済みの新しい対局から集計します。</p>
     </section>
 
     <div class="home-footer">電脳麻将 / majiang-core / majiang-ai を利用 · MIT License</div>
@@ -459,7 +490,8 @@
   <div id="decisionOverlay" class="hidden" aria-hidden="true"></div>
   <div class="overlay coach-overlay hidden" id="coachOverlay" role="dialog" aria-modal="true" aria-label="牌効率の解説"><div class="modal coach-modal"><div class="modal-label">牌効率メモ</div><h2>直前の打牌を確認</h2><div id="coachModalBody"></div><button class="primary" id="closeCoachBtn" type="button">対局に戻る</button></div></div>
   <div class="overlay hidden" id="resultOverlay" role="dialog" aria-modal="true" aria-labelledby="resultTitle"><div class="modal"><div class="modal-label" id="resultTag">局の結果</div><h2 id="resultTitle">流局</h2><p id="resultDetails"></p><div id="resultHandDetail" class="result-detail"></div><div id="resultScores" class="result-scores"></div><button id="continueBtn" class="primary" type="button">次の局へ →</button></div></div>
-  <div class="overlay hidden" id="endOverlay" role="dialog" aria-modal="true" aria-labelledby="endTitle"><div class="modal"><div class="modal-label">FINISH</div><h2 id="endTitle">対局終了</h2><div id="endScores" class="result-scores"></div><p class="end-note">AIコーチの高度な期待値評価は次フェーズで追加予定です。</p><button id="restartBtn" class="primary" type="button">もう一度対局する →</button><button id="homeBtn" class="secondary" type="button">トップに戻る</button></div></div>
+  <div class="overlay hidden" id="endOverlay" role="dialog" aria-modal="true" aria-labelledby="endTitle"><div class="modal"><div class="modal-label">FINISH</div><h2 id="endTitle">対局終了</h2><div id="endScores" class="result-scores"></div><div id="s42EndSummary" class="s42-review-pane"></div><button id="s42ReviewBtn" class="secondary" type="button" hidden>S42の大差候補局面を振り返る</button><p class="end-note">S42判断指数は独自の暫定指標です。段位・期待点数・悪手の確定判定ではありません。</p><button id="restartBtn" class="primary" type="button">もう一度対局する →</button><button id="homeBtn" class="secondary" type="button">トップに戻る</button></div></div>
+<div class="overlay hidden" id="s42ReviewOverlay" role="dialog" aria-modal="true" aria-labelledby="s42ReviewTitle"><div class="modal"><div class="modal-label">S42 REVIEW</div><h2 id="s42ReviewTitle">局面の振り返り</h2><div id="s42ReviewBody"></div><div class="s42-review-control"><button id="s42ReviewPrev" class="secondary" type="button">← 前</button><button id="s42ReviewNext" class="secondary" type="button">次 →</button></div><button id="s42ReviewClose" class="primary" type="button">閉じる</button></div></div>
 <script>
 /* Original engine and CPU: Satoshi Kobayashi; MIT licensed. See vendor/*.txt */
 (function(root){
@@ -4634,7 +4666,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
 
   let game = null, human = null, pending = null, mode = '1';
   let riichiMode = false, coachCollapsed = true, candidateInfo = [];
-  let lastFeedback = null, decisionLog = [], gameEnded = false;
+  let lastFeedback = null, decisionLog = [], gameEnded = false, matchSaved = false;
   let readyToNext = false, selectedRule = null, lastAction = '';
   let toastTimer = null, bannerTimer = null, latestDiscard = null;
   let lastCandidateInfo = [];
@@ -4665,7 +4697,8 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     action_hule() {} action_pingju() {} action_jieju() {}
   }
   let referenceAI=null, referenceCurrent=null, referenceReaction=null;
-  let mortalClient=null, mortalStatusText='初期化中';
+  let mortalClient=null, mortalStatusText='初期化中',s42Analytics=null;
+  let s42ReviewRows=[],s42ReviewCursor=0;
   const mirrorAudit={packets:0, errors:0, matchedSelf:0, selfMismatch:0, wallAccess:0};
   function safeReferenceEvent(msg) {
     if (!referenceAI) return;
@@ -4711,7 +4744,6 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
   class Human extends M.Player {
     action(msg,callback){
       try{mortalClient?.ingest(msg);}catch(e){console.warn('S42の付加評価のみ停止',e);}
-      safeReferenceEvent(msg);
       return super.action(msg,callback);
     }
     action_kaiju() { this._callback({}); }
@@ -4722,7 +4754,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
       const gang = this.get_gang_mianzi(this.shoupai) || [];
       pending = { type: 'turn', options, gang, win: this.allow_hule(this.shoupai), nine: this.allow_pingju(this.shoupai) };
       candidateInfo = scoreCandidates(options);
-      referenceCurrent = referenceDiscard();
+      referenceCurrent = null;
       redrawSoon();
     }
     action_dapai(dapai) {
@@ -4736,7 +4768,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
       if (!win && !peng.length && !gang.length && !chi.length) { this._callback({}); return; }
       if (callMode()==='auto' && !win) { this._callback({}); return; }
       pending = { type: 'reaction', from: dapai.l, p: dapai.p, win, chi, peng, gang };
-      referenceReaction=referenceCall(dapai);
+      referenceReaction=null;
       redrawSoon();
     }
     action_fulou(fulou) {
@@ -4761,6 +4793,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
 
   // New versioned key: pre-v0.9 history is intentionally excluded from measured results.
   const RECORD_KEY = 'mahjonglab-measured-v2';
+  const S42_REVIEW_KEY='mahjonglab-s42-reviews-last-v1';
   let recordMode = 'practice', statsMode = 1, debugUsed = false;
   function summarizeMatch(paipu) {
     const out={
@@ -4824,6 +4857,18 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
       const cell=el('div','stat-detail');cell.append(el('div','stat-detail-value',value),el('div','stat-detail-label',label));grid.append(cell);
     });
     detail.append(grid);
+    const reviewed=s42Analytics?s42Analytics.combineAggregates(all.map(x=>x.s42)):{count:0,index:null,agreementRate:null,badCandidateRate:null};
+    const statBox=el('section','s42-review-pane');
+    statBox.append(el('h3','', 'S42基準・学習指標'));
+    const statGrid=el('div','s42-review-grid');
+    [
+      ['平均判断指数',reviewed.index==null?'—':reviewed.index+'/100'],
+      ['S42一致率',s42Analytics?s42Analytics.PERCENT(reviewed.agreementRate):'—'],
+      ['悪手候補率（暫定）',s42Analytics?s42Analytics.PERCENT(reviewed.badCandidateRate):'—']
+    ].forEach(([label,value])=>{const b=el('div','s42-review-metric');b.append(el('strong','',value),el('small','',label));statGrid.append(b);});
+    statBox.append(statGrid);
+    statBox.append(el('p','s42-analysis-note','評価対象 '+reviewed.count+'打牌。指数＝合法手Q値の最良・最悪間で相対化した値。悪手候補＝相対Q差30%以上。独自の暫定定義で、段位・期待点数・確定的な悪手率ではありません。旧対局はS42評価の集計対象外です。'));
+    $('homeS42Stats').replaceChildren(statBox);
     $('statsEast').classList.toggle('active',statsMode===1);
     $('statsHalf').classList.toggle('active',statsMode===2);
     $('statsEast').setAttribute('aria-pressed',String(statsMode===1));
@@ -4833,15 +4878,15 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     if (game && !gameEnded) { try { game.stop(()=>{}); } catch {} }
     mode = document.querySelector('input[name="length"]:checked')?.value || '1';
     recordMode = document.querySelector('input[name="recordMode"]:checked')?.value || 'practice';
-    debugUsed = false;
+    debugUsed = false; matchSaved = false;
     $('recordModeBadge').textContent=recordMode==='measure'?'計測中':'練習';
     selectedRule = M.rule({'配給原点':25000,'赤牌':{m:1,p:1,s:1},'場数':Number(mode),'延長戦方式':0,'オーラス止めあり':false,'順位点':['0.0','0.0','0.0','0.0']});
-    human = new Human(); referenceAI = new PassiveReferenceAI();
+    human = new Human(); referenceAI = null;
     referenceCurrent=null;referenceReaction=null;
     Object.assign(mirrorAudit,{packets:0,errors:0,matchedSelf:0,selfMismatch:0,wallAccess:0});
     pending = null; gameEnded = false; readyToNext = false;
     riichiMode = false; candidateInfo = []; lastCandidateInfo = []; lastFeedback = null;
-    decisionLog = []; lastAction = ''; latestDiscard=null;
+    decisionLog = []; s42ReviewRows=[]; lastAction = ''; latestDiscard=null;
     $('eventBanner').classList.add('hidden'); $('callTray').classList.add('hidden'); $('coachOverlay').classList.add('hidden');
     const players = [human,new AI(),new AI(),new AI()];
     game = new M.Game(players, onFinished, selectedRule, '麻雀LAB');
@@ -4875,18 +4920,20 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
         if(msg?.hule || msg?.pingju) { pending = null; readyToNext = false; $('continueBtn').disabled = true; game.stop(()=>{readyToNext = true; $('continueBtn').disabled = false;}); showResult(msg); }
         redrawSoon();
       },
-      summary: paipu => { gameEnded = true; readyToNext = false; pending = null; showEnd(paipu); redrawSoon(); }
+      summary: paipu => { gameEnded = true; readyToNext = false; pending = null; onFinished(paipu); showEnd(paipu); redrawSoon(); }
     };
     $('startScreen').classList.add('hidden'); $('gameScreen').classList.remove('hidden');
     $('resultOverlay').classList.add('hidden'); $('endOverlay').classList.add('hidden');
     game.kaiju(); redrawSoon();
   }
   function onFinished(paipu) {
-    if(!paipu)return;
+    if(!paipu || matchSaved)return;
+    matchSaved = true;
     // Save only explicitly opted-in, complete, non-debug matches.
     if(recordMode==='measure' && !debugUsed) {
       try {
         const summary=summarizeMatch(paipu);
+        summary.s42=s42Aggregated();
         if(summary.hands>0 && Number.isFinite(summary.score)) {
           const history=store.read(RECORD_KEY,[]);
           history.push(summary);
@@ -4895,8 +4942,12 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
       }catch(e){console.error('成績集計を保存できませんでした',e);}
     }
     // Per-discard notes are not league statistics.
-    if(!debugUsed)store.save('mahjonglab-last-decisions-v1',decisionLog.slice(-100));
+    if(!debugUsed){
+      store.save('mahjonglab-last-decisions-v1',decisionLog.slice(-100).map(x=>({round:x.round,discard:x.discard,shanten:x.shanten,ukeire:x.ukeire,s42Review:x.s42Review})));
+      store.save(S42_REVIEW_KEY,s42ReviewList());
+    }
     renderStats();
+    if(gameEnded)renderS42End();
   }
   function ownSeat() { return game ? game.model.player_id.indexOf(0) : 0; }
   function ownShoupai() { try {return human && human.shoupai;} catch {return null;} }
@@ -5139,6 +5190,41 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     try { cb(payload); } catch(err) { notify('操作でエラーが発生しました: '+err.message); console.error(err); }
     redrawSoon();
   }
+
+  // Snapshot consists ONLY of the human hand and publicly visible table state.
+  // Opponent concealed hands and wall tiles are intentionally never copied.
+  function captureS42Scene(){
+    if(!game||!human)return null;
+    const model=game.model;
+    return {
+      hand:tileList(human.shoupai).map(p=>p.slice(0,2)),
+      selfMelds:(human.shoupai._fulou||[]).slice(),
+      rivers:Array.from({length:4},(_,l)=>({
+        name:userLabel(l),tiles:(model.he[l]?._pai||[]).map(p=>p.slice(0,2)).filter(p=>/^[mpsz][0-9]$/.test(p)),
+        melds:(model.shoupai[l]?._fulou||[]).slice()
+      })),
+      dora:(model.shan?.baopai||[]).map(p=>p.slice(0,2)),
+      scores:model.player_id.map(id=>({name:NAMES[id],points:Number(model.defen[id])})),
+      remaining:model.shan?.paishu??null
+    };
+  }
+  function s42Aggregated(){
+    return s42Analytics?s42Analytics.aggregateDecisions(decisionLog):
+      {version:'S42-relative-Q-v1',count:0,agreements:0,suspected:0,index:null,agreementRate:null,badCandidateRate:null};
+  }
+  function s42ReviewList(){
+    return decisionLog.filter(x=>x?.s42Review?.badCandidate && x?.scene)
+      .sort((a,b)=>(b.s42Review.relativeGap||0)-(a.s42Review.relativeGap||0))
+      .slice(0,25);
+  }
+  function attachS42Opinion(op){
+    const entry=decisionLog.find(x=>x.mortalDecision===op.id);
+    if(!entry)return;
+    entry.mortalOpinion={...op};
+    if(s42Analytics)entry.s42Review=s42Analytics.analyzeDecision(op,entry.discard,entry.riichi);
+    if(lastFeedback===entry)redrawSoon();
+  }
+
   function chooseDiscard(p) {
     if(pending?.type!=='turn' || !pending.options.includes(p)) return;
     if(riichiMode && !game.allow_lizhi(p)) return;
@@ -5149,11 +5235,14 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
         round:`${F[game.model.zhuangfeng]}${game.model.jushu+1}局`, discard:p,
         shanten:current.shanten, ukeire:current.ukeire,
         best:good?.p, bestShanten:good?.shanten,bestUkeire:good?.ukeire,
-        riichi:riichiMode,reference:referenceCurrent?{...referenceCurrent}:null,
+        riichi:riichiMode,reference:null,scene:captureS42Scene(),
+        candidates:candidateInfo.map(v=>({p:v.p,shanten:v.shanten,ukeire:v.ukeire,usefulDetails:v.usefulDetails?.map(d=>({...d}))||[],handTiles:v.handTiles?.slice()||[],melds:v.melds?.slice()||[]})),
         selfMetric:{p:current.p,shanten:current.shanten,ukeire:current.ukeire},
         mortalDecision:mortalClient?.decision??null,
         mortalOpinion:mortalClient?.current?.id===mortalClient?.decision?{...mortalClient.current}:null,
+        s42Review:null,
       };
+      if(info.mortalOpinion && s42Analytics)info.s42Review=s42Analytics.analyzeDecision(info.mortalOpinion,p,riichiMode);
       lastFeedback=info;lastCandidateInfo=candidateInfo.slice();
       decisionLog.push(info);if(decisionLog.length>1000)decisionLog.shift();
     }
@@ -5212,7 +5301,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
   function renderInlineCoach() {
     const flash=$('coachFlash'),content=$('coachFlashMain');content.replaceChildren();
     if(!lastFeedback){flash.classList.add('hidden');return;}
-    const x=lastFeedback,ref=x.reference,op=x.mortalOpinion;
+    const x=lastFeedback,op=x.mortalOpinion;
     flash.classList.remove('hidden');
     const row=el('div','inline-choice-row');
     const tilePair=(label,tile,kind)=>{
@@ -5229,26 +5318,23 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
       if(op.tile)ai.append(tileImg(op.tile,'inline-tile'));
       ai.append(el('span','inline-name',op.label||'合法手'));
       row.append(ai);
-      const same=op.tile && normalized(op.tile)===normalized(x.discard);
-      if(op.tile)row.append(el('span','inline-status '+(same?'agree':'disagree'),same?'一致':'別の選択'));
-    }else if(mortalClient?.workerReady){
-      row.append(el('span','inline-label','S42解析中／非対応局面'));
-    }else if(ref){
-      row.append(tilePair('CPU参考',ref.p,'reference'));
-      const same=normalized(ref.p)===normalized(x.discard);
-      row.append(el('span','inline-status '+(same?'agree':'disagree'),same?'一致':'別の選択'));
-    }else row.append(el('span','inline-label','牌効率のみ'));
-    content.append(row);
-    const note=el('div','inline-metric'),own=lastCandidateInfo.find(v=>v.p===x.discard)||x.selfMetric;
-    const suggestion=op?.tile?lastCandidateInfo.find(v=>normalized(v.p)===normalized(op.tile)):null;
-    const baseline=!op&&ref?lastCandidateInfo.find(v=>normalized(v.p)===normalized(ref.p)):null;
-    const cmp=suggestion||baseline;
-    if(own&&cmp){
-      const diff=cmp.ukeire-own.ukeire;
-      note.textContent='向聴 '+own.shanten+'→'+cmp.shanten+' ／ 有効牌 '+own.ukeire+'→'+cmp.ukeire+'枚（差 '+(diff>0?'+':'')+diff+'枚）';
-      flash.classList.toggle('warn',cmp.shanten<own.shanten||(cmp.shanten===own.shanten&&diff>=5));
+      if(x.s42Review)row.append(el('span','inline-status '+(x.s42Review.agreement?'agree':'disagree'),x.s42Review.agreement?'一致':'別の選択'));
     }else{
-      note.textContent=op?'S42は期待点数ではなく行動選択を評価':ref?'電脳麻将CPUの参考判断':'牌効率評価のみ';
+      row.append(el('span','inline-label',mortalClient?.workerReady?'S42解析中／比較対象外':'S42未設定'));
+    }
+    content.append(row);
+    const note=el('div','inline-metric');
+    const own=(x.candidates||[]).find(v=>v.p===x.discard)||x.selfMetric;
+    const suggestion=op?.tile?(x.candidates||[]).find(v=>v.p.slice(0,2)===op.tile.slice(0,2)):null;
+    if(own&&suggestion){
+      const diff=suggestion.ukeire-own.ukeire;
+      note.textContent='向聴 '+own.shanten+'→'+suggestion.shanten+' ／ 有効牌 '+own.ukeire+'→'+suggestion.ukeire+'枚（差 '+(diff>0?'+':'')+diff+'枚）';
+      flash.classList.toggle('warn',suggestion.shanten<own.shanten||(suggestion.shanten===own.shanten&&diff>=5));
+    }else if(op){
+      note.textContent=x.s42Review?'S42判断指数 '+x.s42Review.index+'/100 · Q差 '+x.s42Review.gap.toFixed(2):'S42は期待点数ではなく行動価値Qを評価';
+      flash.classList.remove('warn');
+    }else{
+      note.textContent='牌効率コーチは利用可能 · S42の値は未取得';
       flash.classList.remove('warn');
     }
     content.append(note);
@@ -5305,14 +5391,14 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     }
     return best;
   }
-  function renderCoachCandidate(v,chosen,ranking) {
+  function renderCoachCandidate(v,chosen,ranking,customTag=null) {
     const selected=v.p.slice(0,2)===chosen.slice(0,2);
     const card=el('section','coach-candidate'+(selected?' selected':''));
     const head=el('div','coach-candidate-head');
     const pick=el('div','coach-candidate-pick');
     pick.append(tileImg(v.p,'candidate-discard'));
     pick.append(el('span','',`打 ${tileName(v.p)}`));
-    pick.append(el('span','coach-candidate-tag',selected?'あなたの選択':`候補 ${ranking+1}`));
+    pick.append(el('span','coach-candidate-tag',customTag||(selected?'あなたの選択':`候補 ${ranking+1}`)));
     head.append(pick);
     head.append(el('span','coach-candidate-value',`${v.shanten===0?'聴牌':v.shanten<0?'和了':`${v.shanten}向聴`} · 受け入れ ${v.ukeire}枚`));
     card.append(head);
@@ -5343,52 +5429,118 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     card.append(grid);
     return card;
   }
+  function s42ActionLabel(i){
+    if(i<0||i>45)return '不明';
+    if(i<27){
+      const suit=['萬','筒','索'][Math.floor(i/9)];
+      return '打'+(i%9+1)+suit;
+    }
+    if(i<34)return '打'+['東','南','西','北','白','發','中'][i-27];
+    if(i<37)return '打赤5'+['萬','筒','索'][i-34];
+    return ({37:'リーチ',38:'チー（下）',39:'チー（中）',40:'チー（上）',
+      41:'ポン',42:'カン',43:'和了',44:'九種九牌',45:'スルー'})[i]||'不明';
+  }
+  function renderS42EfficiencyChoices(x,target){
+    target.append(el('h3','','牌効率・直接有効牌の比較'));
+    target.append(el('p','s42-analysis-note','自分の打牌・S42の打牌・牌効率上位の候補について、向聴数を改善する牌と推定残枚数を表示します。安全度・手役・順位判断は牌効率に含まれません。'));
+    const rows=x.candidates||lastCandidateInfo||[];
+    const sameTile=(v,p)=>v&&p&&v.p.slice(0,2)===p.slice(0,2);
+    const own=rows.find(v=>v.p===x.discard)||rows.find(v=>sameTile(v,x.discard));
+    const ai=x.mortalOpinion?.tile?rows.find(v=>sameTile(v,x.mortalOpinion.tile)):null;
+    const ranked=rows.slice().sort((a,b)=>a.shanten-b.shanten||b.ukeire-a.ukeire);
+    const viewed=[],seen=new Set();
+    function put(v,label){
+      if(!v)return;
+      const key=v.p.slice(0,2);
+      const existing=viewed.find(x=>x.v.p.slice(0,2)===key);
+      if(existing){if(label==='S42の選択')existing.label+='・S42も選択';if(label.startsWith('牌効率'))existing.label+='・'+label;return;}
+      seen.add(key);viewed.push({v,label});
+    }
+    put(own,'あなたの選択');
+    if(ai)put(ai,'S42の選択');
+    if(x.mortalOpinion&&!x.mortalOpinion.tile){
+      target.append(el('p','s42-info','S42の推奨は「'+x.mortalOpinion.label+'」です。リーチ等は切り牌とは別の行動なので、S42の受け入れ欄は作りません。'));
+    }else if(x.mortalOpinion?.tile&&!ai){
+      target.append(el('p','s42-analysis-note','S42の切り牌は、打牌前に記録した候補から特定できませんでした。受け入れ枚数は推測して補いません。'));
+    }
+    const efficiencySeen=new Set();
+    let efficiencyRank=0;
+    for(const v of ranked){
+      if(efficiencyRank>=3)break;
+      if(efficiencySeen.has(v.p.slice(0,2)))continue;
+      efficiencySeen.add(v.p.slice(0,2));
+      put(v,'牌効率'+(++efficiencyRank)+'位');
+    }
+    for(const o of viewed)target.append(renderCoachCandidate(o.v,x.discard,0,o.label));
+    target.append(el('p','s42-analysis-note','※ 受け入れ＝その牌を引くと向聴数が下がる場合の見かけ上の残り枚数。手牌・公開牌から計算した推定上限で、山の実際の残り・和了確率ではありません。赤5は通常5と合算します。'));
+  }
+  function renderS42QDetails(x,target){
+    target.append(el('h3','','S42の定量判断・Q値比較'));
+    const op=x.mortalOpinion,review=x.s42Review;
+    if(!op||!review){
+      target.append(el('p','s42-analysis-note','この打牌の比較可能なS42評価が取得できていません。モデル未設定・エラー・モデルが別の行動段階を評価した等が考えられます。取得していない数字は補完しません。'));
+      return;
+    }
+    target.append(el('div','s42-info','S42推奨：'+op.label+' ／ あなた：'+(x.riichi?'リーチ':('打 '+tileName(x.discard)))+' ／ 合法手中 '+review.rank+'/'+review.legal+' 位'));
+    const met=el('div','s42-review-grid');
+    [
+      ['選択のQ値',review.chosenQ.toFixed(3)],
+      ['最良Qとの差',review.gap.toFixed(3)],
+      ['判断指数',review.index+'/100']
+    ].forEach(([l,v])=>{const c=el('div','s42-review-metric');c.append(el('strong','',v),el('small','',l));met.append(c);});
+    target.append(met);
+    // Exact DQN v4 dueling decomposition on the LEGAL action set:
+    // Q(s,a) = V(s) + [A(s,a) - mean(legal A)], and V(s)=mean(legal Q).
+    const decomposition=el('div','s42-info');
+    decomposition.append(el('strong','','S42の行動Q値の構造（Dueling DQN v4）'));
+    decomposition.append(el('div','','Q = 局面基礎値 V ＋ 行動の相対優位度'));
+    decomposition.append(el('div','','局面基礎値 V ≒ '+review.stateValue.toFixed(3)+'（合法手Q値の平均）'));
+    decomposition.append(el('div','','あなたの行動：'+review.chosenQ.toFixed(3)+' = '+review.stateValue.toFixed(3)+' + ('+review.chosenAdvantage.toFixed(3)+')'));
+    decomposition.append(el('div','','S42の最良行動：'+review.bestQ.toFixed(3)+' = '+review.stateValue.toFixed(3)+' + ('+review.bestAdvantage.toFixed(3)+')'));
+    decomposition.append(el('p','s42-analysis-note','ここでの V はモデルの内部的な局面価値、括弧内は合法手平均に対する相対優位度です。どちらも期待点数ではありません。モデルのDQN v4の計算構造に沿った分解です。'));
+    target.append(decomposition);
+    target.append(el('p','s42-analysis-note','相対Q差 '+(100*review.relativeGap).toFixed(1)+'%。悪手候補（暫定30%基準）：'+(review.badCandidate?'該当':'非該当')+'。これは局面内のQ値の相対比較であり、点棒損失や確定的な悪手ではありません。'));
+    const table=el('table','s42-data-table'),head=el('tr','');
+    ['順位','合法行動','モデルQ値','比較'].forEach(t=>head.append(el('th','',t)));table.append(head);
+    const candidates=(review.top||[]).slice();
+    const chosen={index:review.action,q:review.chosenQ};
+    if(!candidates.some(x=>x.index===chosen.index))candidates.push(chosen);
+    candidates.forEach(v=>{
+      const row=el('tr',v.index===review.action?'selected':v.index===review.best?'best':'');
+      const rank=review.top.findIndex(x=>x.index===v.index)+1;
+      row.append(el('td','',v.index===review.action&&rank===0?String(review.rank):String(rank)));
+      row.append(el('td','',s42ActionLabel(v.index)));
+      row.append(el('td','',v.q.toFixed(3)));
+      row.append(el('td','',v.index===review.best?'S42の最良':v.index===review.action?'あなた':''));
+      table.append(row);
+    });
+    target.append(table);
+    const note=el('div','s42-info');
+    note.append(el('strong','','局面価値と相対優位度には分けられますが、「牌効率・守備・打点」への正確な分解はできません。'));
+    note.append(el('p','s42-analysis-note','Mortal-S42のQ値は、手牌、河、副露、ドラ、点棒などの観測情報をニューラルネットワークに入力して推定した行動価値です。牌効率点＋安全度点＋期待打点という独立したスコアを加算しているわけではありません。将来、同一局面の条件を一つずつ変えて再評価する感度分析は可能ですが、これは正確な寄与度分解とは異なります。'));
+    target.append(note);
+  }
   function openCoachDetails() {
-    if(!lastFeedback) return;
-    const x=lastFeedback;
-    const body=$('coachModalBody');body.replaceChildren();
-    const summary=el('p','coach-callout',`直前の打牌：${tileName(x.discard)} · ${x.shanten}向聴 · 受け入れ ${x.ukeire}枚`);
-    body.append(summary);
-    if(x.mortalOpinion){
-      const op=x.mortalOpinion,panel=el('section','mortal-detail');
-      panel.append(el('h3','','学習済みMortal-S42の判断'));
-      panel.append(el('div','', 'S42推奨：'+op.label));
-      if(op.tile)panel.append(el('div','', '自分 '+tileName(x.discard)+' ／ S42 '+tileName(op.tile)));
-      panel.append(el('p','mortal-caveat','S42のQ値は局収支・和了率・放銃率の値ではありません。判断根拠や誤打の断定はしません。'));
-      body.append(panel);
-    }else if(mortalClient?.workerReady){
-      body.append(el('p','mortal-caveat','この打牌時点のS42の評価値は未取得です。推奨牌を補完・推測しません。'));
-    }
-    const ref=x.reference;
-    if(ref){
-      const wrap=el('div','reference-note');
-      const line=el('div','reference-title','現行CPUの参考判断（強さ未検証）');
-      const detail=el('div','reference-text',`CPUなら ${tileName(ref.p)} を切る${ref.riichi?'（リーチ宣言）':''} ／ あなたの打牌と${normalized(ref.p)===normalized(x.discard)?'同じ牌種':'異なる牌種'}`);
-      wrap.append(line,detail);
-      const ownCandidate=lastCandidateInfo.find(v=>v.p===x.discard);
-      const refCandidate=lastCandidateInfo.find(v=>v.p.slice(0,2)===ref.p);
-      if(ownCandidate&&refCandidate){
-        wrap.append(el('div','reference-text','牌効率：自分 '+ownCandidate.shanten+'向聴／'+ownCandidate.ukeire+'枚、CPU '+refCandidate.shanten+'向聴／'+refCandidate.ukeire+'枚'));
-      }
-      const trace=ref.assessments||[];
-      const selfTrace=trace.find(v=>v.p===x.discard.slice(0,2));
-      const refTrace=trace.find(v=>v.p===ref.p);
-      if(refTrace?.heuristic!=null)wrap.append(el('div','reference-text','CPU内部手牌指標：自分 '+(selfTrace?.heuristic?.toFixed(1)??'算出なし')+' ／ CPU '+refTrace.heuristic.toFixed(1)));
-      if(refTrace?.danger!=null)wrap.append(el('div','reference-text','CPU内部危険度指標：自分 '+(selfTrace?.danger?.toFixed(1)??'算出なし')+' ／ CPU '+refTrace.danger.toFixed(1)));
-      wrap.append(el('div','reference-caveat','内部数値は電脳麻将CPU固有の尺度であり、期待点数・放銃確率・判断の正しさではありません。'));
-      body.append(wrap);
-    }else{
-      body.append(el('p','reference-caveat','CPU参考判断はこの局面では取得できませんでした。'));
-    }
-    const shortlisted=coachCandidateShortlist(lastCandidateInfo,x.discard);
-    const list=el('div','coach-candidate-list');
-    const chosenAtFront=shortlisted.length===4 && shortlisted[0]?.p.slice(0,2)===x.discard.slice(0,2);
-    shortlisted.forEach((v,i)=>list.append(renderCoachCandidate(v,x.discard,i-(chosenAtFront?1:0))));
-    body.append(list);
-    if(referenceReaction && referenceReaction.kind){
-      body.append(el('p','reference-caveat',`直近の鳴き場面・現行CPU参考：${referenceReaction.kind}。局面は変化している場合があります。`));
-    }
-    body.append(el('p','coach-details-note','※ 受け入れ＝その牌を引くと向聴数が改善する牌の見かけ上の残り枚数。手牌・公開情報から数えた推定上限で、実際の山に残る枚数や和了率・期待値ではありません。向聴据置の手牌改良牌は対象外です。5の残り枚数は赤5を含めた合計です。'));
+    if(!lastFeedback)return;
+    const x=lastFeedback,body=$('coachModalBody');body.replaceChildren();
+    body.append(el('p','coach-callout','直前の打牌：'+tileName(x.discard)+' · '+x.shanten+'向聴 · 受け入れ '+x.ukeire+'枚'));
+    const tabs=el('div','s42-tabs'),effBtn=el('button','','牌効率・受け入れ'),qBtn=el('button','','S42の定量評価');
+    effBtn.type='button';qBtn.type='button';
+    tabs.append(effBtn,qBtn);body.append(tabs);
+    const efficient=el('section',''),qpanel=el('section','');
+    renderS42EfficiencyChoices(x,efficient);
+    renderS42QDetails(x,qpanel);
+    body.append(efficient,qpanel);
+    const select=which=>{
+      const eff=which==='eff';
+      efficient.classList.toggle('s42-hidden',!eff);
+      qpanel.classList.toggle('s42-hidden',eff);
+      effBtn.setAttribute('aria-selected',String(eff));
+      qBtn.setAttribute('aria-selected',String(!eff));
+    };
+    effBtn.addEventListener('click',()=>select('eff'));
+    qBtn.addEventListener('click',()=>select('q'));
+    select('eff');
     $('coachOverlay').classList.remove('hidden');
   }
   function resultPaymentLabel(data) {
@@ -5482,6 +5634,82 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     $('continueBtn').textContent=willFinishAfterResult()?'終局 →':'次の局へ →';
     $('resultOverlay').classList.remove('hidden');
   }
+
+  function renderS42End(){
+    const root=$('s42EndSummary');if(!root)return;
+    root.replaceChildren();
+    const total=s42Aggregated();
+    root.append(el('h3','','Mortal-S42 打牌判断レビュー'));
+    if(!total.count){
+      root.append(el('p','s42-analysis-note','この対局ではS42の有効な比較データがありません。モデル未設定・解析停止・比較対象外などの場合は集計しません。'));
+    }else{
+      const metrics=el('div','s42-review-grid');
+      [
+        ['判断指数',total.index+'/100'],
+        ['一致率',s42Analytics.PERCENT(total.agreementRate)],
+        ['悪手候補率',s42Analytics.PERCENT(total.badCandidateRate)]
+      ].forEach(([title,value])=>{
+        const b=el('div','s42-review-metric');b.append(el('strong','',value),el('small','',title));metrics.append(b);
+      });root.append(metrics);
+      root.append(el('p','s42-analysis-note','S42評価を取得できた '+total.count+' 打牌のみ。悪手候補＝Q値の相対差30%以上という暫定定義。段位・勝率・局収支ではありません。'));
+    }
+    s42ReviewRows=s42ReviewList();
+    const btn=$('s42ReviewBtn');
+    btn.hidden=s42ReviewRows.length===0;
+    btn.textContent=s42ReviewRows.length?'S42の大差候補 '+s42ReviewRows.length+'局面を振り返る':'S42振り返り対象なし';
+  }
+  function s42TilesRow(tiles,cls='s42-replay-hand'){
+    const node=el('div',cls);
+    for(const p of tiles||[])if(/^[mpsz][0-9]/.test(p))node.append(tileImg(p.slice(0,2),''));
+    return node;
+  }
+  function renderS42Replay(){
+    const body=$('s42ReviewBody');body.replaceChildren();
+    if(!s42ReviewRows.length){body.textContent='振り返る局面はありません';return;}
+    s42ReviewCursor=Math.max(0,Math.min(s42ReviewRows.length-1,s42ReviewCursor));
+    const x=s42ReviewRows[s42ReviewCursor],view=x.scene,score=x.s42Review;
+    body.append(el('div','s42-replay-title',(s42ReviewCursor+1)+' / '+s42ReviewRows.length+' · '+(x.round||'対局中')+' · S42とのQ差 '+(score?.gap||0).toFixed(2)+'（相対 '+Math.round(100*(score?.relativeGap||0))+'%）'));
+    const choices=el('div','s42-info','あなた：打 '+tileName(x.discard)+' ／ S42：'+(x.mortalOpinion?.label||'未取得')+'。S42の合法手順位 '+(score?.rank||'—')+' / '+(score?.legal||'—')+'。');
+    body.append(choices);
+    if(view){
+      body.append(el('h3','','打牌時点の自分の手牌'));
+      body.append(s42TilesRow(view.hand));
+      if(view.selfMelds?.length){body.append(el('p','s42-replay-title','自分の副露 '+view.selfMelds.join(' / ')));}
+      if(view.dora?.length){body.append(el('p','s42-replay-title','ドラ表示牌'));body.append(s42TilesRow(view.dora));}
+      const rivers=el('div','s42-replay-rivers');
+      for(const river of view.rivers||[]){
+        const box=el('section','s42-replay-river');
+        box.append(el('h4','',river.name+(river.melds?.length?'（副露あり）':'')));
+        box.append(s42TilesRow(river.tiles,'s42-replay-river-tiles'));rivers.append(box);
+      }
+      body.append(rivers);
+      if(view.scores?.length)body.append(el('div','s42-analysis-note','点棒：'+view.scores.map(v=>v.name+' '+fmt(v.points)).join(' / ')+' · 残り '+(view.remaining??'—')+'枚'));
+    }
+    const top=score?.top||[];
+    if(top.length){
+      body.append(el('h3','','S42の合法手Q値 上位'));
+      const wrap=el('div','s42-data-table-wrap');
+      const t=el('table','s42-data-table');
+      const th=el('tr','');for(const v of ['順位','行動','Q値'])th.append(el('th','',v));t.append(th);
+      top.forEach((v,i)=>{
+        const tr=el('tr',v.index===score.action?'selected':v.index===score.best?'best':'');
+        tr.append(el('td','',String(i+1)),el('td','',s42ActionLabel(v.index)),el('td','',v.q.toFixed(3)));t.append(tr);
+      });
+      wrap.append(t);body.append(wrap);
+    }
+    const tiles=el('div','s42-replay-candidates');
+    renderS42EfficiencyChoices(x,tiles);
+    body.append(tiles);
+    $('s42ReviewPrev').disabled=s42ReviewCursor===0;
+    $('s42ReviewNext').disabled=s42ReviewCursor===s42ReviewRows.length-1;
+  }
+  function openS42Replay(){
+    if(!s42ReviewRows.length)s42ReviewRows=store.read(S42_REVIEW_KEY,[]);
+    if(!s42ReviewRows.length)return;
+    s42ReviewCursor=0;renderS42Replay();
+    $('s42ReviewOverlay').classList.remove('hidden');
+  }
+
   function showEnd(paipu) {
     $('resultOverlay').classList.add('hidden');
     $('endTitle').textContent=`${paipu.rank[0]}着 · ${fmt(paipu.defen[0])}点`;
@@ -5491,6 +5719,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
       const row=el('div','result-score'+(x.id===0?' me':''));
       row.append(el('span','',`${x.rank}着 · ${NAMES[x.id]}`),el('span','',fmt(x.score)+'点'));$('endScores').append(row);
     }
+    renderS42End();
     $('endOverlay').classList.remove('hidden');
   }
   function goHome() {
@@ -5509,6 +5738,10 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
   $('exitBtn').addEventListener('click',()=>{if(confirm('対局を中断してトップに戻りますか？（途中対局の成績は保存されません）'))goHome();});
   $('toggleCoach').addEventListener('click',()=>{coachCollapsed=!coachCollapsed;renderCoach();});
   $('continueBtn').addEventListener('click',()=>{ if(!readyToNext)return; $('resultOverlay').classList.add('hidden');readyToNext=false;if(game&&!gameEnded)game.start();});
+  $('s42ReviewBtn').addEventListener('click',openS42Replay);
+  $('s42ReviewPrev').addEventListener('click',()=>{s42ReviewCursor--;renderS42Replay();});
+  $('s42ReviewNext').addEventListener('click',()=>{s42ReviewCursor++;renderS42Replay();});
+  $('s42ReviewClose').addEventListener('click',()=>{$('s42ReviewOverlay').classList.add('hidden');});
   $('restartBtn').addEventListener('click',initGame);
   $('homeBtn').addEventListener('click',goHome);
   renderStats();
@@ -5518,15 +5751,11 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
       $('mortalStatus').textContent=mortalStatusText;
       $('mortalLive').textContent=/準備完了/.test(mortalStatusText)?'有効':/失敗|停止|エラー/.test(mortalStatusText)?'基礎版':'未設定';
     };
-    import('./src/mortal/mortal-client.mjs').then(async ({MortalClient})=>{
+    Promise.all([import('./src/mortal/mortal-client.mjs'),import('./src/mortal/s42-analytics.mjs')]).then(async ([{MortalClient},analytics])=>{
+      s42Analytics=analytics;renderStats();
       const client=new MortalClient({
         onStatus:setStatus,
-        onOpinion:o=>{
-          if(lastFeedback && lastFeedback.mortalDecision===o.id){
-            lastFeedback.mortalOpinion={...o};
-            redrawSoon();
-          }
-        }
+        onOpinion:o=>attachS42Opinion(o)
       });
       mortalClient=client;
       try{await client.loadEncoder();}catch(e){setStatus('S42局面変換器の起動に失敗しました');return;}
