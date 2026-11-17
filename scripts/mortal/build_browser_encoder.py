@@ -120,5 +120,6 @@ ahash="0.8"
 parking_lot="0.12"
 crossbeam="0.8"
 log="0.4"
+getrandom={version="0.3",features=["wasm_js"]}
 """.strip()+"\n")
 print('Generated pure Rust encoder',out)
