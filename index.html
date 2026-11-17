@@ -306,11 +306,30 @@
 .coach-accept-empty{font-size:11px;color:#97baaa}
 .coach-details-note{font-size:10px!important;line-height:1.6;color:#a4c5b4!important}
 @media(max-width:390px){.coach-candidate{padding:8px}.coach-accept-tile img{width:21px;height:30px}.coach-accept-grid{gap:4px 3px}}
+
+/* v0.8: call announcements close to the acting seat, not near the opposite seat */
+#gameScreen .event-banner{left:195px;top:63px;max-width:120px;padding:4px 7px;font-size:12px;white-space:nowrap;border-radius:5px;box-shadow:0 2px 8px #0008}
+#gameScreen .event-banner.speech-top{left:195px;top:68px}
+#gameScreen .event-banner.speech-left{left:95px;top:108px}
+#gameScreen .event-banner.speech-right{left:295px;top:108px}
+#gameScreen .event-banner.speech-bottom{left:195px;top:380px}
+#gameScreen .river-cell.riichi-continued .river-tile{outline:2px solid #ffdf92;outline-offset:1px}
+/* v0.8: entire tile arrangement after every candidate discard */
+.coach-hand-title{font-size:11px;color:#d5e9d0;font-weight:700;margin:3px 0 5px}
+.coach-hand-strip{display:flex;flex-wrap:nowrap;align-items:flex-end;justify-content:flex-start;gap:1px;max-width:100%;overflow-x:auto;padding:2px 0 6px}
+.coach-hand-strip img{display:block;flex:none;width:clamp(16px,5.3vw,22px);height:auto;aspect-ratio:80/112;object-fit:fill;border-radius:2px}
+.coach-hand-melds{display:flex;gap:5px;flex-wrap:wrap;align-items:center;margin:3px 0 7px}
+.coach-hand-melds .meld-rotator{display:flex;gap:0;position:static;transform:none;align-items:center}
+.coach-hand-melds .meld-tile{display:inline-flex;position:relative;align-items:center;width:16px;height:23px}
+.coach-hand-melds .meld-tile img,.coach-hand-melds .meld-tile .back{width:16px;height:23px;display:block;object-fit:fill}
+.coach-hand-melds .meld-tile.called img{transform:rotate(90deg) scale(.9)}
+.coach-hand-melds .meld-group{display:flex;gap:1px;padding:2px;border-radius:4px;background:#245244}
+@media(max-width:390px){.coach-hand-strip img{width:clamp(15px,5.1vw,20px)}}
 </style>
-  <title>麻雀LAB — Phase 1.6</title>
+  <title>麻雀LAB — Phase 1.7</title>
 </head>
 <body>
-  <header class="site-header"><div class="logo"><span class="logo-mark">牌</span><span>麻雀<span class="logo-lab">LAB</span></span></div><span class="phase">PHASE 1.6 · SCORE & UKEIRE</span></header>
+  <header class="site-header"><div class="logo"><span class="logo-mark">牌</span><span>麻雀<span class="logo-lab">LAB</span></span></div><span class="phase">PHASE 1.7 · CALL & HAND</span></header>
   <main id="startScreen" class="home">
     <div class="eyebrow"><span class="eyedot"></span> THINK BEFORE YOU DISCARD</div>
     <h1>一打ずつ、<br><span>強くなる。</span></h1>
@@ -4528,7 +4547,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
   const el = (tag, cls, txt) => { const n = document.createElement(tag); if (cls) n.className = cls; if (txt != null) n.textContent = txt; return n; };
   const WINDS = ['東', '南', '西', '北'];
   const F = ['東', '南', '西', '北'];
-  const NAMES = ['あなた', 'CPU 1', 'CPU 2', 'CPU 3'];
+  const NAMES = ['あなた', '下家', '対面', '上家'];
   const IMG = p => window.MAHJONG_INLINE_IMAGES[p.slice(0, 2)];
   const normalized = p => p && p[0] + (p[1] === '0' ? '5' : p[1]);
   const fmt = v => Number(v || 0).toLocaleString('ja-JP');
@@ -4545,12 +4564,15 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
   let lastCandidateInfo = [];
   const speedValue = () => Number($('speedSelect').value || 850);
   const callMode = () => $('callMode').value || 'ask';
-  function announce(message, important=false) {
+  function announce(message, important=false, l=null) {
     const n=$('eventBanner');
+    const id=(game && Number.isInteger(l)) ? game.model.player_id[l] : 0;
+    const pos=['bottom','right','top','left'][id] || 'bottom';
+    // Announce near the actor's own seat. Discard type is represented only in the river.
     n.textContent=message;
-    n.classList.remove('hidden'); n.classList.toggle('riichi-event', important);
+    n.className='event-banner speech-'+pos+(important?' riichi-event':'');
     if(bannerTimer) clearTimeout(bannerTimer);
-    bannerTimer=setTimeout(()=>n.classList.add('hidden'), important?1500:950);
+    bannerTimer=setTimeout(()=>n.classList.add('hidden'),important?1500:950);
   }
   function userLabel(l) {
     if(!game) return '';
@@ -4630,7 +4652,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
         const lines={zimo:'ツモ',rong:'ロン',gang:'カン',peng:'ポン',chi:'チー',lizhi:'リーチ'};
         if(lines[name]) {
           lastAction=userLabel(l)+'：'+lines[name];
-          if(l!==ownSeat() || name==='lizhi') announce(lastAction,name==='lizhi');
+          announce(lastAction,name==='lizhi',l);
         }
       },
       update: msg => {
@@ -4639,14 +4661,14 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
           latestDiscard={l:d.l,p:d.p};
           const info=(d.p.includes('_')?'ツモ切り':'手出し')+(d.p.includes('*')?'・リーチ':'');
           lastAction=`${userLabel(d.l)}：${tileName(d.p)}（${info}）`;
-          if(d.p.includes('*')) announce(`${userLabel(d.l)}：リーチ`, true);
+          if(d.p.includes('*')) announce(`${userLabel(d.l)}：リーチ`, true, d.l);
         }
         if(msg?.fulou) {
           const f=msg.fulou;
           const m=f.m.replace(/0/g,'5');
           const kind=/^[mpsz](\d)\1\1\1/.test(m)?'カン':/^[mpsz](\d)\1\1/.test(m)?'ポン':'チー';
           lastAction=`${userLabel(f.l)}：${kind}`;
-          announce(lastAction,true);
+          announce(lastAction,true,f.l);
         }
         if(msg?.hule || msg?.pingju) { pending = null; readyToNext = false; $('continueBtn').disabled = true; game.stop(()=>{readyToNext = true; $('continueBtn').disabled = false;}); showResult(msg); }
         redrawSoon();
@@ -4773,15 +4795,32 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
       slot.append(row);holder.append(slot);
     }
   }
+  // Majiang.He keeps called tiles with a +/=/- suffix. If a riichi
+  // declaration tile was called, show the next *remaining* discard sideways.
+  // This is a display-only change; the game log/riichi status is untouched.
+  function visibleRiver(raw) {
+    const visible=[];
+    let deferredRiichi=false;
+    for(const p of raw) {
+      if (/[+\-=]$/.test(p)) {
+        if(p.includes('*')) deferredRiichi=true;
+        continue;
+      }
+      const riichi=p.includes('*') || deferredRiichi;
+      visible.push({p,riichi,carried:deferredRiichi&&!p.includes('*')});
+      if(riichi)deferredRiichi=false;
+    }
+    return visible;
+  }
   function renderRiver(pos,l) {
     const holder=$('river-'+pos);holder.replaceChildren();
     const raw=game.model.he[l]?._pai || [];
-    const river=raw.filter(p=>!(/[+\-=]$/.test(p)));
+    const river=visibleRiver(raw);
     for (let i=0;i<river.length;i++) {
-      const p=river[i];
+      const {p,riichi,carried}=river[i];
       const isLatest=latestDiscard?.l===l && latestDiscard.p===p && i===river.length-1;
-      const cell=el('div','river-cell'+(p.includes('*')?' riichi':'')+(p.includes('_')?' tsumogiri':'')+(isLatest?' latest':'')+(pending?.type==='reaction' && pending.from===l && p===pending.p && i===river.length-1?' call-target':''));
-      cell.title=`${tileName(p)}・${p.includes('_')?'ツモ切り':'手出し'}${p.includes('*')?'・立直':''}`;
+      const cell=el('div','river-cell'+(riichi?' riichi':'')+(carried?' riichi-continued':'')+(p.includes('_')?' tsumogiri':'')+(isLatest?' latest':'')+(pending?.type==='reaction' && pending.from===l && p===pending.p && i===river.length-1?' call-target':''));
+      cell.title=`${tileName(p)}・${p.includes('_')?'ツモ切り':'手出し'}${riichi?'・立直宣言牌位置'+(carried?'（鳴かれたため次の打牌）':''):''}`;
       cell.append(tileImg(p));holder.append(cell);
     }
   }
@@ -4934,8 +4973,13 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
           const rem=Math.max(0,4-(seen[code]||0));
           if(rem>0) {ukeire+=rem;useful.push(p2);usefulDetails.push({p:code,count:rem});}
         }
-        return {p,shanten,ukeire,useful,usefulDetails};
-      }catch {return {p,shanten:99,ukeire:0,useful:[],usefulDetails:[]};}
+        // Freeze the AFTER-discard hand before the CPU makes another move.
+        // This snapshot is the complete 13/10/7/4/1-tile concealed hand,
+        // plus every open meld, for visual comparison in the coach modal.
+        const handTiles=tileList(sh).map(t=>t.slice(0,2));
+        const melds=(sh._fulou||[]).slice();
+        return {p,shanten,ukeire,useful,usefulDetails,handTiles,melds};
+      }catch {return {p,shanten:99,ukeire:0,useful:[],usefulDetails:[],handTiles:[],melds:[]};}
     });
   }
   function compareFeedback() {
@@ -5018,6 +5062,19 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     head.append(pick);
     head.append(el('span','coach-candidate-value',`${v.shanten===0?'聴牌':v.shanten<0?'和了':`${v.shanten}向聴`} · 受け入れ ${v.ukeire}枚`));
     card.append(head);
+    card.append(el('div','coach-hand-title','この牌を切った後の手牌'));
+    const hand=el('div','coach-hand-strip');
+    for(const p of v.handTiles||[])hand.append(tileImg(p,'coach-after-tile'));
+    if(!hand.children.length)hand.append(el('span','coach-accept-empty','手牌を表示できません'));
+    card.append(hand);
+    if(v.melds?.length){
+      card.append(el('div','coach-hand-title','副露'));
+      const sets=el('div','coach-hand-melds');
+      for(const m of v.melds){
+        const group=el('div','meld-group');appendMeldTiles(group,m,'result');sets.append(group);
+      }
+      card.append(sets);
+    }
     card.append(el('div','coach-accept-title','受け入れ牌（見えていない推定枚数）'));
     const grid=el('div','coach-accept-grid');
     const details=v.usefulDetails || (v.useful||[]).map(p=>({p:normalized(p),count:null}));
@@ -5164,7 +5221,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     redrawSoon();
   }
   // Facilitate lightweight browser checks without opening a debugging interface.
-  window.MahjongLabDebug = {testScenario,parseMeld,state:()=>({started:!!game,phase:game?game._status:null,pending:pending?.type||null,round:game?.model?.jushu,turn:game?.model?.lunban,own:ownSeat(),decisions:decisionLog.length,finished:gameEnded}),choose:p=>chooseDiscard(p),answer:p=>answer(p),testStep:(randomize=false)=>{if(pending?.type==='turn'){if(pending.win&&randomize)return answer({hule:'-'});if(randomize&&pending.gang.length&&Math.random()<0.10)return answer({gang:pending.gang[0]});const choices=pending.options;const p=randomize?choices[Math.floor(Math.random()*choices.length)]:choices[0];if(randomize&&game.allow_lizhi(p)&&Math.random()<0.25)riichiMode=true;chooseDiscard(p);}else if(pending?.type==='reaction'){if(pending.win&&randomize)return answer({hule:'-'});const melds=[...pending.gang,...pending.peng,...pending.chi];if(randomize&&melds.length&&Math.random()<0.55)return answer({fulou:melds[0]});answer({});}},testDwell:ms=>{if(game)game.dwell=ms;},testContinue:()=>{if(game&&!gameEnded){readyToNext=false;game.start();}},testPaipu:()=>game?._paipu,inspect:()=>({latestDiscard,lastFeedback,hasReaction:!$('callTray').classList.contains('hidden'),speed:game?._dwell})};
+  window.MahjongLabDebug = {testScenario,parseMeld,visibleRiver,state:()=>({started:!!game,phase:game?game._status:null,pending:pending?.type||null,round:game?.model?.jushu,turn:game?.model?.lunban,own:ownSeat(),decisions:decisionLog.length,finished:gameEnded}),choose:p=>chooseDiscard(p),answer:p=>answer(p),testStep:(randomize=false)=>{if(pending?.type==='turn'){if(pending.win&&randomize)return answer({hule:'-'});if(randomize&&pending.gang.length&&Math.random()<0.10)return answer({gang:pending.gang[0]});const choices=pending.options;const p=randomize?choices[Math.floor(Math.random()*choices.length)]:choices[0];if(randomize&&game.allow_lizhi(p)&&Math.random()<0.25)riichiMode=true;chooseDiscard(p);}else if(pending?.type==='reaction'){if(pending.win&&randomize)return answer({hule:'-'});const melds=[...pending.gang,...pending.peng,...pending.chi];if(randomize&&melds.length&&Math.random()<0.55)return answer({fulou:melds[0]});answer({});}},testDwell:ms=>{if(game)game.dwell=ms;},testContinue:()=>{if(game&&!gameEnded){readyToNext=false;game.start();}},testPaipu:()=>game?._paipu,inspect:()=>({latestDiscard,lastFeedback,hasReaction:!$('callTray').classList.contains('hidden'),speed:game?._dwell})};
 })();
 
 </script>
