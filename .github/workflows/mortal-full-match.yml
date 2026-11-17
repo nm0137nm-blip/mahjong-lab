@@ -3,6 +3,9 @@ on:
   push:
     branches: [dev/mortal-ai-checkpoint-20261118]
     paths:
+      - index.html
+      - service-worker.js
+      - src/mortal/**
       - tests/mortal/run-full-match-probe.cjs
       - .github/workflows/mortal-full-match.yml
   workflow_dispatch:
