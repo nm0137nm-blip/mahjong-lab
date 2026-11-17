@@ -13,7 +13,7 @@ def patch(f,fn):
     p=src/f; p.write_text(fn(p.read_text()))
 def strip_pyo3(s):
     s=re.sub(r'^use pyo3::prelude::\*;\n','',s,flags=re.M)
-    return re.sub(r'^[ \\t]*#\\[(?:pyclass|pymethods|getter|new|pyfunction|pyo3\\([^\\n]*?\\))\\][ \\t]*\\n','',s,flags=re.M)
+    return '\n'.join(line for line in s.splitlines() if not line.lstrip().startswith(('#[pyclass]', '#[pymethods]', '#[getter]', '#[new]', '#[pyfunction]', '#[pyo3('))) + '\n'
 patch('state/player_state.rs',strip_pyo3)
 patch('state/getter.rs',strip_pyo3)
 patch('state/action.rs',strip_pyo3)
