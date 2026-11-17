@@ -35,7 +35,7 @@ const {chromium}=require('/tmp/probe/node_modules/playwright-core');
             const qbutton=body.getByRole('button',{name:'S42の定量評価'});
             await qbutton.evaluate(el=>el.click());
             const shown=await body.innerText();
-            if(!shown.includes('S42の定量判断')||!shown.includes('Q値')||!shown.includes('因数分解はできません'))throw Error('Q explanation missing');
+            if(!shown.includes('S42の定量判断')||!shown.includes('Q値')||!shown.includes('正確な分解はできません'))throw Error('Q explanation missing');
             await page.evaluate(()=>document.querySelector('#closeCoachBtn').click());
             firstReview={score:x.s42Review,model:x.mortalOpinion?.label,candidates:x.candidates.length,scene:x.scene.rivers.length};
             exampleChecked=true;
