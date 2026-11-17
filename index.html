@@ -5570,6 +5570,82 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     $('continueBtn').textContent=willFinishAfterResult()?'終局 →':'次の局へ →';
     $('resultOverlay').classList.remove('hidden');
   }
+
+  function renderS42End(){
+    const root=$('s42EndSummary');if(!root)return;
+    root.replaceChildren();
+    const total=s42Aggregated();
+    root.append(el('h3','','Mortal-S42 打牌判断レビュー'));
+    if(!total.count){
+      root.append(el('p','s42-analysis-note','この対局ではS42の有効な比較データがありません。モデル未設定・解析停止・比較対象外などの場合は集計しません。'));
+    }else{
+      const metrics=el('div','s42-review-grid');
+      [
+        ['判断指数',total.index+'/100'],
+        ['一致率',s42Analytics.PERCENT(total.agreementRate)],
+        ['悪手候補率',s42Analytics.PERCENT(total.badCandidateRate)]
+      ].forEach(([title,value])=>{
+        const b=el('div','s42-review-metric');b.append(el('strong','',value),el('small','',title));metrics.append(b);
+      });root.append(metrics);
+      root.append(el('p','s42-analysis-note','S42評価を取得できた '+total.count+' 打牌のみ。悪手候補＝Q値の相対差30%以上という暫定定義。段位・勝率・局収支ではありません。'));
+    }
+    s42ReviewRows=s42ReviewList();
+    const btn=$('s42ReviewBtn');
+    btn.hidden=s42ReviewRows.length===0;
+    btn.textContent=s42ReviewRows.length?'S42の大差候補 '+s42ReviewRows.length+'局面を振り返る':'S42振り返り対象なし';
+  }
+  function s42TilesRow(tiles,cls='s42-replay-hand'){
+    const node=el('div',cls);
+    for(const p of tiles||[])if(/^[mpsz][0-9]/.test(p))node.append(tileImg(p.slice(0,2),''));
+    return node;
+  }
+  function renderS42Replay(){
+    const body=$('s42ReviewBody');body.replaceChildren();
+    if(!s42ReviewRows.length){body.textContent='振り返る局面はありません';return;}
+    s42ReviewCursor=Math.max(0,Math.min(s42ReviewRows.length-1,s42ReviewCursor));
+    const x=s42ReviewRows[s42ReviewCursor],view=x.scene,score=x.s42Review;
+    body.append(el('div','s42-replay-title',(s42ReviewCursor+1)+' / '+s42ReviewRows.length+' · '+(x.round||'対局中')+' · S42とのQ差 '+(score?.gap||0).toFixed(2)+'（相対 '+Math.round(100*(score?.relativeGap||0))+'%）'));
+    const choices=el('div','s42-info','あなた：打 '+tileName(x.discard)+' ／ S42：'+(x.mortalOpinion?.label||'未取得')+'。S42の合法手順位 '+(score?.rank||'—')+' / '+(score?.legal||'—')+'。');
+    body.append(choices);
+    if(view){
+      body.append(el('h3','','打牌時点の自分の手牌'));
+      body.append(s42TilesRow(view.hand));
+      if(view.selfMelds?.length){body.append(el('p','s42-replay-title','自分の副露 '+view.selfMelds.join(' / ')));}
+      if(view.dora?.length){body.append(el('p','s42-replay-title','ドラ表示牌'));body.append(s42TilesRow(view.dora));}
+      const rivers=el('div','s42-replay-rivers');
+      for(const river of view.rivers||[]){
+        const box=el('section','s42-replay-river');
+        box.append(el('h4','',river.name+(river.melds?.length?'（副露あり）':'')));
+        box.append(s42TilesRow(river.tiles,'s42-replay-river-tiles'));rivers.append(box);
+      }
+      body.append(rivers);
+      if(view.scores?.length)body.append(el('div','s42-analysis-note','点棒：'+view.scores.map(v=>fmt(v)).join(' / ')+'点 · 残り '+(view.remaining??'—')+'枚'));
+    }
+    const top=score?.top||[];
+    if(top.length){
+      body.append(el('h3','','S42の合法手Q値 上位'));
+      const wrap=el('div','s42-data-table-wrap');
+      const t=el('table','s42-data-table');
+      const th=el('tr','');for(const v of ['順位','行動','Q値'])th.append(el('th','',v));t.append(th);
+      top.forEach((v,i)=>{
+        const tr=el('tr',v.index===score.action?'selected':v.index===score.best?'best':'');
+        tr.append(el('td','',String(i+1)),el('td','',s42ActionLabel(v.index)),el('td','',v.q.toFixed(3)));t.append(tr);
+      });
+      wrap.append(t);body.append(wrap);
+    }
+    const tiles=el('div','s42-replay-candidates');
+    renderS42EfficiencyChoices(x,tiles);
+    body.append(tiles);
+    $('s42ReviewPrev').disabled=s42ReviewCursor===0;
+    $('s42ReviewNext').disabled=s42ReviewCursor===s42ReviewRows.length-1;
+  }
+  function openS42Replay(){
+    if(!s42ReviewRows.length)s42ReviewRows=store.read(S42_REVIEW_KEY,[]);
+    if(!s42ReviewRows.length)return;
+    s42ReviewCursor=0;renderS42Replay();
+    $('s42ReviewOverlay').classList.remove('hidden');
+  }
+
   function showEnd(paipu) {
     $('resultOverlay').classList.add('hidden');
     $('endTitle').textContent=`${paipu.rank[0]}着 · ${fmt(paipu.defen[0])}点`;
@@ -5598,6 +5674,10 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
   $('exitBtn').addEventListener('click',()=>{if(confirm('対局を中断してトップに戻りますか？（途中対局の成績は保存されません）'))goHome();});
   $('toggleCoach').addEventListener('click',()=>{coachCollapsed=!coachCollapsed;renderCoach();});
   $('continueBtn').addEventListener('click',()=>{ if(!readyToNext)return; $('resultOverlay').classList.add('hidden');readyToNext=false;if(game&&!gameEnded)game.start();});
+  $('s42ReviewBtn').addEventListener('click',openS42Replay);
+  $('s42ReviewPrev').addEventListener('click',()=>{s42ReviewCursor--;renderS42Replay();});
+  $('s42ReviewNext').addEventListener('click',()=>{s42ReviewCursor++;renderS42Replay();});
+  $('s42ReviewClose').addEventListener('click',()=>{$('s42ReviewOverlay').classList.add('hidden');});
   $('restartBtn').addEventListener('click',initGame);
   $('homeBtn').addEventListener('click',goHome);
   renderStats();
