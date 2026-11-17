@@ -286,11 +286,31 @@
 .result-detail .tile-strip{flex-wrap:nowrap;overflow-x:auto}
 @media(max-width:530px){#gameScreen .table-felt{height:430px;min-height:0}#gameScreen .table-wrap{min-height:180px}#gameScreen .hand-zone{padding:5px 5px 6px}}
 @media(max-width:375px){#gameScreen .table-felt{height:430px;min-height:0}#gameScreen .my-hand .tile-btn img{width:clamp(18px,6.2vw,25px)}}
+
+/* Phase 1.6 — readable scoring and visual acceptance tiles */
+.coach-modal{max-width:430px;max-height:90svh;overflow-y:auto}
+.coach-candidate-list{display:flex;flex-direction:column;gap:9px;margin:12px 0}
+.coach-candidate{border:1px solid #466d5d;border-radius:10px;padding:10px;background:#0c3028}
+.coach-candidate.selected{border-color:#bedf88;background:#203e30}
+.coach-candidate-head{display:flex;gap:7px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:8px}
+.coach-candidate-pick{display:flex;gap:7px;align-items:center;font-size:12px;font-weight:800}
+.coach-candidate-pick img{width:27px;height:38px;object-fit:fill;border-radius:2px;box-shadow:0 2px 0 #b5a899}
+.coach-candidate-value{font-size:11px;color:#dcf1c0;white-space:nowrap}
+.coach-candidate-tag{font-size:9px;background:#314f40;color:#daf2ba;border-radius:4px;padding:3px 5px}
+.coach-candidate.selected .coach-candidate-tag{background:#c4e988;color:#163527}
+.coach-accept-title{font-size:10px;color:#a9c7b7;margin-bottom:5px}
+.coach-accept-grid{display:flex;flex-wrap:wrap;gap:5px 4px}
+.coach-accept-tile{display:flex;flex-direction:column;align-items:center;gap:2px;min-width:23px}
+.coach-accept-tile img{width:23px;height:32px;display:block;object-fit:fill;border-radius:2px}
+.coach-accept-tile span{font-size:10px;color:#d3e9cc;font-variant-numeric:tabular-nums}
+.coach-accept-empty{font-size:11px;color:#97baaa}
+.coach-details-note{font-size:10px!important;line-height:1.6;color:#a4c5b4!important}
+@media(max-width:390px){.coach-candidate{padding:8px}.coach-accept-tile img{width:21px;height:30px}.coach-accept-grid{gap:4px 3px}}
 </style>
-  <title>麻雀LAB — Phase 1.5</title>
+  <title>麻雀LAB — Phase 1.6</title>
 </head>
 <body>
-  <header class="site-header"><div class="logo"><span class="logo-mark">牌</span><span>麻雀<span class="logo-lab">LAB</span></span></div><span class="phase">PHASE 1.5 · UI v2.1</span></header>
+  <header class="site-header"><div class="logo"><span class="logo-mark">牌</span><span>麻雀<span class="logo-lab">LAB</span></span></div><span class="phase">PHASE 1.6 · SCORE & UKEIRE</span></header>
   <main id="startScreen" class="home">
     <div class="eyebrow"><span class="eyedot"></span> THINK BEFORE YOU DISCARD</div>
     <h1>一打ずつ、<br><span>強くなる。</span></h1>
@@ -4905,13 +4925,17 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
       try {
         const sh=human.shoupai.clone().dapai(p);
         const shanten=M.Util.xiangting(sh);
-        let ukeire=0;const useful=[];
+        let ukeire=0;const useful=[];const usefulDetails=[];
+        const added=new Set();
         for(const p2 of M.Util.tingpai(sh)) {
-          const rem=Math.max(0,4-(seen[normalized(p2)]||0));
-          if(rem>0) {ukeire+=rem;useful.push(p2);}
+          const code=normalized(p2);
+          if(added.has(code))continue;
+          added.add(code);
+          const rem=Math.max(0,4-(seen[code]||0));
+          if(rem>0) {ukeire+=rem;useful.push(p2);usefulDetails.push({p:code,count:rem});}
         }
-        return {p,shanten,ukeire,useful};
-      }catch {return {p,shanten:99,ukeire:0,useful:[]};}
+        return {p,shanten,ukeire,useful,usefulDetails};
+      }catch {return {p,shanten:99,ukeire:0,useful:[],usefulDetails:[]};}
     });
   }
   function compareFeedback() {
@@ -4942,7 +4966,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     if(coachCollapsed) return;
     let html=compareFeedback();
     if(pending?.type==='turn' && candidateInfo.length) {
-      const sorted=candidateInfo.slice().sort((a,b)=>a.shanten-b.shanten||b.ukeire-a.ukeire).slice(0,5);
+      const sorted=coachCandidateShortlist(candidateInfo,'').slice(0,3);
       html+=`<table class="coach-table"><thead><tr><th>打牌候補</th><th>向聴数</th><th>受け入れ</th></tr></thead><tbody>`;
       for(const x of sorted) html+=`<tr><td>${esc(tileName(x.p))}${x.p.endsWith('_')?'（ツモ切り）':''}</td><td>${x.shanten}</td><td>${x.ukeire}枚</td></tr>`;
       html+='</tbody></table><p class="disclaimer">※ 現時点の有効牌枚数を算出した牌効率の参考値です。打点・場況・守備・順位の期待値は未考慮。上位候補＝正解打牌ではありません。</p>';
@@ -4967,16 +4991,73 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     return '';
   }
 
+  // Treat a drawn tile and the same tile from the hand as one discard type.
+  // Red fives remain distinct because their value can differ.
+  function coachCandidateShortlist(rows,chosen) {
+    const ordered=rows.slice().sort((a,b)=>a.shanten-b.shanten||b.ukeire-a.ukeire);
+    const unique=[];const keys=new Set();
+    for(const v of ordered){const key=v.p.slice(0,2);if(keys.has(key))continue;keys.add(key);unique.push(v);}
+    const selected=rows.find(v=>v.p===chosen);
+    const best=unique.slice(0,3);
+    // Show an out-of-top-three choice FIRST, so it is visible without scrolling.
+    if(selected && !best.some(v=>v.p.slice(0,2)===selected.p.slice(0,2))) best.unshift(selected);
+    else if(selected) {
+      const idx=best.findIndex(v=>v.p.slice(0,2)===selected.p.slice(0,2));
+      best[idx]=selected;
+    }
+    return best;
+  }
+  function renderCoachCandidate(v,chosen,ranking) {
+    const selected=v.p.slice(0,2)===chosen.slice(0,2);
+    const card=el('section','coach-candidate'+(selected?' selected':''));
+    const head=el('div','coach-candidate-head');
+    const pick=el('div','coach-candidate-pick');
+    pick.append(tileImg(v.p,'candidate-discard'));
+    pick.append(el('span','',`打 ${tileName(v.p)}`));
+    pick.append(el('span','coach-candidate-tag',selected?'あなたの選択':`候補 ${ranking+1}`));
+    head.append(pick);
+    head.append(el('span','coach-candidate-value',`${v.shanten===0?'聴牌':v.shanten<0?'和了':`${v.shanten}向聴`} · 受け入れ ${v.ukeire}枚`));
+    card.append(head);
+    card.append(el('div','coach-accept-title','受け入れ牌（見えていない推定枚数）'));
+    const grid=el('div','coach-accept-grid');
+    const details=v.usefulDetails || (v.useful||[]).map(p=>({p:normalized(p),count:null}));
+    if(!details.length)grid.append(el('span','coach-accept-empty','有効牌なし'));
+    for(const {p,count} of details){
+      const wrap=el('div','coach-accept-tile');
+      const img=tileImg(p,'accept-tile');img.title=tileName(p)+(count!=null?` 残り${count}枚`:'');
+      wrap.append(img);
+      if(count!=null)wrap.append(el('span','',`×${count}`));
+      grid.append(wrap);
+    }
+    card.append(grid);
+    return card;
+  }
   function openCoachDetails() {
+    if(!lastFeedback) return;
     const x=lastFeedback;
-    if(!x) return;
-    let html=compareFeedback();
-    html+='<table class="coach-table"><thead><tr><th>打牌候補</th><th>向聴</th><th>受け入れ</th></tr></thead><tbody>';
-    for(const v of lastCandidateInfo.slice().sort((a,b)=>a.shanten-b.shanten||b.ukeire-a.ukeire).slice(0,8))
-      html+=`<tr><td>${esc(tileName(v.p))}${v.p===x.discard?'（選択）':''}</td><td>${v.shanten}</td><td>${v.ukeire}枚</td></tr>`;
-    html+='</tbody></table><p class="disclaimer">※牌効率の参考比較です。局収支・守備・順位戦略は未評価。短い差なら誤差や手役等で逆転します。</p>';
-    $('coachModalBody').innerHTML=html;
+    const body=$('coachModalBody');body.replaceChildren();
+    const summary=el('p','coach-callout',`直前の打牌：${tileName(x.discard)} · ${x.shanten}向聴 · 受け入れ ${x.ukeire}枚`);
+    body.append(summary);
+    const shortlisted=coachCandidateShortlist(lastCandidateInfo,x.discard);
+    const list=el('div','coach-candidate-list');
+    const chosenAtFront=shortlisted.length===4 && shortlisted[0]?.p.slice(0,2)===x.discard.slice(0,2);
+    shortlisted.forEach((v,i)=>list.append(renderCoachCandidate(v,x.discard,i-(chosenAtFront?1:0))));
+    body.append(list);
+    body.append(el('p','coach-details-note','※ 受け入れ＝その牌を引くと向聴数が改善する牌の見かけ上の残り枚数。手牌・公開情報から数えた推定上限で、実際の山に残る枚数や和了率・期待値ではありません。5の残り枚数は赤5を含めた合計です。'));
     $('coachOverlay').classList.remove('hidden');
+  }
+  function resultPaymentLabel(data) {
+    const base=Number(data.defen||0);
+    if(data.baojia!=null)return `${fmt(base)}点`;
+    if(!base)return 'ツモ和了';
+    // All payoff labels are BASE scores; honba, riichi sticks and responsibility
+    // remain itemized via the existing per-player point-change lines.
+    if(data.l===0 && base%3===0)return `${fmt(base/3)}オール`;
+    if(data.l===0)return `${fmt(base)}点（合計）`;
+    const child=Math.ceil(base/400)*100;
+    const parent=base-child*2;
+    if(parent>0 && child>0)return `${fmt(child)}／${fmt(parent)}（子／親）`;
+    return `${fmt(base)}点（合計）`;
   }
   function renderResultDetails(data) {
     const area=$('resultHandDetail');area.replaceChildren();
@@ -5013,7 +5094,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     const point=el('div','point-line');
     point.append(el('span','tag',`${data.fu||'-'}符 ${data.fanshu||'-'}翻`));
     const lim=limitName(data);if(lim)point.append(el('span','tag',lim));
-    point.append(el('span','tag',`${fmt(data.defen)}点`));area.append(point);
+    point.append(el('span','tag',resultPaymentLabel(data)));area.append(point);
     addHeading('ドラ表示牌');addTiles(game.model.shan?.baopai || [],'indicators');
     if(data.fubaopai?.length){addHeading('裏ドラ表示牌');addTiles(data.fubaopai,'indicators');}
     else area.append(el('p','subtitle','裏ドラ表示牌：該当なし（リーチ和了時のみ公開）'));
@@ -5023,7 +5104,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     $('resultTag').textContent=msg.hule?'和了':'流局';
     $('resultTitle').textContent=msg.hule?(data.baojia==null?'ツモ和了':'ロン和了'):(data.name||'流局');
     const lim=msg.hule?limitName(data):'';
-    $('resultDetails').textContent=msg.hule?`${NAMES[game.model.player_id[data.l]]} の和了 · ${data.fu||'-'}符 ${data.fanshu||'-'}翻${lim?` · ${lim}`:''} · ${fmt(data.defen)}点`:'次の局に進みます';
+    $('resultDetails').textContent=msg.hule?`${NAMES[game.model.player_id[data.l]]} の和了 · ${data.fu||'-'}符 ${data.fanshu||'-'}翻${lim?` · ${lim}`:''} · ${resultPaymentLabel(data)}`:'次の局に進みます';
     $('resultHandDetail').replaceChildren();
     if(msg.hule) {try{renderResultDetails(data);}catch(e){console.error(e);$('resultHandDetail').textContent='和了詳細を表示できませんでした';}}
     $('resultScores').replaceChildren();
