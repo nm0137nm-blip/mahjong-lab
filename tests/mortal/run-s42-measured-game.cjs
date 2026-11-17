@@ -40,6 +40,8 @@ const {chromium}=require('/tmp/probe/node_modules/playwright-core');
     }
     // Game renders the finish screen before its asynchronous completion callback persists stats.
     await page.waitForFunction(()=>{try{return JSON.parse(localStorage.getItem('mahjonglab-measured-v2')||'[]').length===1}catch{return false}},{timeout:15000});
+    // Allow the engine's post-summary callback to arrive; record count must remain one.
+    await page.waitForTimeout(850);
     const finished=await page.evaluate(()=>({
       stats:document.querySelector('#s42EndSummary')?.textContent,
       record:JSON.parse(localStorage.getItem('mahjonglab-measured-v2')||'[]'),
