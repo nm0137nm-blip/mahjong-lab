@@ -1,0 +1,45 @@
+name: On-device ONNX Web runtime preparation (public dependencies only)
+on:
+  push:
+    branches:
+      - dev/mortal-ai-checkpoint-20261118
+    paths:
+      - .github/workflows/mortal-ort-web.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  vendor-public-runtime:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - name: Obtain pinned free and open-source runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/ortpkg
+          cd /tmp/ortpkg
+          npm init -y >/dev/null
+          npm install --ignore-scripts --no-audit --no-fund --save-exact onnxruntime-web@1.21.0
+          node -e "const p=require('./node_modules/onnxruntime-web/package.json');console.log('Package:',p.name,p.version,'license:',p.license)"
+          ls -lh node_modules/onnxruntime-web/dist/ | head -80
+          test -f node_modules/onnxruntime-web/dist/ort.min.mjs || test -f node_modules/onnxruntime-web/dist/ort.all.min.mjs
+      - name: Save only publicly redistributable runtime artifacts on dev branch
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          git clone --depth=1 --branch dev/mortal-ai-checkpoint-20261118 https://github.com/nm0137nm-blip/mahjong-lab.git /tmp/lab
+          mkdir -p /tmp/lab/assets/ort
+          cp /tmp/ortpkg/node_modules/onnxruntime-web/dist/ort.min.mjs /tmp/lab/assets/ort/ort.min.mjs
+          cp /tmp/ortpkg/node_modules/onnxruntime-web/dist/*.wasm /tmp/lab/assets/ort/
+          cp /tmp/ortpkg/node_modules/onnxruntime-web/LICENSE /tmp/lab/assets/ort/LICENSE.MIT
+          git -C /tmp/lab config user.name 'github-actions[bot]'
+          git -C /tmp/lab config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git -C /tmp/lab add assets/ort
+          if ! git -C /tmp/lab diff --cached --quiet; then
+            git -C /tmp/lab commit -m 'build: vendor pinned MIT ONNX Web runtime for local device inference'
+            git -C /tmp/lab remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/nm0137nm-blip/mahjong-lab.git"
+            git -C /tmp/lab push origin HEAD:dev/mortal-ai-checkpoint-20261118
+          fi
