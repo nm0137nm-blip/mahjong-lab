@@ -1,29 +1,31 @@
-# 麻雀LAB / Mortal AI — Current checkpoint
+# 麻雀LAB Mortal-S42 — リリース状況と継続チェックポイント
 
-Last updated: 2026-11-18 JST. All changes limited to `dev/mortal-ai-checkpoint-20261118`.
+更新: 2026-11-18 (JST) / **Phase 2.4 本番ブランチへ反映済み**
 
-## Completed / verified
+## 公開範囲
+- 本番 GitHub `main` に Mortal-S42 コーチ連携版が反映された（リリースコミット `3e87a93e15b51c69377b0c309fa0a96ec91879f8`）。
+- 現行サイト: https://nm0137nm-blip.github.io/mahjong-lab/
+- コーチは従来の牌効率および電脳麻将CPU参考判断を**残した上で追加**。対局用CPU自体の置換ではない。
+- 最初にユーザーが `model.onnx` を選択。サイズ 43,673,425 bytes / SHA-256 `30381bf21389e2d25d3edf48fed11bf772336ef3daeee67d1bdae7fb9dd30cb4` を検証して端末内 IndexedDB に保存する。**モデルファイル自体はリポジトリに置かない。**
 
-- **CP2.2.3**: Genuine user-provided Mortal-S42 ONNX weights ran through local ONNX Runtime 1.21 C API (not a mock). 11/11 synthetic-input regression checks passed; Linux CPU median ~61.9ms after warmups. See `CP2.2.3-REAL-INFERENCE.md`.
-- **CP2.2.4**: Built the **authentic Rust libriichi V4 observation encoder** on a free, standard GitHub-hosted Ubuntu runner and captured one *fictional MJAI scene* as `obs[1012,34]` and `mask[46]`. Encoder code matched the user's provided Mortal source at four verified Git blob SHAs.
-- Fed the exact encoder-generated feature bytes into the actual trained Mortal-S42 model on local CPU; validated digest `b6499f28617d477298e1aa4834633f962359194f7d17024e44460feea06d9c5b` and computed 46 Q values. Best legal action for this deliberately synthetic case was 37 (riichi); **not a general strategy assertion**.
-- A reproduction workflow is in `.github/workflows/mortal-encoder-validation.yml`. Successful public GitHub Actions run: https://github.com/nm0137nm-blip/mahjong-lab/actions/runs/44184696820 .
-- `tests/fixtures/synthetic_libriichi_v4_obs.b64` contains **only fictional model features**, not any user data. Never commit actual model weights.
+## 検証済みの事実
+- 公式 Rust `libriichi` V4 を WebAssembly 化し、架空局面について参照エンコーダーと出力がバイト完全一致。CI: https://github.com/nm0137nm-blip/mahjong-lab/actions/runs/44187851516
+- 学習済み Mortal-S42 を ONNX Runtime Web の Chromium ブラウザ内で推論。合成・架空局面でチェック成功。CI: https://github.com/nm0137nm-blip/mahjong-lab/actions/runs/44190565132
+- 393px 幅のブラウザUIで実モデル読込・参考打牌表示の統合試験が成功。CI: https://github.com/nm0137nm-blip/mahjong-lab/actions/runs/44192639511
+- 実ゲームで東風戦 **1対局・126手・7局**、半荘 **1対局・106手・8局** の自動完走。S42推論ワーカー継続、ブラウザエラー0、別オリジンへの送信0。モデルの端末内保存後のオフライン復元も検証。CI: https://github.com/nm0137nm-blip/mahjong-lab/actions/runs/44192681927
+- 本番と開発ブランチの `index.html` Blob SHA は同一 `4c910b966b839b5dd2cf55087ef21e179ad36e53`。本番にJS/wasm/ライセンス情報が揃っていることも確認した。
 
-## NOT achieved / deployment blockers
+## 未検証・次の重点
+1. **iPhone 17 Safari実機**での初回モデル導入・速度・長時間安定性・デバイス再起動後の保存・オフライン対局は未検証。デスクトップChromiumの成功を実機検証の代わりにしない。
+2. 複雑なチー・ポン・暗槓/加槓・立直受理・赤牌を含む多局面でのMJAI変換と行動対応の網羅試験は継続。
+3. Mortal-S42の生Q値は局収支期待点数・和了率・放銃率ではない。根拠未確認の打牌を「絶対正解」と表示しない。
+4. 長期的な目標は、学習に役立つ押し引き・順位戦略の説明精度を高めること。
+5. 公開モデル本体の追加ライセンス表記と端末保存が不安定な場合のフォールバック確認。
 
-1. Live Mahjong LAB state -> MJAI -> Rust feature encoder -> Mortal decision handling over diverse gameplay, including pon/chi/kans, riichi acceptance, red fives and final scoring.
-2. Strength evaluation of the specific Mortal-S42 checkpoint vs present CPU; no high-rank/strong-AI claim yet.
-3. iPhone browser ONNX inference, offline data cache, frame-rate/memory impact.
-4. License review of model weights and any redistributed runtime/source.
+## セキュリティ・費用
+- GitHubにユーザー本人の牌譜、成績、個人情報、スクリーンショット、APIキー、アクセストークン、またはモデル重みはコミットしていない。
+- 推論は**ユーザー端末内**で行い、麻雀局面を外部AIサービスに送らない設計。静的アセット初回取得には通信が発生する。
+- これまでのGitHub Actionsは**公開リポジトリの無料標準ランナー**で、架空・合成データに限って実施。有料ランナー、決済、購入、契約、請求設定変更は行っていない。
+- AGPL-3.0-or-later由来の変換器の再現スクリプト・ライセンスと、MITのONNX Runtime Webライセンスは公開コード内に含める。重みの公開元はApache-2.0として提供。
 
-Raw Q values are **not** point EV, win percentage, or deal-in probability. The current public Mahjong LAB coach remains unchanged.
-
-## Security and billing guarantees for this checkpoint
-
-- No payment, purchase, subscription, billing setting change, paid runner or paid service initiated.
-- Only free standard GitHub Actions in a **public** repo. No uploaded model, personal data, user hand histories, user images, secrets, or workflow artifacts.
-- Workflow has `permissions: {}`, only public synthetic information and upstream source. Existing deployed `main` app remains unchanged.
-- `.gitignore` protects against accidental weights/secret file additions; public commits are also manually reviewed.
-
-Details: `CP2.2.4-ENCODER-TO-INFERENCE.md`.
+導入方法: `docs/mortal-ai/USER_GUIDE_JA.md`。
