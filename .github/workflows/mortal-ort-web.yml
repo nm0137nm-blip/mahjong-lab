@@ -33,13 +33,15 @@ jobs:
           git clone --depth=1 --branch dev/mortal-ai-checkpoint-20261118 https://github.com/nm0137nm-blip/mahjong-lab.git /tmp/lab
           mkdir -p /tmp/lab/assets/ort
           cp /tmp/ortpkg/node_modules/onnxruntime-web/dist/ort.min.mjs /tmp/lab/assets/ort/ort.min.mjs
-          cp /tmp/ortpkg/node_modules/onnxruntime-web/dist/*.wasm /tmp/lab/assets/ort/
-          cp /tmp/ortpkg/node_modules/onnxruntime-web/LICENSE /tmp/lab/assets/ort/LICENSE.MIT
+          cp /tmp/ortpkg/node_modules/onnxruntime-web/dist/ort-wasm-simd-threaded.wasm /tmp/lab/assets/ort/
+          curl --fail --location --silent --show-error https://raw.githubusercontent.com/microsoft/onnxruntime/v1.21.0/LICENSE --output /tmp/lab/assets/ort/LICENSE.MIT
+          test -s /tmp/lab/assets/ort/LICENSE.MIT
           git -C /tmp/lab config user.name 'github-actions[bot]'
           git -C /tmp/lab config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git -C /tmp/lab add assets/ort
           if ! git -C /tmp/lab diff --cached --quiet; then
             git -C /tmp/lab commit -m 'build: vendor pinned MIT ONNX Web runtime for local device inference'
             git -C /tmp/lab remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/nm0137nm-blip/mahjong-lab.git"
+            git -C /tmp/lab pull --rebase origin dev/mortal-ai-checkpoint-20261118
             git -C /tmp/lab push origin HEAD:dev/mortal-ai-checkpoint-20261118
           fi
