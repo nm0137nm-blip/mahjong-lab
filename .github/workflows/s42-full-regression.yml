@@ -1,0 +1,32 @@
+name: Phase 2.5 East Hanchan offline full regression
+on:
+  push:
+    branches: [dev/s42-analysis-20261118]
+    paths:
+      - index.html
+      - service-worker.js
+      - src/mortal/**
+      - .github/workflows/s42-full-regression.yml
+permissions: {}
+jobs:
+  full:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 16
+    steps:
+      - name: Public test model only, no account information
+        shell: bash
+        run: |
+          set -euo pipefail
+          git clone --depth=1 --branch dev/s42-analysis-20261118 https://github.com/nm0137nm-blip/mahjong-lab.git /tmp/lab
+          curl --fail --location --retry 2 --silent --show-error --max-time 160 'https://huggingface.co/xzhe121/Mortal-S42-onnx/resolve/main/model.onnx' -o /tmp/lab/tests/mortal/model.onnx
+          echo '30381bf21389e2d25d3edf48fed11bf772336ef3daeee67d1bdae7fb9dd30cb4  /tmp/lab/tests/mortal/model.onnx' | sha256sum --check
+      - name: Verify East and Hanchan complete plus local offline model restoration
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/probe && cd /tmp/probe
+          npm init -y >/dev/null
+          npm install --ignore-scripts --no-audit --no-fund playwright-core@1.57.0 >/dev/null
+          (cd /tmp/lab && python3 -m http.server 8788 --bind 127.0.0.1 > /tmp/http.log 2>&1) &
+          sleep 2
+          node /tmp/lab/tests/mortal/run-full-match-probe.cjs
