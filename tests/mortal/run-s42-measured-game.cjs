@@ -8,8 +8,8 @@ const {chromium}=require('/tmp/probe/node_modules/playwright-core');
     await page.locator('#mortalModelFile').setInputFiles('/tmp/lab/tests/mortal/model.onnx');
     await page.waitForFunction(()=>MahjongLabS42Debug?.().ready===true,{timeout:100000});
     await page.locator('input[name="recordMode"][value="measure"]').check();
-    await page.locator('#speedSelect').selectOption('300');
     await page.locator('#startBtn').click();
+    await page.locator('#speedSelect').selectOption('300');
     let decisions=0,results=0,ended=false;
     for(let i=0;i<1900;i++){
       const state=await page.evaluate(()=>MahjongLabDebug.state());
