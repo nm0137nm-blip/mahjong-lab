@@ -1,0 +1,32 @@
+name: Mortal-S42 integrated mahjong browser regression (fictional only)
+on:
+  push:
+    branches: [dev/mortal-ai-checkpoint-20261118]
+    paths:
+      - index.html
+      - src/mortal/**
+      - tests/mortal/run-game-probe.cjs
+      - .github/workflows/mortal-game-integration.yml
+permissions: {}
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 14
+    steps:
+      - name: Download public S42 fixture, no user data
+        shell: bash
+        run: |
+          set -euo pipefail
+          git clone --depth=1 --branch dev/mortal-ai-checkpoint-20261118 https://github.com/nm0137nm-blip/mahjong-lab.git /tmp/lab
+          curl --fail --location --retry 2 --silent --show-error --max-time 160 'https://huggingface.co/xzhe121/Mortal-S42-onnx/resolve/main/model.onnx' -o /tmp/lab/tests/mortal/model.onnx
+          echo '30381bf21389e2d25d3edf48fed11bf772336ef3daeee67d1bdae7fb9dd30cb4  /tmp/lab/tests/mortal/model.onnx' | sha256sum --check
+      - name: Test S42 model import and local game on Chrome 393px
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/probe && cd /tmp/probe
+          npm init -y >/dev/null
+          npm install --ignore-scripts --no-audit --no-fund playwright-core@1.57.0 >/dev/null
+          (cd /tmp/lab && python3 -m http.server 8788 --bind 127.0.0.1 > /tmp/http-log 2>&1) &
+          sleep 2
+          node /tmp/lab/tests/mortal/run-game-probe.cjs
