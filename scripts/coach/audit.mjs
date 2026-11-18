@@ -54,7 +54,12 @@ export function materialize(c){
   return {...c,expected,verified};
 }
 export const materialized=cases.map(materialize);
-const V1='あなたは天鳳の鳳凰位レベルの知識・判断力を目標とする四人麻雀コーチです。独立した熟練者として考え、根拠を具体的に説明してください。S42は参考情報です。情報不足は明記してください。';
+// Baseline uses the actual deployed instruction text, not an abbreviated caricature.
+const buildStart=source.indexOf('function buildPhoenixPrompt(');
+const instructionsStart=source.indexOf('const instructions=[',buildStart);
+const instructionsEnd=source.indexOf('return instructions.join',instructionsStart);
+if(instructionsStart<0||instructionsEnd<0)throw Error('baseline instructions not found');
+const V1=new Script(source.slice(instructionsStart,instructionsEnd)+';instructions.join("\\n")').runInNewContext({});
 const V2='あなたは天鳳の鳳凰位レベルの知識・判断力を目標とする四人麻雀コーチです。まず牌姿と実ドラを確認し、打牌後に存在しない牌を根拠にしない。エンジンの数値と戦術的推論を区別する。二度受けは同じ牌を複数の面子に使わない。変化を述べるなら具体的なツモ・打牌・変化後牌姿を示す。危険度は相手別に考える。期待値を捏造しない。候補が与えられた場合は独立した推奨を必ず一つ選び、僅差なら確信度を下げる。最善手を決めた戦術的理由と別候補の不利を具体的に述べ、プレイヤーの考えに反論もする。S42不一致だけで格下げしない。回答前に自己矛盾を点検する。';
 function schema(c){return Object.fromEntries(Object.entries(c.expected).map(([k,v])=>[k,typeof v==='object'&&!Array.isArray(v)?{shanten:'number',waits:'tile[]',ukeire:'number'}:Array.isArray(v)?'array':typeof v]));}
 export function prompt(batch,variant='v2'){
