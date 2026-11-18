@@ -94,6 +94,16 @@ self.addEventListener('fetch',e=>{if(e.request.url.includes('/src/mortal/'))e.re
   const publicScene=JSON.parse(firstPrompt.split('【判断時点の記録】\n')[1]);
   assert.equal(publicScene.ツモ牌,info.lastFeedback.scene.drawn);
   assert.equal(publicScene.手牌_選択前.length,info.lastFeedback.scene.hand.length);
+  assert.equal(await page.locator('#phoenixCoachMode').inputValue(),'v4');
+  assert.ok(publicScene.コーチ計算情報?.実ドラ?.length);
+  assert.ok(publicScene.コーチ計算情報?.候補別牌姿?.length);
+  assert.ok(publicScene.コーチ計算情報?.判断時点の公開時系列?.length);
+  assert.match(firstPrompt,/相対的な手の価値/);
+  await page.locator('#phoenixCoachMode').selectOption('legacy');
+  assert.equal(JSON.parse((await prompt.inputValue()).split('【判断時点の記録】\n')[1]).コーチ計算情報,undefined);
+  await page.locator('#phoenixCoachMode').selectOption('v4');
+  assert.match(await prompt.inputValue(),/相対的な手の価値/);
+  console.log('[pass] actual relative-value coaching data and legacy switch');
   await page.locator('#phoenixQuestion').fill('この字牌の切り順は？');
   assert.match(await prompt.inputValue(),/この字牌の切り順は？/);
   // Clipboard can be denied in WebKit; either confirmed copy or explicit
