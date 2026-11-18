@@ -5333,6 +5333,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     if (!lastFeedback) return '<p>打牌候補を比較できます。評価は向聴数・受け入れ枚数のみで、期待値ではありません。</p>';
     const x=lastFeedback;
     const a=tileName(x.discard);
+    if(x.type==='call')return '<p class="coach-callout">直前の鳴き判断：'+esc(x.choiceLabel)+'（'+esc(a)+'）</p><p>鳴く／見送る判断は、選択時のS42の合法行動Q値が取得できた場合のみ比較できます。</p>';
     let msg='';
     if(x.shanten>x.bestShanten) msg=`${a}は最小向聴数より${x.shanten-x.bestShanten}向聴遠くなる選択です。手役や安全度を除けば、手を進める効率は低下します。`;
     else if(x.ukeire+3<x.bestUkeire) msg=`${a}の受け入れは${x.ukeire}枚。最大${x.bestUkeire}枚の候補があり、牌効率面では差があります。`;
@@ -5355,7 +5356,10 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
       cell.append(el('span','inline-name',tile?tileName(tile):'—'));
       return cell;
     };
-    row.append(tilePair('あなた',x.discard,'self'),el('span','inline-arrow','/'));
+    if(x.type==='call'){
+      const yours=el('span','inline-choice self','あなた：'+x.choiceLabel);
+      row.append(yours,el('span','inline-arrow','/'));
+    }else row.append(tilePair('あなた',x.discard,'self'),el('span','inline-arrow','/'));
     if(op){
       const ai=el('div','inline-choice ai');
       ai.append(el('span','inline-label','S42'));
@@ -5378,7 +5382,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
       note.textContent=x.s42Review?'S42判断指数 '+x.s42Review.index+'/100 · Q差 '+x.s42Review.gap.toFixed(2):'S42は期待点数ではなく行動価値Qを評価';
       flash.classList.remove('warn');
     }else{
-      note.textContent='牌効率コーチは利用可能 · S42の値は未取得';
+      note.textContent=x.type==='call'?'鳴き判断：S42未取得（未設定・解析待ち・比較対象外）':'牌効率コーチは利用可能 · S42の値は未取得';
       flash.classList.remove('warn');
     }
     content.append(note);
@@ -5486,6 +5490,10 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
   }
   function renderS42EfficiencyChoices(x,target){
     target.append(el('h3','','牌効率・直接有効牌の比較'));
+    if(x.type==='call'){
+      target.append(el('p','s42-analysis-note','鳴き判断は打牌の受け入れ比較とは異なる段階です。チー／ポン／カン／スルーの行動Q値をS42が返した場合のみ評価します。'));
+      return;
+    }
     target.append(el('p','s42-analysis-note','自分の打牌・S42の打牌・牌効率上位の候補について、向聴数を改善する牌と推定残枚数を表示します。安全度・手役・順位判断は牌効率に含まれません。'));
     const rows=x.candidates||lastCandidateInfo||[];
     const sameTile=(v,p)=>v&&p&&v.p.slice(0,2)===p.slice(0,2);
@@ -5525,7 +5533,11 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
       target.append(el('p','s42-analysis-note','この打牌の比較可能なS42評価が取得できていません。モデル未設定・エラー・モデルが別の行動段階を評価した等が考えられます。取得していない数字は補完しません。'));
       return;
     }
-    target.append(el('div','s42-info','S42推奨：'+op.label+' ／ あなた：'+(x.riichi?'リーチ':('打 '+tileName(x.discard)))+' ／ 合法手中 '+review.rank+'/'+review.legal+' 位'));
+    target.append(el('div','s42-info','S42推奨：'+op.label+' ／ あなた：'+(x.choiceLabel||'打 '+tileName(x.discard))+' ／ 合法手中 '+review.rank+'/'+review.legal+' 位'));
+    if(x.riichiComparison){
+      const r=x.riichiComparison;
+      target.append(el('div','s42-info','リーチ判断：あなた「'+r.chosen+'」／ S42「'+r.recommended+'」· Q(リーチ) '+r.reachQ.toFixed(3)+' · Q(リーチしない最良の打牌) '+r.noReachQ.toFixed(3)+' · 差 '+r.gap.toFixed(3)+'。※打牌の選択とは別の独立評価ではありません。'));
+    }
     const met=el('div','s42-review-grid');
     [
       ['選択のQ値',review.chosenQ.toFixed(3)],
@@ -5567,7 +5579,9 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
   function openCoachDetails() {
     if(!lastFeedback)return;
     const x=lastFeedback,body=$('coachModalBody');body.replaceChildren();
-    body.append(el('p','coach-callout','直前の打牌：'+tileName(x.discard)+' · '+x.shanten+'向聴 · 受け入れ '+x.ukeire+'枚'));
+    body.append(el('p','coach-callout',x.type==='call'?
+      '直前の鳴き判断：'+x.choiceLabel+' · '+tileName(x.discard):
+      '直前の打牌：'+tileName(x.discard)+' · '+x.shanten+'向聴 · 受け入れ '+x.ukeire+'枚'));
     const tabs=el('div','s42-tabs'),effBtn=el('button','','牌効率・受け入れ'),qBtn=el('button','','S42の定量評価');
     effBtn.type='button';qBtn.type='button';
     tabs.append(effBtn,qBtn);body.append(tabs);
@@ -5584,7 +5598,8 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     };
     effBtn.addEventListener('click',()=>select('eff'));
     qBtn.addEventListener('click',()=>select('q'));
-    select('eff');
+    select(x.type==='call'?'q':'eff');
+    if(x.type==='call'){tabs.classList.add('hidden');efficient.classList.add('s42-hidden');}
     $('coachOverlay').classList.remove('hidden');
   }
   function resultPaymentLabel(data) {
@@ -5695,7 +5710,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
       ].forEach(([title,value])=>{
         const b=el('div','s42-review-metric');b.append(el('strong','',value),el('small','',title));metrics.append(b);
       });root.append(metrics);
-      root.append(el('p','s42-analysis-note','S42評価を取得できた '+total.count+' 打牌のみ。悪手候補＝Q値の相対差30%以上という暫定定義。段位・勝率・局収支ではありません。'));
+      root.append(el('p','s42-analysis-note','S42評価を取得できた '+total.count+' 判断（うち鳴き '+(total.callCount||0)+' 件、立直可能局面 '+(total.riichiCount||0)+' 件）。悪手候補＝Q値の相対差30%以上という暫定定義。段位・勝率・局収支ではありません。'));
     }
     s42ReviewRows=s42ReviewList();
     const btn=$('s42ReviewBtn');
@@ -5712,8 +5727,8 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     if(!s42ReviewRows.length){body.textContent='振り返る局面はありません';return;}
     s42ReviewCursor=Math.max(0,Math.min(s42ReviewRows.length-1,s42ReviewCursor));
     const x=s42ReviewRows[s42ReviewCursor],view=x.scene,score=x.s42Review;
-    body.append(el('div','s42-replay-title',(s42ReviewCursor+1)+' / '+s42ReviewRows.length+' · '+(x.round||'対局中')+' · S42とのQ差 '+(score?.gap||0).toFixed(2)+'（相対 '+Math.round(100*(score?.relativeGap||0))+'%）'));
-    const choices=el('div','s42-info','あなた：打 '+tileName(x.discard)+' ／ S42：'+(x.mortalOpinion?.label||'未取得')+'。S42の合法手順位 '+(score?.rank||'—')+' / '+(score?.legal||'—')+'。');
+    body.append(el('div','s42-replay-title',(s42ReviewCursor+1)+' / '+s42ReviewRows.length+' · '+(x.round||'対局中')+' · '+(x.type==='call'?'鳴き判断':'打牌判断')+' · S42とのQ差 '+(score?.gap||0).toFixed(2)+'（相対 '+Math.round(100*(score?.relativeGap||0))+'%）'));
+    const choices=el('div','s42-info','あなた：'+(x.choiceLabel||'打 '+tileName(x.discard))+' ／ S42：'+(x.mortalOpinion?.label||'未取得')+'。S42の合法手順位 '+(score?.rank||'—')+' / '+(score?.legal||'—')+'。');
     body.append(choices);
     if(view){
       body.append(el('h3','','打牌時点の自分の手牌'));
