@@ -6200,6 +6200,40 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
   window.MahjongLabS42Debug=()=>({status:mortalStatusText,ready:!!mortalClient?.workerReady,broken:!!mortalClient?.broken,persisted:mortalClient?.modelPersisted??null,pending:mortalClient?.pending?.size??0,decision:mortalClient?.decision??0,latest:mortalClient?.current?.label||null,afterDiscard:lastFeedback?.mortalOpinion?.label||null,modelImported:!!mortalClient?.worker});
   // Development QA only: generate benchmark files from a deliberately debug-played match.
   // Never upload or include the game outcome, wall or concealed opponent hands.
+  // Isolated, synthetic opening states: paired single-factor interventions.
+  // They are not copied from real players and must never enter a live match.
+  let coachContrast=null;
+  window.MahjongLabCoachContrastStart=(id)=>{
+    if(game||!mortalClient?.workerReady||mortalClient.pending.size)throw Error('isolated fixture unavailable');
+    const fixtures={
+      'dora-A':{hand:'m1245999p45s1889',draw:'s9',dora:'s2',wind:0,points:[25000,25000,25000,25000]},
+      'dora-B':{hand:'m1245999p45s1889',draw:'s9',dora:'m2',wind:0,points:[25000,25000,25000,25000]},
+      'rank-A':{hand:'m123456p234s67z55',draw:'z6',dora:'p9',wind:1,points:[40000,27000,19000,14000]},
+      'rank-B':{hand:'m123456p234s67z55',draw:'z6',dora:'p9',wind:1,points:[14000,27000,19000,40000]}
+    };
+    const f=fixtures[id];if(!f)throw Error('unknown fixture');
+    const hands=[f.hand,'','',''],jushu=f.wind?3:0;
+    mortalClient.ingest({qipai:{zhuangfeng:f.wind,jushu,baopai:f.dora,changbang:0,lizhibang:0,defen:f.points,shoupai:hands}});
+    mortalClient.ingest({zimo:{l:0,p:f.draw}});
+    const decision=mortalClient.activeDecision('turn');
+    const hand=M.Shoupai.fromString(f.hand).zimo(f.draw);
+    const rule=M.rule({'赤牌':{m:1,p:1,s:1},'場数':2,'延長戦方式':0,'オーラス止めあり':true,'オーラス単独トップ止め':true,'トビ終了あり':true});
+    const discards=M.Game.get_dapai(rule,hand)||[],riichiDiscards=M.Game.allow_lizhi(rule,hand,null,69,f.points[0])||[];
+    const tiles=tileList(hand).map(p=>p.slice(0,2));
+    const seen={};for(const p of [...tiles,f.dora]){const t=normalized(p);seen[t]=(seen[t]||0)+1;}
+    const candidates=discards.map(p=>{
+      const h=hand.clone().dapai(p),shanten=M.Util.xiangting(h);
+      const ukeire=Array.from(M.Util.tingpai(h)||[]).reduce((n,t)=>n+Math.max(0,4-(seen[t]||0)),0);
+      return {p,handTiles:tileList(h).map(t=>t.slice(0,2)),melds:[],shanten,ukeire};
+    });
+    coachContrast={id,entry:{mortalDecision:decision,scene:{snapshotVersion:2,round:f.wind?'南4局':'東1局',mode:'半荘',ownSeat:0,hand:tiles,drawn:f.draw,selfMelds:[],dora:[f.dora],honba:0,kyotaku:0,remaining:69,ownDiscards:0,activeSeat:0,rivers:Array.from({length:4},()=>({discards:[],melds:[],riichi:false})),scores:f.points.map(points=>({points})),initialOrder:f.wind?[1,2,3,0]:[0,1,2,3],pendingReach:false,publicEvents:[{種類:'自摸',席:0}]},legalChoices:{phase:'turn',discards,riichiDiscards,kan:[],tsumo:false,nine:false},candidates}};
+    return decision;
+  };
+  window.MahjongLabCoachContrastRead=async()=>{
+    if(game||!coachContrast||mortalClient?.current?.id!==coachContrast.entry.mortalDecision||mortalClient.pending.size)throw Error('fixture inference not ready');
+    const {makeCase}=await import('./src/coach/s42-benchmark.mjs?v=258');
+    return makeCase({...coachContrast.entry,mortalOpinion:mortalClient.current},M,coachContrast.id);
+  };
   window.MahjongLabCoachAuditStep=(useMortal=true,allowFallback=false)=>{
     if(!game||gameEnded||!pending)return false;
     debugUsed=true;
