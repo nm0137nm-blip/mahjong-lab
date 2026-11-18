@@ -433,12 +433,12 @@
 .s42-replay-title{font-size:12px;color:#cfe5ce;margin:8px 0}
 .s42-hidden{display:none!important}
 @media(max-width:375px){.s42-review-metric strong{font-size:17px}.s42-replay-hand img{width:20px;height:28px}}
- .phoenix-input,.phoenix-prompt{width:100%;box-sizing:border-box;font:inherit;font-size:16px;color:inherit;background:rgba(0,0,0,.15);border:1px solid #728a90;border-radius:8px;padding:8px;margin:6px 0;resize:vertical} .phoenix-prompt{font-size:13px;line-height:1.45} .phoenix-label{display:block;font-size:13px;font-weight:600} .phoenix-open{display:block;text-align:center;padding:12px;text-decoration:underline;color:inherit} .phoenix-details{margin-top:10px;border-top:1px solid #56727a;padding:10px 0} .phoenix-details summary{cursor:pointer;font-weight:600}
+ .phoenix-input,.phoenix-prompt{width:100%;box-sizing:border-box;font:inherit;font-size:16px;color:inherit;background:rgba(0,0,0,.15);border:1px solid #728a90;border-radius:8px;padding:8px;margin:6px 0;resize:vertical} .phoenix-prompt{font-size:13px;line-height:1.45} .phoenix-label{display:block;font-size:13px;font-weight:600} .phoenix-open{display:block;text-align:center;padding:12px;text-decoration:underline;color:inherit} .phoenix-details{margin-top:10px;border-top:1px solid #56727a;padding:10px 0} .phoenix-details summary{cursor:pointer;font-weight:600} .phoenix-open[aria-disabled=true]{opacity:.55} .phoenix-details li{margin:.5em 0}
 </style>
-  <title>麻雀LAB — Phase 2.5.5 PHOENIX COACH</title>
+  <title>麻雀LAB — Phase 2.5.6 CHATGPT SHORTCUT</title>
 </head>
 <body>
-  <header class="site-header"><div class="logo"><span class="logo-mark">牌</span><span>麻雀<span class="logo-lab">LAB</span></span></div><span class="phase">PHASE 2.5.5 · PHOENIX COACH</span></header>
+  <header class="site-header"><div class="logo"><span class="logo-mark">牌</span><span>麻雀<span class="logo-lab">LAB</span></span></div><span class="phase">PHASE 2.5.6 · CHATGPT SHORTCUT</span></header>
   <main id="startScreen" class="home">
     <div class="eyebrow"><span class="eyedot"></span> MAHJONG LAB</div>
     <h1 class="home-compact-title">対局設定</h1>
@@ -5712,9 +5712,29 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     ];
     return instructions.join('\n')+'\n\n【判断時点の記録】\n'+JSON.stringify(data,null,2)+(question.trim()?'\n\n【追加で確認したい点】\n'+question.trim().slice(0,500):'');
   }
+  const PHOENIX_SHORTCUT_NAME='麻雀LAB AI解説';
+  const PHOENIX_SHORTCUT_URL='shortcuts://run-shortcut?name='+encodeURIComponent(PHOENIX_SHORTCUT_NAME)+'&input=clipboard';
+  const PHOENIX_ANSWER_KEY='mahjonglab-phoenix-answers-v1';
+  // Exact prompt matching avoids presenting a stale analysis under a different
+  // question, scene or late-arriving S42 evaluation. No credentials/network.
+  function phoenixStoredAnswer(prompt){
+    if(!prompt)return '';
+    const rows=store.read(PHOENIX_ANSWER_KEY,[]);
+    return Array.isArray(rows)?rows.find(r=>r?.prompt===prompt&&typeof r.answer==='string')?.answer||'':'';
+  }
+  function phoenixSaveAnswer(prompt,answer){
+    if(typeof prompt!=='string'||!prompt||prompt.length>100000||typeof answer!=='string'||!answer.trim()||answer.length>30000)return false;
+    try{
+      const old=store.read(PHOENIX_ANSWER_KEY,[]);
+      const rows=(Array.isArray(old)?old:[]).filter(r=>r?.prompt!==prompt&&typeof r?.prompt==='string'&&typeof r?.answer==='string');
+      const next=[{prompt,answer:answer.trim()},...rows].slice(0,12);
+      localStorage.setItem(PHOENIX_ANSWER_KEY,JSON.stringify(next));
+      return phoenixStoredAnswer(prompt)===answer.trim();
+    }catch{return false;}
+  }
   function renderPhoenixCoach(entry,target){
     target.append(el('h3','','鳳凰卓を目指す AIコーチ'));
-    target.append(el('p','s42-analysis-note','Mortalを絶対視せず、鳳凰位レベルを目標とする熟練者目線で、次回に活かせる判断基準を確認します。ChatGPTで解説を取得する方式（API連携なし）です。'));
+    target.append(el('p','s42-analysis-note','Mortalを絶対視せず、鳳凰位レベルを目標とする熟練者目線で、次回に活かせる判断基準を確認します。ChatGPTへの貼り付け、またはiPhoneのショートカット連携で解説を取得できます。追加課金API・有料サーバーは使いません。'));
     if(!entry?.scene){target.append(el('p','s42-info','判断時点の局面記録がないため、解説依頼は作成できません。'));return;}
     if(entry.scene.snapshotVersion!==2)target.append(el('p','s42-info','旧版の局面記録です。ツモ牌・河の打牌種別など不足する情報は不明として渡します。'));
     if(!entry.s42Review)target.append(el('p','s42-analysis-note','S42評価未取得でも独立した解説を依頼できます。コピー時に取得済みのQ値があれば反映します。'));
@@ -5724,23 +5744,70 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     const preview=el('textarea','phoenix-prompt');preview.id='phoenixPrompt';preview.readOnly=true;preview.rows=5;
     preview.setAttribute('aria-label','ChatGPTに渡す解説依頼');
     const status=el('p','s42-analysis-note');status.setAttribute('role','status');
-    const refresh=()=>{preview.value=buildPhoenixPrompt(entry,question.value)||'';};
-    question.addEventListener('input',refresh);
+    // Capture the exact request actually copied; never associate a later
+    // question or newly arrived Q values with an older returned answer.
+    let copiedPrompt='',selectedPrompt='';
+    const resultLabel=el('label','phoenix-label','生成した解説（貼り付け・端末保存）');
+    const answer=el('textarea','phoenix-input');answer.id='phoenixAnswer';answer.rows=6;answer.maxLength=30000;
+    resultLabel.htmlFor=answer.id;answer.placeholder='ショートカットで生成した結果、またはChatGPTの回答を貼り付け';
+    const saveStatus=el('p','s42-analysis-note');saveStatus.setAttribute('role','status');
+    const save=el('button','secondary','この解説を端末に保存');save.type='button';
+    const del=el('button','secondary','この保存済み解説を削除');del.type='button';
+    const shortcut=el('a','phoenix-open','ショートカットでAI解説を生成');
+    shortcut.href=PHOENIX_SHORTCUT_URL;shortcut.setAttribute('aria-disabled','true');
+    const refresh=()=>{
+      preview.value=buildPhoenixPrompt(entry,question.value)||'';
+      if(selectedPrompt!==preview.value){
+        selectedPrompt=preview.value;answer.value=phoenixStoredAnswer(selectedPrompt);saveStatus.textContent=answer.value?'保存済み解説を表示しています。':'';
+      }
+      const armed=!!copiedPrompt&&copiedPrompt===preview.value;
+      shortcut.setAttribute('aria-disabled',String(!armed));
+    };
+    question.addEventListener('input',()=>{copiedPrompt='';refresh();});
+    shortcut.addEventListener('click',e=>{
+      if(!copiedPrompt||copiedPrompt!==preview.value){e.preventDefault();status.textContent='先に解説依頼をコピーしてください。手動コピーの場合は下の確認を押してください。';return;}
+      if(!confirm('コピーした麻雀の局面情報を、iPhoneのショートカット経由でChatGPTに送信します。追加料金・アップグレードを求められた場合は中止してください。実行しますか？'))e.preventDefault();
+    });
+    save.addEventListener('click',()=>{
+      if(!answer.value.trim()){saveStatus.textContent='解説を貼り付けてください。';return;}
+      const key=copiedPrompt||selectedPrompt;
+      if(!key||key!==selectedPrompt){saveStatus.textContent='依頼が変更されています。元の依頼に戻ってください。';return;}
+      if(phoenixSaveAnswer(key,answer.value))saveStatus.textContent='この依頼の解説を端末内に保存しました。';
+      else saveStatus.textContent='保存できませんでした。回答を別途コピーしてください。';
+    });
+    del.addEventListener('click',()=>{
+      if(!confirm('この依頼の保存済み解説を削除しますか？'))return;
+      try{const old=store.read(PHOENIX_ANSWER_KEY,[]);localStorage.setItem(PHOENIX_ANSWER_KEY,JSON.stringify((Array.isArray(old)?old:[]).filter(r=>r?.prompt!==selectedPrompt)));answer.value='';saveStatus.textContent='削除しました。';}
+      catch{saveStatus.textContent='削除できませんでした。';}
+    });
     const copy=el('button','primary','解説依頼をコピー');copy.type='button';
     copy.addEventListener('click',async()=>{
       refresh();
       try{
         if(!navigator.clipboard?.writeText)throw Error('clipboard unavailable');
         await navigator.clipboard.writeText(preview.value);
-        status.textContent='コピーしました。ChatGPTを開いて貼り付けてください。';
+        copiedPrompt=preview.value;shortcut.setAttribute('aria-disabled','false');status.textContent='コピーしました。ショートカットで生成するか、ChatGPTを開いて貼り付けてください。';
       }catch(e){
-        preview.focus();preview.select();preview.setSelectionRange(0,preview.value.length);
+        copiedPrompt='';shortcut.setAttribute('aria-disabled','true');preview.focus();preview.select();preview.setSelectionRange(0,preview.value.length);
         status.textContent='自動コピーできませんでした。選択された文章を長押ししてコピーしてください。';
       }
     });
     const open=el('a','phoenix-open','ChatGPTを開く');open.href='https://chatgpt.com/';open.target='_blank';open.rel='noopener noreferrer';
-    target.append(label,question,preview,copy,status,open);
-    target.append(el('p','s42-analysis-note','コピー内容は自分の手牌・公開牌・判断・取得済みの評価だけです。自動送信はしません。ChatGPTに貼り付けた時点で、そのサービスに情報が送信されます。解説の正確性は保証されません。'));
+    const manual=el('button','secondary','手動で解説依頼をコピー済み');manual.type='button';
+    manual.addEventListener('click',()=>{copiedPrompt=preview.value;shortcut.setAttribute('aria-disabled','false');status.textContent='クリップボードにこの依頼が入っていることを確認してください。';});
+    const setup=el('details','phoenix-details');setup.append(el('summary','','初回設定：iPhoneのショートカット（無料）'));
+    const steps=el('ol','');
+    for(const t of [
+      '設定 → Apple IntelligenceとSiri → ChatGPT で、すでに契約しているChatGPTアカウントにサインイン。新規契約・アップグレード・クレジット購入は不要です。',
+      'ショートカットアプリで新規ショートカットを作成し、名前を「麻雀LAB AI解説」にします。',
+      '「モデルを使用」アクションを追加し、モデルを「機能拡張モデル（ChatGPT）」に設定。プロンプトには変数「ショートカットの入力」を挿入します。選べない場合は通常のコピペ方式を利用してください。',
+      '続けて「クリップボードにコピー」を追加し、入力をモデルの応答に設定。さらに「結果を表示」または「コンテンツを表示」を追加し、同じモデルの応答を指定します。',
+      '麻雀LABに戻り、依頼をコピー → ショートカットでAI解説を生成 → 生成結果を確認。麻雀LABに戻って解説欄へ貼り付けて保存できます。'
+    ])steps.append(el('li','',t));
+    setup.append(steps);
+    const help=el('a','phoenix-open','Apple公式：ショートカットでモデルを使う');help.href='https://support.apple.com/guide/shortcuts/use-apple-intelligence-in-shortcuts-tpg3vrvwmclv/ios';help.target='_blank';help.rel='noopener noreferrer';setup.append(help);
+    target.append(label,question,preview,copy,status,manual,shortcut,setup,open,resultLabel,answer,save,del,saveStatus);
+    target.append(el('p','s42-analysis-note','ショートカットは利用者が一度作成する必要があります。iPhoneのApple Intelligence/ChatGPT利用条件や上限に従います。麻雀LABはAPIキー・有料API・課金処理を持たず、上限時の有料経路への自動切替もありません。依頼内容はクリップボード経由で渡し、URLには含めません。生成した解説は手動貼り付けで最大12件まで端末内保存できます。解説の精度は保証されません。'));
     refresh();
   }
   function openCoachDetails() {
