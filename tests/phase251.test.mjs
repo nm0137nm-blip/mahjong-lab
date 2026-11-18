@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs';
 import { Script, runInNewContext } from 'node:vm';
 import {
   actionForCall, actionForDiscard, analyzeAction, analyzeDecision,
-  riichiComparison, aggregateDecisions
+  riichiComparison, aggregateDecisions, kanComparison
 } from '../src/mortal/s42-analytics.mjs';
 import { MortalMjaiBridge, toMjai } from '../src/mortal/mjai-bridge.mjs';
 
@@ -104,4 +104,46 @@ test('MJAI bridge preserves exact public discards and called tiles',()=>{
   assert.equal(meld.events[0].type,'pon');
   assert.equal(meld.events[0].target,0);
   assert.equal(toMjai('z6'),'F');
+});
+
+test('rendered rivers omit called tiles and transfer their tsumogiri metadata to melds',()=>{
+ const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');
+ const script=html.match(/<script>([\s\S]*?)<\/script>/)?.[1];
+ const fn=script.slice(script.indexOf('function visibleRiver('),script.indexOf('function renderRiver('));
+ const visible=runInNewContext(fn+';visibleRiver',{});
+ const river=visible(['m3','m6_-','p5*+','z1_','p1','p2','p3','p4','p5']);
+ assert.equal(river.length,7);
+ assert.equal(river[1].p,'z1_');assert.equal(river[1].carried,true);
+ assert.equal(river.some(x=>x.calledAway),false);
+ assert.match(script,/const river=visibleRiver\(raw\);/);
+ const p=script.indexOf('function parseMeld('),p2=script.indexOf('function fitBoard(',p);
+ const n=script.indexOf('function calledDiscardNote('),n2=script.indexOf('function appendMeldTiles(',n);
+ const note=runInNewContext(script.slice(p,p2)+'\n'+script.slice(n,n2)+';calledDiscardNote',{});
+ assert.equal(note({l:1,m:'p555-'},{l:0,p:'p5_'}).tsumogiri,true);
+ assert.equal(note({l:1,m:'p555-'},{l:0,p:'p5'}).tsumogiri,false);
+ assert.equal(note({l:1,m:'p555-'},{l:2,p:'p5_'}),null);
+ assert.match(html,/副露の青点＝鳴いた牌がツモ切り/);
+});
+test('own-turn special actions and both immediate/late S42 results use the same evaluator',()=>{
+ const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');
+ const script=html.match(/<script>([\s\S]*?)<\/script>/)?.[1];
+ const a=script.indexOf('function recordTurnAction('),b=script.indexOf('function answer(',a);
+ const source=script.slice(a,b);
+ const q=Array(46).fill(null);q[42]=1;q[0]=0;
+ const op={best:42,qLegal:q,id:17};
+ const log=[];
+ const context={decisionLog:log,game:{model:{zhuangfeng:0,jushu:0}},F:['東'],
+   human:{shoupai:{}},M:{Util:{xiangting:()=>1}},mortalClient:{activeDecision:()=>17,current:op},
+   parseMeld:()=>[],tileName:p=>p,captureS42Scene:()=>({}),
+   s42Analytics:{analyzeAction,analyzeDecision,riichiComparison,kanComparison},
+   lastFeedback:null,lastCandidateInfo:[]};
+ const record=runInNewContext(source+';recordTurnAction',context);
+ record({gang:['m1111']},{gang:'m1111'});
+ assert.equal(log.length,1);
+ assert.equal(log[0].type,'action');
+ assert.equal(log[0].s42Review.ratingContribution,1);
+ assert.equal(log[0].kanComparison.chosen,'カンする');
+ assert.equal(log[0].mortalDecision,17);
+ assert.match(script,/if\(entry.kanAvailable\)entry.kanComparison=/);
+ assert.match(script,/kanAvailable:!!pending.gang\?\.length/);
 });
