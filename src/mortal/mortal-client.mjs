@@ -157,8 +157,14 @@ export class MortalClient {
       const file=new File([bytes],'model.onnx',{type:'application/octet-stream'});
       await this.importModel(file);
       return true;
-    }catch(e){this.status('S42取得失敗：モデルファイルの手動選択をお試しください（'+String(e.message||e)+'）');throw e;}
-    finally{this.downloading=false;}
+    }catch(e){
+      // WebKit can reject cross-origin requests with a null reason. Never let
+      // diagnostics mask the original failure as a secondary TypeError.
+      const message=e && typeof e==='object' && 'message' in e?String(e.message||'通信エラー'):String(e??'通信エラー');
+      const cause=message==='null'?'通信エラー':message;
+      this.status('S42取得失敗：'+cause+'。配布元の model.onnx を保存して手動選択してください');
+      throw new Error('S42モデル取得失敗: '+cause);
+    }finally{this.downloading=false;}
   }
   async restoreModel(){
     try{
