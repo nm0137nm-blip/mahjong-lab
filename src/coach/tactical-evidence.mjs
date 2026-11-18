@@ -36,7 +36,7 @@ export function comparePublicCandidates(scene,facts,ids,a,b){
 }
 export function selectTacticalEvidence(entry,facts){
  const op=entry?.mortalOpinion,choices=entry?.legalChoices;
- if(entry?.type!=='discard'||choices?.phase!=='turn'||choices.riichiDiscards?.length||choices.kan?.length||choices.tsumo||choices.nine||op?.id!==entry.mortalDecision||!Array.isArray(op?.qLegal)||op.qLegal.length!==46||!Number.isInteger(op.best)||!Array.isArray(choices.discards))return [];
+ if(entry?.type!=='discard'||choices?.phase!=='turn'||choices.riichiDiscards?.length||choices.kan?.length||choices.tsumo||choices.nine||op?.source!=='Mortal-S42'||!Number.isInteger(op.id)||op.id!==entry.mortalDecision||!Array.isArray(op?.qLegal)||op.qLegal.length!==46||!Number.isInteger(op.best)||!Array.isArray(choices.discards))return [];
  const ids=op.qLegal.flatMap((q,i)=>Number.isFinite(q)?[i]:[]), legal=[...new Set(choices.discards.map(t=>action(t?.slice(0,2))))].sort((a,b)=>a-b);
  if(ids.length<2||ids.some(i=>i>36)||JSON.stringify(ids)!==JSON.stringify(legal)||!ids.includes(op.best)||op.qLegal[op.best]!==Math.max(...ids.map(i=>op.qLegal[i])))return [];
  const user=action(entry.discard?.slice(0,2));
