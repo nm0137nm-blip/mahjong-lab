@@ -76,7 +76,9 @@ export function aggregateDecisions(log){
   const agreements=judged.filter(x=>x.agreement).length;
   const suspected=judged.filter(x=>x.badCandidate).length;
   const score=n?Math.round(judged.reduce((t,x)=>t+x.index,0)/n):null;
-  return {version:INDEX_VERSION,count:n,agreements,suspected,index:score,\n    callCount:(Array.isArray(log)?log:[]).filter(x=>x?.type==='call'&&x?.s42Review).length,\n    riichiCount:(Array.isArray(log)?log:[]).filter(x=>x?.riichiAvailable&&x?.s42Review).length,
+  return {version:INDEX_VERSION,count:n,agreements,suspected,index:score,
+    callCount:(Array.isArray(log)?log:[]).filter(x=>x?.type==='call'&&x?.s42Review).length,
+    riichiCount:(Array.isArray(log)?log:[]).filter(x=>x?.riichiAvailable&&x?.s42Review).length,
     agreementRate:n?agreements/n:null,badCandidateRate:n?suspected/n:null};
 }
 export function combineAggregates(all){
