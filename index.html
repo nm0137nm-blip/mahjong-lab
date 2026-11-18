@@ -4680,7 +4680,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
   let game = null, human = null, pending = null, mode = '1';
   let riichiMode = false, coachCollapsed = true, candidateInfo = [];
   let lastFeedback = null, decisionLog = [], gameEnded = false, matchSaved = false;
-  let readyToNext = false, selectedRule = null, lastAction = '';
+  let readyToNext = false, selectedRule = null, lastAction = '', recordedMatchId = null;
   let toastTimer = null, bannerTimer = null, latestDiscard = null;
   let lastCandidateInfo = [];
   const speedValue = () => Number($('speedSelect').value || 850);
@@ -4892,6 +4892,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     mode = document.querySelector('input[name="length"]:checked')?.value || '1';
     recordMode = document.querySelector('input[name="recordMode"]:checked')?.value || 'practice';
     debugUsed = false; matchSaved = false;
+    recordedMatchId=String(Date.now())+'-'+Math.random().toString(36).slice(2);
     $('recordModeBadge').textContent=recordMode==='measure'?'計測中':'練習';
     selectedRule = M.rule({'配給原点':25000,'赤牌':{m:1,p:1,s:1},'場数':Number(mode),'延長戦方式':0,'オーラス止めあり':false,'順位点':['0.0','0.0','0.0','0.0']});
     human = new Human(); referenceAI = null;
@@ -4946,6 +4947,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     if(recordMode==='measure' && !debugUsed) {
       try {
         const summary=summarizeMatch(paipu);
+        summary.matchId=recordedMatchId;
         summary.s42=s42Aggregated();
         if(summary.hands>0 && Number.isFinite(summary.score)) {
           const history=store.read(RECORD_KEY,[]);
@@ -4961,6 +4963,16 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     }
     renderStats();
     if(gameEnded)renderS42End();
+  }
+  function syncS42SavedAfterLateOpinion(){
+    if(!matchSaved||recordMode!=='measure'||debugUsed||!recordedMatchId)return;
+    const history=store.read(RECORD_KEY,[]);
+    const i=history.findIndex(x=>x?.matchId===recordedMatchId);
+    if(i<0)return;
+    history[i].s42=s42Aggregated();
+    store.save(RECORD_KEY,history);
+    store.save(S42_REVIEW_KEY,s42ReviewList());
+    renderStats();
   }
   function ownSeat() { return game ? game.model.player_id.indexOf(0) : 0; }
   function ownShoupai() { try {return human && human.shoupai;} catch {return null;} }
@@ -5262,7 +5274,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
       if(entry.riichiAvailable)entry.riichiComparison=s42Analytics.riichiComparison(op,entry.s42Review?.action);
     }
     if(lastFeedback===entry)redrawSoon();
-    if(gameEnded){renderS42End();syncS42SavedAfterLateOpinion();}
+    if(gameEnded){renderS42End();renderLastDecisionReview('endLastReview',false);syncS42SavedAfterLateOpinion();}
     if(!$('resultOverlay').classList.contains('hidden'))renderLastDecisionReview('resultDecisionReview',true);
   }
 
@@ -5675,6 +5687,24 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     }
     return false;
   }
+  // The player must be able to inspect the LAST choice before moving on,
+  // including after a deal-in, abortive draw or final hand of the match.
+  function renderLastDecisionReview(id,requireCurrentRound=false){
+    const area=$(id);if(!area)return;
+    area.replaceChildren();area.hidden=true;
+    const round=game?`${F[game.model.zhuangfeng]}${game.model.jushu+1}局`:'';
+    const found=decisionLog.slice().reverse().find(x=>!requireCurrentRound||x.round===round);
+    if(!found)return;
+    area.hidden=false;
+    area.append(el('h3','','直前の判断を振り返る'));
+    area.append(el('p','',found.round+' · '+(found.choiceLabel||'打 '+tileName(found.discard))+
+      (found.s42Review?' ／ S42判断指数 '+found.s42Review.index+'/100 · 最良Qとの差 '+found.s42Review.gap.toFixed(3):
+      ' ／ S42のQ値は未取得。牌効率・行動履歴は確認できます。')));
+    const btn=el('button','secondary','この判断の詳細を見る');
+    btn.type='button';
+    btn.addEventListener('click',()=>{lastFeedback=found;openCoachDetails();});
+    area.append(btn);
+  }
   function showResult(msg) {
     const data=msg.hule||msg.pingju;
     $('resultTag').textContent=msg.hule?'和了':'流局';
@@ -5691,6 +5721,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
       const move=el('span','move',(gain>=0?'+':'')+fmt(gain));score.append(move);row.append(name,score);$('resultScores').append(row);
     }
     $('continueBtn').textContent=willFinishAfterResult()?'終局 →':'次の局へ →';
+    renderLastDecisionReview('resultDecisionReview',true);
     $('resultOverlay').classList.remove('hidden');
   }
 
@@ -5779,6 +5810,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
       row.append(el('span','',`${x.rank}着 · ${NAMES[x.id]}`),el('span','',fmt(x.score)+'点'));$('endScores').append(row);
     }
     renderS42End();
+    renderLastDecisionReview('endLastReview',false);
     $('endOverlay').classList.remove('hidden');
   }
   function goHome() {
@@ -5820,6 +5852,13 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
       try{await client.loadEncoder();}catch(e){setStatus('S42局面変換器の起動に失敗しました');return;}
       await client.restoreModel();
     }).catch(e=>{console.warn('S42コーチの起動失敗。牌効率は継続します',e);setStatus('S42未利用（基礎版コーチは使用できます）');});
+    $('mortalDownloadBtn').addEventListener('click',async ()=>{
+      if(!mortalClient){setStatus('S42の初期化中です。もう一度お試しください');return;}
+      const btn=$('mortalDownloadBtn');btn.disabled=true;
+      try{await mortalClient.downloadModel();}
+      catch(e){console.warn('S42モデル自動取得失敗',e);}
+      finally{btn.disabled=false;}
+    });
     $('mortalModelFile').addEventListener('change',async e=>{
       const file=e.target.files?.[0];if(!file)return;
       if(!mortalClient){setStatus('局面変換器の準備後にファイルを選択してください');return;}
