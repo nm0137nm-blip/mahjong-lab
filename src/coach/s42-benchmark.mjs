@@ -68,7 +68,7 @@ export function gradeBlind(keys,answers){
   const legal=k.q.flatMap((v,i)=>finite(v)?[{i,v}]:[]).sort((a,b)=>b.v-a.v||a.i-b.i);
   if(legal.length<2||k.q[k.best]!==legal[0].v)throw Error('invalid reference key');
   const a=seen.get(k.id),pick=legal.find(x=>x.i===a?.action);
-  const valid=!!pick&&typeof a.reason==='string'&&a.reason.trim().length>0&&['high','medium','low'].includes(a.confidence)&&typeof a.alternative==='number'&&a.alternative!==a.action&&legal.some(x=>x.i===a.alternative);
+  const valid=!!pick&&typeof a.reason==='string'&&a.reason.trim().length>0&&typeof a.prediction==='string'&&a.prediction.trim().length>0&&['high','medium','low'].includes(a.confidence)&&typeof a.alternative==='number'&&a.alternative!==a.action&&legal.some(x=>x.i===a.alternative);
   const gap=valid?legal[0].v-pick.v:null,range=legal[0].v-legal.at(-1).v;
   return {id:k.id,phase:k.phase,valid,exact:valid&&a.action===k.best,tiedBest:valid&&gap===0,top2:valid&&legal.filter(x=>x.v>pick.v).length<2,gap,relativeGap:valid?(range>0?gap/range:0):null,reference:k.best,manualReviewRequired:true};
  });
