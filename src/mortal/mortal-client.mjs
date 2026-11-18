@@ -58,7 +58,7 @@ export class MortalClient {
     this.onStatus=onStatus;this.onOpinion=onOpinion;
     this.bridge=new MortalMjaiBridge();this.wasm=null;this.state=0;
     this.worker=null;this.workerReady=false;this.pending=new Map();
-    this.serial=0;this.decision=0;this.current=null;
+    this.serial=0;this.decision=0;this.current=null;this.currentPhase=null;this.lastEligiblePhase=null;
     this.eventQueue=[];this.broken=false;this.encoderPromise=null;
   }
   status(msg){this.onStatus(msg);}
@@ -89,7 +89,12 @@ export class MortalClient {
           new Uint8Array(this.wasm.memory.buffer,p,bytes.length).set(bytes);
           const res=this.wasm.apply_event(this.state,p,bytes.length);
           if(res<0)throw Error('非対応の局面通知 '+ev.type+' ('+res+')');
-          if(res===1&&this.workerReady)this.evaluate();
+          if(res===1){
+            const phase=ev.type==='dahai'?'reaction':
+              ['tsumo','chi','pon','daiminkan','ankan','kakan'].includes(ev.type)?'turn':null;
+            this.lastEligiblePhase=phase;
+            if(this.workerReady)this.evaluate(phase);
+          }
         }finally{this.wasm.free_bytes(p,bytes.length);}
       }
     }catch(e){
@@ -164,7 +169,7 @@ export class MortalClient {
       if(data?.type==='ready'){
         this.workerReady=true;this.status('Mortal-S42 準備完了（端末内推論）');
         // A model loaded mid-turn must evaluate the CURRENT legal actions too.
-        this.evaluate();
+        this.evaluate(this.lastEligiblePhase);
         return;
       }
       if(data?.type==='error'){
@@ -187,7 +192,10 @@ export class MortalClient {
     this.worker.postMessage({type:'init',id,model:bytes},[bytes]);
     this.status('Mortal-S42 モデルを読み込み中...');
   }
-  evaluate(){
+  activeDecision(phase){
+    return this.workerReady&&this.currentPhase===phase?this.decision:null;
+  }
+  evaluate(phase=null){
     if(!this.state||!this.workerReady||this.broken)return null;
     const obs=this.wasm.alloc_bytes(1012*34*4),mask=this.wasm.alloc_bytes(46);
     if(!obs||!mask)return null;
@@ -197,6 +205,7 @@ export class MortalClient {
       const legal=new Uint8Array(new Uint8Array(this.wasm.memory.buffer,mask,46).slice());
       if(!legal.some(x=>x))return null;
       const id=++this.serial,decision=++this.decision;
+      this.currentPhase=phase;
       this.current=null;
       this.pending.set(id,{decision});
       if(this.pending.size>10){this.pending.clear();this.status('S42推論が追いつきません。通常コーチを継続します');return null;}
