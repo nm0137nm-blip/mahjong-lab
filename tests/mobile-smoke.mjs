@@ -77,7 +77,7 @@ try{
   assert.match(await prompt.inputValue(),/この字牌の切り順は？/);
   // Clipboard can be denied in WebKit; either confirmed copy or explicit
   // selectable-text fallback must be provided, never claim a false success.
-  await page.getByRole('button',{name:'解説依頼をコピー'}).click();
+  await page.getByRole('button',{name:'解説依頼をコピー',exact:true}).click();
   await page.waitForFunction(()=>document.querySelector('#phoenixCopyStatus')?.textContent?.includes('コピー'));
   assert.match(await page.locator('#phoenixCopyStatus').innerText(),/コピーしました|自動コピーできませんでした/);
   assert.equal(await page.getByRole('link',{name:'ChatGPTを開く'}).getAttribute('href'),'https://chatgpt.com/');
