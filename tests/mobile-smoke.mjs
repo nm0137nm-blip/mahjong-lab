@@ -77,12 +77,27 @@ try{
   assert.match(await prompt.inputValue(),/この字牌の切り順は？/);
   // Clipboard can be denied in WebKit; either confirmed copy or explicit
   // selectable-text fallback must be provided, never claim a false success.
-  await page.getByRole('button',{name:'解説依頼をコピー'}).click();
-  await page.waitForFunction(()=>document.querySelector('#coachModalBody [role=status]')?.textContent?.includes('コピー'));
-  assert.match(await page.locator('#coachModalBody [role=status]').innerText(),/コピーしました|自動コピーできませんでした/);
+  await page.getByRole('button',{name:'解説依頼をコピー',exact:true}).click();
+  await page.waitForFunction(()=>document.querySelector('#phoenixCopyStatus')?.textContent?.includes('コピー'));
+  assert.match(await page.locator('#phoenixCopyStatus').innerText(),/コピーしました|自動コピーできませんでした/);
   assert.equal(await page.getByRole('link',{name:'ChatGPTを開く'}).getAttribute('href'),'https://chatgpt.com/');
+  const shortcut=page.getByRole('link',{name:'ショートカットでAI解説を生成'});
+  assert.equal(await shortcut.getAttribute('href'),'shortcuts://run-shortcut?name='+encodeURIComponent('麻雀LAB AI解説')+'&input=clipboard');
+  assert.ok(!(await shortcut.getAttribute('href')).includes('text='));
+  await page.locator('#phoenixQuestion').fill('保存と変更時の照合');
+  assert.equal(await shortcut.getAttribute('aria-disabled'),'true');
+  await page.locator('#phoenixAnswer').fill('テスト専用の架空解説');
+  await page.getByRole('button',{name:'この解説を端末に保存'}).click();
+  assert.match(await page.locator('#phoenixSaveStatus').innerText(),/端末内に保存/);
+  await page.locator('#phoenixQuestion').fill('別の質問');
+  assert.equal(await page.locator('#phoenixAnswer').inputValue(),'');
+  await page.locator('#phoenixQuestion').fill('保存と変更時の照合');
+  assert.equal(await page.locator('#phoenixAnswer').inputValue(),'テスト専用の架空解説');
+  page.once('dialog',d=>d.accept());
+  await page.getByRole('button',{name:'この保存済み解説を削除'}).click();
+  assert.equal(await page.locator('#phoenixAnswer').inputValue(),'');
   await page.locator('#closeCoachBtn').click();
-  console.log('[pass] Phoenix coach actual choice, user question, copy or explicit fallback');
+  console.log('[pass] Shortcut launch URL contains no prompt, local cache exact matching, save/delete; native launch is not simulated');
   if(process.env.S42_MODEL_TEST==='1'){
     await page.waitForFunction(()=>{
       const f=window.MahjongLabDebug.inspect()?.lastFeedback;

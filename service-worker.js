@@ -1,5 +1,5 @@
-// Mahjong LAB PWA — v2.5.5: Phoenix-level coaching prompt and full decision review.
-const CACHE='mahjong-lab-iphone-v255';
+// Mahjong LAB PWA — v2.5.6: user-controlled Shortcut coaching and local answer storage.
+const CACHE='mahjong-lab-iphone-v256';
 const SHELL=['./','./index.html'];
 const RESOURCES=[
  './src/mortal/mjai-bridge.mjs',
