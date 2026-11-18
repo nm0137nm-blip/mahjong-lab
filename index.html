@@ -5270,7 +5270,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     const info={type:'action',round:F[game.model.zhuangfeng]+(game.model.jushu+1)+'局',
       discard:payload.gang?.slice(0,2)||null,choiceLabel:label,action,chosenMeld:payload.gang||null,
       legalChoices:captureCoachChoices(turn),
-      candidates:[],scene:captureS42Scene(),shanten:M.Util.xiangting(human.shoupai),
+      candidates:candidateInfo.map(v=>({p:v.p,shanten:v.shanten,ukeire:v.ukeire,handTiles:v.handTiles?.slice()||[],melds:v.melds?.slice()||[]})),scene:captureS42Scene(),shanten:M.Util.xiangting(human.shoupai),
       riichiAvailable:false,kanAvailable:!!turn.gang?.length,kanOptions:turn.gang?.length||0,
       mortalDecision:decision,mortalOpinion:mortalClient?.current?.id===decision?{...mortalClient.current}:null,
       s42Review:null};
@@ -6200,6 +6200,31 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
   window.MahjongLabS42Debug=()=>({status:mortalStatusText,ready:!!mortalClient?.workerReady,broken:!!mortalClient?.broken,persisted:mortalClient?.modelPersisted??null,pending:mortalClient?.pending?.size??0,decision:mortalClient?.decision??0,latest:mortalClient?.current?.label||null,afterDiscard:lastFeedback?.mortalOpinion?.label||null,modelImported:!!mortalClient?.worker});
   // Development QA only: generate benchmark files from a deliberately debug-played match.
   // Never upload or include the game outcome, wall or concealed opponent hands.
+  window.MahjongLabCoachAuditStep=(useMortal=true,allowFallback=false)=>{
+    if(!game||gameEnded||!pending)return false;
+    debugUsed=true;
+    const phase=pending.type,op=mortalClient?.current;
+    const matched=op&&op.id===mortalClient?.activeDecision(phase)&&s42Analytics;
+    if(!matched&&!allowFallback)return false;
+    const q=matched?op.best:null;
+    if(phase==='reaction'){
+      if(pending.win&&(!useMortal||q===43||!matched)){answer({hule:'-'});return true;}
+      const melds=[...pending.gang,...pending.peng,...pending.chi];
+      const meld=useMortal&&matched?melds.find(m=>s42Analytics.actionForCall(m)===q):null;
+      if(meld){answer({fulou:meld});return true;}
+      answer({});return true;
+    }
+    if(phase!=='turn')return false;
+    if(pending.win&&(!useMortal||q===43||!matched)){answer({hule:'-'});return true;}
+    if(useMortal&&matched&&q===42&&pending.gang.length){answer({gang:pending.gang[0]});return true;}
+    if(useMortal&&matched&&q===44&&pending.nine){answer({daopai:'-'});return true;}
+    const ranked=candidateInfo.slice().sort((a,b)=>a.shanten-b.shanten||b.ukeire-a.ukeire||a.p.localeCompare(b.p));
+    let p=useMortal&&matched?pending.options.find(t=>s42Analytics.actionForDiscard(t)===q):null;
+    if(useMortal&&matched&&q===37){p=ranked.find(r=>game.allow_lizhi(r.p))?.p;if(p)riichiMode=true;}
+    if(!p)p=ranked[0]?.p||pending.options[0];
+    if(!p)return false;
+    chooseDiscard(p);return true;
+  };
   window.MahjongLabCoachAudit=async(prefix)=>{
     if(!debugUsed||!gameEnded||!mortalClient?.workerReady||mortalClient.pending.size)throw Error('QA match not finished or reference inference pending');
     if(typeof prefix!=='string'||!/^[a-zA-Z0-9_-]{1,80}$/.test(prefix))throw Error('invalid dataset prefix');
