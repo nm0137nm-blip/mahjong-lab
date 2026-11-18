@@ -35,6 +35,7 @@ test('new source-specific contrast cases separate public facts from hypotheses a
  assert.equal(pick('T16A').expected.mangan_proven,false);
  assert.equal(pick('T16B').expected.minimum_han_if_win,4);
  assert.equal(pick('T17A').expected.self_after_ron,15000+7700);
- assert.equal(pick('T17B').expected.third_after_ron,22800-7700);
+ assert.equal(pick('T17A').expected.payer_after_ron,33000-7700);assert.equal(pick('T17B').expected.payer_after_ron,29200-7700);
+ assert.equal(pick('T17A').expected.self_rank_after_ron,4);assert.equal(pick('T17B').expected.self_rank_after_ron,3);
  assert.equal(pick('T17A').oracle,'候補B');assert.equal(pick('T17B').oracle,'候補A');
 });
