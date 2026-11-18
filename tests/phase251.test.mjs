@@ -136,7 +136,7 @@ test('own-turn special actions and both immediate/late S42 results use the same 
    human:{shoupai:{}},M:{Util:{xiangting:()=>1}},mortalClient:{activeDecision:()=>17,current:op},
    parseMeld:()=>[],tileName:p=>p,captureS42Scene:()=>({}),captureCoachChoices:()=>({phase:'turn',kan:['m1111']}),
    s42Analytics:{analyzeAction,analyzeDecision,riichiComparison,kanComparison},
-   lastFeedback:null,lastCandidateInfo:[]};
+   lastFeedback:null,lastCandidateInfo:[],candidateInfo:[{p:'m1',shanten:1,ukeire:6,handTiles:['m2'],melds:[]}]};
  const record=runInNewContext(source+';recordTurnAction',context);
  record({gang:['m1111']},{gang:'m1111'});
  assert.equal(log.length,1);
@@ -144,6 +144,10 @@ test('own-turn special actions and both immediate/late S42 results use the same 
  assert.equal(log[0].s42Review.ratingContribution,1);
  assert.equal(log[0].kanComparison.chosen,'カンする');
  assert.equal(log[0].mortalDecision,17);
+ assert.equal(log[0].candidates[0].p,'m1');
+ assert.equal(log[0].candidates[0].ukeire,6);
+ context.candidateInfo[0].handTiles.push('m9');
+ assert.equal(log[0].candidates[0].handTiles.length,1);
  assert.match(script,/if\(entry.kanAvailable\)entry.kanComparison=/);
  assert.match(script,/kanAvailable:!!pending.gang\?\.length/);
 });
