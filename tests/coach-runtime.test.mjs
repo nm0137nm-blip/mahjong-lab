@@ -2,7 +2,7 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {Script} from 'node:vm';
-import {buildEvidence,buildPrompt,nextPublicEvents,VERSION} from '../src/coach/phoenix-coach.mjs';
+import {buildEvidence,buildPrompt,nextPublicEvents,VERSION,sequenceWaitShapes,rankFacts} from '../src/coach/phoenix-coach.mjs';
 const src=readFileSync(new URL('../index.html',import.meta.url),'utf8').match(/<script>([\s\S]*?)<\/script>/)[1];
 const b='})(typeof window!=="undefined"?window:globalThis);';
 const ctx={window:{}};new Script(src.slice(0,src.indexOf(b)+b.length)).runInNewContext(ctx);const M=ctx.window.MajiangCore;
@@ -65,4 +65,17 @@ test('new prompt retains shortcut prefix, final Q section, user question and no 
  assert.match(p,/最善手/);assert.match(p,/二度受け$/);
  const data=JSON.parse(p.split('【判断時点の記録】\n')[1].split('\n\n【追加で確認したい点】')[0]);
  assert.equal(Object.keys(data).at(-1),'S42');assert.equal(data.S42.選択Q,-1);assert.deepEqual(data.コーチ計算情報.実ドラ,['s3']);
+});
+
+test('pilot regression: classify all sequence waits for 7s and red five correctly',()=>{
+ assert.deepEqual(sequenceWaitShapes('s7'),[{牌姿:'s56',待ち形:'両面'},{牌姿:'s68',待ち形:'嵌張'},{牌姿:'s89',待ち形:'辺張'}]);
+ assert.deepEqual(sequenceWaitShapes('m3'),[{牌姿:'m12',待ち形:'辺張'},{牌姿:'m24',待ち形:'嵌張'},{牌姿:'m45',待ち形:'両面'}]);
+ assert.deepEqual(sequenceWaitShapes('p0'),sequenceWaitShapes('p5'));assert.deepEqual(sequenceWaitShapes('z1'),[]);
+});
+test('pilot regression: upper-ranked payer can fall below original last place',()=>{
+ const v={ownSeat:3,scores:[33000,29200,22800,15000].map(points=>({points})),initialOrder:[0,1,2,3],honba:0,kyotaku:0};
+ const rows=rankFacts(v).ロンと放銃.filter(r=>r.仮ロン基本点===7700);
+ const top=rows.find(r=>r.相手===0),second=rows.find(r=>r.相手===1);
+ assert.deepEqual(top.自分和了後点棒,[25300,29200,22800,22700]);assert.equal(top.自分和了後順位,4);
+ assert.deepEqual(second.自分和了後点棒,[33000,21500,22800,22700]);assert.equal(second.自分和了後順位,3);
 });
