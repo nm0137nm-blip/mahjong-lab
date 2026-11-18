@@ -14,7 +14,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: node --test tests/*.test.mjs
+      - run: node --test tests/*.test.mjs tests/mortal/analytics.test.mjs
       - run: |
           node --check src/mortal/mortal-client.mjs
           node --check src/mortal/mortal-worker.mjs

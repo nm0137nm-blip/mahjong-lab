@@ -6,6 +6,9 @@
  * Everything stays in browser memory / local storage; no remote requests.
  */
 export const INDEX_VERSION = 'S42-relative-Q-v1';
+export const BAD_MOVE_VERSION = 'S42-softmax-0.1-under5-v1';
+export const SOFTMAX_TEMPERATURE = 0.1;
+export const BAD_MOVE_THRESHOLD = 0.05;
 const HONORS=['E','S','W','N','P','F','C'];
 export function actionForDiscard(tile,riichi=false){
   if(riichi)return 37;
@@ -45,6 +48,13 @@ export function analyzeAction(op,action){
   if(sorted.length<2||sorted[0].index!==op.best)return null;
   const picked=sorted.find(x=>x.index===action);
   if(!picked)return null;
+  // Match the Mortal mjai-reviewer recommendation calculation (tau=0.1).
+  // Only legal Q values participate. Subtract max Q for numerical stability.
+  const weights=sorted.map(x=>Math.exp((x.q-sorted[0].q)/SOFTMAX_TEMPERATURE));
+  const weightSum=weights.reduce((sum,w)=>sum+w,0);
+  if(!Number.isFinite(weightSum)||weightSum<=0)return null;
+  const ranked=sorted.map((x,i)=>({...x,recommendation:weights[i]/weightSum}));
+  const recommendation=ranked.find(x=>x.index===action).recommendation;
   const gap=Math.max(0,sorted[0].q-picked.q);
   const range=Math.max(1e-9,sorted[0].q-sorted[sorted.length-1].q);
   const relativeGap=Math.max(0,Math.min(1,gap/range));
@@ -54,8 +64,8 @@ export function analyzeAction(op,action){
     action,rank,legal:sorted.length,best:op.best,chosenQ:picked.q,bestQ:sorted[0].q,
     stateValue,chosenAdvantage:picked.q-stateValue,bestAdvantage:sorted[0].q-stateValue,
     gap,relativeGap,agreement:action===op.best,
-    badCandidate:relativeGap>=0.30&&op.best!==action,
-    index:Math.round(100*(1-relativeGap)),top:sorted.slice(0,6)
+    recommendation,badMove:recommendation<BAD_MOVE_THRESHOLD,
+    index:Math.round(100*(1-relativeGap)),top:ranked.slice(0,6)
   };
 }
 export function riichiComparison(op,chosenAction){
@@ -71,23 +81,43 @@ export function analyzeDecision(op,chosen,riichi=false){
   return analyzeAction(op,actionForDiscard(chosen,riichi));
 }
 export function aggregateDecisions(log){
-  const judged=(Array.isArray(log)?log:[]).map(x=>x?.s42Review).filter(x=>x&&Number.isFinite(x.index)&&Number.isInteger(x.rank));
+  const entries=Array.isArray(log)?log:[];
+  const judged=entries.map(x=>x?.s42Review)
+    .filter(x=>x&&Number.isFinite(x.index)&&Number.isInteger(x.rank));
   const n=judged.length;
   const agreements=judged.filter(x=>x.agreement).length;
-  const suspected=judged.filter(x=>x.badCandidate).length;
   const score=n?Math.round(judged.reduce((t,x)=>t+x.index,0)/n):null;
-  return {version:INDEX_VERSION,count:n,agreements,suspected,index:score,
-    callCount:(Array.isArray(log)?log:[]).filter(x=>x?.type==='call'&&x?.s42Review).length,
-    riichiCount:(Array.isArray(log)?log:[]).filter(x=>x?.riichiAvailable&&x?.s42Review).length,
-    agreementRate:n?agreements/n:null,badCandidateRate:n?suspected/n:null};
+  // Bad-move rate is for evaluated DISCARDS only. Call/pass judgments remain
+  // visible in reviews and the overall learning index, but not in this ratio.
+  const discards=entries.filter(x=>x?.type==='discard');
+  const evaluatedDiscards=discards.filter(x=>
+    x.s42Review&&Number.isFinite(x.s42Review.recommendation)&&
+    x.s42Review.recommendation>=0&&x.s42Review.recommendation<=1);
+  const badReviewed=evaluatedDiscards.length;
+  const badCount=evaluatedDiscards.filter(x=>x.s42Review.recommendation<BAD_MOVE_THRESHOLD).length;
+  return {version:INDEX_VERSION,count:n,agreements,index:score,
+    callCount:entries.filter(x=>x?.type==='call'&&x?.s42Review).length,
+    riichiCount:entries.filter(x=>x?.riichiAvailable&&x?.s42Review).length,
+    agreementRate:n?agreements/n:null,
+    badRateVersion:BAD_MOVE_VERSION,discardCount:discards.length,
+    badReviewed,badCount,badMoveRate:badReviewed?badCount/badReviewed:null};
 }
 export function combineAggregates(all){
-  const a=(Array.isArray(all)?all:[]).filter(x=>x&&x.version===INDEX_VERSION&&x.count>0&&x.index!=null);
+  const a=(Array.isArray(all)?all:[]).filter(x=>
+    x&&x.version===INDEX_VERSION&&Number.isFinite(x.count)&&x.count>0&&Number.isFinite(x.index));
   const count=a.reduce((t,x)=>t+x.count,0);
-  if(!count)return {count:0,index:null,agreementRate:null,badCandidateRate:null};
+  // Legacy records have the prior relative-gap criterion and MUST NOT
+  // silently contribute to the new under-5% recommendation metric.
+  const current=a.filter(x=>x.badRateVersion===BAD_MOVE_VERSION&&
+    Number.isInteger(x.badReviewed)&&x.badReviewed>=0&&
+    Number.isInteger(x.badCount)&&x.badCount>=0&&x.badCount<=x.badReviewed);
+  const badReviewed=current.reduce((t,x)=>t+x.badReviewed,0);
+  const badCount=current.reduce((t,x)=>t+x.badCount,0);
+  const badMoveRate=badReviewed?badCount/badReviewed:null;
+  if(!count)return {count:0,index:null,agreementRate:null,badReviewed,badCount,badMoveRate};
   const index=Math.round(a.reduce((t,x)=>t+x.count*x.index,0)/count);
   return {count,index,
-    agreementRate:a.reduce((t,x)=>t+x.agreements,0)/count,
-    badCandidateRate:a.reduce((t,x)=>t+x.suspected,0)/count};
+    agreementRate:a.reduce((t,x)=>t+(Number(x.agreements)||0),0)/count,
+    badReviewed,badCount,badMoveRate};
 }
 export const PERCENT=v=>v==null?'—':(100*v).toFixed(1)+'%';
