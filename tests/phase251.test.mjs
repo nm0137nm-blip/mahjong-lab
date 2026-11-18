@@ -64,7 +64,7 @@ test('Q analysis never invents illegal actions and correctly compares reach vs n
 
 test('nine terminals/honors abortive draw is legal only on first draw',()=>{
   const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');
-  const script=html.match(/<script>([\\s\\S]*?)<\\/script>/)?.[1];
+  const script=html.match(/<script>([\s\S]*?)<\/script>/)?.[1];
   const boundary='})(typeof window!=="undefined"?window:globalThis);';
   const end=script.indexOf(boundary);
   assert.ok(end>0,'embedded Majiang engine');
