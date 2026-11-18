@@ -1,0 +1,88 @@
+name: Coach scale corpus - 120 seeded games
+on:
+  pull_request:
+    branches: [feat/phase259-auto-learning]
+    paths:
+      - .github/workflows/coach-scale-corpus.yml
+      - tests/mortal/run-coach-benchmark.cjs
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  benchmark:
+    if: github.event_name != 'pull_request' || github.head_ref == 'feat/phase259-scale-corpus'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix:
+        include:
+          - cohort: train-01
+            seed: 260000001
+          - cohort: train-02
+            seed: 260010001
+          - cohort: train-03
+            seed: 260020001
+          - cohort: train-04
+            seed: 260030001
+          - cohort: train-05
+            seed: 260040001
+          - cohort: train-06
+            seed: 260050001
+          - cohort: train-07
+            seed: 260060001
+          - cohort: train-08
+            seed: 260070001
+          - cohort: validation-09
+            seed: 260080001
+          - cohort: validation-10
+            seed: 260090001
+          - cohort: holdout-11
+            seed: 260100001
+          - cohort: holdout-12
+            seed: 260110001
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          path: lab
+      - name: Validate benchmark logic
+        run: node --test lab/tests/coach-s42-benchmark.test.mjs lab/tests/coach-shape-evidence.test.mjs lab/tests/coach-runtime.test.mjs
+      - name: Fetch verified public checkpoint
+        run: |
+          set -euo pipefail
+          mv lab /tmp/lab
+          curl --fail --location --retry 2 --silent --show-error --max-time 160 'https://huggingface.co/xzhe121/Mortal-S42-onnx/resolve/main/model.onnx' -o /tmp/lab/tests/mortal/model.onnx
+          echo '30381bf21389e2d25d3edf48fed11bf772336ef3daeee67d1bdae7fb9dd30cb4  /tmp/lab/tests/mortal/model.onnx' | sha256sum --check
+          mkdir -p /tmp/probe && cd /tmp/probe
+          npm init -y >/dev/null
+          npm install --ignore-scripts --no-audit --no-fund playwright-core@1.57.0 >/dev/null
+      - name: Generate ten independently seeded games in this shard
+        env:
+          COACH_MATCH_COUNT: "10"
+          COACH_CONTRAST: "0"
+          COACH_PER_MATCH_SEED: "1"
+          COACH_CODE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+          COACH_COHORT: ${{ matrix.cohort }}
+          COACH_SEED: ${{ matrix.seed }}
+        run: |
+          set -euo pipefail
+          (cd /tmp/lab && python3 -m http.server 8788 --bind 127.0.0.1 >/tmp/http-log 2>&1) &
+          sleep 2
+          node /tmp/lab/tests/mortal/run-coach-benchmark.cjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: scale-${{ matrix.cohort }}-questions
+          retention-days: 30
+          path: /tmp/coach-bench/blind.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: scale-${{ matrix.cohort }}-reference
+          retention-days: 30
+          path: /tmp/coach-bench/reference.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: scale-${{ matrix.cohort }}-manifest
+          path: /tmp/coach-bench/manifest.json
+          retention-days: 30
