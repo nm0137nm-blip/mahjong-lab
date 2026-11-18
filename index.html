@@ -434,10 +434,10 @@
 .s42-hidden{display:none!important}
 @media(max-width:375px){.s42-review-metric strong{font-size:17px}.s42-replay-hand img{width:20px;height:28px}}
 </style>
-  <title>麻雀LAB — Phase 2.5.2 S42 SAFARI</title>
+  <title>麻雀LAB — Phase 2.5.3 MORTAL RATING</title>
 </head>
 <body>
-  <header class="site-header"><div class="logo"><span class="logo-mark">牌</span><span>麻雀<span class="logo-lab">LAB</span></span></div><span class="phase">PHASE 2.5.2 · S42 SAFARI</span></header>
+  <header class="site-header"><div class="logo"><span class="logo-mark">牌</span><span>麻雀<span class="logo-lab">LAB</span></span></div><span class="phase">PHASE 2.5.3 · MORTAL RATING</span></header>
   <main id="startScreen" class="home">
     <div class="eyebrow"><span class="eyedot"></span> MAHJONG LAB</div>
     <h1 class="home-compact-title">対局設定</h1>
@@ -4880,17 +4880,17 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
       const cell=el('div','stat-detail');cell.append(el('div','stat-detail-value',value),el('div','stat-detail-label',label));grid.append(cell);
     });
     detail.append(grid);
-    const reviewed=s42Analytics?s42Analytics.combineAggregates(all.map(x=>x.s42)):{count:0,index:null,agreementRate:null,badMoveRate:null,badReviewed:0,badCount:0};
+    const reviewed=s42Analytics?s42Analytics.combineAggregates(all.map(x=>x.s42)):{count:0,ratingCount:0,rating:null,agreementRate:null,badMoveRate:null,badReviewed:0,badCount:0};
     const statBox=el('section','s42-review-pane');
     statBox.append(el('h3','', 'S42基準・学習指標'));
     const statGrid=el('div','s42-review-grid');
     [
-      ['平均判断指数',reviewed.index==null?'—':reviewed.index+'/100'],
+      ['Mortal Rating（公式方式）',s42Analytics?s42Analytics.RATING_TEXT(reviewed.rating):'—'],
       ['S42一致率',s42Analytics?s42Analytics.PERCENT(reviewed.agreementRate):'—'],
       ['悪手率（推奨度5%未満）',s42Analytics?s42Analytics.PERCENT(reviewed.badMoveRate):'—']
     ].forEach(([label,value])=>{const b=el('div','s42-review-metric');b.append(el('strong','',value),el('small','',label));statGrid.append(b);});
     statBox.append(statGrid);
-    statBox.append(el('p','s42-analysis-note','S42評価済み '+reviewed.count+' 判断（鳴き・立直を含む）。悪手率＝推奨度5%未満 '+reviewed.badCount+'打牌 / 新基準で評価した '+reviewed.badReviewed+'打牌（Softmax温度0.1）。解析不能な打牌と旧基準の記録は悪手率に含めません。判断指数は独自指標で段位レーティングではありません。'));
+    statBox.append(el('p','s42-analysis-note','Mortal Rating対象 '+reviewed.ratingCount+' 判断（公式mjai-reviewer方式：各判断の相対Q評価を平均してから2乗）。S42一致率は旧対局も含む計 '+reviewed.count+' 判断。旧版の「判断指数」はRatingへ換算せず未集計です。悪手率＝推奨度5%未満 '+reviewed.badCount+'打牌 / 新基準で評価した '+reviewed.badReviewed+'打牌（Softmax温度0.1）。Ratingは天鳳などの実力レーティングではなく、カンの詳細・赤牌等で公式ツールと一致しない場合があります。'));
     $('homeS42Stats').replaceChildren(statBox);
     $('statsEast').classList.toggle('active',statsMode===1);
     $('statsHalf').classList.toggle('active',statsMode===2);
@@ -5401,7 +5401,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
       note.textContent='向聴 '+own.shanten+'→'+suggestion.shanten+' ／ 有効牌 '+own.ukeire+'→'+suggestion.ukeire+'枚（差 '+(diff>0?'+':'')+diff+'枚）'+(x.s42Review?' · S42推奨度 '+s42Analytics.PERCENT(x.s42Review.recommendation):'');
       flash.classList.toggle('warn',suggestion.shanten<own.shanten||(suggestion.shanten===own.shanten&&diff>=5));
     }else if(op){
-      note.textContent=x.s42Review?'S42推奨度 '+s42Analytics.PERCENT(x.s42Review.recommendation)+' · 判断指数 '+x.s42Review.index+'/100 · Q差 '+x.s42Review.gap.toFixed(2):'S42は期待点数ではなく行動価値Qを評価';
+      note.textContent=x.s42Review?'S42推奨度 '+s42Analytics.PERCENT(x.s42Review.recommendation)+' · Rating寄与（2乗前） '+(100*x.s42Review.ratingContribution).toFixed(1)+'/100 · Q差 '+x.s42Review.gap.toFixed(2):'S42は期待点数ではなく行動価値Qを評価';
       flash.classList.remove('warn');
     }else{
       note.textContent=x.type==='call'?'鳴き判断：S42未取得（未設定・解析待ち・比較対象外）':'牌効率コーチは利用可能 · S42の値は未取得';
@@ -5564,7 +5564,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     [
       ['選択のQ値',review.chosenQ.toFixed(3)],
       ['最良Qとの差',review.gap.toFixed(3)],
-      ['判断指数',review.index+'/100'],
+      ['Rating寄与（2乗前）',(100*review.ratingContribution).toFixed(1)+'/100'],
       ['あなたの推奨度',s42Analytics.PERCENT(review.recommendation)]
     ].forEach(([l,v])=>{const c=el('div','s42-review-metric');c.append(el('strong','',v),el('small','',l));met.append(c);});
     target.append(met);
@@ -5578,7 +5578,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     decomposition.append(el('div','','S42の最良行動：'+review.bestQ.toFixed(3)+' = '+review.stateValue.toFixed(3)+' + ('+review.bestAdvantage.toFixed(3)+')'));
     decomposition.append(el('p','s42-analysis-note','ここでの V はモデルの内部的な局面価値、括弧内は合法手平均に対する相対優位度です。どちらも期待点数ではありません。モデルのDQN v4の計算構造に沿った分解です。'));
     target.append(decomposition);
-    target.append(el('p','s42-analysis-note','相対Q差 '+(100*review.relativeGap).toFixed(1)+'%。Mortal推奨度 '+s42Analytics.PERCENT(review.recommendation)+'（Softmax温度0.1）。'+(x.type==='discard'?'悪手基準（推奨度5%未満）：'+(review.badMove?'該当':'非該当')+'。':'この鳴き判断は打牌の悪手率には含めません。')+'推奨度は行動の相対評価であり、実際の和了率や放銃率ではありません。'));
+    target.append(el('p','s42-analysis-note','Rating寄与は公式と同様、S42の選択と一致なら1、それ以外は(選択Q−最小Q)/max(0.000001, 最大Q−最小Q)で計算します。対局Ratingは各寄与値を丸めず平均し、その後に2乗して100倍した値です。相対Q差 '+(100*review.relativeGap).toFixed(1)+'%。Mortal推奨度 '+s42Analytics.PERCENT(review.recommendation)+'（Softmax温度0.1）。'+(x.type==='discard'?'悪手基準（推奨度5%未満）：'+(review.badMove?'該当':'非該当')+'。':'この鳴き判断は打牌の悪手率には含めません。')+'推奨度は行動の相対評価であり、実際の和了率や放銃率ではありません。'));
     const table=el('table','s42-data-table'),head=el('tr','');
     ['順位','合法行動','モデルQ値','推奨度','比較'].forEach(t=>head.append(el('th','',t)));table.append(head);
     const candidates=(review.top||[]).slice();
@@ -5714,7 +5714,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     area.hidden=false;
     area.append(el('h3','','直前の判断を振り返る'));
     area.append(el('p','',found.round+' · '+(found.choiceLabel||'打 '+tileName(found.discard))+
-      (found.s42Review?' ／ S42推奨度 '+s42Analytics.PERCENT(found.s42Review.recommendation)+' · 判断指数 '+found.s42Review.index+'/100 · 最良Qとの差 '+found.s42Review.gap.toFixed(3):
+      (found.s42Review?' ／ S42推奨度 '+s42Analytics.PERCENT(found.s42Review.recommendation)+' · Rating寄与（2乗前） '+(found.s42Review.ratingContribution==null?'—':(100*found.s42Review.ratingContribution).toFixed(1)+'/100')+' · 最良Qとの差 '+found.s42Review.gap.toFixed(3):
       ' ／ S42のQ値は未取得。牌効率・行動履歴は確認できます。')));
     const btn=el('button','secondary','この判断の詳細を見る');
     btn.type='button';
@@ -5751,13 +5751,13 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     }else{
       const metrics=el('div','s42-review-grid');
       [
-        ['判断指数',total.index+'/100'],
+        ['Mortal Rating（公式方式）',s42Analytics.RATING_TEXT(total.rating)],
         ['一致率',s42Analytics.PERCENT(total.agreementRate)],
         ['悪手率',s42Analytics.PERCENT(total.badMoveRate)]
       ].forEach(([title,value])=>{
         const b=el('div','s42-review-metric');b.append(el('strong','',value),el('small','',title));metrics.append(b);
       });root.append(metrics);
-      root.append(el('p','s42-analysis-note','S42評価を取得できた '+total.count+' 判断（鳴き '+(total.callCount||0)+' 件）。悪手率＝推奨度5%未満 '+total.badCount+'打牌 / 評価できた '+total.badReviewed+'打牌（総打牌 '+total.discardCount+'、Softmax温度0.1）。解析できなかった打牌は分母から除外。判断指数は独自指標です。'));
+      root.append(el('p','s42-analysis-note','Mortal Rating対象 '+total.ratingCount+' 判断（鳴き '+(total.callCount||0)+' 件を含む）。Rating＝100×（各判断の公式方式相対Q評価の平均）²。悪手率＝推奨度5%未満 '+total.badCount+'打牌 / 評価できた '+total.badReviewed+'打牌（総打牌 '+total.discardCount+'、Softmax温度0.1）。解析できなかった判断は分母から除外します。公式ツールと完全一致する保証はなく、対戦レーティングではありません。'));
     }
     s42ReviewRows=s42ReviewList();
     const btn=$('s42ReviewBtn');
