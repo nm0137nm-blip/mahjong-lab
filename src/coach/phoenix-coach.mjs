@@ -81,13 +81,13 @@ function rankFacts(v){
  const rank=a=>1+[0,1,2,3].filter(i=>i!==own&&(a[i]>a[own]||a[i]===a[own]&&v.initialOrder.indexOf(i)<v.initialOrder.indexOf(own))).length;
  const other=[0,1,2,3].filter(i=>i!==own);
  const rows=[];
- for(const scale of [1,4,8]){
+ for(const [child,parent] of [[1000,1500],[3900,5800],[8000,12000]]){
   for(const l of other){
    const win=base.slice(),lose=base.slice();
-   const gain=(own===0?1500:1000)*scale+300*h,loss=(l===0?1500:1000)*scale+300*h;
+   const gain=(own===0?parent:child)+300*h,loss=(l===0?parent:child)+300*h;
    win[own]+=gain+1000*k;win[l]-=gain;
    lose[own]-=loss;lose[l]+=loss+1000*k;
-   rows.push({相手:l,仮ロン基本点:(own===0?1500:1000)*scale,自分和了後点棒:win,自分和了後順位:rank(win),仮放銃基本点:(l===0?1500:1000)*scale,放銃後点棒:lose,放銃後順位:rank(lose)});
+   rows.push({相手:l,仮ロン基本点:(own===0?parent:child),自分和了後点棒:win,自分和了後順位:rank(win),仮放銃基本点:(l===0?parent:child),放銃後点棒:lose,放銃後順位:rank(lose)});
   }
  }
  // Explicit sample legal base tsumo payments, independent of actual hand yaku.
@@ -102,11 +102,22 @@ function rankFacts(v){
  }
  return {現在順位:rank(base),ロンと放銃:rows,ツモ:tsumo,注記:'例示した基本点を用いる仮の点棒移動。本場供託込み。自手や相手が実際にこの打点で和了できることや終局を保証しない。未成立リーチがあれば計算しない。'};
 }
+function safeEvents(rows){
+ if(!Array.isArray(rows))return null;
+ return rows.flatMap(e=>{
+  if(e?.種類==='ドラ表示追加'&&valid(e.牌))return [{種類:e.種類,牌:e.牌}];
+  if(!validSeat(e?.席))return [];
+  if(['自摸','嶺上自摸'].includes(e.種類))return [{種類:e.種類,席:e.席}];
+  if(e.種類==='打牌'&&valid(e.牌))return [{種類:e.種類,席:e.席,牌:e.牌,ツモ切り:!!e.ツモ切り,立直宣言:!!e.立直宣言}];
+  if(['副露','槓'].includes(e.種類)&&meldValid(e.面子))return [{種類:e.種類,席:e.席,面子:e.面子}];
+  return [];
+ });
+}
 export function buildEvidence(entry,M){
  const v=entry?.scene;if(!v||!M?.Util)return null;
  const dora=(v.dora||[]).filter(valid).map(p=>M.Shan.zhenbaopai(p));
  const c=knownCounts(v);
- const out={実ドラ:dora,赤ドラ:'0は赤5、実ドラと重複計上する',判断時点の公開時系列:Array.isArray(v.publicEvents)?v.publicEvents:null,計算制約:'見え枚数は残存上限。和了率・放銃率・好形率・期待値は未計算。公開情報から他家の聴牌・待ちを確定しない。'};
+ const out={実ドラ:dora,赤ドラ:'0は赤5、実ドラと重複計上する',判断時点の公開時系列:safeEvents(v.publicEvents),計算制約:'見え枚数は残存上限。和了率・放銃率・好形率・期待値は未計算。公開情報から他家の聴牌・待ちを確定しない。'};
  if(!c){out.欠落='完全な河・副露・見え枚数を確定できず、二次変化と相手別事実の計算は省略';return out;}
  out.見え枚数=c;out.各家公開事実=opponentFacts(v,dora,c);
  out.点棒変動例=rankFacts(v);
@@ -138,6 +149,7 @@ export function buildEvidence(entry,M){
  out.二次変化の定義='本人の選択・S42打牌候補・直接牌効率上位から最大4牌種のみ。連続する2回の自ツモで向聴が下がる牌の組合せ数。1回目のツモ後は向聴最小・受け入れ最大を選ぶ。手変わり・鳴き・守備・打点・相手の進行・赤5の新規ツモ差を含まない。掲載されない候補を劣るとみなさない。';
  return out;
 }
+const evidenceCache=new WeakMap();
 export function buildPrompt(legacy,entry,M){
  const marker='\n\n【判断時点の記録】\n',i=legacy.indexOf(marker);
  if(i<0)return legacy;
@@ -146,7 +158,10 @@ export function buildPrompt(legacy,entry,M){
  const question=end<0?'':legacy.slice(end);
  // Keep S42 at the end. Single-prompt instruction is not a blind comparison.
  const q=data.S42;delete data.S42;
- data.コーチ計算情報=buildEvidence(entry,M);data.S42=q;
+ const key=entry.mortalOpinion?.tile??null;
+ let cached=evidenceCache.get(entry);
+ if(!cached||cached.key!==key){cached={key,value:buildEvidence(entry,M)};evidenceCache.set(entry,cached);}
+ data.コーチ計算情報=cached.value;data.S42=q;
  const intro=[
  'あなたは天鳳の鳳凰位レベルの知識・判断力を目標とする四人麻雀コーチです。実際の資格やMortal内部理由は主張しない。',
  '目的：鳳凰卓に通用する判断力を育てる。相対評価に基づき、合法な選択から自分なら選ぶ最善手を原則一つ提示する。僅差でも結論を出し確信度を区別。打ち手の理由を検討し、誤りは具体的に指摘する。',
