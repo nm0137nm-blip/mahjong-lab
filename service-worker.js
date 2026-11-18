@@ -1,5 +1,5 @@
-// Mahjong LAB PWA — v2.5.3: official-style Mortal Rating; legacy in-house index stays separate.
-const CACHE='mahjong-lab-iphone-v253';
+// Mahjong LAB PWA — v2.5.4: real rivers and kan choice reviews; official Mortal metrics unchanged.
+const CACHE='mahjong-lab-iphone-v254';
 const SHELL=['./','./index.html'];
 const RESOURCES=[
  './src/mortal/mjai-bridge.mjs',
