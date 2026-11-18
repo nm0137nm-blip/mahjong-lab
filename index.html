@@ -383,6 +383,19 @@
 .mortal-file{font-size:12px;width:100%;max-width:100%;color:#e8f2e7}
 .mortal-help{font-size:11px;color:#a9d0b6;line-height:1.5}
 .mortal-live{font-size:10px;font-weight:700;color:#b4ecc2}
+.mortal-download{background:#c4e988;color:#163626;border:0;border-radius:8px;padding:11px;font-weight:850;font-size:13px}
+.mortal-download:disabled{opacity:.5}
+.mortal-source{font-size:10px;color:#a2c2b1;line-height:1.6}
+#gameScreen .river-cell.called-away .river-tile{opacity:.42;filter:grayscale(.75)}
+#gameScreen .river-cell.called-away{outline:1px dashed #c9d5c4;outline-offset:-1px}
+#gameScreen .river-cell.called-away::before{content:'鳴';position:absolute;top:-3px;left:0;z-index:2;background:#244437;color:#f3f6de;border-radius:2px;font-size:8px;font-weight:900;line-height:1.15}
+#gameScreen .river-cell.called-away.tsumogiri::after{z-index:3;color:#7ef1ff;font-size:16px}
+.result-choice-review{padding:10px 11px;border:1px solid #7c9e7c;border-radius:9px;background:#1b4036;margin:10px 0}
+.result-choice-review h3{margin:0 0 5px;font-size:13px;color:#cbebae}
+.result-choice-review p{font-size:11px;line-height:1.6;color:#d2e1cf}
+.result-choice-review button{font-size:12px;width:100%;padding:9px;margin-top:5px}
+#gameScreen .action-btn.nine-tiles{border:2px solid #c4e988;color:#e5fac2;background:#214a39;font-weight:900}
+
 .mortal-detail{border:1px solid #6b907c;border-radius:10px;padding:10px 12px;margin:10px 0;background:#19382d}
 .mortal-detail h3{font-size:13px;margin:0 0 7px;color:#c6f2bc}
 .mortal-detail .mortal-caveat{font-size:11px;color:#bfd3c2;line-height:1.5}
@@ -419,10 +432,10 @@
 .s42-hidden{display:none!important}
 @media(max-width:375px){.s42-review-metric strong{font-size:17px}.s42-replay-hand img{width:20px;height:28px}}
 </style>
-  <title>麻雀LAB — Phase 2.5 S42 REVIEW</title>
+  <title>麻雀LAB — Phase 2.5.1 S42 REVIEW</title>
 </head>
 <body>
-  <header class="site-header"><div class="logo"><span class="logo-mark">牌</span><span>麻雀<span class="logo-lab">LAB</span></span></div><span class="phase">PHASE 2.5 · S42 REVIEW</span></header>
+  <header class="site-header"><div class="logo"><span class="logo-mark">牌</span><span>麻雀<span class="logo-lab">LAB</span></span></div><span class="phase">PHASE 2.5.1 · S42 REVIEW</span></header>
   <main id="startScreen" class="home">
     <div class="eyebrow"><span class="eyedot"></span> MAHJONG LAB</div>
     <h1 class="home-compact-title">対局設定</h1>
@@ -440,7 +453,7 @@
         <label><input type="radio" name="recordMode" value="practice" checked><span><strong>練習対局</strong><small>記録しない・コーチあり</small></span></label>
         <label><input type="radio" name="recordMode" value="measure"><span><strong>計測用対局</strong><small>完走分を保存・コーチあり</small></span></label>
       </div>
-      <button class="primary big" id="startBtn" type="button">対局をはじめる <span>→</span></button><div class="mortal-setup"><div class="mortal-setup-title"><span>Mortal-S42 AIコーチ</span><span id="mortalLive" class="mortal-live">準備中</span></div><div id="mortalStatus" class="mortal-help">端末内AIの準備中です</div><input id="mortalModelFile" type="file" class="mortal-file" accept=".onnx,application/octet-stream" aria-label="S42学習済みモデルを選択"><div class="mortal-help">初回のみ学習済みモデルを選択してください。端末内に保存します。対局情報やモデルを外部へ送信しません。未設定時も牌効率コーチが使用できます。</div></div>
+      <button class="primary big" id="startBtn" type="button">対局をはじめる <span>→</span></button><div class="mortal-setup"><div class="mortal-setup-title"><span>Mortal-S42 AIコーチ</span><span id="mortalLive" class="mortal-live">準備中</span></div><div id="mortalStatus" class="mortal-help">端末内AIの準備中です</div><button id="mortalDownloadBtn" class="mortal-download" type="button">S42モデルを取得・設定（初回43.7MB）</button><input id="mortalModelFile" type="file" class="mortal-file" accept=".onnx,application/octet-stream" aria-label="S42学習済みモデルを選択"><div class="mortal-help">S42は学習済みモデルの設定後に使用可能です。上のボタンでモデルを一度取得するか、手元のmodel.onnxを選択してください。モデルは端末内に保存され、次回以降はオフラインで推論します。対局情報は送信しません。未設定時は牌効率コーチのみ利用可能です。</div><div class="mortal-source">モデル配布元：Hugging Face xzhe121/Mortal-S42-onnx（取得後SHA-256を照合）。通信・容量の制限で取得できない場合は手動選択してください。</div></div>
     </section>
     <section class="stat-card">
       <div class="section-heading"><h2>計測成績</h2><span>この端末だけに保存</span></div>
@@ -463,7 +476,7 @@
       <label for="speedSelect">CPU速度 <select id="speedSelect"><option value="1400">ゆっくり</option><option value="850" selected>標準</option><option value="300">速い</option></select></label>
       <label for="callMode">鳴き <select id="callMode"><option value="ask" selected>毎回確認</option><option value="auto">自動スルー（ロン除く）</option></select></label>
     </div>
-    <div class="river-legend"><span><b class="legend-tsumo">●</b> ツモ切り</span><span><b class="legend-riichi">▰</b> リーチ宣言牌</span><span><b class="legend-latest">▢</b> 最新の打牌</span></div>
+    <div class="river-legend"><span><b class="legend-tsumo">●</b> ツモ切り</span><span><b class="legend-riichi">▰</b> リーチ宣言牌</span><span><b class="legend-latest">▢</b> 最新の打牌</span><span>鳴＝鳴かれた牌（青点はツモ切り）</span></div>
     <div class="table-wrap" id="tableWrap">
       <div class="table-felt" id="tableFelt">
         <div class="seat seat-top"><div class="seat-label" id="op-top-label">対面</div><div class="concealed" id="hand-top"></div></div>
@@ -489,8 +502,8 @@
 
   <div id="decisionOverlay" class="hidden" aria-hidden="true"></div>
   <div class="overlay coach-overlay hidden" id="coachOverlay" role="dialog" aria-modal="true" aria-label="牌効率の解説"><div class="modal coach-modal"><div class="modal-label">牌効率メモ</div><h2>直前の打牌を確認</h2><div id="coachModalBody"></div><button class="primary" id="closeCoachBtn" type="button">対局に戻る</button></div></div>
-  <div class="overlay hidden" id="resultOverlay" role="dialog" aria-modal="true" aria-labelledby="resultTitle"><div class="modal"><div class="modal-label" id="resultTag">局の結果</div><h2 id="resultTitle">流局</h2><p id="resultDetails"></p><div id="resultHandDetail" class="result-detail"></div><div id="resultScores" class="result-scores"></div><button id="continueBtn" class="primary" type="button">次の局へ →</button></div></div>
-  <div class="overlay hidden" id="endOverlay" role="dialog" aria-modal="true" aria-labelledby="endTitle"><div class="modal"><div class="modal-label">FINISH</div><h2 id="endTitle">対局終了</h2><div id="endScores" class="result-scores"></div><div id="s42EndSummary" class="s42-review-pane"></div><button id="s42ReviewBtn" class="secondary" type="button" hidden>S42の大差候補局面を振り返る</button><p class="end-note">S42判断指数は独自の暫定指標です。段位・期待点数・悪手の確定判定ではありません。</p><button id="restartBtn" class="primary" type="button">もう一度対局する →</button><button id="homeBtn" class="secondary" type="button">トップに戻る</button></div></div>
+  <div class="overlay hidden" id="resultOverlay" role="dialog" aria-modal="true" aria-labelledby="resultTitle"><div class="modal"><div class="modal-label" id="resultTag">局の結果</div><h2 id="resultTitle">流局</h2><p id="resultDetails"></p><div id="resultHandDetail" class="result-detail"></div><div id="resultDecisionReview" class="result-choice-review" hidden></div><div id="resultScores" class="result-scores"></div><button id="continueBtn" class="primary" type="button">次の局へ →</button></div></div>
+  <div class="overlay hidden" id="endOverlay" role="dialog" aria-modal="true" aria-labelledby="endTitle"><div class="modal"><div class="modal-label">FINISH</div><h2 id="endTitle">対局終了</h2><div id="endScores" class="result-scores"></div><div id="s42EndSummary" class="s42-review-pane"></div><div id="endLastReview" class="result-choice-review" hidden></div><button id="s42ReviewBtn" class="secondary" type="button" hidden>S42の大差候補局面を振り返る</button><p class="end-note">S42判断指数は独自の暫定指標です。段位・期待点数・悪手の確定判定ではありません。</p><button id="restartBtn" class="primary" type="button">もう一度対局する →</button><button id="homeBtn" class="secondary" type="button">トップに戻る</button></div></div>
 <div class="overlay hidden" id="s42ReviewOverlay" role="dialog" aria-modal="true" aria-labelledby="s42ReviewTitle"><div class="modal"><div class="modal-label">S42 REVIEW</div><h2 id="s42ReviewTitle">局面の振り返り</h2><div id="s42ReviewBody"></div><div class="s42-review-control"><button id="s42ReviewPrev" class="secondary" type="button">← 前</button><button id="s42ReviewNext" class="secondary" type="button">次 →</button></div><button id="s42ReviewClose" class="primary" type="button">閉じる</button></div></div>
 <script>
 /* Original engine and CPU: Satoshi Kobayashi; MIT licensed. See vendor/*.txt */
@@ -5060,16 +5073,17 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
   // Majiang.He keeps called tiles with a +/=/- suffix. If a riichi
   // declaration tile was called, show the next *remaining* discard sideways.
   // This is a display-only change; the game log/riichi status is untouched.
-  function visibleRiver(raw) {
+  function visibleRiver(raw,showCalled=false) {
     const visible=[];
     let deferredRiichi=false;
     for(const p of raw) {
       if (/[+\-=]$/.test(p)) {
         if(p.includes('*')) deferredRiichi=true;
+        if(showCalled)visible.push({p,riichi:p.includes('*'),carried:false,calledAway:true});
         continue;
       }
       const riichi=p.includes('*') || deferredRiichi;
-      visible.push({p,riichi,carried:deferredRiichi&&!p.includes('*')});
+      visible.push({p,riichi,carried:deferredRiichi&&!p.includes('*'),calledAway:false});
       if(riichi)deferredRiichi=false;
     }
     return visible;
@@ -5077,12 +5091,12 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
   function renderRiver(pos,l) {
     const holder=$('river-'+pos);holder.replaceChildren();
     const raw=game.model.he[l]?._pai || [];
-    const river=visibleRiver(raw);
+    const river=visibleRiver(raw,true);
     for (let i=0;i<river.length;i++) {
-      const {p,riichi,carried}=river[i];
+      const {p,riichi,carried,calledAway}=river[i];
       const isLatest=latestDiscard?.l===l && latestDiscard.p===p && i===river.length-1;
-      const cell=el('div','river-cell'+(riichi?' riichi':'')+(carried?' riichi-continued':'')+(p.includes('_')?' tsumogiri':'')+(isLatest?' latest':'')+(pending?.type==='reaction' && pending.from===l && p===pending.p && i===river.length-1?' call-target':''));
-      cell.title=`${tileName(p)}・${p.includes('_')?'ツモ切り':'手出し'}${riichi?'・立直宣言牌位置'+(carried?'（鳴かれたため次の打牌）':''):''}`;
+      const cell=el('div','river-cell'+(riichi?' riichi':'')+(carried?' riichi-continued':'')+(p.includes('_')?' tsumogiri':'')+(calledAway?' called-away':'')+(isLatest?' latest':'')+(pending?.type==='reaction' && pending.from===l && p===pending.p && i===river.length-1?' call-target':''));
+      cell.title=`${tileName(p)}・${p.includes('_')?'ツモ切り':'手出し'}${calledAway?'・鳴かれた牌（河に痕跡を表示）':''}${riichi?'・立直宣言牌位置'+(carried?'（鳴かれたため次の打牌）':''):''}`;
       cell.append(tileImg(p));holder.append(cell);
     }
   }
@@ -5102,7 +5116,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
       const w=el('span','score-wind',WINDS[l]||'');name.append(w);
       const score=el('div','score-num',fmt(m.defen[id]));c.append(name,score);$('scores').append(c);
     }
-    const longest=Math.max(...m.he.map(h=>(h?._pai||[]).filter(p=>!(/[+\-=]$/.test(p))).length));
+    const longest=Math.max(...m.he.map(h=>(h?._pai||[]).length));
     $('tableFelt').classList.toggle('long-rivers',longest>=19);
     for(const [pos,id] of [['top',2],['left',3],['right',1],['bottom',0]]) {
       const l=m.player_id.indexOf(id);
@@ -5150,7 +5164,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     if (!pending) {const txt=el('span','wall-message',gameEnded?'対局終了':readyToNext?'次の局へ進んでください':'対局が進行しています');holder.append(txt);return;}
     if (pending.type==='turn') {
       if(pending.win) addAction('ツモ',()=>answer({hule:'-'}),'important');
-      if(pending.nine) addAction('九種九牌',()=>answer({daopai:'-'}));
+      if(pending.nine) addAction('九種九牌（流局）',()=>answer({daopai:'-'}),'nine-tiles');
       for(const m of pending.gang) addAction(`カン (${meldTiles(m).map(tileName).join(' ')})`,()=>answer({gang:m}));
       const riichi=game.allow_lizhi();
       if(riichi) {
