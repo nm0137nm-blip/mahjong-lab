@@ -38,6 +38,15 @@ try{
     const status=await page.locator('#mortalStatus').innerText();
     console.log('[S42] model readiness',ready,'UI:',status);
     assert.equal(ready?.ready,true,'S42 verified model must actually load: '+status);
+    for(const kind of ['ankan','daiminkan']){
+      const id=await page.evaluate(k=>window.MahjongLabDebug.testKanFixture(k),kind);
+      assert.ok(Number.isInteger(id),'legal '+kind+' must create S42 decision');
+      await page.waitForFunction(id=>window.MahjongLabDebug.testKanObservation()?.id===id,id,{timeout:30000});
+      const observation=await page.evaluate(()=>window.MahjongLabDebug.testKanObservation());
+      assert.ok(Number.isFinite(observation.qLegal[42]),kind+' Q must be real and legal');
+      assert.ok(observation.qLegal.some((q,i)=>i!==42&&Number.isFinite(q)),kind+' alternative Q exists');
+      console.log('[S42] actual '+kind+' compare Q=',observation.qLegal[42]);
+    }
   }
   await page.locator('#startBtn').click();
   await page.waitForFunction(()=>window.MahjongLabDebug.state().pending==='turn',null,{timeout:45000});

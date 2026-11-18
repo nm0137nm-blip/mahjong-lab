@@ -90,6 +90,19 @@ export function riichiComparison(op,chosenAction){
     chosen:chosenAction===37?'リーチ':'リーチせず打牌',
     reachQ,noReachQ,gap:Math.abs(reachQ-noReachQ)};
 }
+// Compare the general kan action with the best legal non-kan action.
+ // Multiple concealed/added kan tiles share action 42 in this ONNX export.
+export function kanComparison(op,chosenAction){
+  if(!op||!Array.isArray(op.qLegal)||!Number.isFinite(op.qLegal[42])||
+     !Number.isInteger(chosenAction)||!Number.isFinite(op.qLegal[chosenAction]))return null;
+  const others=op.qLegal.map((q,i)=>({q,i})).filter(x=>x.i!==42&&Number.isFinite(x.q))
+    .sort((a,b)=>b.q-a.q||a.i-b.i);
+  if(!others.length)return null;
+  const kanQ=op.qLegal[42],noKanQ=others[0].q;
+  return {recommended:op.best===42?'カンする':'カンしない',
+    chosen:chosenAction===42?'カンする':'カンしない',
+    kanQ,noKanQ,noKanAction:others[0].i,gap:Math.abs(kanQ-noKanQ)};
+}
 export function analyzeDecision(op,chosen,riichi=false){
   return analyzeAction(op,actionForDiscard(chosen,riichi));
 }
@@ -113,6 +126,7 @@ export function aggregateDecisions(log){
   return {version:RATING_VERSION,ratingVersion:RATING_VERSION,
     count:n,ratingCount:n,ratingRawSum,rating,agreements,
     callCount:entries.filter(x=>x?.type==='call'&&x?.s42Review?.ratingContribution!=null).length,
+    kanCount:entries.filter(x=>x?.kanComparison&&x?.s42Review?.ratingContribution!=null).length,
     riichiCount:entries.filter(x=>x?.riichiAvailable&&x?.s42Review?.ratingContribution!=null).length,
     agreementRate:n?agreements/n:null,
     badRateVersion:BAD_MOVE_VERSION,discardCount:discards.length,
@@ -147,3 +161,5 @@ export function combineAggregates(all){
 }
 export const RATING_TEXT=v=>v==null?'—':Number(v).toFixed(1)+'/100';
 export const PERCENT=v=>v==null?'—':(100*v).toFixed(1)+'%';
+// Give honest bounds for nonzero probabilities that round to 0.0% / 100.0%.
+export const RECOMMENDATION_TEXT=v=>v==null?'—':v>0&&v<0.0005?'0.05%未満':v<1&&v>0.9995?'99.95%超':PERCENT(v);

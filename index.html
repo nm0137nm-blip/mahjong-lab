@@ -391,7 +391,7 @@
 #gameScreen .river-cell.called-away .river-tile{opacity:.42;filter:grayscale(.75)}
 #gameScreen .river-cell.called-away{outline:1px dashed #c9d5c4;outline-offset:-1px}
 #gameScreen .river-cell.called-away::before{content:'鳴';position:absolute;top:-3px;left:0;z-index:2;background:#244437;color:#f3f6de;border-radius:2px;font-size:8px;font-weight:900;line-height:1.15}
-#gameScreen .river-cell.called-away.tsumogiri::after{z-index:3;color:#7ef1ff;font-size:16px}
+#gameScreen .meld-tile.called.source-tsumogiri::after{display:block;content:"●";position:absolute;top:auto;bottom:-4px;left:auto;right:-2px;transform:none;font-size:10px;line-height:1;color:#82e7f4;text-shadow:0 0 2px #063a3c;z-index:4;pointer-events:none}
 .result-choice-review{padding:10px 11px;border:1px solid #7c9e7c;border-radius:9px;background:#1b4036;margin:10px 0}
 .result-choice-review h3{margin:0 0 5px;font-size:13px;color:#cbebae}
 .result-choice-review p{font-size:11px;line-height:1.6;color:#d2e1cf}
@@ -434,10 +434,10 @@
 .s42-hidden{display:none!important}
 @media(max-width:375px){.s42-review-metric strong{font-size:17px}.s42-replay-hand img{width:20px;height:28px}}
 </style>
-  <title>麻雀LAB — Phase 2.5.3 MORTAL RATING</title>
+  <title>麻雀LAB — Phase 2.5.4 KAN & RIVER</title>
 </head>
 <body>
-  <header class="site-header"><div class="logo"><span class="logo-mark">牌</span><span>麻雀<span class="logo-lab">LAB</span></span></div><span class="phase">PHASE 2.5.3 · MORTAL RATING</span></header>
+  <header class="site-header"><div class="logo"><span class="logo-mark">牌</span><span>麻雀<span class="logo-lab">LAB</span></span></div><span class="phase">PHASE 2.5.4 · KAN & RIVER</span></header>
   <main id="startScreen" class="home">
     <div class="eyebrow"><span class="eyedot"></span> MAHJONG LAB</div>
     <h1 class="home-compact-title">対局設定</h1>
@@ -479,7 +479,7 @@
       <label for="speedSelect">CPU速度 <select id="speedSelect"><option value="1400">ゆっくり</option><option value="850" selected>標準</option><option value="300">速い</option></select></label>
       <label for="callMode">鳴き <select id="callMode"><option value="ask" selected>毎回確認</option><option value="auto">自動スルー（ロン除く）</option></select></label>
     </div>
-    <div class="river-legend"><span><b class="legend-tsumo">●</b> ツモ切り</span><span><b class="legend-riichi">▰</b> リーチ宣言牌</span><span><b class="legend-latest">▢</b> 最新の打牌</span><span>鳴＝鳴かれた牌（青点はツモ切り）</span></div>
+    <div class="river-legend"><span><b class="legend-tsumo">●</b> ツモ切り</span><span><b class="legend-riichi">▰</b> リーチ宣言牌</span><span><b class="legend-latest">▢</b> 最新の打牌</span><span>副露の青点＝鳴いた牌がツモ切り</span></div>
     <div class="table-wrap" id="tableWrap">
       <div class="table-felt" id="tableFelt">
         <div class="seat seat-top"><div class="seat-label" id="op-top-label">対面</div><div class="concealed" id="hand-top"></div></div>
@@ -4692,6 +4692,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
   let lastFeedback = null, decisionLog = [], gameEnded = false, matchSaved = false;
   let readyToNext = false, selectedRule = null, lastAction = '', recordedMatchId = null;
   let toastTimer = null, bannerTimer = null, latestDiscard = null;
+  let calledDiscardNotes=Array.from({length:4},()=>[]);
   let lastCandidateInfo = [];
   const speedValue = () => Number($('speedSelect').value || 850);
   const callMode = () => $('callMode').value || 'ask';
@@ -4770,7 +4771,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
       return super.action(msg,callback);
     }
     action_kaiju() { this._callback({}); }
-    action_qipai() { pending = null; riichiMode = false; lastFeedback=null;lastCandidateInfo=[];referenceCurrent=null; this._callback({}); redrawSoon(); }
+    action_qipai() { calledDiscardNotes=Array.from({length:4},()=>[]);latestDiscard=null;pending = null; riichiMode = false; lastFeedback=null;lastCandidateInfo=[];referenceCurrent=null; this._callback({}); redrawSoon(); }
     action_zimo(zimo) {
       if (zimo.l !== this._menfeng) { this._callback({}); return; }
       const options = this.get_dapai(this.shoupai) || [];
@@ -4910,7 +4911,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     Object.assign(mirrorAudit,{packets:0,errors:0,matchedSelf:0,selfMismatch:0,wallAccess:0});
     pending = null; gameEnded = false; readyToNext = false;
     riichiMode = false; candidateInfo = []; lastCandidateInfo = []; lastFeedback = null;
-    decisionLog = []; s42ReviewRows=[]; lastAction = ''; latestDiscard=null;
+    decisionLog = []; s42ReviewRows=[]; lastAction = ''; latestDiscard=null;calledDiscardNotes=Array.from({length:4},()=>[]);
     $('eventBanner').classList.add('hidden'); $('callTray').classList.add('hidden'); $('coachOverlay').classList.add('hidden');
     const players = [human,new AI(),new AI(),new AI()];
     game = new M.Game(players, onFinished, selectedRule, '麻雀LAB');
@@ -4936,6 +4937,9 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
         }
         if(msg?.fulou) {
           const f=msg.fulou;
+          const note=calledDiscardNote(f,latestDiscard);
+          if(note)calledDiscardNotes[f.l].push(note);
+          latestDiscard=null;
           const m=f.m.replace(/0/g,'5');
           const kind=/^[mpsz](\d)\1\1\1/.test(m)?'カン':/^[mpsz](\d)\1\1/.test(m)?'ポン':'チー';
           lastAction=`${userLabel(f.l)}：${kind}`;
@@ -5071,13 +5075,20 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     b.addEventListener('click',()=>answer(payload));
     return b;
   }
-  function appendMeldTiles(target,m,scope='board') {
+  function calledDiscardNote(f,latest){
+    if(!f||!latest||typeof f.m!=='string')return null;
+    const claimed=parseMeld(f.m).find(t=>t.called);
+    const from=claimed?({'+':1,'=':2,'-':3}[claimed.marker]+f.l)%4:null;
+    if(!claimed||from!==latest.l||claimed.p!==latest.p.slice(0,2))return null;
+    return {m:f.m,tsumogiri:latest.p.includes('_'),riichi:latest.p.includes('*')};
+  }
+  function appendMeldTiles(target,m,scope='board',source=null) {
     const tiles=parseMeld(m);
     for(const info of tiles) {
-      const cell=el('div','meld-tile'+(info.called?' called':'')+(info.faceDown?' concealed-kan':'')+(info.added?' added-kan':''));
+      const cell=el('div','meld-tile'+(info.called?' called':'')+(info.faceDown?' concealed-kan':'')+(info.added?' added-kan':'')+(info.called&&source?.tsumogiri?' source-tsumogiri':''));
       if(info.faceDown)cell.append(el('div','back'));
       else cell.append(tileImg(info.p, scope==='result'?'result-tile':'river-tile'));
-      if(info.called)cell.title=`${tileName(info.p)} · ${info.from}から取得`;
+      if(info.called)cell.title=`${tileName(info.p)} · ${info.from}から取得${source?'・'+(source.tsumogiri?'ツモ切り':'手出し')+(source.riichi?'・リーチ宣言牌':''):''}`;
       target.append(cell);
     }
   }
@@ -5088,7 +5099,8 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     for(const m of melds) {
       const slot=el('div','meld-slot');
       const row=el('div','meld-rotator');
-      appendMeldTiles(row,m);
+      const source=calledDiscardNotes[l]?.find(x=>m===x.m||m.startsWith(x.m)&&m.length===x.m.length+1);
+      appendMeldTiles(row,m,'board',source);
       slot.append(row);holder.append(slot);
     }
   }
@@ -5113,7 +5125,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
   function renderRiver(pos,l) {
     const holder=$('river-'+pos);holder.replaceChildren();
     const raw=game.model.he[l]?._pai || [];
-    const river=visibleRiver(raw,true);
+    const river=visibleRiver(raw);
     for (let i=0;i<river.length;i++) {
       const {p,riichi,carried,calledAway}=river[i];
       const isLatest=latestDiscard?.l===l && latestDiscard.p===p.replace(/[+\-=]$/,'') && i===river.length-1;
@@ -5231,16 +5243,42 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
       discard:reaction.p,from:reaction.from,choiceLabel:label,action,
       shanten:M.Util.xiangting(human.shoupai),ukeire:null,
       candidates:[],scene:captureS42Scene(),riichi:false,riichiAvailable:false,
+      kanAvailable:!!reaction.gang?.length,kanOptions:reaction.gang?.length||0,
       mortalDecision:decision,mortalOpinion:mortalClient?.current?.id===decision?{...mortalClient.current}:null,
       s42Review:null
     };
-    if(info.mortalOpinion&&s42Analytics)info.s42Review=s42Analytics.analyzeAction(info.mortalOpinion,action);
+    if(info.mortalOpinion&&s42Analytics)applyS42Review(info,info.mortalOpinion);
     decisionLog.push(info);if(decisionLog.length>1000)decisionLog.shift();
     lastFeedback=info;lastCandidateInfo=[];
+  }
+  function recordTurnAction(turn,payload){
+    const action=payload.gang?42:payload.hule?43:payload.daopai?44:null;
+    if(action==null)return;
+    if(action===42&&!turn.gang?.includes(payload.gang))return;
+    const label=action===42?(parseMeld(payload.gang).some(t=>t.called)?'加カン':'暗カン')+'（'+tileName(payload.gang.slice(0,2))+'）':action===43?'ツモ':'九種九牌';
+    const decision=mortalClient?.activeDecision('turn')??null;
+    const info={type:'action',round:F[game.model.zhuangfeng]+(game.model.jushu+1)+'局',
+      discard:payload.gang?.slice(0,2)||null,choiceLabel:label,action,
+      candidates:[],scene:captureS42Scene(),shanten:M.Util.xiangting(human.shoupai),
+      riichiAvailable:false,kanAvailable:!!turn.gang?.length,kanOptions:turn.gang?.length||0,
+      mortalDecision:decision,mortalOpinion:mortalClient?.current?.id===decision?{...mortalClient.current}:null,
+      s42Review:null};
+    if(info.mortalOpinion&&s42Analytics)applyS42Review(info,info.mortalOpinion);
+    decisionLog.push(info);if(decisionLog.length>1000)decisionLog.shift();
+    lastFeedback=info;lastCandidateInfo=[];
+  }
+  function applyS42Review(entry,op){
+    if(!s42Analytics)return;
+    entry.s42Review=entry.type==='discard'?
+      s42Analytics.analyzeDecision(op,entry.discard,entry.riichi):
+      s42Analytics.analyzeAction(op,entry.action);
+    if(entry.riichiAvailable)entry.riichiComparison=s42Analytics.riichiComparison(op,entry.s42Review?.action);
+    if(entry.kanAvailable)entry.kanComparison=s42Analytics.kanComparison(op,entry.s42Review?.action);
   }
   function answer(payload) {
     if(!pending || !human) return;
     if(pending.type==='reaction')recordReactionChoice(pending,payload);
+    else if(pending.type==='turn'&&(payload.gang||payload.hule||payload.daopai))recordTurnAction(pending,payload);
     const cb=human._callback;pending=null;riichiMode=false;candidateInfo=[];
     $('callTray').classList.add('hidden');
     try { cb(payload); } catch(err) { notify('操作でエラーが発生しました: '+err.message); console.error(err); }
@@ -5256,7 +5294,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
       hand:tileList(human.shoupai).map(p=>p.slice(0,2)),
       selfMelds:(human.shoupai._fulou||[]).slice(),
       rivers:Array.from({length:4},(_,l)=>({
-        name:userLabel(l),tiles:(model.he[l]?._pai||[]).map(p=>p.slice(0,2)).filter(p=>/^[mpsz][0-9]$/.test(p)),
+        name:userLabel(l),tiles:visibleRiver(model.he[l]?._pai||[]).map(x=>x.p.slice(0,2)).filter(p=>/^[mpsz][0-9]$/.test(p)),
         melds:(model.shoupai[l]?._fulou||[]).slice()
       })),
       dora:(model.shan?.baopai||[]).map(p=>p.slice(0,2)),
@@ -5277,12 +5315,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     const entry=decisionLog.find(x=>x.mortalDecision===op.id);
     if(!entry)return;
     entry.mortalOpinion={...op};
-    if(s42Analytics){
-      entry.s42Review=entry.type==='call'?
-        s42Analytics.analyzeAction(op,entry.action):
-        s42Analytics.analyzeDecision(op,entry.discard,entry.riichi);
-      if(entry.riichiAvailable)entry.riichiComparison=s42Analytics.riichiComparison(op,entry.s42Review?.action);
-    }
+    if(s42Analytics)applyS42Review(entry,op);
     if(lastFeedback===entry)redrawSoon();
     if(gameEnded){renderS42End();renderLastDecisionReview('endLastReview',false);syncS42SavedAfterLateOpinion();}
     if(!$('resultOverlay').classList.contains('hidden'))renderLastDecisionReview('resultDecisionReview',true);
@@ -5298,17 +5331,14 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
         round:`${F[game.model.zhuangfeng]}${game.model.jushu+1}局`, discard:p,
         shanten:current.shanten, ukeire:current.ukeire,
         best:good?.p, bestShanten:good?.shanten,bestUkeire:good?.ukeire,
-        riichi:riichiMode,riichiAvailable:!!game.allow_lizhi(),type:'discard',choiceLabel:(riichiMode?'リーチ → ':'')+'打 '+tileName(p),reference:null,scene:captureS42Scene(),
+        riichi:riichiMode,riichiAvailable:!!game.allow_lizhi(),kanAvailable:!!pending.gang?.length,kanOptions:pending.gang?.length||0,type:'discard',choiceLabel:(riichiMode?'リーチ → ':'')+'打 '+tileName(p),reference:null,scene:captureS42Scene(),
         candidates:candidateInfo.map(v=>({p:v.p,shanten:v.shanten,ukeire:v.ukeire,usefulDetails:v.usefulDetails?.map(d=>({...d}))||[],handTiles:v.handTiles?.slice()||[],melds:v.melds?.slice()||[]})),
         selfMetric:{p:current.p,shanten:current.shanten,ukeire:current.ukeire},
         mortalDecision:mortalClient?.activeDecision('turn')??null,
         mortalOpinion:mortalClient?.current?.id===mortalClient?.activeDecision('turn')?{...mortalClient.current}:null,
         s42Review:null,riichiComparison:null,
       };
-      if(info.mortalOpinion && s42Analytics){
-        info.s42Review=s42Analytics.analyzeDecision(info.mortalOpinion,p,riichiMode);
-        if(info.riichiAvailable)info.riichiComparison=s42Analytics.riichiComparison(info.mortalOpinion,info.s42Review?.action);
-      }
+      if(info.mortalOpinion && s42Analytics)applyS42Review(info,info.mortalOpinion);
       lastFeedback=info;lastCandidateInfo=candidateInfo.slice();
       decisionLog.push(info);if(decisionLog.length>1000)decisionLog.shift();
     }
@@ -5354,8 +5384,8 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
   function compareFeedback() {
     if (!lastFeedback) return '<p>打牌候補を比較できます。評価は向聴数・受け入れ枚数のみで、期待値ではありません。</p>';
     const x=lastFeedback;
+    if(x.type!=='discard')return '<p class="coach-callout">直前の判断：'+esc(x.choiceLabel)+'</p><p>選択時のS42の合法行動Q値で比較します。</p>';
     const a=tileName(x.discard);
-    if(x.type==='call')return '<p class="coach-callout">直前の鳴き判断：'+esc(x.choiceLabel)+'（'+esc(a)+'）</p><p>鳴く／見送る判断は、選択時のS42の合法行動Q値が取得できた場合のみ比較できます。</p>';
     let msg='';
     if(x.shanten>x.bestShanten) msg=`${a}は最小向聴数より${x.shanten-x.bestShanten}向聴遠くなる選択です。手役や安全度を除けば、手を進める効率は低下します。`;
     else if(x.ukeire+3<x.bestUkeire) msg=`${a}の受け入れは${x.ukeire}枚。最大${x.bestUkeire}枚の候補があり、牌効率面では差があります。`;
@@ -5378,7 +5408,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
       cell.append(el('span','inline-name',tile?tileName(tile):'—'));
       return cell;
     };
-    if(x.type==='call'){
+    if(x.type!=='discard'){
       const yours=el('span','inline-choice self','あなた：'+x.choiceLabel);
       row.append(yours,el('span','inline-arrow','/'));
     }else row.append(tilePair('あなた',x.discard,'self'),el('span','inline-arrow','/'));
@@ -5398,16 +5428,17 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     const suggestion=op?.tile?(x.candidates||[]).find(v=>v.p.slice(0,2)===op.tile.slice(0,2)):null;
     if(own&&suggestion){
       const diff=suggestion.ukeire-own.ukeire;
-      note.textContent='向聴 '+own.shanten+'→'+suggestion.shanten+' ／ 有効牌 '+own.ukeire+'→'+suggestion.ukeire+'枚（差 '+(diff>0?'+':'')+diff+'枚）'+(x.s42Review?' · S42推奨度 '+s42Analytics.PERCENT(x.s42Review.recommendation):'');
+      note.textContent='向聴 '+own.shanten+'→'+suggestion.shanten+' ／ 有効牌 '+own.ukeire+'→'+suggestion.ukeire+'枚（差 '+(diff>0?'+':'')+diff+'枚）'+(x.s42Review?' · S42推奨度 '+s42Analytics.RECOMMENDATION_TEXT(x.s42Review.recommendation):'');
       flash.classList.toggle('warn',suggestion.shanten<own.shanten||(suggestion.shanten===own.shanten&&diff>=5));
     }else if(op){
-      note.textContent=x.s42Review?'S42推奨度 '+s42Analytics.PERCENT(x.s42Review.recommendation)+' · Rating寄与（2乗前） '+(100*x.s42Review.ratingContribution).toFixed(1)+'/100 · Q差 '+x.s42Review.gap.toFixed(2):'S42は期待点数ではなく行動価値Qを評価';
+      note.textContent=x.s42Review?'S42推奨度 '+s42Analytics.RECOMMENDATION_TEXT(x.s42Review.recommendation)+' · Rating寄与（2乗前） '+(100*x.s42Review.ratingContribution).toFixed(1)+'/100 · Q差 '+x.s42Review.gap.toFixed(2):'S42は期待点数ではなく行動価値Qを評価';
       flash.classList.remove('warn');
     }else{
-      note.textContent=x.type==='call'?'鳴き判断：S42未取得（未設定・解析待ち・比較対象外）':'牌効率コーチは利用可能 · S42の値は未取得';
+      note.textContent=x.type!=='discard'?'鳴き判断：S42未取得（未設定・解析待ち・比較対象外）':'牌効率コーチは利用可能 · S42の値は未取得';
       flash.classList.remove('warn');
     }
     content.append(note);
+    if(x.kanAvailable){const k=x.kanComparison;content.append(el('div','inline-metric',k?'カン可否：あなた '+k.chosen+' ／ S42 '+k.recommended:'カン可否：比較Q値未取得／解析中'));}
   }
   function renderCoach() {
     const inReaction=pending?.type==='reaction';
@@ -5512,7 +5543,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
   }
   function renderS42EfficiencyChoices(x,target){
     target.append(el('h3','','牌効率・直接有効牌の比較'));
-    if(x.type==='call'){
+    if(x.type!=='discard'){
       target.append(el('p','s42-analysis-note','鳴き判断は打牌の受け入れ比較とは異なる段階です。チー／ポン／カン／スルーの行動Q値をS42が返した場合のみ評価します。'));
       return;
     }
@@ -5560,12 +5591,16 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
       const r=x.riichiComparison;
       target.append(el('div','s42-info','リーチ判断：あなた「'+r.chosen+'」／ S42「'+r.recommended+'」· Q(リーチ) '+r.reachQ.toFixed(3)+' · Q(リーチしない最良の打牌) '+r.noReachQ.toFixed(3)+' · 差 '+r.gap.toFixed(3)+'。※打牌の選択とは別の独立評価ではありません。'));
     }
+    if(x.kanAvailable){
+      const k=x.kanComparison;
+      target.append(el('div','s42-info',k?'カン判断：あなた「'+k.chosen+'」／ S42「'+k.recommended+'」 · Q(カン) '+k.kanQ.toFixed(3)+' · Q(しない最良：'+s42ActionLabel(k.noKanAction)+') '+k.noKanQ.toFixed(3)+' · 差 '+k.gap.toFixed(3)+(x.kanOptions>1?'。複数のカン候補は共通のQ値で、個別牌の比較はできません。':'。')+' Ratingには実際の選択を1回だけ計上。':'カン判断：この局面のカンと他の合法行動の比較Q値は取得できていません。'));
+    }
     const met=el('div','s42-review-grid');
     [
       ['選択のQ値',review.chosenQ.toFixed(3)],
       ['最良Qとの差',review.gap.toFixed(3)],
       ['Rating寄与（2乗前）',(100*review.ratingContribution).toFixed(1)+'/100'],
-      ['あなたの推奨度',s42Analytics.PERCENT(review.recommendation)]
+      ['あなたの推奨度',s42Analytics.RECOMMENDATION_TEXT(review.recommendation)]
     ].forEach(([l,v])=>{const c=el('div','s42-review-metric');c.append(el('strong','',v),el('small','',l));met.append(c);});
     target.append(met);
     // Exact DQN v4 dueling decomposition on the LEGAL action set:
@@ -5578,7 +5613,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     decomposition.append(el('div','','S42の最良行動：'+review.bestQ.toFixed(3)+' = '+review.stateValue.toFixed(3)+' + ('+review.bestAdvantage.toFixed(3)+')'));
     decomposition.append(el('p','s42-analysis-note','ここでの V はモデルの内部的な局面価値、括弧内は合法手平均に対する相対優位度です。どちらも期待点数ではありません。モデルのDQN v4の計算構造に沿った分解です。'));
     target.append(decomposition);
-    target.append(el('p','s42-analysis-note','Rating寄与は公式と同様、S42の選択と一致なら1、それ以外は(選択Q−最小Q)/max(0.000001, 最大Q−最小Q)で計算します。対局Ratingは各寄与値を丸めず平均し、その後に2乗して100倍した値です。相対Q差 '+(100*review.relativeGap).toFixed(1)+'%。Mortal推奨度 '+s42Analytics.PERCENT(review.recommendation)+'（Softmax温度0.1）。'+(x.type==='discard'?'悪手基準（推奨度5%未満）：'+(review.badMove?'該当':'非該当')+'。':'この鳴き判断は打牌の悪手率には含めません。')+'推奨度は行動の相対評価であり、実際の和了率や放銃率ではありません。'));
+    target.append(el('p','s42-analysis-note','Rating寄与は公式と同様、S42の選択と一致なら1、それ以外は(選択Q−最小Q)/max(0.000001, 最大Q−最小Q)で計算します。対局Ratingは各寄与値を丸めず平均し、その後に2乗して100倍した値です。相対Q差 '+(100*review.relativeGap).toFixed(1)+'%。Mortal推奨度 '+s42Analytics.RECOMMENDATION_TEXT(review.recommendation)+'（Softmax温度0.1）。'+(x.type==='discard'?'悪手基準（推奨度5%未満）：'+(review.badMove?'該当':'非該当')+'。':'この行動判断は打牌の悪手率には含めません。')+'推奨度は温度0.1でQ差を強調した相対値です。僅差の切り順でも低推奨度になる場合があり、悪手基準は重大なミスを意味しません。実際の和了率・放銃率ではありません。'));
     const table=el('table','s42-data-table'),head=el('tr','');
     ['順位','合法行動','モデルQ値','推奨度','比較'].forEach(t=>head.append(el('th','',t)));table.append(head);
     const candidates=(review.top||[]).slice();
@@ -5590,7 +5625,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
       row.append(el('td','',v.index===review.action&&rank===0?String(review.rank):String(rank)));
       row.append(el('td','',s42ActionLabel(v.index)));
       row.append(el('td','',v.q.toFixed(3)));
-      row.append(el('td','',s42Analytics.PERCENT(v.recommendation)));
+      row.append(el('td','',s42Analytics.RECOMMENDATION_TEXT(v.recommendation)));
       row.append(el('td','',v.index===review.best?'S42の最良':v.index===review.action?'あなた':''));
       table.append(row);
     });
@@ -5603,8 +5638,8 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
   function openCoachDetails() {
     if(!lastFeedback)return;
     const x=lastFeedback,body=$('coachModalBody');body.replaceChildren();
-    body.append(el('p','coach-callout',x.type==='call'?
-      '直前の鳴き判断：'+x.choiceLabel+' · '+tileName(x.discard):
+    body.append(el('p','coach-callout',x.type!=='discard'?
+      '直前の判断：'+x.choiceLabel+(x.type==='call'?' · '+tileName(x.discard):''):
       '直前の打牌：'+tileName(x.discard)+' · '+x.shanten+'向聴 · 受け入れ '+x.ukeire+'枚'));
     const tabs=el('div','s42-tabs'),effBtn=el('button','','牌効率・受け入れ'),qBtn=el('button','','S42の定量評価');
     effBtn.type='button';qBtn.type='button';
@@ -5622,8 +5657,8 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     };
     effBtn.addEventListener('click',()=>select('eff'));
     qBtn.addEventListener('click',()=>select('q'));
-    select(x.type==='call'?'q':'eff');
-    if(x.type==='call'){tabs.classList.add('hidden');efficient.classList.add('s42-hidden');}
+    select(x.type!=='discard'?'q':'eff');
+    if(x.type!=='discard'){tabs.classList.add('hidden');efficient.classList.add('s42-hidden');}
     $('coachOverlay').classList.remove('hidden');
   }
   function resultPaymentLabel(data) {
@@ -5714,7 +5749,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     area.hidden=false;
     area.append(el('h3','','直前の判断を振り返る'));
     area.append(el('p','',found.round+' · '+(found.choiceLabel||'打 '+tileName(found.discard))+
-      (found.s42Review?' ／ S42推奨度 '+s42Analytics.PERCENT(found.s42Review.recommendation)+' · Rating寄与（2乗前） '+(found.s42Review.ratingContribution==null?'—':(100*found.s42Review.ratingContribution).toFixed(1)+'/100')+' · 最良Qとの差 '+found.s42Review.gap.toFixed(3):
+      (found.s42Review?' ／ S42推奨度 '+s42Analytics.RECOMMENDATION_TEXT(found.s42Review.recommendation)+' · Rating寄与（2乗前） '+(found.s42Review.ratingContribution==null?'—':(100*found.s42Review.ratingContribution).toFixed(1)+'/100')+' · 最良Qとの差 '+found.s42Review.gap.toFixed(3):
       ' ／ S42のQ値は未取得。牌効率・行動履歴は確認できます。')));
     const btn=el('button','secondary','この判断の詳細を見る');
     btn.type='button';
@@ -5757,7 +5792,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
       ].forEach(([title,value])=>{
         const b=el('div','s42-review-metric');b.append(el('strong','',value),el('small','',title));metrics.append(b);
       });root.append(metrics);
-      root.append(el('p','s42-analysis-note','Mortal Rating対象 '+total.ratingCount+' 判断（鳴き '+(total.callCount||0)+' 件を含む）。Rating＝100×（各判断の公式方式相対Q評価の平均）²。悪手率＝推奨度5%未満 '+total.badCount+'打牌 / 評価できた '+total.badReviewed+'打牌（総打牌 '+total.discardCount+'、Softmax温度0.1）。解析できなかった判断は分母から除外します。公式ツールと完全一致する保証はなく、対戦レーティングではありません。'));
+      root.append(el('p','s42-analysis-note','Mortal Rating対象 '+total.ratingCount+' 判断（鳴き '+(total.callCount||0)+' 件、カン可否を比較した判断 '+(total.kanCount||0)+' 件を含む）。Rating＝100×（各判断の公式方式相対Q評価の平均）²。悪手率＝推奨度5%未満 '+total.badCount+'打牌 / 評価できた '+total.badReviewed+'打牌（総打牌 '+total.discardCount+'、Softmax温度0.1）。解析できなかった判断は分母から除外します。公式ツールと完全一致する保証はなく、対戦レーティングではありません。'));
     }
     s42ReviewRows=s42ReviewList();
     const btn=$('s42ReviewBtn');
@@ -5774,7 +5809,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     if(!s42ReviewRows.length){body.textContent='振り返る局面はありません';return;}
     s42ReviewCursor=Math.max(0,Math.min(s42ReviewRows.length-1,s42ReviewCursor));
     const x=s42ReviewRows[s42ReviewCursor],view=x.scene,score=x.s42Review;
-    body.append(el('div','s42-replay-title',(s42ReviewCursor+1)+' / '+s42ReviewRows.length+' · '+(x.round||'対局中')+' · 打牌判断 · S42推奨度 '+s42Analytics.PERCENT(score?.recommendation)+' · 最良Qとの差 '+(score?.gap||0).toFixed(2)));
+    body.append(el('div','s42-replay-title',(s42ReviewCursor+1)+' / '+s42ReviewRows.length+' · '+(x.round||'対局中')+' · 打牌判断 · S42推奨度 '+s42Analytics.RECOMMENDATION_TEXT(score?.recommendation)+' · 最良Qとの差 '+(score?.gap||0).toFixed(2)));
     const choices=el('div','s42-info','あなた：'+(x.choiceLabel||'打 '+tileName(x.discard))+' ／ S42：'+(x.mortalOpinion?.label||'未取得')+'。S42の合法手順位 '+(score?.rank||'—')+' / '+(score?.legal||'—')+'。');
     body.append(choices);
     if(view){
@@ -5799,7 +5834,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
       const th=el('tr','');for(const v of ['順位','行動','Q値','推奨度'])th.append(el('th','',v));t.append(th);
       top.forEach((v,i)=>{
         const tr=el('tr',v.index===score.action?'selected':v.index===score.best?'best':'');
-        tr.append(el('td','',String(i+1)),el('td','',s42ActionLabel(v.index)),el('td','',v.q.toFixed(3)),el('td','',s42Analytics.PERCENT(v.recommendation)));t.append(tr);
+        tr.append(el('td','',String(i+1)),el('td','',s42ActionLabel(v.index)),el('td','',v.q.toFixed(3)),el('td','',s42Analytics.RECOMMENDATION_TEXT(v.recommendation)));t.append(tr);
       });
       wrap.append(t);body.append(wrap);
     }
@@ -5894,6 +5929,21 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
   if('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
     window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js').catch(()=>{}));
   }
+  // Fictional, isolated QA observation. Never inject into an active match.
+  function testKanFixture(kind){
+    if(game||!mortalClient?.workerReady)return null;
+    const self=kind==='daiminkan'?1:0;
+    const hands=Array(4).fill('');
+    hands[self]=kind==='daiminkan'?'m111p2345s234z123':'m1111p234s234z123';
+    mortalClient.ingest({qipai:{zhuangfeng:0,jushu:0,baopai:'s9',changbang:0,lizhibang:0,
+      defen:[25000,25000,25000,25000],shoupai:hands}});
+    if(kind==='daiminkan'){
+      mortalClient.ingest({zimo:{l:0,p:''}});
+      mortalClient.ingest({dapai:{l:0,p:'m1_'}});
+    }else mortalClient.ingest({zimo:{l:0,p:'p7'}});
+    const phase=kind==='daiminkan'?'reaction':'turn';
+    return mortalClient.activeDecision(phase);
+  }
   function testScenario({n=4,rivers=18,call=false}={}) {
     if(!game)return;
     debugUsed=true;
@@ -5919,7 +5969,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     lastReference:referenceCurrent
   });
   window.MahjongLabS42Debug=()=>({status:mortalStatusText,ready:!!mortalClient?.workerReady,broken:!!mortalClient?.broken,persisted:mortalClient?.modelPersisted??null,pending:mortalClient?.pending?.size??0,decision:mortalClient?.decision??0,latest:mortalClient?.current?.label||null,afterDiscard:lastFeedback?.mortalOpinion?.label||null,modelImported:!!mortalClient?.worker});
-  window.MahjongLabDebug = {testScenario,parseMeld,visibleRiver,state:()=>({started:!!game,phase:game?game._status:null,pending:pending?.type||null,round:game?.model?.jushu,turn:game?.model?.lunban,own:ownSeat(),decisions:decisionLog.length,finished:gameEnded}),choose:p=>chooseDiscard(p),answer:p=>answer(p),testStep:(randomize=false)=>{debugUsed=true;if(pending?.type==='turn'){if(pending.win&&randomize)return answer({hule:'-'});if(randomize&&pending.gang.length&&Math.random()<0.10)return answer({gang:pending.gang[0]});const choices=pending.options;const p=randomize?choices[Math.floor(Math.random()*choices.length)]:choices[0];if(randomize&&game.allow_lizhi(p)&&Math.random()<0.25)riichiMode=true;chooseDiscard(p);}else if(pending?.type==='reaction'){if(pending.win&&randomize)return answer({hule:'-'});const melds=[...pending.gang,...pending.peng,...pending.chi];if(randomize&&melds.length&&Math.random()<0.55)return answer({fulou:melds[0]});answer({});}},testDwell:ms=>{debugUsed=true;if(game)game.dwell=ms;},testContinue:()=>{debugUsed=true;if(game&&!gameEnded){readyToNext=false;game.start();}},testPaipu:()=>game?._paipu,inspect:()=>({latestDiscard,lastFeedback,hasReaction:!$('callTray').classList.contains('hidden'),speed:game?._dwell})};
+  window.MahjongLabDebug = {testScenario,testKanFixture,testKanObservation:()=>game?null:mortalClient?.current,parseMeld,visibleRiver,calledDiscardNote,state:()=>({started:!!game,phase:game?game._status:null,pending:pending?.type||null,round:game?.model?.jushu,turn:game?.model?.lunban,own:ownSeat(),decisions:decisionLog.length,finished:gameEnded}),choose:p=>chooseDiscard(p),answer:p=>answer(p),testStep:(randomize=false)=>{debugUsed=true;if(pending?.type==='turn'){if(pending.win&&randomize)return answer({hule:'-'});if(randomize&&pending.gang.length&&Math.random()<0.10)return answer({gang:pending.gang[0]});const choices=pending.options;const p=randomize?choices[Math.floor(Math.random()*choices.length)]:choices[0];if(randomize&&game.allow_lizhi(p)&&Math.random()<0.25)riichiMode=true;chooseDiscard(p);}else if(pending?.type==='reaction'){if(pending.win&&randomize)return answer({hule:'-'});const melds=[...pending.gang,...pending.peng,...pending.chi];if(randomize&&melds.length&&Math.random()<0.55)return answer({fulou:melds[0]});answer({});}},testDwell:ms=>{debugUsed=true;if(game)game.dwell=ms;},testContinue:()=>{debugUsed=true;if(game&&!gameEnded){readyToNext=false;game.start();}},testPaipu:()=>game?._paipu,inspect:()=>({latestDiscard,lastFeedback,hasReaction:!$('callTray').classList.contains('hidden'),speed:game?._dwell})};
 })();
 
 </script>

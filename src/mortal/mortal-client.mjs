@@ -99,11 +99,15 @@ export class MortalClient {
           new Uint8Array(this.wasm.memory.buffer,p,bytes.length).set(bytes);
           const res=this.wasm.apply_event(this.state,p,bytes.length);
           if(res<0)throw Error('非対応の局面通知 '+ev.type+' ('+res+')');
+          // The old eligible phase must not leak into the next player's action.
+          this.currentPhase=null;
+          this.lastEligiblePhase=null;
           if(res===1){
-            const phase=ev.type==='dahai'?'reaction':
-              ['tsumo','chi','pon','daiminkan','ankan','kakan'].includes(ev.type)?'turn':null;
+            const own=ev.actor===this.bridge.seat;
+            const phase=!own&&['dahai','kakan'].includes(ev.type)?'reaction':
+              own&&['tsumo','chi','pon'].includes(ev.type)?'turn':null;
             this.lastEligiblePhase=phase;
-            if(this.workerReady)this.evaluate(phase);
+            if(phase&&this.workerReady)this.evaluate(phase);
           }
         }finally{this.wasm.free_bytes(p,bytes.length);}
       }
@@ -239,10 +243,10 @@ export class MortalClient {
     this.status('Mortal-S42 モデルを読み込み中...');
   }
   activeDecision(phase){
-    return this.workerReady&&this.currentPhase===phase?this.decision:null;
+    return this.workerReady&&!this.broken&&this.currentPhase===phase?this.decision:null;
   }
   evaluate(phase=null){
-    if(!this.state||!this.workerReady||this.broken)return null;
+    if(!phase||!this.state||!this.workerReady||this.broken)return null;
     const obs=this.wasm.alloc_bytes(1012*34*4),mask=this.wasm.alloc_bytes(46);
     if(!obs||!mask)return null;
     try{
@@ -257,7 +261,7 @@ export class MortalClient {
       // Allow a full half-game's worth of queued decision reviews to complete.
       // Never erase already queued decisions: losing those would bias the final metrics.
       if(this.pending.size>192){
-        this.pending.delete(id);
+        this.pending.delete(id);this.currentPhase=null;
         this.status('S42評価の待機列が満杯です。一部の判断は評価対象外になります');
         return null;
       }
