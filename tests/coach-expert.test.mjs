@@ -1,6 +1,6 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {expert,prompt,grade} from '../scripts/coach/audit.mjs';
+import {expert,prompt,grade,twoDrawProgress} from '../scripts/coach/audit.mjs';
 test('expert lesson references are not passed to the model',()=>{
  assert.equal(expert.length,5);
  for(const c of expert){
@@ -20,4 +20,10 @@ test('source diagram transcriptions produce legal engine shapes',()=>{
  // strategic answer for a partially transcribed scene.
  const c=pick('X04'),r={id:c.id,facts:c.expected,recommendation:'打z6',confidence:'medium',reasoning:'fixture',next_rule:'fixture'};
  assert.equal(grade([r],[c]).objectivePass,1);
+});
+
+test('reconstructed user decision: compute two-draw paths, not just equal immediate ukeire',()=>{
+ const results=['m1','s1','m2'].map(p=>twoDrawProgress('m1245999p45s18899',p,['s2']));
+ for(const r of results){assert.equal(r.baseShanten,2);assert.equal(r.firstUkeire,20);assert.equal(r.orderedPaths,r.paths.reduce((n,p)=>n+p.firstCopies*p.secondCopies,0));assert.ok(r.paths.every(p=>p.nextShanten===1));}
+ console.log('COACH_TWO_DRAW_DIAGNOSTIC '+JSON.stringify(results));
 });
