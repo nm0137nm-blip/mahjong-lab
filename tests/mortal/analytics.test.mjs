@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {
   analyzeDecision,analyzeAction,actionForDiscard,aggregateDecisions,combineAggregates,
   INDEX_VERSION,RATING_VERSION,BAD_MOVE_VERSION,SOFTMAX_TEMPERATURE,BAD_MOVE_THRESHOLD,
-  RATING_TEXT
+  RATING_TEXT,kanComparison,RECOMMENDATION_TEXT
 } from '../../src/mortal/s42-analytics.mjs';
 
 const approx=(actual,expected,epsilon=1e-10)=>{
@@ -172,4 +172,30 @@ test('5% low-recommendation and min-max rating are different measures',()=>{
   assert(r.recommendation<0.05);
   assert(r.badMove);
   approx(r.ratingContribution,1.1/1.5);
+});
+
+test('kan is compared to the best legal non-kan action and counted only once',()=>{
+ const q=Array(46).fill(null); q[42]=1.5;q[0]=1;q[1]=0.5;
+ const op={qLegal:q,best:42};
+ const chosen=kanComparison(op,42),declined=kanComparison(op,1);
+ assert.equal(chosen.chosen,'カンする');
+ assert.equal(declined.chosen,'カンしない');
+ assert.equal(declined.recommended,'カンする');
+ assert.equal(declined.noKanAction,0);
+ assert.equal(declined.noKanQ,1);
+ assert.equal(declined.gap,.5);
+ const agg=aggregateDecisions([{type:'action',kanComparison:chosen,s42Review:analyzeAction(op,42)},
+   {type:'discard',kanComparison:declined,s42Review:analyzeAction(op,1)}]);
+ assert.equal(agg.ratingCount,2);assert.equal(agg.kanCount,2);
+ assert.equal(agg.badReviewed,1);
+ assert.equal(kanComparison(op,45),null);
+ const other=Array(46).fill(null);other[42]=.5;other[41]=0;other[45]=1;
+ assert.equal(kanComparison({qLegal:other,best:45},45).recommended,'カンしない');
+});
+test('very small and very large non-extreme softmax probabilities have truthful display bounds',()=>{
+ assert.equal(RECOMMENDATION_TEXT(0.00000052),'0.05%未満');
+ assert.equal(RECOMMENDATION_TEXT(0.99999948),'99.95%超');
+ assert.equal(RECOMMENDATION_TEXT(.044),'4.4%');
+ assert.equal(RECOMMENDATION_TEXT(null),'—');
+ assert.equal(RECOMMENDATION_TEXT(1),'100.0%');
 });
