@@ -70,11 +70,19 @@ self.addEventListener('fetch',e=>{if(e.request.url.includes('/src/mortal/'))e.re
     }
   }
   await page.locator('#startBtn').click();
-  await page.waitForFunction(()=>window.MahjongLabDebug.state().pending==='turn',null,{timeout:45000});
+  // A randomly dealt initial hand can be offered a call before its first draw.
+  // Exercise the actual pass button instead of waiting forever for a turn.
+  for(let i=0;i<20;i++){
+    await page.waitForFunction(()=>['turn','reaction'].includes(window.MahjongLabDebug.state().pending),null,{timeout:45000});
+    const phase=await page.evaluate(()=>window.MahjongLabDebug.state().pending);
+    if(phase==='turn')break;
+    await page.getByRole('button',{name:'スルー',exact:true}).click({timeout:30000});
+  }
+  assert.equal(await page.evaluate(()=>window.MahjongLabDebug.state().pending),'turn','first own turn reached after processing any initial call opportunities');
   const enabled=page.locator('#myHand button:enabled');
   assert.ok(await enabled.count()>0,'legal player discard is available');
   await enabled.first().click();
-  await page.waitForFunction(()=>window.MahjongLabDebug.inspect()?.lastFeedback!==null,null,{timeout:30000});
+  await page.waitForFunction(()=>window.MahjongLabDebug.inspect()?.lastFeedback?.type==='discard',null,{timeout:30000});
   const info=await page.evaluate(()=>window.MahjongLabDebug.inspect());
   assert.ok(info.lastFeedback.discard,'a player decision is logged');
   assert.equal(await page.locator('#resultOverlay').isVisible(),false);
