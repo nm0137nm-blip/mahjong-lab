@@ -11,6 +11,11 @@ const EXPECTED_SIZE=43673425;
 // The SHA-256 check below is mandatory, even if the hosting URL changes.
 export const MODEL_URL='https://huggingface.co/xzhe121/Mortal-S42-onnx/resolve/main/model.onnx?download=true';
 const STORAGE='mahjong-lab-s42-local-weights';
+const errorText=e=>{
+  if(e==null)return 'ブラウザ内部エラー（詳細なし）';
+  const value=typeof e==='object'&&'message' in e?e.message:e;
+  return String(value??'ブラウザ内部エラー（詳細なし）').slice(0,180);
+};
 const ACTIONS=['1m','2m','3m','4m','5m','6m','7m','8m','9m','1p','2p','3p','4p','5p','6p','7p','8p','9p',
  '1s','2s','3s','4s','5s','6s','7s','8s','9s','E','S','W','N','P','F','C','5mr','5pr','5sr'];
 const HONORS={E:'東',S:'南',W:'西',N:'北',P:'白',F:'發',C:'中'};
@@ -45,12 +50,17 @@ async function getStored(){
     req.onsuccess=()=>resolve(req.result||null);req.onerror=()=>reject(req.error);
   });}finally{db.close();}
 }
-async function putStored(file){
+async function putStored(bytes){
+  // A 43MB File is not structured-clonable to IndexedDB in some WebKit builds.
+  // Save the verified raw ArrayBuffer instead. This copy is strictly local.
+  if(!(bytes instanceof ArrayBuffer)||bytes.byteLength!==EXPECTED_SIZE)throw Error('保存するモデルのサイズが不正です');
   const db=await openDB();
   try{await new Promise((resolve,reject)=>{
     const tx=db.transaction('files','readwrite');
-    tx.objectStore('files').put(file,'s42');
-    tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error);tx.onabort=()=>reject(tx.error);
+    tx.objectStore('files').put({version:2,data:bytes},'s42');
+    tx.oncomplete=()=>resolve();
+    tx.onerror=()=>reject(tx.error||Error('S42モデルの端末保存エラー'));
+    tx.onabort=()=>reject(tx.error||Error('S42モデルの端末保存が中断されました'));
   });}finally{db.close();}
 }
 export class MortalClient {
@@ -69,7 +79,7 @@ export class MortalClient {
       const queue=this.eventQueue.splice(0);
       for(const p of queue)this._feed(p);
       this.status(this.workerReady?'Mortal-S42 準備完了':'局面変換器の準備完了');
-    })().catch(e=>{this.broken=true;this.status('局面変換器の起動に失敗: '+String(e.message||e));throw e;});
+    })().catch(e=>{this.broken=true;this.status('局面変換器の起動に失敗: '+errorText(e));throw e;});
     return this.encoderPromise;
   }
   _feed(packet){
@@ -99,7 +109,7 @@ export class MortalClient {
       }
     }catch(e){
       this.broken=true;this.status('S42解析停止：対局は従来どおり続行できます');
-      console.warn('Mortal局面変換を安全停止:',e.message||e);
+      console.warn('Mortal局面変換を安全停止:',errorText(e));
     }
   }
   ingest(packet){
@@ -110,11 +120,24 @@ export class MortalClient {
     }else this._feed(packet);
   }
   async verifyFile(file){
-    if(!file||file.size!==EXPECTED_SIZE)throw Error('正しいMortal-S42モデルを選択してください（43.7MB）');
-    if(!crypto?.subtle)throw Error('安全な通信環境（HTTPS）が必要です');
-    const bytes=await file.arrayBuffer();
-    const digest=await crypto.subtle.digest('SHA-256',bytes);
-    const hex=Array.from(new Uint8Array(digest),b=>b.toString(16).padStart(2,'0')).join('');
+    const size=file instanceof ArrayBuffer?file.byteLength:file?.size;
+    if(size!==EXPECTED_SIZE)throw Error('正しいMortal-S42モデルを選択してください（43.7MB）');
+    // Localhost is a secure context in browser integration tests as well.
+    if(typeof isSecureContext!=='undefined'&&!isSecureContext)
+      throw Error('モデル検証にはHTTPSが必要です');
+    const bytes=file instanceof ArrayBuffer?file:await file.arrayBuffer();
+    let hex;
+    // WebKit has been observed to reject a large WebCrypto digest with a
+    // null reason; do not mistake that runtime error for a corrupt model.
+    try{
+      if(!crypto?.subtle)throw Error('WebCrypto unavailable');
+      const digest=await crypto.subtle.digest('SHA-256',bytes);
+      hex=Array.from(new Uint8Array(digest),b=>b.toString(16).padStart(2,'0')).join('');
+    }catch(e){
+      this.status('Safari互換の方式でモデルのSHA-256を検証中...');
+      const {sha256Fallback}=await import('./sha256.mjs');
+      hex=await sha256Fallback(new Uint8Array(bytes));
+    }
     if(hex!==EXPECTED_HASH)throw Error('モデルのSHA-256が公開値と一致しません');
     return bytes;
   }
@@ -122,9 +145,15 @@ export class MortalClient {
     this.status('モデルを検証中...');
     try{
       const bytes=await this.verifyFile(file);
-      await putStored(file);
-      await this.initWorker(bytes);
-    }catch(e){this.status('S42モデルの読込失敗: '+String(e.message||e));throw e;}
+      // IndexedDB may reject large files under Safari private/storage quotas.
+      // Being unable to persist must not prevent verified in-session inference.
+      let saved=true;
+      try{await putStored(bytes);}
+      catch(e){saved=false;console.warn('S42モデルの端末保存をスキップ:',errorText(e));}
+      this.modelPersisted=saved;
+      this.initWorker(bytes);
+      return true;
+    }catch(e){this.status('S42モデルの読込失敗: '+errorText(e));throw e;}
   }
   async downloadModel(){
     if(this.downloading)throw Error('モデルを取得中です');
@@ -157,15 +186,26 @@ export class MortalClient {
       const file=new File([bytes],'model.onnx',{type:'application/octet-stream'});
       await this.importModel(file);
       return true;
-    }catch(e){this.status('S42取得失敗：モデルファイルの手動選択をお試しください（'+String(e.message||e)+'）');throw e;}
+    }catch(e){
+      const reason=errorText(e);
+      this.status('S42取得失敗：'+reason+'。配布元から model.onnx を保存して下のファイル選択で読み込んでください');
+      throw new Error('S42モデル取得失敗: '+reason);
+    }
     finally{this.downloading=false;}
   }
   async restoreModel(){
     try{
       const file=await getStored();
-      if(file){this.status('保存済みモデルを再確認中...');const bytes=await this.verifyFile(file);await this.initWorker(bytes);return true;}
+      if(file){
+        this.status('保存済みモデルを再確認中...');
+        const payload=file?.version===2?file.data:file;
+        const bytes=await this.verifyFile(payload);
+        this.modelPersisted=true;
+        this.initWorker(bytes);
+        return true;
+      }
       this.status('S42未設定：モデルファイルを読み込んでください');return false;
-    }catch(e){this.status('保存モデルの再読込失敗。モデルを再選択してください');return false;}
+    }catch(e){this.status('保存モデルの再読込失敗：'+errorText(e)+'。モデルを再選択してください');return false;}
   }
   initWorker(bytes){
     if(this.worker)this.worker.terminate();
@@ -173,7 +213,7 @@ export class MortalClient {
     this.worker=new Worker(new URL('./mortal-worker.mjs',import.meta.url),{type:'module'});
     this.worker.onmessage=({data})=>{
       if(data?.type==='ready'){
-        this.workerReady=true;this.status('Mortal-S42 準備完了（端末内推論）');
+        this.workerReady=true;this.status('Mortal-S42 準備完了（端末内推論）'+(this.modelPersisted===false?'／端末への保存はできませんでした':''));
         // A model loaded mid-turn must evaluate the CURRENT legal actions too.
         this.evaluate(this.lastEligiblePhase);
         return;
@@ -193,7 +233,7 @@ export class MortalClient {
         this.current=opinion;this.onOpinion(opinion);
       }
     };
-    this.worker.onerror=e=>{this.workerReady=false;this.status('S42推論ワーカーの起動に失敗');console.warn('S42 worker',e);};
+    this.worker.onerror=e=>{this.workerReady=false;this.status('S42推論ワーカーの起動に失敗: '+errorText(e));console.warn('S42 worker',e);};
     const id=++this.serial;
     this.worker.postMessage({type:'init',id,model:bytes},[bytes]);
     this.status('Mortal-S42 モデルを読み込み中...');

@@ -434,10 +434,10 @@
 .s42-hidden{display:none!important}
 @media(max-width:375px){.s42-review-metric strong{font-size:17px}.s42-replay-hand img{width:20px;height:28px}}
 </style>
-  <title>麻雀LAB — Phase 2.5.1 S42 REVIEW</title>
+  <title>麻雀LAB — Phase 2.5.2 S42 SAFARI</title>
 </head>
 <body>
-  <header class="site-header"><div class="logo"><span class="logo-mark">牌</span><span>麻雀<span class="logo-lab">LAB</span></span></div><span class="phase">PHASE 2.5.1 · S42 REVIEW</span></header>
+  <header class="site-header"><div class="logo"><span class="logo-mark">牌</span><span>麻雀<span class="logo-lab">LAB</span></span></div><span class="phase">PHASE 2.5.2 · S42 SAFARI</span></header>
   <main id="startScreen" class="home">
     <div class="eyebrow"><span class="eyedot"></span> MAHJONG LAB</div>
     <h1 class="home-compact-title">対局設定</h1>
@@ -456,7 +456,7 @@
         <label><input type="radio" name="recordMode" value="practice" checked><span><strong>練習対局</strong><small>記録しない・コーチあり</small></span></label>
         <label><input type="radio" name="recordMode" value="measure"><span><strong>計測用対局</strong><small>完走分を保存・コーチあり</small></span></label>
       </div>
-      <button class="primary big" id="startBtn" type="button">対局をはじめる <span>→</span></button><div class="mortal-setup"><div class="mortal-setup-title"><span>Mortal-S42 AIコーチ</span><span id="mortalLive" class="mortal-live">準備中</span></div><div id="mortalStatus" class="mortal-help">端末内AIの準備中です</div><button id="mortalDownloadBtn" class="mortal-download" type="button">S42モデルを取得・設定（初回43.7MB）</button><input id="mortalModelFile" type="file" class="mortal-file" accept=".onnx,application/octet-stream" aria-label="S42学習済みモデルを選択"><div class="mortal-help">S42は学習済みモデルの設定後に使用可能です。上のボタンでモデルを一度取得するか、手元のmodel.onnxを選択してください。モデルは端末内に保存され、次回以降はオフラインで推論します。対局情報は送信しません。未設定時は牌効率コーチのみ利用可能です。</div><div class="mortal-source">モデル配布元：<a href="https://huggingface.co/xzhe121/Mortal-S42-onnx/blob/main/model.onnx" target="_blank" rel="noopener noreferrer" style="color:#c4e988">Hugging Face / S42 ONNX</a>（取得後SHA-256を照合）。通信・容量の制限で自動取得できない場合は、配布ページからmodel.onnxをダウンロードし、手動選択してください。</div></div>
+      <button class="primary big" id="startBtn" type="button">対局をはじめる <span>→</span></button><div class="mortal-setup"><div class="mortal-setup-title"><span>Mortal-S42 AIコーチ</span><span id="mortalLive" class="mortal-live">準備中</span></div><div id="mortalStatus" class="mortal-help">端末内AIの準備中です</div><button id="mortalDownloadBtn" class="mortal-download" type="button">S42モデルを取得・設定（初回43.7MB）</button><input id="mortalModelFile" type="file" class="mortal-file" accept=".onnx,application/octet-stream" aria-label="S42学習済みモデルを選択"><div class="mortal-help">S42は学習済みモデルの設定後に使用可能です。上の自動取得がSafariで失敗した場合は、下の「モデル配布元」を開き、model.onnx（約43.7MB）をiPhoneの「ファイル」に保存して、このファイル選択欄から読み込んでください。モデルは端末内に保存され、次回以降はオフラインで推論します。対局情報は送信しません。未設定時は牌効率コーチのみ利用可能です。</div><div class="mortal-source">モデル配布元：<a href="https://huggingface.co/xzhe121/Mortal-S42-onnx/blob/main/model.onnx" target="_blank" rel="noopener noreferrer" style="color:#c4e988">Hugging Face / S42 ONNX</a>（取得後SHA-256を照合）。通信・容量の制限で自動取得できない場合は、配布ページからmodel.onnxをダウンロードし、手動選択してください。</div></div>
     </section>
     <section class="stat-card">
       <div class="section-heading"><h2>計測成績</h2><span>この端末だけに保存</span></div>
@@ -5918,7 +5918,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     wallPresent:!!(referenceAI?._model?.shan?._pai),
     lastReference:referenceCurrent
   });
-  window.MahjongLabS42Debug=()=>({status:mortalStatusText,ready:!!mortalClient?.workerReady,broken:!!mortalClient?.broken,decision:mortalClient?.decision??0,latest:mortalClient?.current?.label||null,afterDiscard:lastFeedback?.mortalOpinion?.label||null,modelImported:!!mortalClient?.worker});
+  window.MahjongLabS42Debug=()=>({status:mortalStatusText,ready:!!mortalClient?.workerReady,broken:!!mortalClient?.broken,persisted:mortalClient?.modelPersisted??null,pending:mortalClient?.pending?.size??0,decision:mortalClient?.decision??0,latest:mortalClient?.current?.label||null,afterDiscard:lastFeedback?.mortalOpinion?.label||null,modelImported:!!mortalClient?.worker});
   window.MahjongLabDebug = {testScenario,parseMeld,visibleRiver,state:()=>({started:!!game,phase:game?game._status:null,pending:pending?.type||null,round:game?.model?.jushu,turn:game?.model?.lunban,own:ownSeat(),decisions:decisionLog.length,finished:gameEnded}),choose:p=>chooseDiscard(p),answer:p=>answer(p),testStep:(randomize=false)=>{debugUsed=true;if(pending?.type==='turn'){if(pending.win&&randomize)return answer({hule:'-'});if(randomize&&pending.gang.length&&Math.random()<0.10)return answer({gang:pending.gang[0]});const choices=pending.options;const p=randomize?choices[Math.floor(Math.random()*choices.length)]:choices[0];if(randomize&&game.allow_lizhi(p)&&Math.random()<0.25)riichiMode=true;chooseDiscard(p);}else if(pending?.type==='reaction'){if(pending.win&&randomize)return answer({hule:'-'});const melds=[...pending.gang,...pending.peng,...pending.chi];if(randomize&&melds.length&&Math.random()<0.55)return answer({fulou:melds[0]});answer({});}},testDwell:ms=>{debugUsed=true;if(game)game.dwell=ms;},testContinue:()=>{debugUsed=true;if(game&&!gameEnded){readyToNext=false;game.start();}},testPaipu:()=>game?._paipu,inspect:()=>({latestDiscard,lastFeedback,hasReaction:!$('callTray').classList.contains('hidden'),speed:game?._dwell})};
 })();
 

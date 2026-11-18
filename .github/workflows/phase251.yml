@@ -1,8 +1,8 @@
-name: Mahjong LAB phase 2.5.1 validation
+name: Mahjong LAB phase 2.5.2 Safari and S42 validation
 on:
   push:
     branches:
-      - fix/phase-2-5-feedback-20261118
+      - fix/phase252-safari-s42-20261118
   pull_request:
     branches:
       - main
@@ -14,8 +14,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: node --test tests/*.test.mjs tests/mortal/analytics.test.mjs
+      - run: node --test tests/*.test.mjs tests/mortal/*.test.mjs
       - run: |
+          node --check src/mortal/sha256.mjs
           node --check src/mortal/mortal-client.mjs
           node --check src/mortal/mortal-worker.mjs
           node --check src/mortal/s42-analytics.mjs
@@ -31,6 +32,12 @@ jobs:
           node-version: '22'
       - run: npm install --no-save --no-package-lock playwright@1.56.1
       - run: npx playwright install --with-deps webkit
+      - name: Download and SHA-256 verify actual S42 weights (CI only)
+        run: |
+          curl --fail --location --retry 3 --retry-delay 2 --connect-timeout 20 --max-time 240 \
+            'https://huggingface.co/xzhe121/Mortal-S42-onnx/resolve/main/model.onnx?download=true' \
+            --output /tmp/mortal-s42-model.onnx
+          echo '30381bf21389e2d25d3edf48fed11bf772336ef3daeee67d1bdae7fb9dd30cb4  /tmp/mortal-s42-model.onnx' | sha256sum -c -
       - name: Real-model browser smoke (mobile WebKit)
         run: |
           python3 -m http.server 8765 > /tmp/mahjong-lab-server.log 2>&1 &
@@ -38,4 +45,4 @@ jobs:
             curl -fsS http://127.0.0.1:8765/ >/dev/null && break
             sleep 1
           done
-          BROWSER=webkit S42_MODEL_TEST=1 node tests/mobile-smoke.mjs
+          BROWSER=webkit S42_MODEL_TEST=1 S42_LOCAL_MODEL=/tmp/mortal-s42-model.onnx node tests/mobile-smoke.mjs
