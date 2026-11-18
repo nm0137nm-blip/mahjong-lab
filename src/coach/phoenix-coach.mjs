@@ -1,3 +1,4 @@
+import {selectTacticalEvidence,EVIDENCE_VERSION,EVIDENCE_NOTE} from './tactical-evidence.mjs?v=259';
 import {strategyInstructions,curriculumVersion} from './strategy-curriculum.mjs?v=258';
 import {relativeInstructions,relativeVersion} from './relative-instructions.mjs?v=258';
 export const VERSION='Phoenix-v4.2-20261118';
@@ -202,7 +203,7 @@ export function buildEvidence(entry,M){
  return out;
 }
 const evidenceCache=new WeakMap();
-export function buildPrompt(legacy,entry,M){
+export function buildPrompt(legacy,entry,M,options={}){
  const marker='\n\n【判断時点の記録】\n',i=legacy.indexOf(marker);
  if(i<0)return legacy;
  const end=legacy.indexOf('\n\n【追加で確認したい点】',i+marker.length);
@@ -213,12 +214,16 @@ export function buildPrompt(legacy,entry,M){
  const key=entry.mortalOpinion?.tile??null;
  let cached=evidenceCache.get(entry);
  if(!cached||cached.key!==key){cached={key,value:buildEvidence(entry,M)};evidenceCache.set(entry,cached);}
- data.コーチ計算情報=cached.value;data.S42=q;
+ data.コーチ計算情報=cached.value;
+ const learned=options.tacticalEvidence===true?selectTacticalEvidence(entry,cached.value):[];
+ if(learned.length) data.類似条件の戦術統計={版:EVIDENCE_VERSION,比較対象:'今回の2候補に合致した経験則のみ。Mortal推奨と本人の打牌が同じなら第2位候補と比較。',注意:EVIDENCE_NOTE,該当:learned};
+ data.S42=q;
  const intro=[
  'あなたは天鳳の鳳凰位レベルの知識・判断力を目標とする四人麻雀コーチです。実際の資格やMortal内部理由は主張しない。',
  '目的：鳳凰卓に通用する判断力を育てる。相対評価に基づき、合法な選択から自分なら選ぶ最善手を原則一つ提示する。僅差でも結論を出し確信度を区別。打ち手の理由を検討し、誤りは具体的に指摘する。',
  '事実を厳守：実ドラと表示牌を区別。打牌後の牌姿にない牌を根拠にしない。二度受けと三面張を混同しない。変化は具体的なツモ・打牌・牌姿を示す。データ不足を明記し条件付きで判断。役や危険度は事実と仮説を区別。未知の確率・点数を捏造しない。',
  strategyInstructions(),relativeInstructions,
+ ...(learned.length?['経験則の扱い：データ欄の該当経験則はS42内部の理由を証明しない。今回の具体的な牌姿や条件を照合し、支持される候補がS42推奨と異なる場合も明示。支持割合をこの局面の勝率や正解確率に置き換えず、例外・代償を検討して独立した助言と反証可能な条件を述べる。']:[]),
  '実力試験の反省：一般形・七対子・国士の向聴を分け、形式テンパイと役あり和了の距離を区別する。自己河フリテンがあれば残存する他の待ちでもロン不可。既に副露した手に門前維持という利益を帰属させない。与えられた二次変化数と受け入れを比較に使い、未計算の役・打点との交換条件を具体化する。複数の有力和了経路（門前、役牌、喰いタン、染め、三色等）は候補ごとに必要なツモ・副露・切る牌を示し、成立済みの役と将来の仮説を区別する。',
  '追加監査からの注意：順子待ちの分類は牌の並びを照合する（12で3、89で7は辺張、68で7は嵌張、56で7は両面）。計算情報の順子待ち形候補は幾何学的な可能性のみで、相手の実際の待ちや安全度ではない。順位は点棒移動後の全員を並べ直す。現3着だけでなく放銃者が下位に転落する可能性にも注意。放銃者が不明なら相手別に最善手を提示してよい。小差・未計算の打点経路・河不足では推奨を明示しても確信度は中以下とする。',
  '実推論パイロットの教訓：向聴改善の二次組合せは直近の形指標にすぎない。同向聴なら4連形・複合ターツの柔軟性、雀頭、孤立端牌、二度受け、役を作る合法経路を比較する。役あり良形聴牌で通す危険牌が1枚だけの場合と遠い安手の押しを区別し、安全牌を切れるだけで期待価値を決めない。ダマで既に満貫等の高打点なら立直の追加翻による打点増分と和了しやすさ、順位価値を比べる。',

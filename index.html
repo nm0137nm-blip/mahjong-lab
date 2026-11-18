@@ -440,7 +440,7 @@
   <title>麻雀LAB — Phase 2.5.8 AI COACH</title>
 </head>
 <body>
-  <header class="site-header"><div class="logo"><span class="logo-mark">牌</span><span>麻雀<span class="logo-lab">LAB</span></span></div><span class="phase">PHASE 2.5.8 · AI COACH</span></header>
+  <header class="site-header"><div class="logo"><span class="logo-mark">牌</span><span>麻雀<span class="logo-lab">LAB</span></span></div><span class="phase">DEV CP2.5.9 · EVIDENCE A/B</span></header>
   <main id="startScreen" class="home">
     <div class="eyebrow"><span class="eyedot"></span> MAHJONG LAB</div>
     <h1 class="home-compact-title">対局設定</h1>
@@ -4697,7 +4697,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
   let toastTimer = null, bannerTimer = null, latestDiscard = null;
   let calledDiscardNotes=Array.from({length:4},()=>[]);
   let phoenixV4=null,coachPublicEvents=null;
-  import('./src/coach/phoenix-coach.mjs?v=258').then(m=>{phoenixV4=m;}).catch(e=>console.warn('新AIコーチを読み込めません。従来版を維持します。',e));
+  import('./src/coach/phoenix-coach.mjs?v=259').then(m=>{phoenixV4=m;}).catch(e=>console.warn('新AIコーチを読み込めません。従来版を維持します。',e));
   let lastCandidateInfo = [];
   const speedValue = () => Number($('speedSelect').value || 850);
   const callMode = () => $('callMode').value || 'ask';
@@ -5766,7 +5766,8 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     const coachMode=el('select','phoenix-input');coachMode.id='phoenixCoachMode';modeLabel.htmlFor=coachMode.id;
     const improved=el('option','','強化コーチ v4.2（試験版・雀力検証中）');improved.value='v4';improved.disabled=!phoenixV4;
     const classic=el('option','','従来のコーチ（2.5.6.1）');classic.value='legacy';
-    coachMode.append(improved,classic);coachMode.value=phoenixV4?'v4':'legacy';
+    const empirical=el('option','','戦術データコーチ（比較試験専用・未認定）');empirical.value='v4e';empirical.disabled=!phoenixV4;
+    coachMode.append(improved,empirical,classic);coachMode.value=phoenixV4?'v4':'legacy';
     const versionStatus=el('p','s42-analysis-note');versionStatus.id='phoenixVersionStatus';
     const label=el('label','phoenix-label','自分の判断理由・質問（任意）');
     const question=el('textarea','phoenix-input');question.id='phoenixQuestion';question.maxLength=500;question.rows=2;
@@ -5787,8 +5788,8 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     shortcut.href=PHOENIX_SHORTCUT_URL;shortcut.setAttribute('aria-disabled','true');
     const refresh=()=>{
       const legacy=buildPhoenixPrompt(entry,question.value)||'';
-      if(coachMode.value==='v4'&&phoenixV4){
-        try{preview.value=phoenixV4.buildPrompt(legacy,entry,M);versionStatus.textContent='牌効率・和了条件・点数・相対価値とS42の判断理由を比較する強化版です。解説の雀力は検証中です。';}
+      if(['v4','v4e'].includes(coachMode.value)&&phoenixV4){
+        try{preview.value=phoenixV4.buildPrompt(legacy,entry,M,{tacticalEvidence:coachMode.value==='v4e'});versionStatus.textContent=coachMode.value==='v4e'?'戦術統計を今回の比較候補に適用できる場合のみ追加。解説の品質改善は未確認。':'牌効率・和了条件・点数・相対価値とS42の判断理由を比較する強化版です。解説の雀力は検証中です。';}
         catch(e){console.warn('コーチ計算失敗',e);preview.value=legacy;coachMode.value='legacy';versionStatus.textContent='追加計算を取得できなかったため従来版に切り替えました。';}
       }else{preview.value=legacy;versionStatus.textContent=phoenixV4?'従来版の依頼形式を使用します。':'新コーチ未読込。従来版を使用します。';}
       if(selectedPrompt!==preview.value){
