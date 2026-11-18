@@ -1924,9 +1924,16 @@ module.exports = class Game {
                                  :                                 0;
             }
         }
-        else if (this._max_jushu == sum_jushu) {
-            if (this._rule['オーラス止めあり'] && guanjun == model.player_id[0]
-                && this._lianzhuang && ! this._no_game)         jieju = true;
+        else if (this._max_jushu == sum_jushu && this._rule['オーラス止めあり']
+                 && this._lianzhuang && ! this._no_game) {
+            // Mahjong LAB: unlike Tenhou/S42 evaluation, a sole leading dealer
+            // ends all-last regardless of whether the score reaches 30,000.
+            // Keep the original >=30,000 condition for other rule configurations.
+            const oya = model.player_id[0];
+            const oyaIsTop = this._rule['オーラス単独トップ止め']
+                ? defen.every((point, id) => id === oya || defen[oya] > point)
+                : guanjun === oya;
+            if (oyaIsTop) jieju = true;
         }
 
         if (jieju)  this.delay(()=>this.jieju(), 0);
@@ -4896,7 +4903,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     debugUsed = false; matchSaved = false;
     recordedMatchId=String(Date.now())+'-'+Math.random().toString(36).slice(2);
     $('recordModeBadge').textContent=recordMode==='measure'?'計測中':'練習';
-    selectedRule = M.rule({'配給原点':25000,'赤牌':{m:1,p:1,s:1},'場数':Number(mode),'延長戦方式':0,'オーラス止めあり':false,'順位点':['0.0','0.0','0.0','0.0']});
+    selectedRule = M.rule({'配給原点':25000,'赤牌':{m:1,p:1,s:1},'場数':Number(mode),'延長戦方式':0,'オーラス止めあり':true,'オーラス単独トップ止め':true,'トビ終了あり':true,'順位点':['0.0','0.0','0.0','0.0']});
     human = new Human(); referenceAI = null;
     referenceCurrent=null;referenceReaction=null;
     Object.assign(mirrorAudit,{packets:0,errors:0,matchedSelf:0,selfMismatch:0,wallAccess:0});
@@ -5683,9 +5690,13 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     const champion=projected.some(x=>x>=30000);
     if(game._max_jushu<sum)return Number(rule['延長戦方式'])===0 || Number(rule['場数'])===0 || champion;
     if(game._max_jushu===sum && rule['オーラス止めあり'] && game._lianzhuang && !game._no_game){
+      const oya=model.player_id[0];
+      if(rule['オーラス単独トップ止め']){
+        return projected.every((point,id)=>id===oya||projected[oya]>point);
+      }
       let top=-1,topScore=-Infinity;
       for(let i=0;i<4;i++)if(projected[i]>topScore){top=i;topScore=projected[i];}
-      return top===model.player_id[0] && champion;
+      return top===oya && champion;
     }
     return false;
   }
@@ -5712,7 +5723,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     $('resultTag').textContent=msg.hule?'和了':'流局';
     $('resultTitle').textContent=msg.hule?(data.baojia==null?'ツモ和了':'ロン和了'):(data.name||'流局');
     const lim=msg.hule?limitName(data):'';
-    $('resultDetails').textContent=msg.hule?`${NAMES[game.model.player_id[data.l]]} の和了 · ${data.fu||'-'}符 ${data.fanshu||'-'}翻${lim?` · ${lim}`:''} · ${resultPaymentLabel(data)}`:'次の局に進みます';
+    $('resultDetails').textContent=msg.hule?`${NAMES[game.model.player_id[data.l]]} の和了 · ${data.fu||'-'}符 ${data.fanshu||'-'}翻${lim?` · ${lim}`:''} · ${resultPaymentLabel(data)}`:(willFinishAfterResult()?'この局で対局終了です':'次の局に進みます');
     $('resultHandDetail').replaceChildren();
     if(msg.hule) {try{renderResultDetails(data);}catch(e){console.error(e);$('resultHandDetail').textContent='和了詳細を表示できませんでした';}}
     $('resultScores').replaceChildren();
