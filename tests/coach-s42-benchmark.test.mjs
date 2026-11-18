@@ -26,3 +26,16 @@ const stale=clone(entry);stale.mortalOpinion.id=11;check('stale Q rejected',bm.m
 const r=bm.collect([entry,mismatch,stale],M,'match');check('exclusions counted',r.total===3&&r.blind.length===1&&Object.values(r.excluded).reduce((n,v)=>n+v,0)===2);
 
 });
+
+test('locked first answer, factual claim checks and contrast directions use synthetic labels',()=>{
+ const key={id:'a',phase:'turn',best:18,q:Array(46).fill(null),model_sha256:bm.MODEL_SHA256};key.q[0]=.1;key.q[18]=.2;
+ const blind={id:'a',facts:{ukeire:20,shanten:2}};
+ const answer={id:'a',action:0,alternative:18,confidence:'medium',reason:'fixture',prediction:'fixture'};
+ if(bm.revealCase(blind,key,answer).reference.action!==18)throw Error('reveal');
+ let rejected=false;try{bm.revealCase(blind,key,{...answer,action:44});}catch{rejected=true;}if(!rejected)throw Error('invalid answer exposed');
+ const claims=[{path:['facts','ukeire'],value:20},{path:['facts','shanten'],value:2}];
+ if(!bm.gradeClaims(blind,claims).complete||bm.gradeClaims(blind,[claims[0],claims[0]]).complete||bm.gradeClaims(blind,[{path:['facts','ukeire'],value:19},claims[1]]).complete)throw Error('claim validation');
+ const key2={...key,id:'b',q:key.q.slice(),best:0};key2.q[0]=.4;
+ const r=bm.gradeContrast([key,key2],[{id:'pair',direction:'increase',reason:'fixture'}],[{id:'pair',a:'a',b:'b',action1:0,action2:18}]);
+ if(r.correct!==1||r.valid!==1)throw Error('directional comparison');
+});
