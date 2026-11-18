@@ -5316,7 +5316,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
         name:userLabel(l),wind:WINDS[l],
         tiles:visibleRiver(model.he[l]?._pai||[]).map(x=>x.p.slice(0,2)).filter(p=>/^[mpsz][0-9]$/.test(p)),
         discards:(model.he[l]?._pai||[]).map(p=>({tile:p.slice(0,2),tsumogiri:p.includes('_'),
-          riichi:p.includes('*'),called:/[+\\-=]$/.test(p)})),
+          riichi:p.includes('*'),called:/[+=-]$/.test(p)})),
         melds:(model.shoupai[l]?._fulou||[]).slice(),
         riichi:!!model.shoupai[l]?.lizhi
       })),
@@ -5667,7 +5667,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     const v=entry.scene, fresh=v.snapshotVersion===2;
     const tile=p=>typeof p==='string'&&/^[mps][0-9]$|^z[1-7]$/.test(p)?p:null;
     const tileAction=p=>typeof p==='string'&&/^(?:[mps][0-9]|z[1-7])_?$/.test(p)?p:null;
-    const meld=m=>typeof m==='string'&&/^[mpsz][0-9+\\-=]{3,6}$/.test(m)?m:null;
+    const meld=m=>typeof m==='string'&&/^[mpsz][0-9+=-]{3,6}$/.test(m)?m:null;
     const list=(a,fn)=>Array.isArray(a)?a.map(fn).filter(x=>x!=null):[];
     const num=n=>typeof n==='number'&&Number.isFinite(n)?n:null;
     const textValue=t=>typeof t==='string'?t.slice(0,100):null;
@@ -5690,7 +5690,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
         副露:list(x.melds,meld)})),
       選択:{種類:textValue(entry.type),内容:textValue(entry.choiceLabel),牌:tileAction(entry.discard),鳴き元席順:num(entry.from),
         副露選択:meld(entry.chosenMeld),立直:!!entry.riichi},
-      合法選択肢:choices?.phase==='reaction'?{種類:'他家の牌への反応',元席順:num(choices.from),対象牌:tileAction(choices.tile?.replace(/[+\\-=*]/g,'')),
+      合法選択肢:choices?.phase==='reaction'?{種類:'他家の牌への反応',元席順:num(choices.from),対象牌:tileAction(choices.tile?.replace(/[+=*-]/g,'')),
         チー:list(choices.chi,meld),ポン:list(choices.pon,meld),カン:list(choices.kan,meld),ロン:!!choices.ron,スルー:!!choices.pass}:
         choices?.phase==='turn'?{種類:'自分の手番',打牌:list(choices.discards,tileAction),立直可能打牌:list(choices.riichiDiscards,tileAction),カン:list(choices.kan,meld),ツモ:!!choices.tsumo,九種九牌:!!choices.nine}:null,
       牌効率:list(entry.candidates,c=>tileAction(c?.p)&&num(c.shanten)!==null&&c.shanten!==99?{打牌:c.p,選択後向聴数:c.shanten,有効牌枚数:num(c.ukeire),有効牌:list(c.usefulDetails,d=>tile(d?.p)?{牌:d.p,見かけ残枚数:num(d.count)}:null)}:null),
