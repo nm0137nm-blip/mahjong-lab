@@ -187,7 +187,7 @@ test('Phoenix snapshot uses only own concealed hand and pre-decision public fiel
     shan:{baopai:['s3'],paishu:52,_pai:['SECRET_WALL']},
     he:[{_pai:['p5_+','m3*']},{_pai:[]},{_pai:[]},{_pai:['s8']}],
     shoupai:[{_fulou:['z111+'],lizhi:true,_bingpai:'SECRET_HAND'},{_fulou:[]},{_fulou:[]},{_fulou:[]}] }},
-   human:{shoupai:{_fulou:[]}},ownSeat:()=>3,tileList:()=>['m1','p0_'],visibleRiver:raw=>raw.filter(p=>!/[+\\-=]$/.test(p)).map(p=>({p})),
+   human:{shoupai:{_fulou:[]}},ownSeat:()=>3,tileList:()=>['m1','p0_'],visibleRiver:raw=>raw.filter(p=>!/[+=-]$/.test(p)).map(p=>({p})),
    F:['東','南'],WINDS:['東','南','西','北'],NAMES:['自分','A','B','C'],userLabel:l=>'seat'+l,mode:'2',latestDiscard:{l:0,p:'m3*'}
  });
  const v=capture();assert.equal(v.drawn,'p0');assert.equal(v.ownWind,'北');assert.equal(v.scores[3].rank,1);
