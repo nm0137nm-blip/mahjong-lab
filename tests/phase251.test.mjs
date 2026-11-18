@@ -61,6 +61,32 @@ test('Q analysis never invents illegal actions and correctly compares reach vs n
   assert.equal(ag.riichiCount,1);
 });
 
+
+test('nine terminals/honors abortive draw is legal only on first draw',()=>{
+  const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');
+  const script=html.match(/<script>([\\s\\S]*?)<\\/script>/)?.[1];
+  const boundary='})(typeof window!=="undefined"?window:globalThis);';
+  const end=script.indexOf(boundary);
+  assert.ok(end>0,'embedded Majiang engine');
+  const context={window:{}};
+  new Script(script.slice(0,end+boundary.length)).runInNewContext(context);
+  const M=context.window.MajiangCore;
+  const good=M.Shoupai.fromString('m119p19s19z1234567');
+  const poor=M.Shoupai.fromString('m123456789p12345');
+  assert.equal(M.Game.allow_pingju(M.rule(),good,true),true);
+  assert.equal(M.Game.allow_pingju(M.rule(),good,false),false);
+  assert.equal(M.Game.allow_pingju(M.rule(),poor,true),false);
+  assert.equal(M.Game.allow_pingju(M.rule({'途中流局あり':false}),good,true),false);
+});
+
+test('inference worker uses serialized evaluation and retains pending judgment IDs',()=>{
+  const worker=readFileSync(new URL('../src/mortal/mortal-worker.mjs',import.meta.url),'utf8');
+  const client=readFileSync(new URL('../src/mortal/mortal-client.mjs',import.meta.url),'utf8');
+  assert.ok(worker.includes('workQueue=workQueue.then('),'queued inference');
+  assert.equal(worker.includes("if(working)return fail('処理中'"),false);
+  assert.ok(client.includes('pending.size>192'),'bounded pending decisions');
+  assert.equal(client.includes('this.pending.clear()'),false,'no losing outstanding decision IDs');
+});
 test('MJAI bridge preserves exact public discards and called tiles',()=>{
   const bridge=new MortalMjaiBridge();
   const q=bridge.receive({qipai:{
