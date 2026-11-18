@@ -17,7 +17,7 @@ const rules=M.rule({'場数':1,'延長戦方式':0,'オーラス止めあり':tr
 function engine({scores,dealer=0,round=3,wind=0,repeat=true,abortive=false,rule=rules}) {
   const player_id=Array.from({length:4},(_,i)=>(dealer+i)%4);
   const g={
-    _model:{defen:scores.slice(),player_id,jushu:round,zhuangfeng:wind,lunban:-1},
+    _model:{defen:scores.slice(),player_id,qijia:0,jushu:round,zhuangfeng:wind,lunban:-1},
     _rule:rule,_lianzhuang:repeat,_no_game:abortive,_max_jushu:Number(rule['場数'])*4-1,
     delay(fn){fn();},jieju(){this.next='end';},qipai(){this.next='continue';}
   };
