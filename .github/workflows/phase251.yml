@@ -22,7 +22,7 @@ jobs:
           node --check src/mortal/mjai-bridge.mjs
           node --check service-worker.js
   mobile-webkit:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
