@@ -23,7 +23,18 @@ try{
   assert.equal(first[2].calledAway,false);
 
   if(process.env.S42_MODEL_TEST==='1'){
-    await page.locator('#mortalDownloadBtn').click(null,{timeout:30000});
+    if(process.env.S42_LOCAL_MODEL){
+      await page.locator('#mortalModelFile').setInputFiles(process.env.S42_LOCAL_MODEL);
+    }else{
+      const diagnostic=await page.evaluate(async()=>{
+        try{
+          const r=await fetch('https://huggingface.co/xzhe121/Mortal-S42-onnx/resolve/main/model.onnx?download=true',{method:'HEAD',mode:'cors'});
+          return {ok:r.ok,status:r.status,type:r.type,url:r.url,contentLength:r.headers.get('content-length')};
+        }catch(e){return {error:String(e),name:e?.name||'unknown',message:e?.message||''};}
+      });
+      console.log('[S42] CORS diagnostic',JSON.stringify(diagnostic));
+      await page.locator('#mortalDownloadBtn').click({timeout:30000});
+    }
     await page.waitForFunction(()=>window.MahjongLabS42Debug()?.ready===true,null,{timeout:180000});
     console.log('[S42] ready',await page.evaluate(()=>window.MahjongLabS42Debug()));
   }
