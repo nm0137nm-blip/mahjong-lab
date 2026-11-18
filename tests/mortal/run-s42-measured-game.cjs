@@ -51,11 +51,11 @@ const {chromium}=require('/tmp/probe/node_modules/playwright-core');
     const history=finished.record;
     if(history.length!==1)throw Error('Expected precisely one measured match; got '+history.length);
     const summary=history[0];
-    if(summary.s42?.count<5||summary.s42.index==null)throw Error('S42 measured stats not persisted '+JSON.stringify(summary.s42));
+    if(summary.s42?.count<5||summary.s42.rating==null)throw Error('S42 measured stats not persisted '+JSON.stringify(summary.s42));
     if(summary.rank<1||summary.rank>4||summary.hands<1)throw Error('Old measured stats corrupted: '+JSON.stringify({rank:summary.rank,hands:summary.hands}));
     await page.locator('#homeBtn').click();
     const top=await page.locator('#homeS42Stats').innerText();
-    if(!top.includes('平均判断指数')||!top.includes(String(summary.s42.index)+'/100'))throw Error('Home S42 aggregate not visible');
+    if(!top.includes('Mortal Rating（公式方式）')||!top.includes(summary.s42.rating.toFixed(1)+'/100'))throw Error('Home S42 aggregate not visible');
     if(errors.length)throw Error('Browser errors '+JSON.stringify(errors));
     console.log('S42_REAL_MEASURED_MATCH_PASS='+JSON.stringify({decisions,results,summaryS42:summary.s42,rank:summary.rank,hands:summary.hands,reviews:finished.recent,top:top.slice(0,200),errors}));
   }finally{await browser.close();}
