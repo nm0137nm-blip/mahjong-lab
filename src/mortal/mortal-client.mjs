@@ -11,7 +11,6 @@ const EXPECTED_SIZE=43673425;
 // The SHA-256 check below is mandatory, even if the hosting URL changes.
 export const MODEL_URL='https://huggingface.co/xzhe121/Mortal-S42-onnx/resolve/main/model.onnx?download=true';
 const STORAGE='mahjong-lab-s42-local-weights';
-const VERIFIED_MODEL_URL='https://huggingface.co/xzhe121/Mortal-S42-onnx/resolve/main/model.onnx?download=true';
 const ACTIONS=['1m','2m','3m','4m','5m','6m','7m','8m','9m','1p','2p','3p','4p','5p','6p','7p','8p','9p',
  '1s','2s','3s','4s','5s','6s','7s','8s','9s','E','S','W','N','P','F','C','5mr','5pr','5sr'];
 const HONORS={E:'東',S:'南',W:'西',N:'北',P:'白',F:'發',C:'中'};
@@ -128,39 +127,11 @@ export class MortalClient {
     }catch(e){this.status('S42モデルの読込失敗: '+String(e.message||e));throw e;}
   }
   async downloadModel(){
-    this.status('S42モデルを取得中（約43.7MB）…');
-    try{
-      const response=await fetch(MODEL_URL,{cache:'no-store'});
-      if(!response.ok)throw Error('HTTP '+response.status);
-      const total=Number(response.headers.get('content-length'))||EXPECTED_SIZE;
-      if(total>50_000_000)throw Error('配布ファイルが大きすぎます');
-      let bytes;
-      if(response.body?.getReader){
-        const reader=response.body.getReader(),chunks=[];
-        let received=0;
-        while(true){
-          const {done,value}=await reader.read();
-          if(done)break;
-          received+=value.byteLength;
-          if(received>50_000_000)throw Error('配布ファイルが大きすぎます');
-          chunks.push(value);
-          this.status('S42モデルを取得中 '+Math.min(100,Math.floor(received/total*100))+'%（43.7MB）');
-        }
-        bytes=new Blob(chunks,{type:'application/octet-stream'});
-      }else bytes=await response.blob();
-      const file=new File([bytes],'model.onnx',{type:'application/octet-stream'});
-      await this.importModel(file);
-    }catch(e){
-      this.status('自動取得に失敗しました。モデルファイルを手動選択してください：'+String(e.message||e));
-      throw e;
-    }
-  }
-  async downloadModel(){
     if(this.downloading)throw Error('モデルを取得中です');
     this.downloading=true;
     this.status('公開済みS42モデルを取得中（約44MB）...');
     try{
-      const res=await fetch(VERIFIED_MODEL_URL,{mode:'cors'});
+      const res=await fetch(MODEL_URL,{mode:'cors',cache:'no-store'});
       if(!res.ok||res.type==='opaque')throw Error('配布元に接続できません（HTTP '+res.status+'）');
       const length=Number(res.headers.get('content-length'));
       if(length>0&&length!==EXPECTED_SIZE)throw Error('公開モデルのサイズが検証値と異なります');
