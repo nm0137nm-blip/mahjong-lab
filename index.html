@@ -5197,8 +5197,28 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     make('スルー',null,{},'pass');
     requestAnimationFrame(fitBoard);
   }
+  function recordReactionChoice(reaction,payload){
+    if(!reaction||reaction.type!=='reaction')return;
+    const action=payload.hule?43:payload.fulou?s42Analytics?.actionForCall(payload.fulou):45;
+    const label=payload.hule?'ロン':payload.fulou?
+      (action===41?'ポン':action===42?'カン':action>=38&&action<=40?'チー':'副露'):
+      '鳴かずにスルー';
+    const decision=mortalClient?.activeDecision('reaction')??null;
+    const info={
+      type:'call',round:`${F[game.model.zhuangfeng]}${game.model.jushu+1}局`,
+      discard:reaction.p,from:reaction.from,choiceLabel:label,action,
+      shanten:M.Util.xiangting(human.shoupai),ukeire:null,
+      candidates:[],scene:captureS42Scene(),riichi:false,riichiAvailable:false,
+      mortalDecision:decision,mortalOpinion:mortalClient?.current?.id===decision?{...mortalClient.current}:null,
+      s42Review:null
+    };
+    if(info.mortalOpinion&&s42Analytics)info.s42Review=s42Analytics.analyzeAction(info.mortalOpinion,action);
+    decisionLog.push(info);if(decisionLog.length>1000)decisionLog.shift();
+    lastFeedback=info;lastCandidateInfo=[];
+  }
   function answer(payload) {
     if(!pending || !human) return;
+    if(pending.type==='reaction')recordReactionChoice(pending,payload);
     const cb=human._callback;pending=null;riichiMode=false;candidateInfo=[];
     $('callTray').classList.add('hidden');
     try { cb(payload); } catch(err) { notify('操作でエラーが発生しました: '+err.message); console.error(err); }
@@ -5235,8 +5255,15 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     const entry=decisionLog.find(x=>x.mortalDecision===op.id);
     if(!entry)return;
     entry.mortalOpinion={...op};
-    if(s42Analytics)entry.s42Review=s42Analytics.analyzeDecision(op,entry.discard,entry.riichi);
+    if(s42Analytics){
+      entry.s42Review=entry.type==='call'?
+        s42Analytics.analyzeAction(op,entry.action):
+        s42Analytics.analyzeDecision(op,entry.discard,entry.riichi);
+      if(entry.riichiAvailable)entry.riichiComparison=s42Analytics.riichiComparison(op,entry.s42Review?.action);
+    }
     if(lastFeedback===entry)redrawSoon();
+    if(gameEnded){renderS42End();syncS42SavedAfterLateOpinion();}
+    if(!$('resultOverlay').classList.contains('hidden'))renderLastDecisionReview('resultDecisionReview',true);
   }
 
   function chooseDiscard(p) {
@@ -5249,14 +5276,17 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
         round:`${F[game.model.zhuangfeng]}${game.model.jushu+1}局`, discard:p,
         shanten:current.shanten, ukeire:current.ukeire,
         best:good?.p, bestShanten:good?.shanten,bestUkeire:good?.ukeire,
-        riichi:riichiMode,reference:null,scene:captureS42Scene(),
+        riichi:riichiMode,riichiAvailable:!!game.allow_lizhi(),type:'discard',choiceLabel:(riichiMode?'リーチ → ':'')+'打 '+tileName(p),reference:null,scene:captureS42Scene(),
         candidates:candidateInfo.map(v=>({p:v.p,shanten:v.shanten,ukeire:v.ukeire,usefulDetails:v.usefulDetails?.map(d=>({...d}))||[],handTiles:v.handTiles?.slice()||[],melds:v.melds?.slice()||[]})),
         selfMetric:{p:current.p,shanten:current.shanten,ukeire:current.ukeire},
-        mortalDecision:mortalClient?.decision??null,
-        mortalOpinion:mortalClient?.current?.id===mortalClient?.decision?{...mortalClient.current}:null,
-        s42Review:null,
+        mortalDecision:mortalClient?.activeDecision('turn')??null,
+        mortalOpinion:mortalClient?.current?.id===mortalClient?.activeDecision('turn')?{...mortalClient.current}:null,
+        s42Review:null,riichiComparison:null,
       };
-      if(info.mortalOpinion && s42Analytics)info.s42Review=s42Analytics.analyzeDecision(info.mortalOpinion,p,riichiMode);
+      if(info.mortalOpinion && s42Analytics){
+        info.s42Review=s42Analytics.analyzeDecision(info.mortalOpinion,p,riichiMode);
+        if(info.riichiAvailable)info.riichiComparison=s42Analytics.riichiComparison(info.mortalOpinion,info.s42Review?.action);
+      }
       lastFeedback=info;lastCandidateInfo=candidateInfo.slice();
       decisionLog.push(info);if(decisionLog.length>1000)decisionLog.shift();
     }
@@ -5369,7 +5399,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
       for(const x of sorted) html+=`<tr><td>${esc(tileName(x.p))}${x.p.endsWith('_')?'（ツモ切り）':''}</td><td>${x.shanten}</td><td>${x.ukeire}枚</td></tr>`;
       html+='</tbody></table><p class="disclaimer">※ 現時点の有効牌枚数を算出した牌効率の参考値です。打点・場況・守備・順位の期待値は未考慮。上位候補＝正解打牌ではありません。</p>';
     } else if (pending?.type==='reaction') {
-      html+='<p class="disclaimer">鳴き判断の高度な期待値比較は未実装です。役・食い替え・フリテン等は対局エンジン側で合法性を判定しています。</p>';
+      html+='<p class="disclaimer">鳴く／スルーの判断は、選択後にS42のQ値が取得できた場合のみ評価します。鳴く前に正解は表示しません。</p>';
     } else if (!lastFeedback) html+='<p class="disclaimer">捨て牌を選ぶと、打牌前に比較した向聴数と受け入れを記録します。</p>';
     body.innerHTML=html;
   }
