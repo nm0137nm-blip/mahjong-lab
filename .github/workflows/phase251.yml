@@ -1,4 +1,4 @@
-name: Mahjong LAB phase 2.5.2 Safari and S42 validation
+name: Mahjong LAB mobile and S42 regression
 on:
   push:
     branches:
@@ -24,14 +24,15 @@ jobs:
           node --check service-worker.js
   mobile-webkit:
     runs-on: ubuntu-24.04
-    timeout-minutes: 15
+    timeout-minutes: 20
+    container:
+      image: mcr.microsoft.com/playwright:v1.56.1-noble
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
       - run: npm install --no-save --no-package-lock playwright@1.56.1
-      - run: npx playwright install --with-deps webkit
       - name: Download and SHA-256 verify actual S42 weights (CI only)
         run: |
           curl --fail --location --retry 3 --retry-delay 2 --connect-timeout 20 --max-time 240 \
@@ -40,7 +41,7 @@ jobs:
           echo '30381bf21389e2d25d3edf48fed11bf772336ef3daeee67d1bdae7fb9dd30cb4  /tmp/mortal-s42-model.onnx' | sha256sum -c -
       - name: Real-model browser smoke (mobile WebKit)
         run: |
-          python3 -m http.server 8765 > /tmp/mahjong-lab-server.log 2>&1 &
+          node --input-type=module -e 'import http from "node:http"; import fs from "node:fs"; import path from "node:path"; http.createServer((req,res)=>{let p=path.resolve("."+new URL(req.url,"http://localhost").pathname);if(p===process.cwd())p+="/index.html";if(!p.startsWith(process.cwd()+"/")){res.writeHead(404);res.end();return;}res.setHeader("Content-Type",({".mjs":"text/javascript",".js":"text/javascript",".wasm":"application/wasm",".html":"text/html",".svg":"image/svg+xml",".png":"image/png"})[path.extname(p)]||"application/octet-stream");const stream=fs.createReadStream(p);stream.on("error",()=>{res.statusCode=404;res.end();});stream.pipe(res);}).listen(8765,"127.0.0.1")' >/tmp/mahjong-lab-server.log 2>&1 &
           for i in $(seq 1 20); do
             curl -fsS http://127.0.0.1:8765/ >/dev/null && break
             sleep 1
