@@ -47,12 +47,36 @@ jobs:
           S42_PTH: /tmp/s42.pth
           S42_ONNX: /tmp/s42.onnx
         run: python tests/mortal/q-parity-reference.py /tmp/s42-scenes.json /tmp/s42-q-reference.json
-      - name: Install mobile WebKit
+      - name: Preserve fictional reference data only
+        uses: actions/upload-artifact@v4
+        with:
+          name: s42-synthetic-reference
+          path: /tmp/s42-q-reference.json
+          retention-days: 1
+          if-no-files-found: error
+          compression-level: 9
+  mobile-webkit-parity:
+    needs: native-reference
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    # Official Playwright image contains matching WebKit and its system libraries.
+    # No repeated apt downloads on the runner.
+    container:
+      image: mcr.microsoft.com/playwright:v1.56.1-noble
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: s42-synthetic-reference
+          path: /tmp/s42-audit
+      - name: Install matching Playwright JS package
+        run: npm install --no-save --no-package-lock --ignore-scripts playwright@1.56.1
+      - name: Download verified ONNX only for this job
         run: |
-          npm install --no-save --no-package-lock playwright@1.56.1
-          npx playwright install --with-deps webkit
+          curl -fL --retry 2 --max-time 240 https://huggingface.co/xzhe121/Mortal-S42-onnx/resolve/main/model.onnx -o /tmp/s42.onnx
+          echo '30381bf21389e2d25d3edf48fed11bf772336ef3daeee67d1bdae7fb9dd30cb4  /tmp/s42.onnx' | sha256sum -c -
       - name: Compare deployed browser worker against original PyTorch inference
         run: |
-          python -m http.server 8765 >/tmp/s42-audit-http.log 2>&1 &
-          for i in $(seq 1 20); do curl -fsS http://127.0.0.1:8765/ >/dev/null && break; sleep 1; done
-          node tests/mortal/q-parity-browser.mjs /tmp/s42.onnx /tmp/s42-q-reference.json
+          node --input-type=module -e 'import http from "node:http"; import fs from "node:fs"; import path from "node:path"; http.createServer((req,res)=>{const p=path.resolve("."+new URL(req.url,"http://localhost").pathname);if(!p.startsWith(process.cwd()+"/")){res.writeHead(404);res.end();return;} const ext=path.extname(p);res.setHeader("Content-Type",({".mjs":"text/javascript",".js":"text/javascript",".wasm":"application/wasm",".html":"text/html"})[ext]||"application/octet-stream");const stream=fs.createReadStream(p);stream.on("error",()=>{res.statusCode=404;res.end();});stream.pipe(res);}).listen(8765,"127.0.0.1")' >/tmp/s42-audit-http.log 2>&1 &
+          for i in $(seq 1 20); do curl -fsS http://127.0.0.1:8765/index.html >/dev/null && break; sleep 1; done
+          node tests/mortal/q-parity-browser.mjs /tmp/s42.onnx /tmp/s42-audit/s42-q-reference.json
