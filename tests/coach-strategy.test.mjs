@@ -2,9 +2,9 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {principles,sources,strategyInstructions,curriculumVersion} from '../scripts/coach/strategy-curriculum.mjs';
 import {strategic,prompt,grade} from '../scripts/coach/audit.mjs';
-test('all twenty condition-based principles have actual source links and exceptions',()=>{
- assert.equal(principles.length,20);assert.equal(Object.keys(sources).length,15);
- assert.equal(new Set(principles.map(p=>p.id)).size,20);
+test('all twenty-three condition-based principles have actual source links and exceptions',()=>{
+ assert.equal(principles.length,23);assert.equal(Object.keys(sources).length,18);
+ assert.equal(new Set(principles.map(p=>p.id)).size,23);
  for(const p of principles){assert.ok(p.when&&p.compare&&p.limit);for(const id of p.sources)assert.ok(sources[id].url.startsWith('https://'));}
  assert.match(strategyInstructions(),/最善と考える一手/);
  assert.match(strategyInstructions(),/何が変われば結論が反転/);
