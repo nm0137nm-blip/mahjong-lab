@@ -11,7 +11,9 @@ export const sources=Object.freeze({
  A4:{title:'ASAPIN 第4回 ラスを引かないための立ち回り方',url:'https://mj-news.com/column/column-asapin-net-mahjong/column_asapin04/'},
  A5:{title:'ASAPIN 第5回 ラス目に厳しく打つ',url:'https://mj-news.com/column/column-asapin-net-mahjong/column_asapin05/'},
  A6:{title:'ASAPIN 第6回 ラス目での立ち回り方',url:'https://mj-news.com/column/column-asapin-net-mahjong/column_asapin06/'},
- H:{title:'鳳凰卓攻略（2022年9月14日）',url:'https://doramahjong.org/osusume/02/0029.html'}
+ H:{title:'鳳凰卓攻略（2022年9月14日）',url:'https://doramahjong.org/osusume/02/0029.html'},
+ G:{title:'齋藤豪 戦術の系譜24（手組み）',url:'https://www.ma-jan.or.jp/senjutsu_kefu/92729.html'},
+ Y:{title:'ヨーテル 前提を元に一牌を通す',url:'https://note.com/yoteru11/n/nfc171616e45a'}
 });
 export const principles=[
  {id:'T01',sources:['A1','A2'],name:'着順効用を先に定義する',when:'点差や残り局数によって目標が変わる場面',compare:'和了・放銃・被ツモ・横移動・流局の各結果で誰が何位になるか。親権が残る場合も区別する',limit:'素点の余裕も将来の順位に効く。トップ確定前に加点を無価値とみなさない'},
@@ -25,8 +27,13 @@ export const principles=[
  {id:'T09',sources:['H'],name:'同向聴・同受け入れでも将来の形を比較する',when:'直接有効牌に差がない、ブロック選択や余剰牌選択',compare:'雀頭候補、ドラ重なり、次の有効牌とその次の打牌、好形・役・打点、残存ブロックの違い',limit:'実際の変化経路を確認する。局所例は全体の期待値ではなく、切った牌のメリットを残した候補に帰属させない'},
  {id:'T10',sources:['H'],name:'残存する待ち形を相手別に比較する',when:'現物が少なく、安全性の差が細かい場面',compare:'見え枚数、壁、スジ、最後の手出し、他の待ち形の可能性を各相手に対して検討',limit:'スジ・壁・ノーチャンス単独で現物扱いしない。危険率の数値を作らない'},
  {id:'T11',sources:['A6','H'],name:'逆転条件から手を逆算する',when:'大きく失点した場面や終盤のラス目',compare:'誰から何点、ツモや流局で順位が変わるか、残り局と打点の必要性を先に確認し、実現可能な進行を選ぶ',limit:'諦めないことは無謀な押しではない。逆転に届かない和了で終局する条件にも注意'}
+, 
+ {id:'T12',sources:['G'],name:'早い段階で手組みの目的を定める',when:'配牌から中盤前の多向聴、複数の役・打点ルートを選べる場面',compare:'速度基準の手順に対し、打点・守備を含む代替ルートの利益と失う受けを比較。具体的なツモや副露で分岐を示す',limit:'可能性だけで手役を追わない。巡目・必要打点・向聴進行で選択肢を絞る。基本の牌効率を軽視しない'},
+ {id:'T13',sources:['G'],name:'攻撃される前に守備を設計する',when:'他家の攻撃が予想される点差・親子・手牌状況',compare:'全力進行、ブロック固定で安牌を残す、鳴き保留の各経路と、次巡リーチを受けたときの撤退可能性',limit:'安全牌を残すこと自体が目的ではない。先制の価値が高い時や安牌が十分な時には機会費用を考える'},
+ {id:'T14',sources:['G'],name:'門前と副露の和了経路をまとめて比較する',when:'十分な打点がある手、または和了だけで順位条件を満たす局面',compare:'門前の受けだけでなく役牌重なり・喰いタン等の合法な役、ポンチー可能性、鳴いた後の打牌と待ちを確認する',limit:'ドラだけでは役がない。鳴き可能・役成立・打点十分を混同しない。守備低下や喰い替えも考慮'},
+ {id:'T15',sources:['Y'],name:'相手の行動から仮説を更新する',when:'副露の開始時期、鳴ける機会の見送り、以後の手出しが判断に関係する場面',compare:'複数の手牌・待ち・打点仮説を置き、観測行動と整合するか比較。切りたい牌の危険性を調べる',limit:'鳴けたかどうかは公開情報だけでは確定しない。鳴かなかったことを待ち否定の証明にしない。時系列や鳴き機会が不明なら推論を弱める'}
 ];
-export const curriculumVersion='phoenix-strategy-v1';
+export const curriculumVersion='phoenix-strategy-v1.1';
 export function strategyInstructions(){
  return [
  '【戦術判断カリキュラム '+curriculumVersion+'】',
