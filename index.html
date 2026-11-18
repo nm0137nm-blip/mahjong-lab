@@ -386,6 +386,8 @@
 .mortal-download{background:#c4e988;color:#163626;border:0;border-radius:8px;padding:11px;font-weight:850;font-size:13px}
 .mortal-download:disabled{opacity:.5}
 .mortal-source{font-size:10px;color:#a2c2b1;line-height:1.6}
+.s42-play-status{font-size:10px;font-weight:750;color:#e4c892;max-width:135px;text-align:right;line-height:1.2}
+.s42-play-status.ready{color:#b9e79d}
 #gameScreen .river-cell.called-away .river-tile{opacity:.42;filter:grayscale(.75)}
 #gameScreen .river-cell.called-away{outline:1px dashed #c9d5c4;outline-offset:-1px}
 #gameScreen .river-cell.called-away::before{content:'鳴';position:absolute;top:-3px;left:0;z-index:2;background:#244437;color:#f3f6de;border-radius:2px;font-size:8px;font-weight:900;line-height:1.15}
@@ -496,7 +498,7 @@
       </div>
     </div>
     <div class="hand-zone"><div class="hand-header"><span id="turnHint">対局開始</span><span id="handInfo" class="hand-info"></span></div><div class="coach-flash hidden" id="coachFlash" aria-live="polite"><div id="coachFlashMain" class="coach-inline-main"></div><button type="button" id="coachDetailBtn" aria-label="打牌選択の詳細を確認">詳しく ›</button></div><div class="my-hand" id="myHand"></div><div class="call-tray hidden" id="callTray" aria-label="鳴き・ロンの選択"><div class="call-tray-head" id="callTrayHead"></div><div class="call-tray-options" id="callTrayOptions"></div></div><div class="actions" id="actionBar"></div></div>
-    <div class="coach" id="coachPanel"><div class="coach-top"><div><span class="spark">✧</span> 牌効率メモ <span class="beta">基礎版</span></div><button id="toggleCoach" class="coach-toggle" type="button">非表示</button></div><div id="coachBody"><p>自分のツモ番になると、打牌候補の受け入れを表示します。</p></div></div>
+    <div class="coach" id="coachPanel"><div class="coach-top"><div><span class="spark">✧</span> 牌効率メモ <span class="beta">基礎版</span></div><span id="s42PlayStatus" class="s42-play-status">S42：未設定</span><button id="toggleCoach" class="coach-toggle" type="button">非表示</button></div><div id="coachBody"><p>自分のツモ番になると、打牌候補の受け入れを表示します。</p></div></div>
     <div id="gameToast" role="status" aria-live="polite" class="toast"></div>
   </main>
 
@@ -5106,7 +5108,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     const river=visibleRiver(raw,true);
     for (let i=0;i<river.length;i++) {
       const {p,riichi,carried,calledAway}=river[i];
-      const isLatest=latestDiscard?.l===l && latestDiscard.p===p && i===river.length-1;
+      const isLatest=latestDiscard?.l===l && latestDiscard.p===p.replace(/[+\-=]$/,'') && i===river.length-1;
       const cell=el('div','river-cell'+(riichi?' riichi':'')+(carried?' riichi-continued':'')+(p.includes('_')?' tsumogiri':'')+(calledAway?' called-away':'')+(isLatest?' latest':'')+(pending?.type==='reaction' && pending.from===l && p===pending.p && i===river.length-1?' call-target':''));
       cell.title=`${tileName(p)}・${p.includes('_')?'ツモ切り':'手出し'}${calledAway?'・鳴かれた牌（河に痕跡を表示）':''}${riichi?'・立直宣言牌位置'+(carried?'（鳴かれたため次の打牌）':''):''}`;
       cell.append(tileImg(p));holder.append(cell);
@@ -5542,7 +5544,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     target.append(el('h3','','S42の定量判断・Q値比較'));
     const op=x.s42Review?x.mortalOpinion:null,review=x.s42Review;
     if(!op||!review){
-      target.append(el('p','s42-analysis-note','この打牌の比較可能なS42評価が取得できていません。モデル未設定・エラー・モデルが別の行動段階を評価した等が考えられます。取得していない数字は補完しません。'));
+      target.append(el('p','s42-analysis-note','この判断の比較可能なS42評価が取得できていません。モデル状態：'+mortalStatusText+'。モデル未導入・推論待ち・エラー・異なる行動段階の評価などの場合があります。未取得のQ値は補完しません。'));
       return;
     }
     target.append(el('div','s42-info','S42推奨：'+op.label+' ／ あなた：'+(x.choiceLabel||'打 '+tileName(x.discard))+' ／ 合法手中 '+review.rank+'/'+review.legal+' 位'));
@@ -5731,7 +5733,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     const total=s42Aggregated();
     root.append(el('h3','','Mortal-S42 打牌判断レビュー'));
     if(!total.count){
-      root.append(el('p','s42-analysis-note','この対局ではS42の有効な比較データがありません。モデル未設定・解析停止・比較対象外などの場合は集計しません。'));
+      root.append(el('p','s42-analysis-note','この対局ではS42の有効な比較データがありません。モデル状態：'+mortalStatusText+'。トップ画面からMortal-S42モデル（約43.7MB）を導入後に計測してください。Q値は取得できた判断のみ表示します。'));
     }else{
       const metrics=el('div','s42-review-grid');
       [
@@ -5841,6 +5843,13 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
       mortalStatusText=String(msg);
       $('mortalStatus').textContent=mortalStatusText;
       $('mortalLive').textContent=mortalClient?.workerReady&&/Mortal-S42 準備完了/.test(mortalStatusText)?'有効':/失敗|停止|エラー/.test(mortalStatusText)?'基礎版':'未設定';
+      const st=$('s42PlayStatus');
+      if(st){
+        const ready=Boolean(mortalClient?.workerReady) && !mortalClient?.broken;
+        st.textContent=ready?'S42：分析有効':/失敗|エラー|停止/.test(mortalStatusText)?'S42：停止中':'S42：未設定／準備中';
+        st.classList.toggle('ready',ready);
+        st.title=mortalStatusText;
+      }
     };
     Promise.all([import('./src/mortal/mortal-client.mjs'),import('./src/mortal/s42-analytics.mjs')]).then(async ([{MortalClient},analytics])=>{
       s42Analytics=analytics;renderStats();
