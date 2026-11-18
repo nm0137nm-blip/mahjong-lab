@@ -47,3 +47,4 @@ jobs:
             sleep 1
           done
           BROWSER=webkit S42_MODEL_TEST=1 S42_LOCAL_MODEL=/tmp/mortal-s42-model.onnx node tests/mobile-smoke.mjs
+          BROWSER=chromium LEGACY_CACHE_TEST=1 S42_MODEL_TEST=1 S42_LOCAL_MODEL=/tmp/mortal-s42-model.onnx node tests/mobile-smoke.mjs
