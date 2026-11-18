@@ -75,10 +75,10 @@ try{
       await page.reload({waitUntil:'domcontentloaded',timeout:30000});
       await page.waitForFunction(()=>{
         const status=document.querySelector('#mortalStatus')?.textContent||'';
-        return window.MahjongLabS42Debug?.()?.ready===true||/保存モデルの再読込失敗/.test(status);
-      },null,{timeout:180000});
+        return window.MahjongLabS42Debug?.()?.ready===true||/保存モデルの再読込失敗|S42推論エラー|ワーカーの起動に失敗|局面変換器の起動に失敗/.test(status);
+      },null,{timeout:90000});
       const restored=await page.evaluate(()=>window.MahjongLabS42Debug?.());
-      assert.equal(restored?.ready,true,'saved model restores after reload');
+      assert.equal(restored?.ready,true,'saved model restores after reload: '+JSON.stringify(restored));
       console.log('[S42] restored from IndexedDB after reload');
     }
   }
