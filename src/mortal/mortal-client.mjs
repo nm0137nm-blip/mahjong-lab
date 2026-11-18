@@ -243,7 +243,13 @@ export class MortalClient {
       this.currentPhase=phase;
       this.current=null;
       this.pending.set(id,{decision});
-      if(this.pending.size>10){this.pending.clear();this.status('S42推論が追いつきません。通常コーチを継続します');return null;}
+      // Allow a full half-game's worth of queued decision reviews to complete.
+      // Never erase already queued decisions: losing those would bias the final metrics.
+      if(this.pending.size>192){
+        this.pending.delete(id);
+        this.status('S42評価の待機列が満杯です。一部の判断は評価対象外になります');
+        return null;
+      }
       this.worker.postMessage({type:'eval',id,obs:data,mask:legal},[data.buffer,legal.buffer]);
       return decision;
     }catch(e){this.status('S42局面評価に失敗しました');return null;}
