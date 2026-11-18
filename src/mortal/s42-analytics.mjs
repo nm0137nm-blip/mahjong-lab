@@ -21,10 +21,25 @@ export function actionForDiscard(tile,riichi=false){
   const n=Number(num);
   return n>=1&&n<=9?offset+n-1:null;
 }
-export function analyzeDecision(op,chosen,riichi=false){
+export function actionForCall(meld){
+  if(typeof meld!=='string'||!/^[mpsz]/.test(meld))return null;
+  const digits=[...meld.slice(1).matchAll(/([0-9])([+\-=]?)/g)].map(m=>({num:Number(m[1])||5,called:!!m[2]}));
+  const claimed=digits.filter(x=>x.called);
+  if(claimed.length!==1||digits.length<3||digits.length>4)return null;
+  if(digits.length===4)return 42; // daiminkan
+  if(digits.every(x=>x.num===digits[0].num))return 41; // pon
+  if(digits.length===3&&meld[0]!=='z'){
+    const nums=digits.map(x=>x.num).sort((x,y)=>x-y);
+    if(nums[2]-nums[0]!==2||new Set(nums).size!==3)return null;
+    // chi_low/mid/high describe the position of the claimed tile.
+    return 38+nums.indexOf(claimed[0].num);
+  }
+  return null;
+}
+export function analyzeAction(op,action){
   if(!op||!Array.isArray(op.qLegal)||op.qLegal.length!==46||!Number.isInteger(op.best))return null;
-  const action=actionForDiscard(chosen,riichi);
-  if(action==null||typeof op.qLegal[action]!=='number'||!Number.isFinite(op.qLegal[action]))return null;
+  if(!Number.isInteger(action)||action<0||action>=46||
+     typeof op.qLegal[action]!=='number'||!Number.isFinite(op.qLegal[action]))return null;
   const sorted=op.qLegal.map((q,i)=>({index:i,q}))
     .filter(x=>typeof x.q==='number'&&Number.isFinite(x.q)).sort((a,b)=>b.q-a.q||a.index-b.index);
   if(sorted.length<2||sorted[0].index!==op.best)return null;
@@ -34,21 +49,26 @@ export function analyzeDecision(op,chosen,riichi=false){
   const range=Math.max(1e-9,sorted[0].q-sorted[sorted.length-1].q);
   const relativeGap=Math.max(0,Math.min(1,gap/range));
   const rank=sorted.findIndex(x=>x.index===action)+1;
-  // Mortal DQN V4 dueling head: mean of legal Q equals V(s), since action advantages are centered.
   const stateValue=sorted.reduce((sum,x)=>sum+x.q,0)/sorted.length;
-  const chosenAdvantage=picked.q-stateValue;
-  const bestAdvantage=sorted[0].q-stateValue;
   return {
-    action,rank,legal:sorted.length,
-    best:op.best,chosenQ:picked.q,bestQ:sorted[0].q,
-    stateValue,chosenAdvantage,bestAdvantage,
-    gap,relativeGap,
-    agreement:action===op.best,
-    // Predeclared heuristic threshold, NOT empirically calibrated mahjong mistakes.
-    badCandidate:relativeGap>=0.30 && !((op.best===37&&riichi)||(op.best===action)),
-    index:Math.round(100*(1-relativeGap)),
-    top:sorted.slice(0,6)
+    action,rank,legal:sorted.length,best:op.best,chosenQ:picked.q,bestQ:sorted[0].q,
+    stateValue,chosenAdvantage:picked.q-stateValue,bestAdvantage:sorted[0].q-stateValue,
+    gap,relativeGap,agreement:action===op.best,
+    badCandidate:relativeGap>=0.30&&op.best!==action,
+    index:Math.round(100*(1-relativeGap)),top:sorted.slice(0,6)
   };
+}
+export function riichiComparison(op,chosenAction){
+  if(!op||!Array.isArray(op.qLegal)||!Number.isFinite(op.qLegal[37]))return null;
+  const noReach=op.qLegal.slice(0,37).filter(x=>typeof x==='number'&&Number.isFinite(x));
+  if(!noReach.length)return null;
+  const reachQ=op.qLegal[37],noReachQ=Math.max(...noReach);
+  return {recommended:reachQ>=noReachQ?'リーチ':'リーチせず打牌',
+    chosen:chosenAction===37?'リーチ':'リーチせず打牌',
+    reachQ,noReachQ,gap:Math.abs(reachQ-noReachQ)};
+}
+export function analyzeDecision(op,chosen,riichi=false){
+  return analyzeAction(op,actionForDiscard(chosen,riichi));
 }
 export function aggregateDecisions(log){
   const judged=(Array.isArray(log)?log:[]).map(x=>x?.s42Review).filter(x=>x&&Number.isFinite(x.index)&&Number.isInteger(x.rank));
@@ -56,7 +76,7 @@ export function aggregateDecisions(log){
   const agreements=judged.filter(x=>x.agreement).length;
   const suspected=judged.filter(x=>x.badCandidate).length;
   const score=n?Math.round(judged.reduce((t,x)=>t+x.index,0)/n):null;
-  return {version:INDEX_VERSION,count:n,agreements,suspected,index:score,
+  return {version:INDEX_VERSION,count:n,agreements,suspected,index:score,\n    callCount:(Array.isArray(log)?log:[]).filter(x=>x?.type==='call'&&x?.s42Review).length,\n    riichiCount:(Array.isArray(log)?log:[]).filter(x=>x?.riichiAvailable&&x?.s42Review).length,
     agreementRate:n?agreements/n:null,badCandidateRate:n?suspected/n:null};
 }
 export function combineAggregates(all){
