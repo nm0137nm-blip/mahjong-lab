@@ -36,7 +36,11 @@ export function splitMeld(m){
   return a;
 }
 export class MortalMjaiBridge {
-  constructor(){this.seat=null;this.lastDiscard=null;this.pendingReach=null;this.round=false;}
+  constructor(){this.seat=null;this.oya=0;this.lastDiscard=null;this.pendingReach=null;this.round=false;}
+  // Majiang messages are in CURRENT wind order; MJAI IDs must remain fixed
+  // from East 1, including tie-breaking rank priority.
+  actor(l){if(!Number.isInteger(l)||l<0||l>3)throw Error('Invalid wind seat');return (l+this.oya)%4;}
+  rotateScores(values){if(!Array.isArray(values))return undefined;const out=Array(4);for(let i=0;i<4;i++)out[this.actor(i)]=values[i];return out;}
   receive(packet){
     if(!packet||typeof packet!=='object')throw Error('Invalid packet');
     const events=[];
@@ -45,12 +49,15 @@ export class MortalMjaiBridge {
       const q=packet.qipai;
       const l=q.shoupai.findIndex(x=>typeof x==='string'&&x.length>0);
       if(l<0||l>3)throw Error('Cannot determine private seat');
-      this.seat=l;this.round=true;this.lastDiscard=null;this.pendingReach=null;
-      const hands=Array.from({length:4},(_,i)=>i===l?handToMjai(q.shoupai[i]):Array(13).fill('?'));
+      if(!Number.isInteger(q.jushu)||q.jushu<0||q.jushu>3)throw Error('Invalid round');
+      this.oya=q.jushu;this.seat=this.actor(l);this.round=true;this.lastDiscard=null;this.pendingReach=null;
+      const hands=Array.from({length:4},()=>Array(13).fill('?'));
+      hands[this.seat]=handToMjai(q.shoupai[l]);
+      const scores=Array(4);for(let i=0;i<4;i++)scores[this.actor(i)]=q.defen[i];
       events.push({type:'start_game',names:['Player 0','Player 1','Player 2','Player 3']});
       events.push({type:'start_kyoku',bakaze:WINDS[q.zhuangfeng],dora_marker:toMjai(q.baopai),
-         kyoku:q.jushu+1,honba:q.changbang,kyotaku:q.lizhibang,oya:0,scores:q.defen.slice(),tehais:hands});
-      return {events,reset:true,seat:l};
+         kyoku:q.jushu+1,honba:q.changbang,kyotaku:q.lizhibang,oya:this.oya,scores,tehais:hands});
+      return {events,reset:true,seat:this.seat};
     }
     if(!this.round||this.seat===null)return {events,reset:false};
     const item=packet.zimo||packet.gangzimo;
@@ -59,14 +66,14 @@ export class MortalMjaiBridge {
       events.push({type:'reach_accepted',actor:this.pendingReach});this.pendingReach=null;
     }
     if(item) {
-      events.push({type:'tsumo',actor:item.l,pai:toMjai(item.p)});
+      events.push({type:'tsumo',actor:this.actor(item.l),pai:toMjai(item.p)});
       this.lastDiscard=null;
     } else if(packet.dapai){
       const d=packet.dapai;
-      if(d.p.includes('*'))events.push({type:'reach',actor:d.l});
-      const event={type:'dahai',actor:d.l,pai:toMjai(d.p),tsumogiri:d.p.includes('_')};
-      events.push(event);this.lastDiscard={actor:d.l,pai:event.pai};
-      if(d.p.includes('*'))this.pendingReach=d.l;
+      if(d.p.includes('*'))events.push({type:'reach',actor:this.actor(d.l)});
+      const event={type:'dahai',actor:this.actor(d.l),pai:toMjai(d.p),tsumogiri:d.p.includes('_')};
+      events.push(event);this.lastDiscard={actor:event.actor,pai:event.pai};
+      if(d.p.includes('*'))this.pendingReach=event.actor;
     } else if(packet.fulou){
       const f=packet.fulou,tiles=splitMeld(f.m),claimed=tiles.find(t=>t.called);
       if(!claimed||!this.lastDiscard)throw Error('Cannot map open meld');
@@ -76,23 +83,23 @@ export class MortalMjaiBridge {
       else if(new Set(tiles.map(t=>t.tile.replace('r',''))).size===1)kind='pon';
       else kind='chi';
       if(claimed.tile.replace('r','')!==this.lastDiscard.pai.replace('r',''))throw Error('Claimed tile mismatch');
-      events.push({type:kind,actor:f.l,target:this.lastDiscard.actor,pai:claimed.tile,consumed});
+      events.push({type:kind,actor:this.actor(f.l),target:this.lastDiscard.actor,pai:claimed.tile,consumed});
       this.lastDiscard=null;
     } else if(packet.gang){
       const g=packet.gang,tiles=splitMeld(g.m);
       const kind=tiles.some(x=>x.called)?'kakan':'ankan';
       const all=tiles.map(x=>x.tile);
       if(all.length!==4)throw Error('Kan requires 4 tiles');
-      events.push(kind==='ankan'?{type:kind,actor:g.l,consumed:all}:{type:kind,actor:g.l,pai:all[3],consumed:all.slice(0,3)});
+      events.push(kind==='ankan'?{type:kind,actor:this.actor(g.l),consumed:all}:{type:kind,actor:this.actor(g.l),pai:all[3],consumed:all.slice(0,3)});
       this.lastDiscard=null;
     } else if(packet.kaigang){
       events.push({type:'dora',dora_marker:toMjai(packet.kaigang.baopai)});
     } else if(packet.hule){
       const h=packet.hule;
-      events.push({type:'hora',actor:h.l,target:h.baojia==null?h.l:h.baojia,deltas:h.fenpei?.slice()});
+      events.push({type:'hora',actor:this.actor(h.l),target:this.actor(h.baojia==null?h.l:h.baojia),deltas:this.rotateScores(h.fenpei)});
       events.push({type:'end_kyoku'});this.round=false;this.pendingReach=null;
     } else if(packet.pingju){
-      events.push({type:'ryukyoku',deltas:packet.pingju.fenpei?.slice()});
+      events.push({type:'ryukyoku',deltas:this.rotateScores(packet.pingju.fenpei)});
       events.push({type:'end_kyoku'});this.round=false;this.pendingReach=null;
     } else if(packet.jieju){
       events.push({type:'end_game'});this.round=false;
