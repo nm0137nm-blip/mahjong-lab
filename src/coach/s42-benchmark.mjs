@@ -100,7 +100,7 @@ export function gradeClaims(blind,claims){
   const value=['scene','facts','actions'].includes(c?.path?.[0])?claimValue(blind,c.path):undefined;
   return {path:c?.path,pass:value!==undefined&&JSON.stringify(value)===JSON.stringify(c.value)};
  });
- return {checked:matches.length,correct:matches.filter(r=>r.pass).length,complete:matches.every(r=>r.pass),matches,manualReviewRequired:true};
+ return {checked:matches.length,correct:matches.filter(r=>r.pass).length,complete:matches.length>=2&&new Set(matches.map(r=>JSON.stringify(r.path))).size===matches.length&&matches.every(r=>r.pass),matches,manualReviewRequired:true};
 }
 export const contrastSpecs=[
  {id:'dora',a:'dora-A',b:'dora-B',action1:0,action2:18},
