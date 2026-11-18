@@ -1,0 +1,48 @@
+const {chromium}=require('/tmp/probe/node_modules/playwright-core');
+const fs=require('node:fs');
+(async()=>{
+ const browser=await chromium.launch({headless:true,executablePath:fs.existsSync('/usr/bin/google-chrome')?'/usr/bin/google-chrome':'/usr/bin/chromium',args:['--no-sandbox','--disable-dev-shm-usage']});
+ try{
+  const page=await browser.newPage({viewport:{width:393,height:852}});
+  const errors=[];page.on('pageerror',e=>errors.push(String(e)));
+  await page.addInitScript(()=>{let x=2581118;Math.random=()=>{x=(Math.imul(x,1664525)+1013904223)>>>0;return x/4294967296;};});
+  await page.goto('http://127.0.0.1:8788/index.html',{waitUntil:'load'});
+  await page.locator('#mortalModelFile').setInputFiles('/tmp/lab/tests/mortal/model.onnx');
+  await page.waitForFunction(()=>MahjongLabS42Debug().ready,{timeout:105000});
+  const all={blind:[],keys:[],matches:[]};let instruction;
+  for(let g=0;g<2;g++){
+   const useMortal=g===0;const prefix=useMortal?'s42-led-01':'efficiency-led-01';
+   await page.locator('input[name="length"][value="2"]').check();
+   await page.locator('#startBtn').click();await page.evaluate(()=>MahjongLabDebug.testDwell(0));
+   let fallbacks=0,steps=0,attempts=0;
+   for(let i=0;i<4500;i++){
+    const s=await page.evaluate(()=>MahjongLabDebug.state());
+    const m=await page.evaluate(()=>MahjongLabS42Debug());
+    if(m.broken)throw Error('S42 failed: '+m.status);
+    if(s.finished)break;
+    if(await page.locator('#resultOverlay:not(.hidden)').count()){
+     const btn=page.locator('#continueBtn');if(await btn.isEnabled())await btn.click({force:true});else await page.waitForTimeout(60);
+    }else if(s.pending==='turn'||s.pending==='reaction'){
+     const acted=await page.evaluate(([use,allow])=>MahjongLabCoachAuditStep(use,allow),[useMortal,attempts>=30]);
+     if(acted){steps++;if(attempts>=30)fallbacks++;attempts=0;}else{attempts++;await page.waitForTimeout(100);}
+    }else{attempts=0;await page.waitForTimeout(60);}
+   }
+   if(!(await page.evaluate(()=>MahjongLabDebug.state())).finished)throw Error('incomplete match '+prefix);
+   await page.waitForFunction(()=>MahjongLabS42Debug().pending===0,{timeout:60000});
+   const data=await page.evaluate(p=>MahjongLabCoachAudit(p),prefix);
+   all.blind.push(...data.blind);all.keys.push(...data.keys);instruction=data.blindInstruction;
+   all.matches.push({prefix,steps,fallbacks,total:data.total,included:data.blind.length,excluded:data.excluded});
+   console.log('BENCH_MATCH='+JSON.stringify(all.matches.at(-1)));
+   await page.locator('#homeBtn').click();
+  }
+  if(errors.length)throw Error(JSON.stringify(errors));
+  const counts={turn:all.blind.filter(x=>x.phase==='turn').length,reaction:all.blind.filter(x=>x.phase==='reaction').length};
+  if(counts.turn<20||counts.reaction<5)throw Error('insufficient real model-labeled cases '+JSON.stringify(counts));
+  const model=all.keys[0].model_sha256;
+  fs.mkdirSync('/tmp/coach-bench',{recursive:true});
+  fs.writeFileSync('/tmp/coach-bench/blind.json',JSON.stringify({instruction,items:all.blind},null,2));
+  fs.writeFileSync('/tmp/coach-bench/reference.json',JSON.stringify(all.keys,null,2));
+  fs.writeFileSync('/tmp/coach-bench/manifest.json',JSON.stringify({model,counts,matches:all.matches,seed:2581118,source:'Mahjong LAB QA self-generated matches (not Tenhou)',limitations:'Two correlated matches, not representative of Phoenix table; S42-led action grouping and fallback have limits.'},null,2));
+  console.log('BENCH_COUNTS='+JSON.stringify(counts));
+ }finally{await browser.close();}
+})().catch(e=>{console.error(e);process.exit(1)});
