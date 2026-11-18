@@ -108,7 +108,7 @@ test('new bad rate never silently backfills old relative-Q records',()=>{
 });
 
 test('5% low-recommendation tests are distinct from the old relative-gap rule',()=>{
-  const vals=Array(46).fill(null);vals[0]=0;vals[1]=-0.15;vals[2]=-1.5;
+  const vals=Array(46).fill(null);vals[0]=0;vals[1]=-0.4;vals[2]=-1.5;
   const result=analyzeAction({best:0,qLegal:vals},1);
   assert(result.relativeGap<0.30);
   assert(result.recommendation<0.05);
