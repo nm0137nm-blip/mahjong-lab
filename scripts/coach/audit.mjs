@@ -1,6 +1,8 @@
 import {readFileSync,writeFileSync,mkdirSync} from 'node:fs';
 import {Script} from 'node:vm';
 import {cases} from '../../tests/coach/fixtures.mjs';
+import {strategyCases} from '../../tests/coach/strategy-fixtures.mjs';
+import {strategyInstructions} from './strategy-curriculum.mjs';
 const page=readFileSync(new URL('../../index.html',import.meta.url),'utf8');
 const source=page.match(/<script>([\s\S]*?)<\/script>/)[1];
 const boundary='})(typeof window!=="undefined"?window:globalThis);';
@@ -54,6 +56,13 @@ export function materialize(c){
   return {...c,expected,verified};
 }
 export const materialized=cases.map(materialize);
+export const strategic=strategyCases.map(c=>({...c,verified:c.id.startsWith('T07')?materialized.find(x=>x.id==='E01').verified:null})).map(c=>{
+  // B changes the indicator, so do not accidentally carry the A-case
+  // dora or visible-count results into it. Recompute with its own indicator.
+  if(c.id!=='T07B')return c;
+  const e=materialize({id:'E01',engine:{kind:'efficiency',hand:'m1245999p45s18899',discard:['m1','s1'],visible:['m2']},scene:{ドラ表示牌:['m2']},expected:{}});
+  return {...c,verified:e.verified};
+});
 // Baseline uses the actual deployed instruction text, not an abbreviated caricature.
 const buildStart=source.indexOf('function buildPhoenixPrompt(');
 const instructionsStart=source.indexOf('const instructions=[',buildStart);
@@ -63,7 +72,7 @@ const V1=new Script(source.slice(instructionsStart,instructionsEnd)+';instructio
 const V2='あなたは天鳳の鳳凰位レベルの知識・判断力を目標とする四人麻雀コーチです。まず牌姿と実ドラを確認し、打牌後に存在しない牌を根拠にしない。エンジンの数値と戦術的推論を区別する。二度受けは同じ牌を複数の面子に使わない。変化を述べるなら具体的なツモ・打牌・変化後牌姿を示す。危険度は相手別に考える。期待値を捏造しない。候補が与えられた場合は独立した推奨を必ず一つ選び、僅差なら確信度を下げる。最善手を決めた戦術的理由と別候補の不利を具体的に述べ、プレイヤーの考えに反論もする。S42不一致だけで格下げしない。回答前に自己矛盾を点検する。';
 function schema(c){return Object.fromEntries(Object.entries(c.expected).map(([k,v])=>[k,typeof v==='object'&&!Array.isArray(v)?{shanten:'number',waits:'tile[]',ukeire:'number'}:Array.isArray(v)?'array':typeof v]));}
 export function prompt(batch,variant='v2'){
-  return (variant==='v1'?V1:V2)+'\n以下は独立した麻雀問題です。牌コード m萬 p筒 s索 z1〜7東南西北白發中 0赤5。各問題を混同しない。JSON配列のみで回答。各要素は id, facts（指定フィールドに回答）, recommendation（選択肢から一つ、選択肢なしならnull）, confidence（high/medium/low）, reasoning（具体的根拠）, next_rule（応用可能な判断基準）を持つ。\n'+JSON.stringify(batch.map(c=>({id:c.id,scene:c.scene,question:c.ask,options:c.options,fact_fields:schema(c),...(variant==='v2'&&c.verified?{engine_facts:c.verified}:{})})),null,2);
+  return (variant==='v1'?V1:V2)+(variant==='v3'?'\n'+strategyInstructions():'')+'\n以下は独立した麻雀問題です。牌コード m萬 p筒 s索 z1〜7東南西北白發中 0赤5。各問題を混同しない。JSON配列のみで回答。各要素は id, facts（指定フィールドに回答）, recommendation（選択肢から一つ、選択肢なしならnull）, confidence（high/medium/low）, reasoning（具体的根拠）, next_rule（応用可能な判断基準）を持つ。\n'+JSON.stringify(batch.map(c=>({id:c.id,scene:c.scene,question:c.ask,options:c.options,fact_fields:schema(c),...(variant!=='v1'&&c.verified?{engine_facts:c.verified}:{})})),null,2);
 }
 function canonical(v){if(Array.isArray(v))return v.map(canonical).sort((a,b)=>JSON.stringify(a).localeCompare(JSON.stringify(b)));if(v&&typeof v==='object')return Object.fromEntries(Object.keys(v).sort().map(k=>[k,canonical(v[k])]));return v;}
 const equal=(a,b)=>JSON.stringify(canonical(a))===JSON.stringify(canonical(b));
@@ -83,11 +92,12 @@ export function grade(rows,selected=materialized){
 if(process.argv[2]==='generate'){
   const out=process.argv[3]||'/tmp/coach-audit';
   mkdirSync(out,{recursive:true});
-  for(const variant of ['v1','v2'])for(let i=0;i<60;i+=5)writeFileSync(out+'/'+variant+'-'+String(i/5+1).padStart(2,'0')+'.txt',prompt(materialized.slice(i,i+5),variant));
-  writeFileSync(out+'/answer-key.json',JSON.stringify(materialized,null,2));
-  console.log('Generated 24 five-question batches and private key; no LLM invoked.');
+  for(const variant of ['v1','v2','v3'])for(let i=0;i<60;i+=5)writeFileSync(out+'/'+variant+'-'+String(i/5+1).padStart(2,'0')+'.txt',prompt(materialized.slice(i,i+5),variant));
+  for(const variant of ['v1','v2','v3'])for(let i=0;i<strategic.length;i+=2)for(let j=i;j<i+2;j++)writeFileSync(out+'/'+variant+'-strategy-'+strategic[j].id+'.txt',prompt([strategic[j]],variant));
+  writeFileSync(out+'/answer-key.json',JSON.stringify([...materialized,...strategic],null,2));
+  console.log('Generated basic batches and individual paired strategic prompts; no LLM invoked.');
 }
 if(process.argv[2]==='grade'){
-  const batch=Number(process.argv[4]);const selected=Number.isInteger(batch)&&batch>=1&&batch<=12?materialized.slice((batch-1)*5,batch*5):materialized;
+  const batch=Number(process.argv[4]);const id=process.argv[4];const selected=id==='strategy'?strategic:strategic.some(c=>c.id===id)?strategic.filter(c=>c.id===id):Number.isInteger(batch)&&batch>=1&&batch<=12?materialized.slice((batch-1)*5,batch*5):materialized;
   console.log(JSON.stringify(grade(JSON.parse(readFileSync(process.argv[3],'utf8')),selected),null,2));
 }
