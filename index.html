@@ -453,7 +453,7 @@
         <label><input type="radio" name="recordMode" value="practice" checked><span><strong>練習対局</strong><small>記録しない・コーチあり</small></span></label>
         <label><input type="radio" name="recordMode" value="measure"><span><strong>計測用対局</strong><small>完走分を保存・コーチあり</small></span></label>
       </div>
-      <button class="primary big" id="startBtn" type="button">対局をはじめる <span>→</span></button><div class="mortal-setup"><div class="mortal-setup-title"><span>Mortal-S42 AIコーチ</span><span id="mortalLive" class="mortal-live">準備中</span></div><div id="mortalStatus" class="mortal-help">端末内AIの準備中です</div><button id="mortalDownloadBtn" class="mortal-download" type="button">S42モデルを取得・設定（初回43.7MB）</button><input id="mortalModelFile" type="file" class="mortal-file" accept=".onnx,application/octet-stream" aria-label="S42学習済みモデルを選択"><div class="mortal-help">S42は学習済みモデルの設定後に使用可能です。上のボタンでモデルを一度取得するか、手元のmodel.onnxを選択してください。モデルは端末内に保存され、次回以降はオフラインで推論します。対局情報は送信しません。未設定時は牌効率コーチのみ利用可能です。</div><div class="mortal-source">モデル配布元：Hugging Face xzhe121/Mortal-S42-onnx（取得後SHA-256を照合）。通信・容量の制限で取得できない場合は手動選択してください。</div></div>
+      <button class="primary big" id="startBtn" type="button">対局をはじめる <span>→</span></button><div class="mortal-setup"><div class="mortal-setup-title"><span>Mortal-S42 AIコーチ</span><span id="mortalLive" class="mortal-live">準備中</span></div><div id="mortalStatus" class="mortal-help">端末内AIの準備中です</div><button id="mortalDownloadBtn" class="mortal-download" type="button">S42モデルを取得・設定（初回43.7MB）</button><input id="mortalModelFile" type="file" class="mortal-file" accept=".onnx,application/octet-stream" aria-label="S42学習済みモデルを選択"><div class="mortal-help">S42は学習済みモデルの設定後に使用可能です。上のボタンでモデルを一度取得するか、手元のmodel.onnxを選択してください。モデルは端末内に保存され、次回以降はオフラインで推論します。対局情報は送信しません。未設定時は牌効率コーチのみ利用可能です。</div><div class="mortal-source">モデル配布元：<a href="https://huggingface.co/xzhe121/Mortal-S42-onnx/blob/main/model.onnx" target="_blank" rel="noopener noreferrer" style="color:#c4e988">Hugging Face / S42 ONNX</a>（取得後SHA-256を照合）。通信・容量の制限で自動取得できない場合は、配布ページからmodel.onnxをダウンロードし、手動選択してください。</div></div>
     </section>
     <section class="stat-card">
       <div class="section-heading"><h2>計測成績</h2><span>この端末だけに保存</span></div>
@@ -5840,7 +5840,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     const setStatus=msg=>{
       mortalStatusText=String(msg);
       $('mortalStatus').textContent=mortalStatusText;
-      $('mortalLive').textContent=/準備完了/.test(mortalStatusText)?'有効':/失敗|停止|エラー/.test(mortalStatusText)?'基礎版':'未設定';
+      $('mortalLive').textContent=mortalClient?.workerReady&&/Mortal-S42 準備完了/.test(mortalStatusText)?'有効':/失敗|停止|エラー/.test(mortalStatusText)?'基礎版':'未設定';
     };
     Promise.all([import('./src/mortal/mortal-client.mjs'),import('./src/mortal/s42-analytics.mjs')]).then(async ([{MortalClient},analytics])=>{
       s42Analytics=analytics;renderStats();
