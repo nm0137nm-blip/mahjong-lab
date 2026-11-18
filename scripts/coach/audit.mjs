@@ -113,12 +113,21 @@ export function prompt(batch,variant='v2'){
 }
 function canonical(v){if(Array.isArray(v))return v.map(canonical).sort((a,b)=>JSON.stringify(a).localeCompare(JSON.stringify(b)));if(v&&typeof v==='object')return Object.fromEntries(Object.keys(v).sort().map(k=>[k,canonical(v[k])]));return v;}
 const equal=(a,b)=>JSON.stringify(canonical(a))===JSON.stringify(canonical(b));
+/** Exact, reviewed semantic aliases from the full audit. Never ignore
+ * arbitrary suffixes, which could contain a contradictory claim. */
+export function normalizeAuditFact(id,key,value){
+ if((id==='B09'||id==='B10')&&key==='man'&&typeof value==='string'&&/^m[1-9]+$/.test(value))return value.slice(1);
+ if((id==='T11A'||id==='T11B')&&key==='direct_advantage'&&value==='候補A（4枚多い）')return '候補A';
+ if((id==='T11A'||id==='T11B')&&key==='extra_routes'&&value==='候補B：役牌＋染め手、門前リーチ・ドラ利用')return '候補B';
+ return value;
+}
+
 export function grade(rows,selected=materialized){
   if(!Array.isArray(rows))throw Error('answer must be JSON array');
   const seen=new Map();for(const r of rows){if(!r||typeof r.id!=='string'||seen.has(r.id))throw Error('missing or duplicate id');seen.set(r.id,r);}
   const results=selected.map(c=>{
     const r=seen.get(c.id);
-    const fields=Object.entries(c.expected).map(([key,expected])=>({key,pass:equal(r?.facts?.[key],expected),expected,actual:r?.facts?.[key]??null}));
+    const fields=Object.entries(c.expected).map(([key,expected])=>({key,pass:equal(normalizeAuditFact(c.id,key,r?.facts?.[key]),expected),expected,actual:r?.facts?.[key]??null}));
     const legal=c.options.length?c.options.includes(r?.recommendation):r?.recommendation===null;
     const oraclePass=c.oracle===null?null:r?.recommendation===c.oracle;
     const complete=!!r&&typeof r.reasoning==='string'&&r.reasoning.trim().length>0&&typeof r.next_rule==='string'&&r.next_rule.trim().length>0&&['high','medium','low'].includes(r.confidence);
