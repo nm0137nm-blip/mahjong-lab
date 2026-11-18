@@ -1,0 +1,47 @@
+name: Coach prompt A C paired diagnostic
+on:
+  pull_request:
+    branches: [feat/phase259-coach-evidence-link]
+    paths:
+      - scripts/coach/coach-ab-pilot.mjs
+      - scripts/coach/grade-coach-ab.mjs
+      - docs/mortal-ai/exam/coach_original_111_prompt.txt
+      - .github/workflows/coach-ab-pilot.yml
+permissions:
+  contents: read
+  actions: read
+jobs:
+  prepare:
+    if: github.head_ref == 'feat/phase259-coach-prompt-ab'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Retrieve validation cohort only, never holdout
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          run-id: 44309389655
+          pattern: scale-validation-*-*
+          path: corpus
+      - name: Prepare paired examinations and separate grading key
+        run: |
+          node --check scripts/coach/coach-ab-pilot.mjs
+          node --check scripts/coach/grade-coach-ab.mjs
+          node scripts/coach/coach-ab-pilot.mjs corpus /tmp/coach-ab
+          node --test tests/coach-tactical-evidence.test.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: coach-ab-pilot-questions
+          path: /tmp/coach-ab/questions
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        with:
+          name: coach-ab-pilot-grading-key
+          path: /tmp/coach-ab/keys
+          retention-days: 30
