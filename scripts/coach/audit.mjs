@@ -28,6 +28,24 @@ function followup(sh,seen,draw){
   rows.sort((a,b)=>a.shanten-b.shanten||b.ukeire-a.ukeire||a.discard.localeCompare(b.discard));
   return {draw,remaining_upper_bound:4-seen[draw],best_by_shanten_then_ukeire:rows.filter(x=>x.shanten===rows[0].shanten&&x.ukeire===rows[0].ukeire)};
 }
+// Counts ordered two-draw paths that lower shanten on both draws.
+// A uniform unseen pool is a deliberately simplified shape model; it
+// excludes calls, opponents, yaku, draw-position knowledge and tile danger.
+export function twoDrawProgress(hand,discard,visible=[]){
+ const tiles=expand(hand);
+ if(tiles.length!==14)throw Error('expected 14 tiles');
+ const seen=counts([...tiles,...visible]);
+ const sh=M.Shoupai.fromString(hand).dapai(discard);
+ const base=direct(sh,seen);
+ if(base.shanten<1)return null;
+ const paths=base.waits.map(draw=>{
+   const next=followup(sh,seen,draw);
+   const best=next?.best_by_shanten_then_ukeire?.[0];
+   if(!best||best.shanten!==base.shanten-1)throw Error('effective draw mismatch '+draw);
+   return {draw,firstCopies:4-seen[draw],nextShanten:best.shanten,secondCopies:best.ukeire,orderedPaths:(4-seen[draw])*best.ukeire};
+ });
+ return {discard,baseShanten:base.shanten,firstUkeire:base.ukeire,orderedPaths:paths.reduce((n,p)=>n+p.orderedPaths,0),paths};
+}
 export function materialize(c){
   let expected=structuredClone(c.expected),verified=null;
   if(c.engine?.kind==='dora'){
@@ -49,7 +67,7 @@ export function materialize(c){
       const relevant=c.id==='E01'?['m3','m6','s2','s3']:metric.waits.slice(0,3);
       return {discard:p,after:sh.toString(),...metric,followup:relevant.map(d=>followup(sh,seen,d)).filter(Boolean),実ドラ:dora};
     });
-    verified={各候補:choices,注記:'直接有効牌は向聴を下げる牌のうち残枚数上限が正のもの。followupは指定ツモ後に向聴最小・受け入れ最大となる打牌候補のみ。赤5の新規ツモは通常5として形を評価。和了率・打点・期待値は未計算。'};
+    verified={各候補:choices,...(c.id==='E01'?{二連続向聴改善:e.discard.map(p=>twoDrawProgress(e.hand,p,e.visible)),二連続向聴改善の意味:'直後の2回の自ツモで向聴を連続して下げる順序付き牌組合せ数。各ツモ後は向聴最小・受け入れ最大の打牌。未知牌を同質に扱う近似で実戦の和了率・期待値ではない。'}:{}),注記:'直接有効牌は向聴を下げる牌のうち残枚数上限が正のもの。followupは指定ツモ後に向聴最小・受け入れ最大となる打牌候補のみ。赤5の新規ツモは通常5として形を評価。和了率・打点・期待値は未計算。'};
   }
   if(c.id==='B09'||c.id==='B10'){
     const sh=M.Shoupai.fromString(c.scene.打牌前).dapai(c.scene.選択);verified={打牌後:sh.toString()};
