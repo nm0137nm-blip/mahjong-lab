@@ -18,7 +18,9 @@ async function processMessage(data){
   if(data.type==='init'){
     if(!(data.model instanceof ArrayBuffer)||data.model.byteLength<40_000_000||data.model.byteLength>MAX_BYTES)
       throw Error('モデルファイルのサイズが不正です');
-    const opt={executionProviders:['wasm'],graphOptimizationLevel:'all',enableCpuMemArena:true};
+    // Favor low-memory session creation: WebKit could create the first session but
+    // failed on a page reload with an ORT WASM out-of-bounds allocation.
+    const opt={executionProviders:['wasm'],graphOptimizationLevel:'basic',enableCpuMemArena:false,enableMemPattern:false};
     if(session)await session.release();
     session=null;
     session=await ort.InferenceSession.create(new Uint8Array(data.model),opt);
