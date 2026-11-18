@@ -77,3 +77,49 @@ export function gradeBlind(keys,answers){
  return {all:summary(rows),turn:summary(rows.filter(r=>r.phase==='turn')),reaction:summary(rows.filter(r=>r.phase==='reaction')),coverage:valid.length/rows.length,comparable:valid.length===rows.length,rows};
 }
 export const blindInstruction='各局面についてMortalの回答を見ず、合法actionsのaction番号から最善手を一つ選び、別の有力な合法候補の番号も選ぶ。phase=turnは打牌・立直・槓・和了等の段階を区別。立直の打牌や同一行動ID内の赤牌差等は別途説明。JSON配列のみ: id, action, alternative, confidence (high/medium/low), reason（具体的な牌姿・場況と代償）, prediction（判断を変える具体的条件）。事実と仮説を分け、未知の確率を捏造しない。';
+
+// Stage 2 is opened only after independently answering Stage 1.
+// Exact fact checks are necessary, not a measure of quality of the prose.
+export function revealCase(blind,key,answer){
+ if(blind.id!==key.id||answer?.id!==blind.id||!gradeBlind([key],[answer]).comparable)throw Error('lock a valid blind answer first');
+ return {id:blind.id,blind,independentAnswer:answer,reference:{action:key.best,legalQ:key.q.flatMap((q,action)=>finite(q)?[{action,q}]:[])}};
+}
+const claimValue=(root,path)=>{
+ if(!Array.isArray(path)||!path.length||path.length>12)return undefined;
+ let x=root;
+ for(const p of path){
+  if((typeof p!=='string'&&typeof p!=='number')||x==null||typeof x!=='object'||!Object.hasOwn(x,p))return undefined;
+  x=x[p];
+ }
+ return x;
+};
+export function gradeClaims(blind,claims){
+ if(!Array.isArray(claims)||!claims.length)return {checked:0,correct:0,complete:false};
+ const matches=claims.map(c=>{
+  // Paths begin at the visible scene or deterministic evidence, never Q.
+  const value=['scene','facts','actions'].includes(c?.path?.[0])?claimValue(blind,c.path):undefined;
+  return {path:c?.path,pass:value!==undefined&&JSON.stringify(value)===JSON.stringify(c.value)};
+ });
+ return {checked:matches.length,correct:matches.filter(r=>r.pass).length,complete:matches.every(r=>r.pass),matches,manualReviewRequired:true};
+}
+export const contrastSpecs=[
+ {id:'dora',a:'dora-A',b:'dora-B',action1:0,action2:18},
+ {id:'rank',a:'rank-A',b:'rank-B',action1:37,action2:32}
+];
+export function gradeContrast(keys,answers,specs=contrastSpecs){
+ if(!Array.isArray(keys)||!Array.isArray(answers))throw Error('bad contrast data');
+ const km=new Map(keys.map(k=>[k.id,k])),am=new Map(answers.map(a=>[a.id,a]));
+ if(km.size!==keys.length||am.size!==answers.length||answers.some(a=>!specs.some(s=>s.id===a.id)))throw Error('duplicate or unknown contrast ID');
+ const rows=specs.map(s=>{
+  const a=km.get(s.a),b=km.get(s.b);
+  if([a,b].some(k=>k?.model_sha256!==MODEL_SHA256||![s.action1,s.action2].every(i=>finite(k?.q?.[i]))))throw Error('missing matched Q pair');
+  const marginA=a.q[s.action1]-a.q[s.action2],marginB=b.q[s.action1]-b.q[s.action2],delta=marginB-marginA;
+  // The tolerance only suppresses floating-point noise, not practical equivalence.
+  const observed=delta>1e-6?'increase':delta< -1e-6?'decrease':'unchanged';
+  const answer=am.get(s.id);
+  const valid=['increase','decrease','unchanged'].includes(answer?.direction)&&typeof answer?.reason==='string'&&answer.reason.trim().length>0;
+  return {id:s.id,marginA,marginB,delta,observed,predicted:answer?.direction??null,valid,pass:valid&&answer.direction===observed,manualReviewRequired:true};
+ });
+ return {n:rows.length,valid:rows.filter(r=>r.valid).length,correct:rows.filter(r=>r.pass).length,rows};
+}
+export const revealInstruction='独立回答を変更せず、Mortalの上位2候補とあなたの選択を比較し、最も有力な理由仮説を1つ、対抗仮説を1つ示す。具体的な牌姿、巡目、点差、他家別の事実を挙げ、各仮説が説明できない点も述べる。根拠の計算事実を少なくとも2件、claims=[{path:["facts",...],value:対応する事実値}]で示す。Qを内部の理由・点数・確率とみなさない。あなたが異なる手を推すならその条件と反証も述べる。最後に人間が次の局面で使える判断基準を一つに絞る。';
