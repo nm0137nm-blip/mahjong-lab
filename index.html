@@ -6198,6 +6198,15 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     lastReference:referenceCurrent
   });
   window.MahjongLabS42Debug=()=>({status:mortalStatusText,ready:!!mortalClient?.workerReady,broken:!!mortalClient?.broken,persisted:mortalClient?.modelPersisted??null,pending:mortalClient?.pending?.size??0,decision:mortalClient?.decision??0,latest:mortalClient?.current?.label||null,afterDiscard:lastFeedback?.mortalOpinion?.label||null,modelImported:!!mortalClient?.worker});
+  // Development QA only: generate benchmark files from a deliberately debug-played match.
+  // Never upload or include the game outcome, wall or concealed opponent hands.
+  window.MahjongLabCoachAudit=async(prefix)=>{
+    if(!debugUsed||!gameEnded||!mortalClient?.workerReady||mortalClient.pending.size)throw Error('QA match not finished or reference inference pending');
+    if(typeof prefix!=='string'||!/^[a-zA-Z0-9_-]{1,80}$/.test(prefix))throw Error('invalid dataset prefix');
+    const {collect,blindInstruction}=await import('./src/coach/s42-benchmark.mjs?v=258');
+    const data=collect(decisionLog,M,prefix);
+    return {...data,blindInstruction};
+  };
   window.MahjongLabDebug = {testScenario,testKanFixture,testKanObservation:()=>game?null:mortalClient?.current,parseMeld,visibleRiver,calledDiscardNote,state:()=>({started:!!game,phase:game?game._status:null,pending:pending?.type||null,round:game?.model?.jushu,turn:game?.model?.lunban,own:ownSeat(),decisions:decisionLog.length,finished:gameEnded}),choose:p=>chooseDiscard(p),answer:p=>answer(p),testStep:(randomize=false)=>{debugUsed=true;if(pending?.type==='turn'){if(pending.win&&randomize)return answer({hule:'-'});if(randomize&&pending.gang.length&&Math.random()<0.10)return answer({gang:pending.gang[0]});const choices=pending.options;const p=randomize?choices[Math.floor(Math.random()*choices.length)]:choices[0];if(randomize&&game.allow_lizhi(p)&&Math.random()<0.25)riichiMode=true;chooseDiscard(p);}else if(pending?.type==='reaction'){if(pending.win&&randomize)return answer({hule:'-'});const melds=[...pending.gang,...pending.peng,...pending.chi];if(randomize&&melds.length&&Math.random()<0.55)return answer({fulou:melds[0]});answer({});}},testDwell:ms=>{debugUsed=true;if(game)game.dwell=ms;},testContinue:()=>{debugUsed=true;if(game&&!gameEnded){readyToNext=false;game.start();}},testPaipu:()=>game?._paipu,inspect:()=>({latestDiscard,lastFeedback,hasReaction:!$('callTray').classList.contains('hidden'),speed:game?._dwell})};
 })();
 
