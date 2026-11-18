@@ -58,6 +58,31 @@ try{
   assert.ok(info.lastFeedback.discard,'a player decision is logged');
   assert.equal(await page.locator('#resultOverlay').isVisible(),false);
 
+  // A real completed human choice, not a synthetic DOM-only fixture.
+  assert.equal(info.lastFeedback.scene.snapshotVersion,2);
+  assert.ok(info.lastFeedback.scene.drawn);
+  assert.equal(info.lastFeedback.scene.rivers.length,4);
+  assert.ok(info.lastFeedback.legalChoices.discards.length);
+  const detail=page.locator('#coachDetailBtn');
+  await detail.click({timeout:30000});
+  await page.getByRole('button',{name:'AI解説',exact:true}).click();
+  const prompt=page.locator('#phoenixPrompt');
+  assert.ok(await prompt.isVisible());
+  const firstPrompt=await prompt.inputValue();
+  assert.match(firstPrompt,/鳳凰卓/);
+  const publicScene=JSON.parse(firstPrompt.split('【判断時点の記録】\n')[1]);
+  assert.equal(publicScene.ツモ牌,info.lastFeedback.scene.drawn);
+  assert.equal(publicScene.手牌_選択前.length,info.lastFeedback.scene.hand.length);
+  await page.locator('#phoenixQuestion').fill('この字牌の切り順は？');
+  assert.match(await prompt.inputValue(),/この字牌の切り順は？/);
+  // Clipboard can be denied in WebKit; either confirmed copy or explicit
+  // selectable-text fallback must be provided, never claim a false success.
+  await page.getByRole('button',{name:'解説依頼をコピー'}).click();
+  await page.waitForFunction(()=>document.querySelector('#coachModalBody [role=status]')?.textContent?.includes('コピー'));
+  assert.match(await page.locator('#coachModalBody [role=status]').innerText(),/コピーしました|自動コピーできませんでした/);
+  assert.equal(await page.getByRole('link',{name:'ChatGPTを開く'}).getAttribute('href'),'https://chatgpt.com/');
+  await page.locator('#closeCoachBtn').click();
+  console.log('[pass] Phoenix coach actual choice, user question, copy or explicit fallback');
   if(process.env.S42_MODEL_TEST==='1'){
     await page.waitForFunction(()=>{
       const f=window.MahjongLabDebug.inspect()?.lastFeedback;
@@ -78,6 +103,12 @@ try{
       await page.getByRole('button',{name:'S42の定量評価'}).last().click();
       assert.match(await page.locator('#coachModalBody').innerText(),/推奨度/);
       assert.match(await page.locator('#coachModalBody').innerText(),/Rating寄与（2乗前）/);
+      await page.getByRole('button',{name:'AI解説',exact:true}).click();
+      const text=await page.locator('#phoenixPrompt').inputValue();
+      const data=JSON.parse(text.split('【判断時点の記録】\n')[1]);
+      assert.equal(data.S42.選択Q,review.chosenQ);
+      assert.equal(data.S42.合法Q.length,review.legal);
+      console.log('[pass] Phoenix prompt includes real S42 full Q array');
       await page.locator('#closeCoachBtn').click();
     }
     if(process.env.S42_LOCAL_MODEL){
