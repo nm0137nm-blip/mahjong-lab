@@ -7,6 +7,9 @@ import initEncoder from '../../assets/mortal/encoder.js';
 
 const EXPECTED_HASH='30381bf21389e2d25d3edf48fed11bf772336ef3daeee67d1bdae7fb9dd30cb4';
 const EXPECTED_SIZE=43673425;
+// User-initiated, one-time download from the published ONNX model repository.
+// The SHA-256 check below is mandatory, even if the hosting URL changes.
+export const MODEL_URL='https://huggingface.co/xzhe121/Mortal-S42-onnx/resolve/main/model.onnx?download=true';
 const STORAGE='mahjong-lab-s42-local-weights';
 const ACTIONS=['1m','2m','3m','4m','5m','6m','7m','8m','9m','1p','2p','3p','4p','5p','6p','7p','8p','9p',
  '1s','2s','3s','4s','5s','6s','7s','8s','9s','E','S','W','N','P','F','C','5mr','5pr','5sr'];
@@ -118,6 +121,34 @@ export class MortalClient {
       await this.initWorker(bytes);
     }catch(e){this.status('S42モデルの読込失敗: '+String(e.message||e));throw e;}
   }
+  async downloadModel(){
+    this.status('S42モデルを取得中（約43.7MB）…');
+    try{
+      const response=await fetch(MODEL_URL,{cache:'no-store'});
+      if(!response.ok)throw Error('HTTP '+response.status);
+      const total=Number(response.headers.get('content-length'))||EXPECTED_SIZE;
+      if(total>50_000_000)throw Error('配布ファイルが大きすぎます');
+      let bytes;
+      if(response.body?.getReader){
+        const reader=response.body.getReader(),chunks=[];
+        let received=0;
+        while(true){
+          const {done,value}=await reader.read();
+          if(done)break;
+          received+=value.byteLength;
+          if(received>50_000_000)throw Error('配布ファイルが大きすぎます');
+          chunks.push(value);
+          this.status('S42モデルを取得中 '+Math.min(100,Math.floor(received/total*100))+'%（43.7MB）');
+        }
+        bytes=new Blob(chunks,{type:'application/octet-stream'});
+      }else bytes=await response.blob();
+      const file=new File([bytes],'model.onnx',{type:'application/octet-stream'});
+      await this.importModel(file);
+    }catch(e){
+      this.status('自動取得に失敗しました。モデルファイルを手動選択してください：'+String(e.message||e));
+      throw e;
+    }
+  }
   async restoreModel(){
     try{
       const file=await getStored();
@@ -130,8 +161,16 @@ export class MortalClient {
     this.workerReady=false;
     this.worker=new Worker(new URL('./mortal-worker.mjs',import.meta.url),{type:'module'});
     this.worker.onmessage=({data})=>{
-      if(data?.type==='ready'){this.workerReady=true;this.status('Mortal-S42 準備完了（端末内推論）');return;}
-      if(data?.type==='error'){this.status('S42推論エラー。通常コーチを継続します');this.pending.delete(data.id);return;}
+      if(data?.type==='ready'){
+        this.workerReady=true;this.status('Mortal-S42 準備完了（端末内推論）');
+        // A model loaded mid-turn must evaluate the CURRENT legal actions too.
+        this.evaluate();
+        return;
+      }
+      if(data?.type==='error'){
+        this.status('S42推論エラー：'+String(data.reason||'内部エラー').slice(0,120));
+        this.pending.delete(data.id);return;
+      }
       if(data?.type==='result'){
         const info=this.pending.get(data.id);this.pending.delete(data.id);
         if(!info)return;
@@ -143,7 +182,7 @@ export class MortalClient {
         this.current=opinion;this.onOpinion(opinion);
       }
     };
-    this.worker.onerror=()=>this.status('S42推論ワーカーの起動に失敗');
+    this.worker.onerror=e=>{this.workerReady=false;this.status('S42推論ワーカーの起動に失敗');console.warn('S42 worker',e);};
     const id=++this.serial;
     this.worker.postMessage({type:'init',id,model:bytes},[bytes]);
     this.status('Mortal-S42 モデルを読み込み中...');
