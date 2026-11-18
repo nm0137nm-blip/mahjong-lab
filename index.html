@@ -5358,7 +5358,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
   function renderInlineCoach() {
     const flash=$('coachFlash'),content=$('coachFlashMain');content.replaceChildren();
     if(!lastFeedback){flash.classList.add('hidden');return;}
-    const x=lastFeedback,op=x.mortalOpinion;
+    const x=lastFeedback,op=x.s42Review?x.mortalOpinion:null;
     flash.classList.remove('hidden');
     const row=el('div','inline-choice-row');
     const tilePair=(label,tile,kind)=>{
@@ -5380,7 +5380,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
       row.append(ai);
       if(x.s42Review)row.append(el('span','inline-status '+(x.s42Review.agreement?'agree':'disagree'),x.s42Review.agreement?'一致':'別の選択'));
     }else{
-      row.append(el('span','inline-label',mortalClient?.workerReady?'S42解析中／比較対象外':'S42未設定'));
+      row.append(el('span','inline-label',mortalClient?.workerReady?'S42比較対象外／解析中':'S42未設定'));
     }
     content.append(row);
     const note=el('div','inline-metric');
@@ -5510,7 +5510,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     const rows=x.candidates||lastCandidateInfo||[];
     const sameTile=(v,p)=>v&&p&&v.p.slice(0,2)===p.slice(0,2);
     const own=rows.find(v=>v.p===x.discard)||rows.find(v=>sameTile(v,x.discard));
-    const ai=x.mortalOpinion?.tile?rows.find(v=>sameTile(v,x.mortalOpinion.tile)):null;
+    const ai=x.s42Review&&x.mortalOpinion?.tile?rows.find(v=>sameTile(v,x.mortalOpinion.tile)):null;
     const ranked=rows.slice().sort((a,b)=>a.shanten-b.shanten||b.ukeire-a.ukeire);
     const viewed=[],seen=new Set();
     function put(v,label){
@@ -5540,7 +5540,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
   }
   function renderS42QDetails(x,target){
     target.append(el('h3','','S42の定量判断・Q値比較'));
-    const op=x.mortalOpinion,review=x.s42Review;
+    const op=x.s42Review?x.mortalOpinion:null,review=x.s42Review;
     if(!op||!review){
       target.append(el('p','s42-analysis-note','この打牌の比較可能なS42評価が取得できていません。モデル未設定・エラー・モデルが別の行動段階を評価した等が考えられます。取得していない数字は補完しません。'));
       return;
