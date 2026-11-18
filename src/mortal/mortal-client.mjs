@@ -50,12 +50,17 @@ async function getStored(){
     req.onsuccess=()=>resolve(req.result||null);req.onerror=()=>reject(req.error);
   });}finally{db.close();}
 }
-async function putStored(file){
+async function putStored(bytes){
+  // A 43MB File is not structured-clonable to IndexedDB in some WebKit builds.
+  // Save the verified raw ArrayBuffer instead. This copy is strictly local.
+  if(!(bytes instanceof ArrayBuffer)||bytes.byteLength!==EXPECTED_SIZE)throw Error('保存するモデルのサイズが不正です');
   const db=await openDB();
   try{await new Promise((resolve,reject)=>{
     const tx=db.transaction('files','readwrite');
-    tx.objectStore('files').put(file,'s42');
-    tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error);tx.onabort=()=>reject(tx.error);
+    tx.objectStore('files').put({version:2,data:bytes},'s42');
+    tx.oncomplete=()=>resolve();
+    tx.onerror=()=>reject(tx.error||Error('S42モデルの端末保存エラー'));
+    tx.onabort=()=>reject(tx.error||Error('S42モデルの端末保存が中断されました'));
   });}finally{db.close();}
 }
 export class MortalClient {
@@ -115,11 +120,12 @@ export class MortalClient {
     }else this._feed(packet);
   }
   async verifyFile(file){
-    if(!file||file.size!==EXPECTED_SIZE)throw Error('正しいMortal-S42モデルを選択してください（43.7MB）');
+    const size=file instanceof ArrayBuffer?file.byteLength:file?.size;
+    if(size!==EXPECTED_SIZE)throw Error('正しいMortal-S42モデルを選択してください（43.7MB）');
     // Localhost is a secure context in browser integration tests as well.
     if(typeof isSecureContext!=='undefined'&&!isSecureContext)
       throw Error('モデル検証にはHTTPSが必要です');
-    const bytes=await file.arrayBuffer();
+    const bytes=file instanceof ArrayBuffer?file:await file.arrayBuffer();
     let hex;
     // WebKit has been observed to reject a large WebCrypto digest with a
     // null reason; do not mistake that runtime error for a corrupt model.
@@ -142,7 +148,7 @@ export class MortalClient {
       // IndexedDB may reject large files under Safari private/storage quotas.
       // Being unable to persist must not prevent verified in-session inference.
       let saved=true;
-      try{await putStored(file);}
+      try{await putStored(bytes);}
       catch(e){saved=false;console.warn('S42モデルの端末保存をスキップ:',errorText(e));}
       this.modelPersisted=saved;
       this.initWorker(bytes);
@@ -190,7 +196,14 @@ export class MortalClient {
   async restoreModel(){
     try{
       const file=await getStored();
-      if(file){this.status('保存済みモデルを再確認中...');const bytes=await this.verifyFile(file);await this.initWorker(bytes);return true;}
+      if(file){
+        this.status('保存済みモデルを再確認中...');
+        const payload=file?.version===2?file.data:file;
+        const bytes=await this.verifyFile(payload);
+        this.modelPersisted=true;
+        this.initWorker(bytes);
+        return true;
+      }
       this.status('S42未設定：モデルファイルを読み込んでください');return false;
     }catch(e){this.status('保存モデルの再読込失敗：'+errorText(e)+'。モデルを再選択してください');return false;}
   }
