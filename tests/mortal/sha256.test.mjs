@@ -8,7 +8,7 @@ const expected=bytes=>createHash('sha256').update(bytes).digest('hex');
 test('FIPS 180-4 official SHA-256 vectors (empty, abc)',()=>{
   assert.equal(new SHA256().hex(),'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855');
   const abc=new TextEncoder().encode('abc');
-  assert.equal(new SHA256().update(abc).hex(),'ba7816bf8f01cfea414140de5dae2223b00361f20015ad');
+  assert.equal(new SHA256().update(abc).hex(),'ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad');
 });
 test('incremental SHA-256 matches Node crypto on all padding boundaries',()=>{
   for(const size of [1,3,55,56,63,64,65,119,120,127,128,129,1023,1024,5000,65537]){
