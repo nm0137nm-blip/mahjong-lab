@@ -1,5 +1,5 @@
-// Mahjong LAB PWA — v2.5.4: real rivers and kan choice reviews; official Mortal metrics unchanged.
-const CACHE='mahjong-lab-iphone-v254';
+// Mahjong LAB PWA — v2.5.5: Phoenix-level coaching prompt and full decision review.
+const CACHE='mahjong-lab-iphone-v255';
 const SHELL=['./','./index.html'];
 const RESOURCES=[
  './src/mortal/mjai-bridge.mjs',
