@@ -10,6 +10,18 @@ const fs=require('node:fs');
   await page.locator('#mortalModelFile').setInputFiles('/tmp/lab/tests/mortal/model.onnx');
   await page.waitForFunction(()=>MahjongLabS42Debug().ready,{timeout:105000});
   const all={blind:[],keys:[],matches:[]};let instruction;
+  const contrasts={items:[],keys:[],pairs:[
+    {id:'dora',a:'dora-A',b:'dora-B',action1:0,action2:18},
+    {id:'rank',a:'rank-A',b:'rank-B',action1:37,action2:32}
+  ]};
+  for(const id of ['dora-A','dora-B','rank-A','rank-B']){
+   const decision=await page.evaluate(id=>MahjongLabCoachContrastStart(id),id);
+   if(!decision)throw Error('fixture has no S42 decision '+id);
+   await page.waitForFunction(()=>MahjongLabS42Debug().pending===0,{timeout:30000});
+   const pair=await page.evaluate(()=>MahjongLabCoachContrastRead());
+   if(!pair.blind||!pair.key)throw Error('fixture excluded '+id+' '+pair.excluded);
+   contrasts.items.push(pair.blind);contrasts.keys.push(pair.key);
+  }
   for(let g=0;g<2;g++){
    const useMortal=g===0;const prefix=useMortal?'s42-led-01':'efficiency-led-01';
    await page.locator('input[name="length"][value="2"]').check();
@@ -43,6 +55,8 @@ const fs=require('node:fs');
   fs.writeFileSync('/tmp/coach-bench/blind.json',JSON.stringify({instruction,items:all.blind},null,2));
   fs.writeFileSync('/tmp/coach-bench/reference.json',JSON.stringify(all.keys,null,2));
   fs.writeFileSync('/tmp/coach-bench/manifest.json',JSON.stringify({model,counts,matches:all.matches,seed:2581118,source:'Mahjong LAB QA self-generated matches (not Tenhou)',limitations:'Two correlated matches, not representative of Phoenix table; S42-led action grouping and fallback have limits.'},null,2));
-  console.log('BENCH_COUNTS='+JSON.stringify(counts));
+  fs.writeFileSync('/tmp/coach-bench/contrast-blind.json',JSON.stringify({instruction:'2つの局面を比較する。AからBへの変更で action1 と action2 のS42の相対優位（Q(action1)-Q(action2)）が増える・減る・変わらないを予想する。JSON配列 id,direction(increase/decrease/unchanged),reason。Qは未提示。',items:contrasts.items,pairs:contrasts.pairs},null,2));
+  fs.writeFileSync('/tmp/coach-bench/contrast-reference.json',JSON.stringify(contrasts.keys,null,2));
+  console.log('BENCH_COUNTS='+JSON.stringify({...counts,contrast:contrasts.items.length}));
  }finally{await browser.close();}
 })().catch(e=>{console.error(e);process.exit(1)});
