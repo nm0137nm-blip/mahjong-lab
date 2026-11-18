@@ -1,0 +1,68 @@
+name: Coach learning corpus - 12 matched games
+on:
+  pull_request:
+    branches: [feat/phase258-coach-evidence]
+    paths:
+      - .github/workflows/coach-learning-corpus.yml
+      - tests/mortal/run-coach-benchmark.cjs
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  benchmark:
+    if: github.event_name != 'pull_request' || github.head_ref == 'feat/phase259-auto-learning'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        include:
+          - cohort: train
+            seed: 2591101
+          - cohort: validation
+            seed: 2591102
+          - cohort: holdout
+            seed: 2591103
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          path: lab
+      - name: Validate benchmark logic
+        run: node --test lab/tests/coach-s42-benchmark.test.mjs lab/tests/coach-shape-evidence.test.mjs lab/tests/coach-runtime.test.mjs
+      - name: Fetch verified public checkpoint
+        run: |
+          set -euo pipefail
+          mv lab /tmp/lab
+          curl --fail --location --retry 2 --silent --show-error --max-time 160 'https://huggingface.co/xzhe121/Mortal-S42-onnx/resolve/main/model.onnx' -o /tmp/lab/tests/mortal/model.onnx
+          echo '30381bf21389e2d25d3edf48fed11bf772336ef3daeee67d1bdae7fb9dd30cb4  /tmp/lab/tests/mortal/model.onnx' | sha256sum --check
+          mkdir -p /tmp/probe && cd /tmp/probe
+          npm init -y >/dev/null
+          npm install --ignore-scripts --no-audit --no-fund playwright-core@1.57.0 >/dev/null
+      - name: Generate four debug matches in each disjoint cohort
+        env:
+          COACH_MATCH_COUNT: "4"
+          COACH_COHORT: ${{ matrix.cohort }}
+          COACH_SEED: ${{ matrix.seed }}
+        run: |
+          set -euo pipefail
+          (cd /tmp/lab && python3 -m http.server 8788 --bind 127.0.0.1 >/tmp/http-log 2>&1) &
+          sleep 2
+          node /tmp/lab/tests/mortal/run-coach-benchmark.cjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: coach-${{ matrix.cohort }}-questions
+          path: |
+            /tmp/coach-bench/blind.json
+            /tmp/coach-bench/contrast-blind.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: coach-${{ matrix.cohort }}-reference
+          path: |
+            /tmp/coach-bench/reference.json
+            /tmp/coach-bench/contrast-reference.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: coach-${{ matrix.cohort }}-manifest
+          path: /tmp/coach-bench/manifest.json
