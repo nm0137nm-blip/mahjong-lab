@@ -5743,14 +5743,14 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     question.placeholder='例：字牌の切り順、押し引き、鳴くべきだったか';label.htmlFor=question.id;
     const preview=el('textarea','phoenix-prompt');preview.id='phoenixPrompt';preview.readOnly=true;preview.rows=5;
     preview.setAttribute('aria-label','ChatGPTに渡す解説依頼');
-    const status=el('p','s42-analysis-note');status.setAttribute('role','status');
+    const status=el('p','s42-analysis-note');status.id='phoenixCopyStatus';status.setAttribute('role','status');
     // Capture the exact request actually copied; never associate a later
     // question or newly arrived Q values with an older returned answer.
     let copiedPrompt='',selectedPrompt='';
     const resultLabel=el('label','phoenix-label','生成した解説（貼り付け・端末保存）');
     const answer=el('textarea','phoenix-input');answer.id='phoenixAnswer';answer.rows=6;answer.maxLength=30000;
     resultLabel.htmlFor=answer.id;answer.placeholder='ショートカットで生成した結果、またはChatGPTの回答を貼り付け';
-    const saveStatus=el('p','s42-analysis-note');saveStatus.setAttribute('role','status');
+    const saveStatus=el('p','s42-analysis-note');saveStatus.id='phoenixSaveStatus';saveStatus.setAttribute('role','status');
     const save=el('button','secondary','この解説を端末に保存');save.type='button';
     const del=el('button','secondary','この保存済み解説を削除');del.type='button';
     const shortcut=el('a','phoenix-open','ショートカットでAI解説を生成');
@@ -5782,11 +5782,11 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     });
     const copy=el('button','primary','解説依頼をコピー');copy.type='button';
     copy.addEventListener('click',async()=>{
-      refresh();
+      refresh();const request=preview.value;
       try{
         if(!navigator.clipboard?.writeText)throw Error('clipboard unavailable');
-        await navigator.clipboard.writeText(preview.value);
-        copiedPrompt=preview.value;shortcut.setAttribute('aria-disabled','false');status.textContent='コピーしました。ショートカットで生成するか、ChatGPTを開いて貼り付けてください。';
+        await navigator.clipboard.writeText(request);
+        copiedPrompt=request===preview.value?request:'';shortcut.setAttribute('aria-disabled',String(!copiedPrompt));status.textContent='コピーしました。ショートカットで生成するか、ChatGPTを開いて貼り付けてください。';
       }catch(e){
         copiedPrompt='';shortcut.setAttribute('aria-disabled','true');preview.focus();preview.select();preview.setSelectionRange(0,preview.value.length);
         status.textContent='自動コピーできませんでした。選択された文章を長押ししてコピーしてください。';
@@ -5801,6 +5801,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
       '設定 → Apple IntelligenceとSiri → ChatGPT で、すでに契約しているChatGPTアカウントにサインイン。新規契約・アップグレード・クレジット購入は不要です。',
       'ショートカットアプリで新規ショートカットを作成し、名前を「麻雀LAB AI解説」にします。',
       '「モデルを使用」アクションを追加し、モデルを「機能拡張モデル（ChatGPT）」に設定。プロンプトには変数「ショートカットの入力」を挿入します。選べない場合は通常のコピペ方式を利用してください。',
+      '安全のため「モデルを使用」の前に、ショートカットの入力が「あなたは天鳳の鳳凰位レベル」で始まる場合だけ続行する条件を設定してください。違うテキストなら停止します。',
       '続けて「クリップボードにコピー」を追加し、入力をモデルの応答に設定。さらに「結果を表示」または「コンテンツを表示」を追加し、同じモデルの応答を指定します。',
       '麻雀LABに戻り、依頼をコピー → ショートカットでAI解説を生成 → 生成結果を確認。麻雀LABに戻って解説欄へ貼り付けて保存できます。'
     ])steps.append(el('li','',t));
