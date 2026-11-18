@@ -1,0 +1,41 @@
+name: Mahjong LAB phase 2.5.1 validation
+on:
+  push:
+    branches:
+      - fix/phase-2-5-feedback-20261118
+  pull_request:
+    branches:
+      - main
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --test tests/*.test.mjs
+      - run: |
+          node --check src/mortal/mortal-client.mjs
+          node --check src/mortal/mortal-worker.mjs
+          node --check src/mortal/s42-analytics.mjs
+          node --check src/mortal/mjai-bridge.mjs
+          node --check service-worker.js
+  mobile-webkit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-save --no-package-lock playwright@1.56.1
+      - run: npx playwright install --with-deps webkit
+      - name: Real-model browser smoke (mobile WebKit)
+        run: |
+          python3 -m http.server 8765 > /tmp/mahjong-lab-server.log 2>&1 &
+          for i in $(seq 1 20); do
+            curl -fsS http://127.0.0.1:8765/ >/dev/null && break
+            sleep 1
+          done
+          BROWSER=webkit S42_MODEL_TEST=1 node tests/mobile-smoke.mjs
