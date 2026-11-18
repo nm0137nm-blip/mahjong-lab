@@ -5092,7 +5092,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     let deferredRiichi=false;
     for(const p of raw) {
       if (/[+\-=]$/.test(p)) {
-        if(p.includes('*')) deferredRiichi=true;
+        if(p.includes('*')) deferredRiichi=!showCalled;
         if(showCalled)visible.push({p,riichi:p.includes('*'),carried:false,calledAway:true});
         continue;
       }
