@@ -49,7 +49,7 @@ test('chi, pon and daiminkan map to Mortal action IDs',()=>{
 test('Q analysis never invents illegal actions and correctly compares reach vs no reach',()=>{
   const q=Array(46).fill(null);q[37]=1.2;q[45]=.9;q[8]=.8;
   const op={qLegal:q,best:37};
-  assert.equal(analyzeAction(op,37)?.index,100);
+  assert.equal(analyzeAction(op,37)?.ratingContribution,1);
   assert.equal(analyzeAction(op,45)?.rank,2);
   assert.equal(analyzeAction(op,43),null);
   assert.equal(analyzeDecision(op,'m7'),null); // m7 is not legal in this sample
@@ -57,6 +57,8 @@ test('Q analysis never invents illegal actions and correctly compares reach vs n
   const judged=analyzeAction(op,45);
   const ag=aggregateDecisions([{type:'call',s42Review:judged},{riichiAvailable:true,s42Review:judged}]);
   assert.equal(ag.count,2);
+  assert.equal(ag.ratingCount,2);
+  assert.ok(Number.isFinite(ag.rating));
   assert.equal(ag.callCount,1);
   assert.equal(ag.riichiCount,1);
 });

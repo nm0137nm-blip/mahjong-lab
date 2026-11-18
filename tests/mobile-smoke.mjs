@@ -57,6 +57,8 @@ try{
     const review=await page.evaluate(()=>window.MahjongLabDebug.inspect().lastFeedback.s42Review);
     assert.ok(Number.isFinite(review?.chosenQ));
     assert.ok(review.legal>=2);
+    assert.ok(Number.isFinite(review.ratingContribution)&&review.ratingContribution>=0&&review.ratingContribution<=1,
+      'real Mortal reviewer relative-Q rating contribution is available');
     assert.ok(Number.isFinite(review?.recommendation)&&review.recommendation>=0&&review.recommendation<=1,
       'Mortal softmax recommendation is available from real model');
     console.log('[S42] first chosen action Q=',review.chosenQ,'rank=',review.rank,
@@ -66,6 +68,7 @@ try{
       await details.click();
       await page.getByRole('button',{name:'S42の定量評価'}).last().click();
       assert.match(await page.locator('#coachModalBody').innerText(),/推奨度/);
+      assert.match(await page.locator('#coachModalBody').innerText(),/Rating寄与（2乗前）/);
       await page.locator('#closeCoachBtn').click();
     }
     if(process.env.S42_LOCAL_MODEL){

@@ -1,5 +1,5 @@
-// Mahjong LAB PWA — v2.5.2: Safari S42 verified offline model fully local gameplay; S42 model saved only in device IndexedDB.
-const CACHE='mahjong-lab-iphone-v252';
+// Mahjong LAB PWA — v2.5.3: official-style Mortal Rating; legacy in-house index stays separate.
+const CACHE='mahjong-lab-iphone-v253';
 const SHELL=['./','./index.html'];
 const RESOURCES=[
  './src/mortal/mjai-bridge.mjs',

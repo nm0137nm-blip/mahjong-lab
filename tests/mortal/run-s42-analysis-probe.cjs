@@ -23,7 +23,7 @@ const {chromium}=require('/tmp/probe/node_modules/playwright-core');
         if(!exampleChecked && plays>2){
           await page.waitForTimeout(300);
           const x=await page.evaluate(()=>MahjongLabDebug.inspect().lastFeedback);
-          if(x?.s42Review?.index!=null){
+          if(x?.s42Review?.ratingContribution!=null){
             if(x.mortalOpinion?.qLegal?.length!==46)throw Error('S42 action-values missing');
             if(!x.candidates?.length||!x.scene?.rivers||x.scene.rivers.length!==4)throw Error('Missing public-only replay snapshot');
             if(x.scene.hand.length>14)throw Error('Unreasonable own-hand data');
@@ -35,7 +35,7 @@ const {chromium}=require('/tmp/probe/node_modules/playwright-core');
             const qbutton=body.getByRole('button',{name:'S42の定量評価'});
             await qbutton.evaluate(el=>el.click());
             const shown=await body.innerText();
-            if(!shown.includes('S42の定量判断')||!shown.includes('Q値')||!shown.includes('正確な分解はできません'))throw Error('Q explanation missing');
+            if(!shown.includes('S42の定量判断')||!shown.includes('Rating寄与（2乗前）')||!shown.includes('Q値')||!shown.includes('正確な分解はできません'))throw Error('Q explanation missing');
             await page.evaluate(()=>document.querySelector('#closeCoachBtn').click());
             firstReview={score:x.s42Review,model:x.mortalOpinion?.label,candidates:x.candidates.length,scene:x.scene.rivers.length};
             exampleChecked=true;
@@ -50,8 +50,8 @@ const {chromium}=require('/tmp/probe/node_modules/playwright-core');
       reviewVisible:!document.querySelector('#s42ReviewBtn')?.hidden,
       badge:document.querySelector('#endTitle')?.textContent||''
     }));
-    if(!review.summary.includes('判断指数')||!review.summary.includes('一致率'))throw Error('Summary metrics absent');
-    const count=await page.evaluate(()=>MahjongLabDebug.inspect().lastFeedback?.s42Review?.index);
+    if(!review.summary.includes('Mortal Rating（公式方式）')||!review.summary.includes('一致率'))throw Error('Summary metrics absent');
+    const count=await page.evaluate(()=>MahjongLabDebug.inspect().lastFeedback?.s42Review?.ratingContribution);
     let replay=null;
     if(review.reviewVisible){
       await page.locator('#s42ReviewBtn').click();
