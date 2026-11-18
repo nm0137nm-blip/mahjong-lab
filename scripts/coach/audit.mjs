@@ -2,6 +2,7 @@ import {readFileSync,writeFileSync,mkdirSync} from 'node:fs';
 import {Script} from 'node:vm';
 import {cases} from '../../tests/coach/fixtures.mjs';
 import {strategyCases} from '../../tests/coach/strategy-fixtures.mjs';
+import {expertCases} from '../../tests/coach/expert-fixtures.mjs';
 import {strategyInstructions} from './strategy-curriculum.mjs';
 const page=readFileSync(new URL('../../index.html',import.meta.url),'utf8');
 const source=page.match(/<script>([\s\S]*?)<\/script>/)[1];
@@ -56,6 +57,21 @@ export function materialize(c){
   return {...c,expected,verified};
 }
 export const materialized=cases.map(materialize);
+export const expert=expertCases.map(c=>{
+ if(c.engine?.kind==='discard'){
+  const e=materialize({id:c.id,engine:{...c.engine,kind:'efficiency'},scene:c.scene,expected:{}});
+  return {...c,verified:e.verified};
+ }
+ if(c.engine?.kind==='pon'){
+  const h=M.Shoupai.fromString(c.engine.hand),seen=counts([...expand(c.engine.hand),'s1']);
+  if(!Array.from(h.get_peng_mianzi('s1=')||[]).includes(c.engine.meld))throw Error(c.id+' illegal pon');
+  const after=h.clone().fulou(c.engine.meld).dapai(c.engine.discard);
+  const facts=direct(after,seen);
+  if(facts.shanten!==c.expected.pon_shanten||JSON.stringify(facts.waits)!==JSON.stringify(c.expected.pon_waits))throw Error(c.id+' call shape mismatch');
+  return {...c,verified:{ポン打牌後:after.toString(),...facts}};
+ }
+ return {...c,verified:null};
+});
 export const strategic=strategyCases.map(c=>({...c,verified:c.id.startsWith('T07')?materialized.find(x=>x.id==='E01').verified:null})).map(c=>{
   // B changes the indicator, so do not accidentally carry the A-case
   // dora or visible-count results into it. Recompute with its own indicator.
@@ -94,10 +110,11 @@ if(process.argv[2]==='generate'){
   mkdirSync(out,{recursive:true});
   for(const variant of ['v1','v2','v3'])for(let i=0;i<60;i+=5)writeFileSync(out+'/'+variant+'-'+String(i/5+1).padStart(2,'0')+'.txt',prompt(materialized.slice(i,i+5),variant));
   for(const variant of ['v1','v2','v3'])for(let i=0;i<strategic.length;i+=2)for(let j=i;j<i+2;j++)writeFileSync(out+'/'+variant+'-strategy-'+strategic[j].id+'.txt',prompt([strategic[j]],variant));
-  writeFileSync(out+'/answer-key.json',JSON.stringify([...materialized,...strategic],null,2));
+  for(const variant of ['v1','v2','v3'])for(const c of expert)writeFileSync(out+'/'+variant+'-expert-'+c.id+'.txt',prompt([c],variant));
+  writeFileSync(out+'/answer-key.json',JSON.stringify([...materialized,...strategic,...expert],null,2));
   console.log('Generated basic batches and individual paired strategic prompts; no LLM invoked.');
 }
 if(process.argv[2]==='grade'){
-  const batch=Number(process.argv[4]);const id=process.argv[4];const selected=id==='strategy'?strategic:strategic.some(c=>c.id===id)?strategic.filter(c=>c.id===id):Number.isInteger(batch)&&batch>=1&&batch<=12?materialized.slice((batch-1)*5,batch*5):materialized;
+  const batch=Number(process.argv[4]);const id=process.argv[4];const selected=id==='expert'?expert:expert.some(c=>c.id===id)?expert.filter(c=>c.id===id):id==='strategy'?strategic:strategic.some(c=>c.id===id)?strategic.filter(c=>c.id===id):Number.isInteger(batch)&&batch>=1&&batch<=12?materialized.slice((batch-1)*5,batch*5):materialized;
   console.log(JSON.stringify(grade(JSON.parse(readFileSync(process.argv[3],'utf8')),selected),null,2));
 }
