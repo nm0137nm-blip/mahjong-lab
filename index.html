@@ -5929,6 +5929,21 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
   if('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
     window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js').catch(()=>{}));
   }
+  // Fictional, isolated QA observation. Never inject into an active match.
+  function testKanFixture(kind){
+    if(game||!mortalClient?.workerReady)return null;
+    const self=kind==='daiminkan'?1:0;
+    const hands=Array(4).fill('');
+    hands[self]=kind==='daiminkan'?'m111p2345s234z123':'m1111p234s234z123';
+    mortalClient.ingest({qipai:{zhuangfeng:0,jushu:0,baopai:'s9',changbang:0,lizhibang:0,
+      defen:[25000,25000,25000,25000],shoupai:hands}});
+    if(kind==='daiminkan'){
+      mortalClient.ingest({zimo:{l:0,p:''}});
+      mortalClient.ingest({dapai:{l:0,p:'m1_'}});
+    }else mortalClient.ingest({zimo:{l:0,p:'p7'}});
+    const phase=kind==='daiminkan'?'reaction':'turn';
+    return mortalClient.activeDecision(phase);
+  }
   function testScenario({n=4,rivers=18,call=false}={}) {
     if(!game)return;
     debugUsed=true;
@@ -5954,7 +5969,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     lastReference:referenceCurrent
   });
   window.MahjongLabS42Debug=()=>({status:mortalStatusText,ready:!!mortalClient?.workerReady,broken:!!mortalClient?.broken,persisted:mortalClient?.modelPersisted??null,pending:mortalClient?.pending?.size??0,decision:mortalClient?.decision??0,latest:mortalClient?.current?.label||null,afterDiscard:lastFeedback?.mortalOpinion?.label||null,modelImported:!!mortalClient?.worker});
-  window.MahjongLabDebug = {testScenario,parseMeld,visibleRiver,calledDiscardNote,state:()=>({started:!!game,phase:game?game._status:null,pending:pending?.type||null,round:game?.model?.jushu,turn:game?.model?.lunban,own:ownSeat(),decisions:decisionLog.length,finished:gameEnded}),choose:p=>chooseDiscard(p),answer:p=>answer(p),testStep:(randomize=false)=>{debugUsed=true;if(pending?.type==='turn'){if(pending.win&&randomize)return answer({hule:'-'});if(randomize&&pending.gang.length&&Math.random()<0.10)return answer({gang:pending.gang[0]});const choices=pending.options;const p=randomize?choices[Math.floor(Math.random()*choices.length)]:choices[0];if(randomize&&game.allow_lizhi(p)&&Math.random()<0.25)riichiMode=true;chooseDiscard(p);}else if(pending?.type==='reaction'){if(pending.win&&randomize)return answer({hule:'-'});const melds=[...pending.gang,...pending.peng,...pending.chi];if(randomize&&melds.length&&Math.random()<0.55)return answer({fulou:melds[0]});answer({});}},testDwell:ms=>{debugUsed=true;if(game)game.dwell=ms;},testContinue:()=>{debugUsed=true;if(game&&!gameEnded){readyToNext=false;game.start();}},testPaipu:()=>game?._paipu,inspect:()=>({latestDiscard,lastFeedback,hasReaction:!$('callTray').classList.contains('hidden'),speed:game?._dwell})};
+  window.MahjongLabDebug = {testScenario,testKanFixture,testKanObservation:()=>game?null:mortalClient?.current,parseMeld,visibleRiver,calledDiscardNote,state:()=>({started:!!game,phase:game?game._status:null,pending:pending?.type||null,round:game?.model?.jushu,turn:game?.model?.lunban,own:ownSeat(),decisions:decisionLog.length,finished:gameEnded}),choose:p=>chooseDiscard(p),answer:p=>answer(p),testStep:(randomize=false)=>{debugUsed=true;if(pending?.type==='turn'){if(pending.win&&randomize)return answer({hule:'-'});if(randomize&&pending.gang.length&&Math.random()<0.10)return answer({gang:pending.gang[0]});const choices=pending.options;const p=randomize?choices[Math.floor(Math.random()*choices.length)]:choices[0];if(randomize&&game.allow_lizhi(p)&&Math.random()<0.25)riichiMode=true;chooseDiscard(p);}else if(pending?.type==='reaction'){if(pending.win&&randomize)return answer({hule:'-'});const melds=[...pending.gang,...pending.peng,...pending.chi];if(randomize&&melds.length&&Math.random()<0.55)return answer({fulou:melds[0]});answer({});}},testDwell:ms=>{debugUsed=true;if(game)game.dwell=ms;},testContinue:()=>{debugUsed=true;if(game&&!gameEnded){readyToNext=false;game.start();}},testPaipu:()=>game?._paipu,inspect:()=>({latestDiscard,lastFeedback,hasReaction:!$('callTray').classList.contains('hidden'),speed:game?._dwell})};
 })();
 
 </script>
