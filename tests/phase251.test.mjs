@@ -194,3 +194,21 @@ test('Phoenix snapshot uses only own concealed hand and pre-decision public fiel
  assert.equal(v.rivers[0].discards[0].called,true);assert.equal(v.rivers[0].discards[1].riichi,true);
  assert.doesNotMatch(JSON.stringify(v),/SECRET_/);
 });
+
+test('inline Q display is independent of old analytics formatting exports for calls and discards',()=>{
+ const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');
+ const script=html.match(/<script>([\s\S]*?)<\/script>/)?.[1];
+ const a=script.indexOf('function recommendationText('),b=script.indexOf('function renderCoach()',a);
+ assert.ok(a>=0&&b>a);
+ const node=(tag,cls='',text='')=>({tag,cls,textContent:text,children:[],classList:{add(){},remove(){},toggle(){}},append(...nodes){this.children.push(...nodes)},replaceChildren(){this.children=[]}});
+ const flash=node('div'),main=node('div');
+ const review={chosenQ:-1.12345,bestQ:0.12345,gap:1.2469,recommendation:0.00000001,rank:2,legal:8,agreement:false};
+ const context={lastFeedback:{type:'call',choiceLabel:'ポン',s42Review:review,mortalOpinion:{label:'スルー'},candidates:[]},s42Analytics:{},mortalClient:{workerReady:true},
+   $:id=>id==='coachFlash'?flash:main,el:node,tileImg:()=>node('img'),tileName:p=>p};
+ const render=runInNewContext(script.slice(a,b)+';renderInlineCoach',context);
+ const flatten=n=>[n.textContent,...n.children.flatMap(flatten)].join(' ');
+ render();assert.match(flatten(main),/あなた：ポン/);assert.match(flatten(main),/Q値：あなた -1\.123 ／ S42 0\.123/);assert.match(flatten(main),/推奨度 0\.05%未満/);
+ context.lastFeedback={type:'discard',choiceLabel:'打1萬',discard:'m1',s42Review:review,mortalOpinion:{label:'打2萬',tile:'m2'},candidates:[{p:'m1',shanten:2,ukeire:10},{p:'m2',shanten:2,ukeire:12}]};
+ render();assert.match(flatten(main),/Q値：あなた/);assert.match(flatten(main),/有効牌 10→12枚/);
+ context.lastFeedback={type:'call',choiceLabel:'スルー',candidates:[],s42Review:null};render();assert.match(flatten(main),/未取得／解析中/);assert.doesNotMatch(flatten(main),/Q値：あなた/);
+});

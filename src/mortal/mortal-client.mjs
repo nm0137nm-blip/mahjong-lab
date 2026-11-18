@@ -2,7 +2,7 @@
  * Reads ONLY the human's visible Majiang game messages.
  * Does not transmit hands, rounds, scores, ONNX weights, or private identifiers.
  */
-import {MortalMjaiBridge,toMjai} from './mjai-bridge.mjs';
+import {MortalMjaiBridge,toMjai} from './mjai-bridge.mjs?v=2561';
 import initEncoder from '../../assets/mortal/encoder.js';
 
 const EXPECTED_HASH='30381bf21389e2d25d3edf48fed11bf772336ef3daeee67d1bdae7fb9dd30cb4';
@@ -139,7 +139,7 @@ export class MortalClient {
       hex=Array.from(new Uint8Array(digest),b=>b.toString(16).padStart(2,'0')).join('');
     }catch(e){
       this.status('Safari互換の方式でモデルのSHA-256を検証中...');
-      const {sha256Fallback}=await import('./sha256.mjs');
+      const {sha256Fallback}=await import('./sha256.mjs?v=2561');
       hex=await sha256Fallback(new Uint8Array(bytes));
     }
     if(hex!==EXPECTED_HASH)throw Error('モデルのSHA-256が公開値と一致しません');
@@ -214,7 +214,7 @@ export class MortalClient {
   initWorker(bytes){
     if(this.worker)this.worker.terminate();
     this.workerReady=false;
-    this.worker=new Worker(new URL('./mortal-worker.mjs',import.meta.url),{type:'module'});
+    this.worker=new Worker(new URL('./mortal-worker.mjs?v=2561',import.meta.url),{type:'module'});
     this.worker.onmessage=({data})=>{
       if(data?.type==='ready'){
         this.workerReady=true;this.status('Mortal-S42 準備完了（端末内推論）'+(this.modelPersisted===false?'／端末への保存はできませんでした':''));
