@@ -1,19 +1,40 @@
 import { chromium, webkit } from 'playwright';
 import assert from 'node:assert/strict';
+import {writeFileSync,unlinkSync} from 'node:fs';
 
 const root='http://127.0.0.1:8765/';
 const browserName=process.env.BROWSER||'webkit';
 const browser=await ({chromium,webkit})[browserName].launch({headless:true});
+const legacy=process.env.LEGACY_CACHE_TEST==='1';
 const context=await browser.newContext({
   viewport:{width:390,height:844},
   isMobile:true,hasTouch:true,deviceScaleFactor:2,
-  serviceWorkers:'block'
+  serviceWorkers:legacy?'allow':'block'
 });
 const page=await context.newPage();
 const errors=[];
 page.on('pageerror',err=>{errors.push(String(err));console.error('[pageerror]',err.message);});
 page.on('console',msg=>{if(msg.type()==='error'||msg.type()==='warning')console.log('[console]',msg.type(),msg.text().slice(0,400));});
 try{
+  if(legacy){
+    // Simulate an installed previous release's cache-first module worker,
+    // with an obsolete analytics module missing RECOMMENDATION_TEXT.
+    writeFileSync('legacy-cache-ci.html','<!doctype html><title>Cache upgrade fixture</title>');
+    writeFileSync('legacy-cache-ci.js',`self.addEventListener('install',e=>e.waitUntil(self.skipWaiting()));
+self.addEventListener('activate',e=>e.waitUntil(self.clients.claim()));
+self.addEventListener('fetch',e=>{if(e.request.url.includes('/src/mortal/'))e.respondWith(caches.open('mahjong-lab-iphone-legacy-ci').then(async c=>(await c.match(e.request))||fetch(e.request)));});`);
+    await page.goto(root+'legacy-cache-ci.html');
+    await page.evaluate(async()=>{
+      const c=await caches.open('mahjong-lab-iphone-legacy-ci');
+      await c.put(new Request(location.origin+'/src/mortal/s42-analytics.mjs'),new Response('export const obsolete = true;',{headers:{'Content-Type':'text/javascript'}}));
+      await navigator.serviceWorker.register('/legacy-cache-ci.js',{scope:'/'});
+      await navigator.serviceWorker.ready;
+    });
+    await page.waitForFunction(()=>navigator.serviceWorker.controller?.scriptURL.includes('legacy-cache-ci.js'));
+    const stale=await page.evaluate(async()=>await (await fetch('/src/mortal/s42-analytics.mjs')).text());
+    assert.equal(stale,'export const obsolete = true;');
+    console.log('[pass] actual legacy service worker serves obsolete analytics for unversioned URL');
+  }
   await page.goto(root,{waitUntil:'domcontentloaded',timeout:30000});
   await page.waitForFunction(()=>!!window.MahjongLabDebug,null,{timeout:30000});
   const first=await page.evaluate(()=>window.MahjongLabDebug.visibleRiver(['m6_-','p5+','s8_','z1*'],true));
@@ -113,8 +134,14 @@ try{
     console.log('[S42] first chosen action Q=',review.chosenQ,'rank=',review.rank,
       'recommendation=',review.recommendation);
     const details=page.locator('#coachDetailBtn');
-    if(await details.isVisible()){
+    await page.waitForFunction(()=>document.querySelector('#coachFlashMain')?.textContent.includes('Q値：あなた'));
+    const inline=await page.locator('#coachFlashMain').innerText();
+    assert.ok(inline.includes(review.chosenQ.toFixed(3)));assert.ok(inline.includes(review.bestQ.toFixed(3)));assert.match(inline,/推奨度/);
+    assert.ok(await details.isVisible(),'details button must remain visible');
+    {
       await details.click();
+      assert.ok(await page.locator('#coachOverlay').isVisible());
+      assert.equal(await page.getByRole('button',{name:'S42の定量評価'}).getAttribute('aria-selected'),'true');
       await page.getByRole('button',{name:'S42の定量評価'}).last().click();
       assert.match(await page.locator('#coachModalBody').innerText(),/推奨度/);
       assert.match(await page.locator('#coachModalBody').innerText(),/Rating寄与（2乗前）/);
@@ -140,9 +167,10 @@ try{
       console.log('[S42] restored from IndexedDB after reload');
     }
   }
+  assert.doesNotMatch(await page.locator('#gameToast').textContent(),/画面表示エラー/);
   if(errors.length)throw Error('Browser errors: '+errors.join('; '));
   console.log('[pass]',browserName,'mobile gameplay and'+(process.env.S42_MODEL_TEST==='1'?' actual S42 inference':' discard replay'));
 }catch(e){
   console.error('[diagnostic]',await page.evaluate(()=>({debug:window.MahjongLabS42Debug?.(),status:document.querySelector('#mortalStatus')?.textContent,game:window.MahjongLabDebug?.state?.()})).catch(()=>null));
   throw e;
-}finally{await browser.close();}
+}finally{await browser.close();if(legacy){for(const f of ['legacy-cache-ci.html','legacy-cache-ci.js'])try{unlinkSync(f);}catch{}}}
