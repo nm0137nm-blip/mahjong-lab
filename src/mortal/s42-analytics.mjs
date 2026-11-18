@@ -50,7 +50,9 @@ export function analyzeAction(op,action){
   if(!Number.isInteger(action)||action<0||action>=46||
      typeof op.qLegal[action]!=='number'||!Number.isFinite(op.qLegal[action]))return null;
   const sorted=op.qLegal.map((q,i)=>({index:i,q}))
-    .filter(x=>typeof x.q==='number'&&Number.isFinite(x.q)).sort((a,b)=>b.q-a.q||a.index-b.index);
+    .filter(x=>typeof x.q==='number'&&Number.isFinite(x.q))
+    // The model may select any of multiple Q-tied best actions.
+    .sort((a,b)=>b.q-a.q||(a.index===op.best?-1:b.index===op.best?1:a.index-b.index));
   if(sorted.length<2||sorted[0].index!==op.best)return null;
   const picked=sorted.find(x=>x.index===action);
   if(!picked)return null;
