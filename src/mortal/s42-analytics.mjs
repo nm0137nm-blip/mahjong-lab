@@ -1,11 +1,17 @@
 /*
  * Mahjong LAB S42 evaluation analytics.
- * The 0-100 "learning index" is a TRANSPARENT IN-HOUSE measure,
- * not a Tenhou/Mahjong Soul rating or calibrated outcome value.
- * S42 Q values cannot be decomposed into shanten/danger/final score.
- * Everything stays in browser memory / local storage; no remote requests.
+ * Rating follows the core mjai-reviewer computation (not a skill rating):
+ *   100 * (sum_i(r_i) / n) ** 2,
+ *   r_i = 1 if chosen action == Mortal output, otherwise
+ *   (Q(chosen)-min_legal_Q) / max(1e-6, max_legal_Q-min_legal_Q).
+ * Only decisions with two or more comparable legal actions contribute.
+ * Original reviewer also has special kan action expansion and aka-equivalent
+ * action matching that our 46-action observation bridge cannot always mirror.
+ * Historical in-house index records stay separate from this official-style
+ * rating. Nothing is sent outside the browser.
  */
-export const INDEX_VERSION = 'S42-relative-Q-v1';
+export const INDEX_VERSION = 'S42-relative-Q-v1'; // historical records only
+export const RATING_VERSION = 'S42-mjai-reviewer-rating-v1';
 export const BAD_MOVE_VERSION = 'S42-softmax-0.1-under5-v1';
 export const SOFTMAX_TEMPERATURE = 0.1;
 export const BAD_MOVE_THRESHOLD = 0.05;
@@ -58,6 +64,11 @@ export function analyzeAction(op,action){
   const gap=Math.max(0,sorted[0].q-picked.q);
   const range=Math.max(1e-9,sorted[0].q-sorted[sorted.length-1].q);
   const relativeGap=Math.max(0,Math.min(1,gap/range));
+  // Exact reviewer rule: matching chosen action earns 1.0 regardless of Q.
+  // Otherwise normalize against worst and best *legal* Q, with a 1e-6 floor.
+  const minQ=sorted[sorted.length-1].q;
+  const ratingContribution=action===op.best?1:
+    (picked.q-minQ)/Math.max(1e-6,sorted[0].q-minQ);
   const rank=sorted.findIndex(x=>x.index===action)+1;
   const stateValue=sorted.reduce((sum,x)=>sum+x.q,0)/sorted.length;
   return {
@@ -65,7 +76,7 @@ export function analyzeAction(op,action){
     stateValue,chosenAdvantage:picked.q-stateValue,bestAdvantage:sorted[0].q-stateValue,
     gap,relativeGap,agreement:action===op.best,
     recommendation,badMove:recommendation<BAD_MOVE_THRESHOLD,
-    index:Math.round(100*(1-relativeGap)),top:ranked.slice(0,6)
+    ratingContribution,top:ranked.slice(0,6)
   };
 }
 export function riichiComparison(op,chosenAction){
@@ -83,41 +94,54 @@ export function analyzeDecision(op,chosen,riichi=false){
 export function aggregateDecisions(log){
   const entries=Array.isArray(log)?log:[];
   const judged=entries.map(x=>x?.s42Review)
-    .filter(x=>x&&Number.isFinite(x.index)&&Number.isInteger(x.rank));
+    .filter(x=>x&&Number.isFinite(x.ratingContribution)&&
+      x.ratingContribution>=0&&x.ratingContribution<=1&&Number.isInteger(x.rank));
   const n=judged.length;
   const agreements=judged.filter(x=>x.agreement).length;
-  const score=n?Math.round(judged.reduce((t,x)=>t+x.index,0)/n):null;
-  // Bad-move rate is for evaluated DISCARDS only. Call/pass judgments remain
-  // visible in reviews and the overall learning index, but not in this ratio.
+  // Do NOT round individual contributions or square them individually.
+  const ratingRawSum=judged.reduce((t,x)=>t+x.ratingContribution,0);
+  const rating=n?100*Math.pow(ratingRawSum/n,2):null;
+  // Bad-move rate remains a separate softmax <5% *discard-only* metric.
   const discards=entries.filter(x=>x?.type==='discard');
   const evaluatedDiscards=discards.filter(x=>
     x.s42Review&&Number.isFinite(x.s42Review.recommendation)&&
     x.s42Review.recommendation>=0&&x.s42Review.recommendation<=1);
   const badReviewed=evaluatedDiscards.length;
   const badCount=evaluatedDiscards.filter(x=>x.s42Review.recommendation<BAD_MOVE_THRESHOLD).length;
-  return {version:INDEX_VERSION,count:n,agreements,index:score,
-    callCount:entries.filter(x=>x?.type==='call'&&x?.s42Review).length,
-    riichiCount:entries.filter(x=>x?.riichiAvailable&&x?.s42Review).length,
+  return {version:RATING_VERSION,ratingVersion:RATING_VERSION,
+    count:n,ratingCount:n,ratingRawSum,rating,agreements,
+    callCount:entries.filter(x=>x?.type==='call'&&x?.s42Review?.ratingContribution!=null).length,
+    riichiCount:entries.filter(x=>x?.riichiAvailable&&x?.s42Review?.ratingContribution!=null).length,
     agreementRate:n?agreements/n:null,
     badRateVersion:BAD_MOVE_VERSION,discardCount:discards.length,
     badReviewed,badCount,badMoveRate:badReviewed?badCount/badReviewed:null};
 }
 export function combineAggregates(all){
   const a=(Array.isArray(all)?all:[]).filter(x=>
-    x&&x.version===INDEX_VERSION&&Number.isFinite(x.count)&&x.count>0&&Number.isFinite(x.index));
+    x&&(x.version===INDEX_VERSION||x.version===RATING_VERSION)&&
+    Number.isInteger(x.count)&&x.count>0&&
+    Number.isInteger(x.agreements)&&x.agreements>=0&&x.agreements<=x.count);
   const count=a.reduce((t,x)=>t+x.count,0);
-  // Legacy records have the prior relative-gap criterion and MUST NOT
-  // silently contribute to the new under-5% recommendation metric.
+  // A historical average of rounded, unsquared per-decision scores is NOT
+  // sufficient to reconstruct Mortal rating. Never relabel or square it.
+  const rated=a.filter(x=>x.ratingVersion===RATING_VERSION&&
+    x.version===RATING_VERSION&&x.ratingCount===x.count&&
+    Number.isFinite(x.ratingRawSum)&&x.ratingRawSum>=0&&
+    x.ratingRawSum<=x.ratingCount+1e-8);
+  const ratingCount=rated.reduce((t,x)=>t+x.ratingCount,0);
+  const ratingRawSum=rated.reduce((t,x)=>t+x.ratingRawSum,0);
+  const rating=ratingCount?100*Math.pow(ratingRawSum/ratingCount,2):null;
+  // Under-5% statistics can include a historical entry only when its policy
+  // version was already the same. Never blend with 30% gap records.
   const current=a.filter(x=>x.badRateVersion===BAD_MOVE_VERSION&&
     Number.isInteger(x.badReviewed)&&x.badReviewed>=0&&
     Number.isInteger(x.badCount)&&x.badCount>=0&&x.badCount<=x.badReviewed);
   const badReviewed=current.reduce((t,x)=>t+x.badReviewed,0);
   const badCount=current.reduce((t,x)=>t+x.badCount,0);
   const badMoveRate=badReviewed?badCount/badReviewed:null;
-  if(!count)return {count:0,index:null,agreementRate:null,badReviewed,badCount,badMoveRate};
-  const index=Math.round(a.reduce((t,x)=>t+x.count*x.index,0)/count);
-  return {count,index,
-    agreementRate:a.reduce((t,x)=>t+(Number(x.agreements)||0),0)/count,
+  return {count,ratingCount,ratingRawSum,rating,
+    agreementRate:count?a.reduce((t,x)=>t+x.agreements,0)/count:null,
     badReviewed,badCount,badMoveRate};
 }
+export const RATING_TEXT=v=>v==null?'—':Number(v).toFixed(1)+'/100';
 export const PERCENT=v=>v==null?'—':(100*v).toFixed(1)+'%';
