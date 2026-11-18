@@ -69,7 +69,8 @@ try{
       await page.locator('#closeCoachBtn').click();
     }
     if(process.env.S42_LOCAL_MODEL){
-      assert.equal(ready.persisted,true,'verified model must be saved for offline restore');
+      const stored=await page.evaluate(()=>window.MahjongLabS42Debug());
+      assert.equal(stored?.persisted,true,'verified model must be saved for offline restore');
       // Reload is crucial: the model must survive Safari's page lifecycle.
       await page.reload({waitUntil:'domcontentloaded',timeout:30000});
       await page.waitForFunction(()=>{
