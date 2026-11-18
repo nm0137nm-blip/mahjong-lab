@@ -4696,6 +4696,8 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
   let readyToNext = false, selectedRule = null, lastAction = '', recordedMatchId = null;
   let toastTimer = null, bannerTimer = null, latestDiscard = null;
   let calledDiscardNotes=Array.from({length:4},()=>[]);
+  let phoenixV4=null,coachPublicEvents=null;
+  import('./src/coach/phoenix-coach.mjs?v=257').then(m=>{phoenixV4=m;}).catch(e=>console.warn('新AIコーチを読み込めません。従来版を維持します。',e));
   let lastCandidateInfo = [];
   const speedValue = () => Number($('speedSelect').value || 850);
   const callMode = () => $('callMode').value || 'ask';
@@ -4770,6 +4772,10 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
   }
   class Human extends M.Player {
     action(msg,callback){
+      try{
+        if(msg?.qipai||msg?.kaiju)coachPublicEvents=phoenixV4?[]:null;
+        else if(phoenixV4&&Array.isArray(coachPublicEvents))coachPublicEvents=phoenixV4.nextPublicEvents(coachPublicEvents,msg);
+      }catch(e){coachPublicEvents=null;console.warn('公開時系列は未記録',e);}
       try{mortalClient?.ingest(msg);}catch(e){console.warn('S42の付加評価のみ停止',e);}
       return super.action(msg,callback);
     }
@@ -5326,7 +5332,10 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
       scores:model.player_id.map((id,l)=>({name:NAMES[id],wind:WINDS[l],points:Number(model.defen[id]),rank:rankOrder.indexOf(id)+1})),
       remaining:model.shan?.paishu??null,
       ownDiscards:(model.he[own]?._pai||[]).length,
-      activeSeat:model.lunban,latestDiscard:latestDiscard?{seat:latestDiscard.l,tile:latestDiscard.p}:null
+      activeSeat:model.lunban,latestDiscard:latestDiscard?{seat:latestDiscard.l,tile:latestDiscard.p}:null,
+      publicEvents:typeof coachPublicEvents!=='undefined'&&Array.isArray(coachPublicEvents)?coachPublicEvents.map(x=>({...x})):null,
+      initialOrder:Array.from({length:4},(_,i)=>model.player_id.indexOf((model.qijia+i)%4)),
+      pendingReach:!!model._lizhi
     };
   }
   function s42Aggregated(){
@@ -5753,9 +5762,15 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     if(!entry?.scene){target.append(el('p','s42-info','判断時点の局面記録がないため、解説依頼は作成できません。'));return;}
     if(entry.scene.snapshotVersion!==2)target.append(el('p','s42-info','旧版の局面記録です。ツモ牌・河の打牌種別など不足する情報は不明として渡します。'));
     if(!entry.s42Review)target.append(el('p','s42-analysis-note','S42評価未取得でも独立した解説を依頼できます。コピー時に取得済みのQ値があれば反映します。'));
-    const label=el('label','phoenix-label','追加質問（任意）');
+    const modeLabel=el('label','phoenix-label','コーチ方式');
+    const coachMode=el('select','phoenix-input');coachMode.id='phoenixCoachMode';modeLabel.htmlFor=coachMode.id;
+    const improved=el('option','','相対価値コーチ v4（試験版・雀力未認定）');improved.value='v4';improved.disabled=!phoenixV4;
+    const classic=el('option','','従来のコーチ（2.5.6.1）');classic.value='legacy';
+    coachMode.append(improved,classic);coachMode.value=phoenixV4?'v4':'legacy';
+    const versionStatus=el('p','s42-analysis-note');versionStatus.id='phoenixVersionStatus';
+    const label=el('label','phoenix-label','自分の判断理由・質問（任意）');
     const question=el('textarea','phoenix-input');question.id='phoenixQuestion';question.maxLength=500;question.rows=2;
-    question.placeholder='例：字牌の切り順、押し引き、鳴くべきだったか';label.htmlFor=question.id;
+    question.placeholder='例：二度受けを嫌って1萬を切った。ドラ受けも残したい。この判断は妥当？';label.htmlFor=question.id;
     const preview=el('textarea','phoenix-prompt');preview.id='phoenixPrompt';preview.readOnly=true;preview.rows=5;
     preview.setAttribute('aria-label','ChatGPTに渡す解説依頼');
     const status=el('p','s42-analysis-note');status.id='phoenixCopyStatus';status.setAttribute('role','status');
@@ -5771,7 +5786,11 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     const shortcut=el('a','phoenix-open','ショートカットでAI解説を生成');
     shortcut.href=PHOENIX_SHORTCUT_URL;shortcut.setAttribute('aria-disabled','true');
     const refresh=()=>{
-      preview.value=buildPhoenixPrompt(entry,question.value)||'';
+      const legacy=buildPhoenixPrompt(entry,question.value)||'';
+      if(coachMode.value==='v4'&&phoenixV4){
+        try{preview.value=phoenixV4.buildPrompt(legacy,entry,M);versionStatus.textContent='相対価値・最善手・客観計算を含む試験版。実際のLLM雀力は未認定です。';}
+        catch(e){console.warn('コーチ計算失敗',e);preview.value=legacy;coachMode.value='legacy';versionStatus.textContent='追加計算を取得できなかったため従来版に切り替えました。';}
+      }else{preview.value=legacy;versionStatus.textContent=phoenixV4?'従来版の依頼形式を使用します。':'新コーチ未読込。従来版を使用します。';}
       if(selectedPrompt!==preview.value){
         selectedPrompt=preview.value;answer.value=phoenixStoredAnswer(selectedPrompt);saveStatus.textContent=answer.value?'保存済み解説を表示しています。':'';
       }
@@ -5779,6 +5798,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
       shortcut.setAttribute('aria-disabled',String(!armed));
     };
     question.addEventListener('input',()=>{copiedPrompt='';refresh();});
+    coachMode.addEventListener('change',()=>{copiedPrompt='';refresh();});
     shortcut.addEventListener('click',e=>{
       if(!copiedPrompt||copiedPrompt!==preview.value){e.preventDefault();status.textContent='先に解説依頼をコピーしてください。手動コピーの場合は下の確認を押してください。';return;}
       if(!confirm('コピーした麻雀の局面情報を、iPhoneのショートカット経由でChatGPTに送信します。追加料金・アップグレードを求められた場合は中止してください。実行しますか？'))e.preventDefault();
@@ -5822,7 +5842,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     ])steps.append(el('li','',t));
     setup.append(steps);
     const help=el('a','phoenix-open','Apple公式：ショートカットでモデルを使う');help.href='https://support.apple.com/guide/shortcuts/use-apple-intelligence-in-shortcuts-tpg3vrvwmclv/ios';help.target='_blank';help.rel='noopener noreferrer';setup.append(help);
-    target.append(label,question,preview,copy,status,manual,shortcut,setup,open,resultLabel,answer,save,del,saveStatus);
+    target.append(modeLabel,coachMode,versionStatus,label,question,preview,copy,status,manual,shortcut,setup,open,resultLabel,answer,save,del,saveStatus);
     target.append(el('p','s42-analysis-note','ショートカットは利用者が一度作成する必要があります。iPhoneのApple Intelligence/ChatGPT利用条件や上限に従います。麻雀LABはAPIキー・有料API・課金処理を持たず、上限時の有料経路への自動切替もありません。依頼内容はクリップボード経由で渡し、URLには含めません。生成した解説は手動貼り付けで最大12件まで端末内保存できます。解説の精度は保証されません。'));
     refresh();
   }
