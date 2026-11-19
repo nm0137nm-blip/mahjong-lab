@@ -459,6 +459,12 @@
         <label><input type="radio" name="recordMode" value="practice" checked><span><strong>練習対局</strong><small>記録しない・コーチあり</small></span></label>
         <label><input type="radio" name="recordMode" value="measure"><span><strong>計測用対局</strong><small>完走分を保存・コーチあり</small></span></label>
       </div>
+      <h3 class="section-subtitle">対戦相手</h3>
+      <div class="choose" role="group" aria-label="CPUの種類">
+        <label><input type="radio" name="cpuMode" value="basic" checked><span><strong>標準CPU</strong><small>従来方式</small></span></label>
+        <label><input type="radio" name="cpuMode" value="s42"><span><strong>Mortal S42</strong><small>3人・試験版・練習専用</small></span></label>
+      </div>
+      <p id="cpuSetupStatus" class="hint">Mortal CPUはモデル設定後に利用可能です。試験版のため成績計測には使用できません。</p>
       <button class="primary big" id="startBtn" type="button">対局をはじめる <span>→</span></button><div class="mortal-setup"><div class="mortal-setup-title"><span>Mortal-S42 AIコーチ</span><span id="mortalLive" class="mortal-live">準備中</span></div><div id="mortalStatus" class="mortal-help">端末内AIの準備中です</div><button id="mortalDownloadBtn" class="mortal-download" type="button">S42モデルを取得・設定（初回43.7MB）</button><input id="mortalModelFile" type="file" class="mortal-file" accept=".onnx,application/octet-stream" aria-label="S42学習済みモデルを選択"><div class="mortal-help">S42は学習済みモデルの設定後に使用可能です。上の自動取得がSafariで失敗した場合は、下の「モデル配布元」を開き、model.onnx（約43.7MB）をiPhoneの「ファイル」に保存して、このファイル選択欄から読み込んでください。モデルは端末内に保存され、次回以降はオフラインで推論します。対局情報は送信しません。未設定時は牌効率コーチのみ利用可能です。</div><div class="mortal-source">モデル配布元：<a href="https://huggingface.co/xzhe121/Mortal-S42-onnx/blob/main/model.onnx" target="_blank" rel="noopener noreferrer" style="color:#c4e988">Hugging Face / S42 ONNX</a>（取得後SHA-256を照合）。通信・容量の制限で自動取得できない場合は、配布ページからmodel.onnxをダウンロードし、手動選択してください。</div></div>
     </section>
     <section class="stat-card">
@@ -476,7 +482,7 @@
   </main>
 
   <main id="gameScreen" class="game hidden">
-    <div class="game-head"><button class="text-btn" id="exitBtn" type="button">‹ 終了</button><div class="round" id="roundTitle">東1局</div><span id="recordModeBadge" aria-label="現在の記録モード">練習</span><div class="deck-count" id="deckCount">残り -- 枚</div></div>
+    <div class="game-head"><button class="text-btn" id="exitBtn" type="button">‹ 終了</button><div class="round" id="roundTitle">東1局</div><span id="cpuPlayStatus" aria-live="polite" style="font-size:10px;color:#c4e988"></span><span id="recordModeBadge" aria-label="現在の記録モード">練習</span><div class="deck-count" id="deckCount">残り -- 枚</div></div>
     <div class="score-row" id="scores"></div>
     <div class="table-controls">
       <label for="speedSelect">CPU速度 <select id="speedSelect"><option value="1400">ゆっくり</option><option value="850" selected>標準</option><option value="300">速い</option></select></label>
@@ -4727,6 +4733,8 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
   }
   let referenceAI=null, referenceCurrent=null, referenceReaction=null;
   let mortalClient=null, mortalStatusText='初期化中',s42Analytics=null;
+  let cpuModule=null, MortalCpuClass=null, mortalCpus=[], cpuAudit=null;
+  function closeMortalCpus(){for(const cpu of mortalCpus)cpu.close();mortalCpus=[];}
   let s42ReviewRows=[],s42ReviewCursor=0,s42ReplayAll=false;
   const mirrorAudit={packets:0, errors:0, matchedSelf:0, selfMismatch:0, wallAccess:0};
   function safeReferenceEvent(msg) {
@@ -4908,6 +4916,16 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     $('statsHalf').setAttribute('aria-pressed',String(statsMode===2));
   }
   function initGame() {
+    const cpuMode=document.querySelector('input[name="cpuMode"]:checked')?.value||'basic';
+    if(cpuMode==='s42'){
+      if(!MortalCpuClass||!mortalClient?.workerReady||!mortalClient.wasm||mortalClient.broken){
+        $('cpuSetupStatus').textContent='Mortal-S42の準備が完了してから開始してください。';return;
+      }
+      if(document.querySelector('input[name="recordMode"]:checked')?.value==='measure'){
+        $('cpuSetupStatus').textContent='Mortal CPU試験版は練習対局専用です。練習対局を選択してください。';return;
+      }
+    }
+    closeMortalCpus();cpuAudit=null;
     if (game && !gameEnded) { try { game.stop(()=>{}); } catch {} }
     mode = document.querySelector('input[name="length"]:checked')?.value || '1';
     recordMode = document.querySelector('input[name="recordMode"]:checked')?.value || 'practice';
@@ -4922,7 +4940,18 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     riichiMode = false; candidateInfo = []; lastCandidateInfo = []; lastFeedback = null;
     decisionLog = []; s42ReviewRows=[];s42ReplayAll=false; lastAction = ''; latestDiscard=null;calledDiscardNotes=Array.from({length:4},()=>[]);
     $('eventBanner').classList.add('hidden'); $('callTray').classList.add('hidden'); $('coachOverlay').classList.add('hidden');
-    const players = [human,new AI(),new AI(),new AI()];
+    const players=[human];
+    if(cpuMode==='s42'){
+      cpuAudit=cpuModule.newCpuAudit();
+      $('cpuPlayStatus').textContent='S42 CPU×3（試験）';
+      mortalCpus=Array.from({length:3},()=>new MortalCpuClass(mortalClient,cpuAudit,()=>{
+        $('cpuPlayStatus').textContent='S42代替手 '+cpuAudit.fallbacks+'回';
+      }));
+      players.push(...mortalCpus);
+    }else{
+      $('cpuPlayStatus').textContent='標準CPU';
+      players.push(new AI(),new AI(),new AI());
+    }
     game = new M.Game(players, onFinished, selectedRule, '麻雀LAB');
     game.model.player = NAMES.slice();
     game.dwell = speedValue(); game.wait = 500;
@@ -6087,6 +6116,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     $('endOverlay').classList.remove('hidden');
   }
   function goHome() {
+    closeMortalCpus();
     if(game && !gameEnded) {try{game.stop(()=>{});}catch{}}
     gameEnded=true;pending=null;readyToNext=false;
     $('gameScreen').classList.add('hidden');$('endOverlay').classList.add('hidden');$('resultOverlay').classList.add('hidden');
@@ -6125,7 +6155,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     };
     // The page may be served before the new service worker activates. A
     // release-specific URL bypasses the older worker's unversioned cache.
-    Promise.all([import('./src/mortal/mortal-client.mjs?v=2561'),import('./src/mortal/s42-analytics.mjs?v=2561')]).then(async ([{MortalClient},analytics])=>{
+    Promise.all([import('./src/mortal/mortal-client.mjs?v=2601'),import('./src/mortal/s42-analytics.mjs?v=2561')]).then(async ([{MortalClient},analytics])=>{
       const required=['analyzeDecision','analyzeAction','riichiComparison','kanComparison','aggregateDecisions','combineAggregates','RATING_TEXT','PERCENT','RECOMMENDATION_TEXT'];
       if(required.some(k=>typeof analytics[k]!=='function')||analytics.RATING_VERSION!=='S42-mjai-reviewer-rating-v1'||analytics.BAD_MOVE_VERSION!=='S42-softmax-0.1-under5-v1'){
         setStatus('S42更新不整合：ページを再読み込みしてください（牌効率・対局は利用可能）');return;
@@ -6139,6 +6169,9 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
       try{await client.loadEncoder();}catch(e){setStatus('S42局面変換器の起動に失敗しました');return;}
       await client.restoreModel();
     }).catch(e=>{console.warn('S42コーチの起動失敗。牌効率は継続します',e);setStatus('S42未利用（基礎版コーチは使用できます）');});
+    import('./src/mortal/mortal-cpu.mjs?v=2601').then(mod=>{
+      cpuModule=mod;MortalCpuClass=mod.createMortalCpuClass(AI);
+    }).catch(e=>{console.warn('CPU module unavailable',e);});
     $('mortalDownloadBtn').addEventListener('click',async ()=>{
       if(!mortalClient){setStatus('S42の初期化中です。もう一度お試しください');return;}
       const btn=$('mortalDownloadBtn');btn.disabled=true;
@@ -6197,6 +6230,8 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     wallPresent:!!(referenceAI?._model?.shan?._pai),
     lastReference:referenceCurrent
   });
+  // Development diagnostics: aggregate metrics only, no private cards or state handles.
+  window.MahjongLabMortalCpuAudit=()=>cpuAudit?JSON.parse(JSON.stringify({...cpuAudit,activeSeats:mortalCpus.length,sharedWorker:mortalCpus.every(c=>c.evalSeat.client===mortalClient)})):null;
   window.MahjongLabS42Debug=()=>({status:mortalStatusText,ready:!!mortalClient?.workerReady,broken:!!mortalClient?.broken,persisted:mortalClient?.modelPersisted??null,pending:mortalClient?.pending?.size??0,decision:mortalClient?.decision??0,latest:mortalClient?.current?.label||null,afterDiscard:lastFeedback?.mortalOpinion?.label||null,modelImported:!!mortalClient?.worker});
   window.MahjongLabDebug = {testScenario,testKanFixture,testKanObservation:()=>game?null:mortalClient?.current,parseMeld,visibleRiver,calledDiscardNote,state:()=>({started:!!game,phase:game?game._status:null,pending:pending?.type||null,round:game?.model?.jushu,turn:game?.model?.lunban,own:ownSeat(),decisions:decisionLog.length,finished:gameEnded}),choose:p=>chooseDiscard(p),answer:p=>answer(p),testStep:(randomize=false)=>{debugUsed=true;if(pending?.type==='turn'){if(pending.win&&randomize)return answer({hule:'-'});if(randomize&&pending.gang.length&&Math.random()<0.10)return answer({gang:pending.gang[0]});const choices=pending.options;const p=randomize?choices[Math.floor(Math.random()*choices.length)]:choices[0];if(randomize&&game.allow_lizhi(p)&&Math.random()<0.25)riichiMode=true;chooseDiscard(p);}else if(pending?.type==='reaction'){if(pending.win&&randomize)return answer({hule:'-'});const melds=[...pending.gang,...pending.peng,...pending.chi];if(randomize&&melds.length&&Math.random()<0.55)return answer({fulou:melds[0]});answer({});}},testDwell:ms=>{debugUsed=true;if(game)game.dwell=ms;},testContinue:()=>{debugUsed=true;if(game&&!gameEnded){readyToNext=false;game.start();}},testPaipu:()=>game?._paipu,inspect:()=>({latestDiscard,lastFeedback,hasReaction:!$('callTray').classList.contains('hidden'),speed:game?._dwell})};
 })();
