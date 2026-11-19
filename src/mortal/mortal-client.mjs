@@ -2,7 +2,7 @@
  * Reads ONLY the human's visible Majiang game messages.
  * Does not transmit hands, rounds, scores, ONNX weights, or private identifiers.
  */
-import {MortalMjaiBridge,toMjai} from './mjai-bridge.mjs?v=2561';
+import {MortalMjaiBridge,toMjai} from './mjai-bridge.mjs?v=2601';
 import initEncoder from '../../assets/mortal/encoder.js';
 
 const EXPECTED_HASH='30381bf21389e2d25d3edf48fed11bf772336ef3daeee67d1bdae7fb9dd30cb4';
@@ -222,6 +222,7 @@ export class MortalClient {
         this.evaluate(this.lastEligiblePhase);
         return;
       }
+      if(typeof data?.id==='string'&&data.id.startsWith('cpu-'))return; // CPU requests have dedicated listeners
       if(data?.type==='error'){
         this.status('S42推論エラー：'+String(data.reason||'内部エラー').slice(0,120));
         this.pending.delete(data.id);return;
