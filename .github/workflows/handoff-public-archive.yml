@@ -1,0 +1,35 @@
+name: Handoff archive - public frozen models
+on:
+  push:
+    branches: [project-handoff]
+    paths:
+      - handoff/state.json
+      - handoff/archive_public.py
+      - .github/workflows/handoff-public-archive.yml
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: project-handoff-archive
+  cancel-in-progress: false
+jobs:
+  archive:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: project-handoff
+      - name: Verify and preserve already-public frozen weights
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python handoff/archive_public.py
+      - name: Commit immutable archive on checkpoint branch
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add archive/
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Archive verified public frozen models and benchmark summary"
+          git push origin HEAD:project-handoff

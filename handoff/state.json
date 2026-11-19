@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "checkpoint": "2026-11-19",
+  "repository": "nm0137nm-blip/mahjong-lab",
+  "production": {
+    "ref": "main",
+    "sha": "4328f6099ba8438d94b51dbae034c16a9b0583de",
+    "coach_candidate_promoted": false
+  },
+  "active_task": {
+    "status": "running_at_checkpoint",
+    "branch": "feat/coach-belief-arena-v1",
+    "commit": "6f52cca3d15759641a7d130474ad878ba2458d98",
+    "pr": 27,
+    "run_id": 44534374699,
+    "protocol": "tests/arena/belief-protocol-v1.json",
+    "evaluator": "tests/arena/evaluate-belief.py",
+    "sample_size": 400,
+    "arms": [
+      "learned",
+      "belief"
+    ],
+    "opponents": [
+      "s42",
+      "basic"
+    ],
+    "pilot_seeds": [
+      1,
+      2
+    ],
+    "prospective_seeds": [
+      6,
+      105
+    ],
+    "scope": "ordinary discard only; shared reaction and special policies",
+    "next": "verify complete fixed sample; archive results and request independent review before changing strategy"
+  },
+  "previous_runs": [
+    {
+      "run_id": 44518315545,
+      "commit": "4522d01112cae91d5904054c551c40bbecbce8df",
+      "status": "completed_success",
+      "sample": 300,
+      "summary_artifact_id": 14533213685
+    },
+    {
+      "run_id": 44528000967,
+      "commit": "02354122d28dfcdd48f4af9170cd39f2be25816c",
+      "status": "failed_shard_no_final_summary"
+    }
+  ],
+  "models": [
+    {
+      "id": "policy-200-lgb-v1",
+      "status": "reference_not_promoted",
+      "train_matches": 200,
+      "source_run": 44516873939,
+      "artifact_id": 14525323982,
+      "zip_sha256": "147a6d90feed7c34a67bd057fa196875d74ed0e300fdf0e842503a9ed7d83587",
+      "expires_at": "2026-12-19T11:41:42Z",
+      "archive_target": "archive/versions/policy-200-lgb-v1",
+      "hashes": {
+        "pure": "b4ff0a420061b1202e0d7717c7cdea4d6ef7ac0971fff45e0e70f1a49da8edd8",
+        "reaction": "11d5699e20319f23040a9e7584e25179615ca8228089de0dce38c527dd7aa42f",
+        "special": "0617e41120d1918d69302bf564d294659692e4c35d2a8015c162d003b94a2ff5"
+      }
+    },
+    {
+      "id": "belief-120-ab-v1",
+      "status": "candidate",
+      "train_matches": 120,
+      "source_run": 44534374699,
+      "artifact_id": 14535192393,
+      "zip_sha256": "1fae18516ee5a15b4597e210837061e3c4e0d53a4e04a1188b79726a3c45a651",
+      "expires_at": "2026-12-19T13:33:40Z",
+      "archive_target": "archive/versions/belief-120-ab-v1",
+      "hashes": {
+        "t": "4b6325559cbcf5fe45145eccfd938d0e68c2c5e2bc1de9985378fae2cb2e5f0a",
+        "r": "1028569ef3889c8b86c1085fecd3fe8789ec284a5b56b9a2cae6d946c8e98fa9",
+        "learned": "b10b2b7f8d772e37a459695984eb8abed075c760cc5c0e3e9fafee782d01fc2a",
+        "belief": "2fdd84eaf6f228b7156ea9380f939e1a09f89f9df9a32f80f3257be8bbd290a3"
+      }
+    }
+  ],
+  "archive_policy": {
+    "public_only": true,
+    "raw_private_data": false,
+    "status": "pending_verification"
+  },
+  "limits": [
+    "model files alone not full training-data archive",
+    "do not assume historical artifacts survive expiration",
+    "no skill claim from incomplete samples"
+  ]
+}
