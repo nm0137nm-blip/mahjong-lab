@@ -1,4 +1,4 @@
-name: Coach belief arena v1 - frozen A/B smoke
+name: Coach belief arena v1 - frozen A/B fixed 100 pairs
 on:
   pull_request:
     branches: [feat/coach-arena-threeway-v2]
@@ -86,4 +86,116 @@ jobs:
         with:
           name: belief-smoke-${{ matrix.opponents }}-${{ matrix.first }}
           path: /tmp/arena-results/paired-*.json
+          retention-days: 30
+ 
+  smoke-gate:
+    needs: smoke
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: belief-smoke-*
+          path: /tmp/belief-arena
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - name: Verify all assigned pairs and summarize
+        run: |
+          set -euo pipefail
+          python -m pip install numpy==2.3.5
+          python tests/arena/evaluate-belief.py smoke /tmp/belief-arena | tee /tmp/belief-smoke-results.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: belief-smoke-summary
+          path: /tmp/belief-smoke-results.json
+          retention-days: 30
+  prospective:
+    needs: smoke-gate
+    runs-on: ubuntu-24.04
+    timeout-minutes: 55
+    strategy:
+      fail-fast: false
+      max-parallel: 5
+      matrix:
+        opponents: [s42, basic]
+        first: [6, 11, 16, 21, 26, 31, 36, 41, 46, 51, 56, 61, 66, 71, 76, 81, 86, 91, 96, 101]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          path: lab
+      - uses: actions/download-artifact@v4
+        with:
+          name: belief-frozen-120
+          path: /tmp/belief-model
+      - uses: actions/download-artifact@v4
+        with:
+          name: arena-frozen-200-policy
+          path: /tmp/arena-model
+          run-id: '44516873939'
+          github-token: ${{ github.token }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - name: Install verified runtimes
+        run: |
+          set -euo pipefail
+          python -m pip install numpy==2.3.5 lightgbm==4.6.0 scikit-learn==1.8.0 requests
+          mv lab /tmp/lab
+          node --check /tmp/lab/tests/arena/run-belief-s42.cjs
+          node --check /tmp/lab/tests/arena/run-belief-basic.cjs
+          node --test /tmp/lab/tests/mortal-cpu.test.mjs
+          curl --fail --location --retry 2 --silent --show-error --max-time 160 'https://huggingface.co/xzhe121/Mortal-S42-onnx/resolve/main/model.onnx' -o /tmp/lab/tests/mortal/model.onnx
+          echo '30381bf21389e2d25d3edf48fed11bf772336ef3daeee67d1bdae7fb9dd30cb4  /tmp/lab/tests/mortal/model.onnx' | sha256sum --check
+          mkdir -p /tmp/probe && cd /tmp/probe
+          npm init -y >/dev/null
+          npm install --ignore-scripts --no-audit --no-fund playwright@1.57.0 >/dev/null
+          npx playwright install chromium
+      - name: Run five fixed starting-seed pairs
+        env:
+          COACH_ARENA_QA: '1'
+          ARENA_FIRST: ${{ matrix.first }}
+          OPPONENTS: ${{ matrix.opponents }}
+        run: |
+          set -euo pipefail
+          (cd /tmp/lab && python3 -m http.server 8788 --bind 127.0.0.1 >/tmp/http-log 2>&1) &
+          sleep 2
+          cp /tmp/lab/index.html /tmp/arena-index-original
+          cp /tmp/lab/src/coach/phoenix-coach.mjs /tmp/arena-coach-original
+          for ((p=ARENA_FIRST;p<ARENA_FIRST+5;p++)); do
+            cp /tmp/arena-index-original /tmp/lab/index.html
+            cp /tmp/arena-coach-original /tmp/lab/src/coach/phoenix-coach.mjs
+            ARENA_PAIR="$p" node "/tmp/lab/tests/arena/run-belief-${OPPONENTS}.cjs"
+          done
+      - uses: actions/upload-artifact@v4
+        with:
+          name: belief-prospective-${{ matrix.opponents }}-${{ matrix.first }}
+          path: /tmp/arena-results/paired-*.json
+          retention-days: 30
+  summarize:
+    needs: prospective
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: belief-prospective-*
+          path: /tmp/belief-arena
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - name: Verify all assigned pairs and summarize
+        run: |
+          set -euo pipefail
+          python -m pip install numpy==2.3.5
+          python tests/arena/evaluate-belief.py prospective /tmp/belief-arena | tee /tmp/belief-prospective-results.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: belief-prospective-summary
+          path: /tmp/belief-prospective-results.json
           retention-days: 30

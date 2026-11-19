@@ -44,7 +44,7 @@ async function infer(q,policy){
   await page.addInitScript(()=>{let x=1;window.__qaSetSeed=n=>{x=n>>>0;};Math.random=()=>{x=(Math.imul(x,1664525)+1013904223)>>>0;return x/4294967296;};});
   await page.goto('http://127.0.0.1:8788/index.html',{waitUntil:'load'});
   await page.locator('#mortalModelFile').setInputFiles('/tmp/lab/tests/mortal/model.onnx');
-  await page.waitForFunction(()=>MahjongLabS42Debug().ready,null,null,{timeout:120000});
+  await page.waitForFunction(()=>MahjongLabS42Debug().ready,null,{timeout:120000});
   const rows=[];
   const arms=['learned','belief'];const ordered=arms.slice(shard%2).concat(arms.slice(0,shard%2));
   for(const policy of ordered){
@@ -54,7 +54,7 @@ async function infer(q,policy){
    await page.locator('input[name="length"][value="2"]').check();
    await page.locator('input[name="recordMode"][value="practice"]').check();
    await page.locator('#startBtn').click();
-   await page.waitForFunction(()=>MahjongLabArenaOpponentAudit().length===3,null,null,{timeout:10000});
+   await page.waitForFunction(()=>MahjongLabArenaOpponentAudit().length===3,null,{timeout:10000});
    await page.evaluate(async policy=>{MahjongLabDebug.testDwell(0);await MahjongLabArenaStart(policy);},policy);
    let last='',lastAt=Date.now();
    for(let i=0;i<22000;i++){
@@ -73,8 +73,8 @@ async function infer(q,policy){
     }
     await page.waitForTimeout(30);
    }
-   await page.waitForFunction(()=>MahjongLabDebug.state().finished,null,null,{timeout:5000});
-   await page.waitForFunction(()=>MahjongLabS42Debug().pending===0,null,null,{timeout:120000});
+   await page.waitForFunction(()=>MahjongLabDebug.state().finished,null,{timeout:5000});
+   await page.waitForFunction(()=>MahjongLabS42Debug().pending===0,null,{timeout:120000});
    const row=await page.evaluate(()=>MahjongLabArenaResult());
    if(policy==='basic'&&(!row.standardAudit||row.standardAudit.invalid||row.standardAudit.actions!==row.decisions))throw Error('standard CPU audit failed');
    if(errors.length||!row.decisions||row.opponentAudit.length!==3||row.opponentAudit.some(c=>c.invalid||!c.actions))throw Error('invalid arena result '+JSON.stringify({errors,row}));

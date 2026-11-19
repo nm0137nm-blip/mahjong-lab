@@ -1,0 +1,36 @@
+{
+  "version": "belief-arena-v1",
+  "experiment": "120-game identical ranker training with vs without frozen 10 belief features; shared 200-game reaction and special",
+  "model_hashes": {
+    "t": "4b6325559cbcf5fe45145eccfd938d0e68c2c5e2bc1de9985378fae2cb2e5f0a",
+    "r": "1028569ef3889c8b86c1085fecd3fe8789ec284a5b56b9a2cae6d946c8e98fa9",
+    "learned": "b10b2b7f8d772e37a459695984eb8abed075c760cc5c0e3e9fafee782d01fc2a",
+    "belief": "2fdd84eaf6f228b7156ea9380f939e1a09f89f9df9a32f80f3257be8bbd290a3"
+  },
+  "opponents": [
+    "s42",
+    "basic"
+  ],
+  "pilot": [
+    1,
+    2
+  ],
+  "prospective": [
+    6,
+    105
+  ],
+  "sample_size_per_opponent": 100,
+  "total_half_games": 400,
+  "primary": "paired mean rank utility difference belief minus learned vs S42",
+  "utility": [
+    90,
+    45,
+    0,
+    -135
+  ],
+  "secondary": "basic comparison, mean rank, last rate, win rate, deal-in rate, score",
+  "seed_rule": "uint32le(sha256(coach-belief-arena-v1:<pair>)[0:4]) or 1",
+  "uncertainty": "20000 paired bootstrap draws fixed RNG seed 261120; pools analyzed separately",
+  "gate": "all pairs, hashes, legal actions, no fallback, counts verify use of belief, no exclusions or model changes",
+  "limitations": "only ordinary discards use learned belief; same initial seed not identical wall progression after divergent actions; no claim about human rank; previous A/B smoke used only to diagnose runtime."
+}
