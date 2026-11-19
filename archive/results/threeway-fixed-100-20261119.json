@@ -1,0 +1,94 @@
+{
+  "learned": {
+    "n": 100,
+    "mean_rank": 2.84,
+    "rank_rates": [
+      0.18,
+      0.19,
+      0.24,
+      0.39
+    ],
+    "mean_score": 21134.0,
+    "custom_rank_utility": -27.9,
+    "win_rate": 0.20752984389348025,
+    "deal_in_rate": 0.15794306703397612,
+    "hands": 1089
+  },
+  "basic": {
+    "n": 100,
+    "mean_rank": 2.65,
+    "rank_rates": [
+      0.23,
+      0.23,
+      0.2,
+      0.34
+    ],
+    "mean_score": 22869.0,
+    "custom_rank_utility": -14.85,
+    "win_rate": 0.22305529522024367,
+    "deal_in_rate": 0.16026241799437677,
+    "hands": 1067
+  },
+  "s42": {
+    "n": 100,
+    "mean_rank": 2.36,
+    "rank_rates": [
+      0.3,
+      0.22,
+      0.3,
+      0.18
+    ],
+    "mean_score": 27485.0,
+    "custom_rank_utility": 12.6,
+    "win_rate": 0.2290351668169522,
+    "deal_in_rate": 0.11812443642921551,
+    "hands": 1109
+  },
+  "learned_minus_s42": {
+    "custom_rank_utility": {
+      "mean": -40.5,
+      "ci95": [
+        -63.0,
+        -18.45
+      ]
+    },
+    "rank": {
+      "mean": 0.48,
+      "ci95": [
+        0.19,
+        0.78
+      ]
+    },
+    "last_rate": {
+      "mean": 0.21,
+      "ci95": [
+        0.1,
+        0.32
+      ]
+    }
+  },
+  "learned_minus_basic": {
+    "custom_rank_utility": {
+      "mean": -13.05,
+      "ci95": [
+        -39.15,
+        13.5
+      ]
+    },
+    "rank": {
+      "mean": 0.19,
+      "ci95": [
+        -0.13,
+        0.51
+      ]
+    },
+    "last_rate": {
+      "mean": 0.05,
+      "ci95": [
+        -0.1,
+        0.2
+      ]
+    }
+  },
+  "interpretation": "Fixed 100 independent seed triples; exploratory estimate. Primary: paired custom rank utility versus all-S42 table; standard CPU comparison is secondary. No optional stopping. Custom utility is not official Tenhou points."
+}
