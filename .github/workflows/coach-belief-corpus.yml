@@ -1,0 +1,193 @@
+name: Coach belief corpus v1 - gated expansion
+on:
+  pull_request:
+    branches: [feat/phase259-scale-corpus]
+    paths:
+      - .github/workflows/coach-belief-corpus.yml
+      - tests/mortal/run-coach-belief-corpus.cjs
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: coach-belief-v1-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: false
+jobs:
+  pilot:
+    if: github.event_name != 'pull_request' || github.head_ref == 'feat/coach-belief-corpus-v1'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      matrix:
+        include:
+          - cohort: pilot-00
+            seed: 271900001
+            count: 2
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          path: lab
+      - name: Validate benchmark logic
+        run: node --test lab/tests/coach-s42-benchmark.test.mjs lab/tests/coach-shape-evidence.test.mjs lab/tests/coach-runtime.test.mjs
+      - name: Fetch verified public checkpoint
+        run: |
+          set -euo pipefail
+          mv lab /tmp/lab
+          curl --fail --location --retry 2 --silent --show-error --max-time 160 'https://huggingface.co/xzhe121/Mortal-S42-onnx/resolve/main/model.onnx' -o /tmp/lab/tests/mortal/model.onnx
+          echo '30381bf21389e2d25d3edf48fed11bf772336ef3daeee67d1bdae7fb9dd30cb4  /tmp/lab/tests/mortal/model.onnx' | sha256sum --check
+          mkdir -p /tmp/probe && cd /tmp/probe
+          npm init -y >/dev/null
+          npm install --ignore-scripts --no-audit --no-fund playwright-core@1.57.0 >/dev/null
+      - name: Collect independently seeded QA games
+        env:
+          COACH_MATCH_COUNT: "${{ matrix.count }}" 
+          COACH_BELIEF_LOCAL_QA: "1"
+          COACH_CONTRAST: "0"
+          COACH_PER_MATCH_SEED: "1"
+          COACH_CODE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+          COACH_COHORT: ${{ matrix.cohort }}
+          COACH_SEED: ${{ matrix.seed }}
+        run: |
+          set -euo pipefail
+          (cd /tmp/lab && python3 -m http.server 8788 --bind 127.0.0.1 >/tmp/http-log 2>&1) &
+          sleep 2
+          node /tmp/lab/tests/mortal/run-coach-belief-corpus.cjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: belief-${{ matrix.cohort }}-questions
+          retention-days: 30
+          path: /tmp/coach-bench/blind.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: belief-${{ matrix.cohort }}-reference
+          retention-days: 30
+          path: /tmp/coach-bench/reference.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: belief-${{ matrix.cohort }}-manifest
+          path: /tmp/coach-bench/manifest.json
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        with:
+          name: belief-${{ matrix.cohort }}-teacher
+          retention-days: 30
+          path: /tmp/coach-bench/belief-teacher.json
+  expansion:
+    needs: pilot
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      max-parallel: 5
+      matrix:
+        include:
+          - cohort: train-01
+            seed: 270000001
+            count: 10
+          - cohort: train-02
+            seed: 270010001
+            count: 10
+          - cohort: train-03
+            seed: 270020001
+            count: 10
+          - cohort: train-04
+            seed: 270030001
+            count: 10
+          - cohort: train-05
+            seed: 270040001
+            count: 10
+          - cohort: train-06
+            seed: 270050001
+            count: 10
+          - cohort: train-07
+            seed: 270060001
+            count: 10
+          - cohort: train-08
+            seed: 270070001
+            count: 10
+          - cohort: train-09
+            seed: 270080001
+            count: 10
+          - cohort: train-10
+            seed: 270090001
+            count: 10
+          - cohort: train-11
+            seed: 270100001
+            count: 10
+          - cohort: train-12
+            seed: 270110001
+            count: 10
+          - cohort: train-13
+            seed: 270120001
+            count: 10
+          - cohort: train-14
+            seed: 270130001
+            count: 10
+          - cohort: train-15
+            seed: 270140001
+            count: 10
+          - cohort: train-16
+            seed: 270150001
+            count: 10
+          - cohort: development-17
+            seed: 270160001
+            count: 10
+          - cohort: development-18
+            seed: 270170001
+            count: 10
+          - cohort: development-19
+            seed: 270180001
+            count: 10
+          - cohort: development-20
+            seed: 270190001
+            count: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          path: lab
+      - name: Validate benchmark logic
+        run: node --test lab/tests/coach-s42-benchmark.test.mjs lab/tests/coach-shape-evidence.test.mjs lab/tests/coach-runtime.test.mjs
+      - name: Fetch verified public checkpoint
+        run: |
+          set -euo pipefail
+          mv lab /tmp/lab
+          curl --fail --location --retry 2 --silent --show-error --max-time 160 'https://huggingface.co/xzhe121/Mortal-S42-onnx/resolve/main/model.onnx' -o /tmp/lab/tests/mortal/model.onnx
+          echo '30381bf21389e2d25d3edf48fed11bf772336ef3daeee67d1bdae7fb9dd30cb4  /tmp/lab/tests/mortal/model.onnx' | sha256sum --check
+          mkdir -p /tmp/probe && cd /tmp/probe
+          npm init -y >/dev/null
+          npm install --ignore-scripts --no-audit --no-fund playwright-core@1.57.0 >/dev/null
+      - name: Collect independently seeded QA games
+        env:
+          COACH_MATCH_COUNT: "${{ matrix.count }}" 
+          COACH_BELIEF_LOCAL_QA: "1"
+          COACH_CONTRAST: "0"
+          COACH_PER_MATCH_SEED: "1"
+          COACH_CODE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+          COACH_COHORT: ${{ matrix.cohort }}
+          COACH_SEED: ${{ matrix.seed }}
+        run: |
+          set -euo pipefail
+          (cd /tmp/lab && python3 -m http.server 8788 --bind 127.0.0.1 >/tmp/http-log 2>&1) &
+          sleep 2
+          node /tmp/lab/tests/mortal/run-coach-belief-corpus.cjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: belief-${{ matrix.cohort }}-questions
+          retention-days: 30
+          path: /tmp/coach-bench/blind.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: belief-${{ matrix.cohort }}-reference
+          retention-days: 30
+          path: /tmp/coach-bench/reference.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: belief-${{ matrix.cohort }}-manifest
+          path: /tmp/coach-bench/manifest.json
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        with:
+          name: belief-${{ matrix.cohort }}-teacher
+          retention-days: 30
+          path: /tmp/coach-bench/belief-teacher.json
