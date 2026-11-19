@@ -1,7 +1,7 @@
 name: Coach arena - learned and S42 vs standard CPU
 on:
   pull_request:
-    branches: [feat/coach-arena-basicopp-v2]
+    branches: [feat/coach-arena-threeway-v2]
     paths:
       - tests/arena/**
       - .github/workflows/coach-arena-basic-opponents-v1.yml
