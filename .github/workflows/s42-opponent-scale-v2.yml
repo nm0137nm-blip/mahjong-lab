@@ -1,0 +1,134 @@
+name: S42 opponent corpus scale v2 (100 games)
+on:
+  pull_request:
+    branches: [feat/mortal-cpu-selfplay-pilot]
+    paths:
+      - .github/workflows/s42-opponent-scale-v2.yml
+      - tests/mortal/run-s42-opponent-corpus.cjs
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: s42-scale-v2-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  corpus:
+    if: github.event_name != 'pull_request' || github.head_ref == 'feat/s42-opponent-scale-v2'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      max-parallel: 5
+      matrix:
+        include:
+          - shard: 1
+            split: train
+            policy: s42
+          - shard: 2
+            split: train
+            policy: s42
+          - shard: 3
+            split: train
+            policy: s42
+          - shard: 4
+            split: train
+            policy: efficiency
+          - shard: 5
+            split: train
+            policy: s42
+          - shard: 6
+            split: train
+            policy: s42
+          - shard: 7
+            split: train
+            policy: s42
+          - shard: 8
+            split: train
+            policy: efficiency
+          - shard: 9
+            split: train
+            policy: s42
+          - shard: 10
+            split: train
+            policy: s42
+          - shard: 11
+            split: train
+            policy: s42
+          - shard: 12
+            split: train
+            policy: efficiency
+          - shard: 13
+            split: train
+            policy: s42
+          - shard: 14
+            split: train
+            policy: s42
+          - shard: 15
+            split: train
+            policy: s42
+          - shard: 16
+            split: train
+            policy: efficiency
+          - shard: 17
+            split: development
+            policy: s42
+          - shard: 18
+            split: development
+            policy: s42
+          - shard: 19
+            split: development
+            policy: s42
+          - shard: 20
+            split: development
+            policy: efficiency
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          path: lab
+      - name: Verify CPU unit tests and JS syntax
+        run: |
+          node --test lab/tests/mortal-cpu.test.mjs
+          node --check lab/tests/mortal/run-s42-opponent-corpus.cjs
+      - name: Fetch verified S42 and install browser
+        run: |
+          set -euo pipefail
+          mv lab /tmp/lab
+          curl --fail --location --retry 2 --silent --show-error --max-time 160 'https://huggingface.co/xzhe121/Mortal-S42-onnx/resolve/main/model.onnx' -o /tmp/lab/tests/mortal/model.onnx
+          echo '30381bf21389e2d25d3edf48fed11bf772336ef3daeee67d1bdae7fb9dd30cb4  /tmp/lab/tests/mortal/model.onnx' | sha256sum --check
+          mkdir -p /tmp/probe && cd /tmp/probe
+          npm init -y >/dev/null
+          npm install --ignore-scripts --no-audit --no-fund playwright@1.57.0 >/dev/null
+          npx playwright install chromium
+      - name: Simulate and separate public features / labels
+        env:
+          S42_SELFPLAY_QA: "1"
+          S42_SHARD: ${{ matrix.shard }}
+          S42_SPLIT: ${{ matrix.split }}
+          S42_POLICY: ${{ matrix.policy }}
+          S42_CODE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          set -euo pipefail
+          (cd /tmp/lab && python3 -m http.server 8788 --bind 127.0.0.1 >/tmp/http-log 2>&1) &
+          sleep 2
+          node /tmp/lab/tests/mortal/run-s42-opponent-corpus.cjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: s42v2-${{ matrix.split }}-${{ matrix.shard }}-questions
+          retention-days: 30
+          path: /tmp/s42-corpus/questions.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: s42v2-${{ matrix.split }}-${{ matrix.shard }}-reference
+          retention-days: 30
+          path: /tmp/s42-corpus/reference.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: s42v2-${{ matrix.split }}-${{ matrix.shard }}-teacher
+          retention-days: 30
+          path: /tmp/s42-corpus/teacher.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: s42v2-${{ matrix.split }}-${{ matrix.shard }}-manifest
+          retention-days: 30
+          path: /tmp/s42-corpus/manifest.json
