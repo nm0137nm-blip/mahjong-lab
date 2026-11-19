@@ -155,6 +155,6 @@ if(!Number.isInteger(shard)||shard<0||shard>100||!['s42','efficiency'].includes(
   fs.writeFileSync('/tmp/s42-corpus/questions.json',JSON.stringify({items:all.questions}));
   fs.writeFileSync('/tmp/s42-corpus/reference.json',JSON.stringify(all.reference));
   fs.writeFileSync('/tmp/s42-corpus/teacher.json',JSON.stringify(all.teacher));
-  fs.writeFileSync('/tmp/s42-corpus/manifest.json',JSON.stringify({shard,policy,split:'development-pilot-only',codeSha:process.env.GITHUB_SHA,modelSha:'30381bf21389e2d25d3edf48fed11bf772336ef3daeee67d1bdae7fb9dd30cb4',matches:all.matches},null,2));
+  fs.writeFileSync('/tmp/s42-corpus/manifest.json',JSON.stringify({shard,policy,split:'development-pilot-only',codeSha:process.env.S42_CODE_SHA,modelSha:'30381bf21389e2d25d3edf48fed11bf772336ef3daeee67d1bdae7fb9dd30cb4',matches:all.matches},null,2));
  }finally{await browser.close();}
 })().catch(e=>{console.error(e);process.exit(1)});
