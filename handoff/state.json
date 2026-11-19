@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-19",
+  "checkpoint": "2026-11-19T23:38:19+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -8,7 +8,7 @@
     "coach_candidate_promoted": false
   },
   "active_task": {
-    "status": "running_at_checkpoint",
+    "status": "completed_success_pending_independent_review",
     "branch": "feat/coach-belief-arena-v1",
     "commit": "6f52cca3d15759641a7d130474ad878ba2458d98",
     "pr": 27,
@@ -33,7 +33,131 @@
       105
     ],
     "scope": "ordinary discard only; shared reaction and special policies",
-    "next": "verify complete fixed sample; archive results and request independent review before changing strategy"
+    "next": "Prepare independent third-party review; no strategy modification before review",
+    "result_path": "archive/results/belief-arena-fixed-100-pairs-20261119.json",
+    "summary_artifact_id": 14540671183,
+    "run_attempt": 2,
+    "retry_note": "Two basic opponent initialization timeouts; both rerun successfully at same commit, all assigned seeds complete, no omissions.",
+    "results": {
+      "basic": {
+        "learned": {
+          "n": 100,
+          "mean_rank": 2.62,
+          "rank_rates": [
+            0.22,
+            0.24,
+            0.24,
+            0.3
+          ],
+          "mean_score": 23723,
+          "custom_rank_utility": -9.9,
+          "win_rate": 0.2144212523719165,
+          "deal_in_rate": 0.1347248576850095,
+          "hands": 1054,
+          "pure_calls": 10852,
+          "belief_calls": 0
+        },
+        "belief": {
+          "n": 100,
+          "mean_rank": 2.56,
+          "rank_rates": [
+            0.23,
+            0.26,
+            0.23,
+            0.28
+          ],
+          "mean_score": 23979,
+          "custom_rank_utility": -5.4,
+          "win_rate": 0.20585457979225685,
+          "deal_in_rate": 0.13220018885741266,
+          "hands": 1059,
+          "pure_calls": 10730,
+          "belief_calls": 10730
+        },
+        "belief_minus_learned": {
+          "custom_rank_utility": {
+            "mean": 4.5,
+            "ci95": [
+              -11.25,
+              20.7
+            ]
+          },
+          "rank": {
+            "mean": -0.06,
+            "ci95": [
+              -0.26,
+              0.14
+            ]
+          },
+          "last_rate": {
+            "mean": -0.02,
+            "ci95": [
+              -0.11,
+              0.07
+            ]
+          }
+        }
+      },
+      "s42": {
+        "learned": {
+          "n": 100,
+          "mean_rank": 2.92,
+          "rank_rates": [
+            0.14,
+            0.21,
+            0.24,
+            0.41
+          ],
+          "mean_score": 19250,
+          "custom_rank_utility": -33.3,
+          "win_rate": 0.19309701492537312,
+          "deal_in_rate": 0.1707089552238806,
+          "hands": 1072,
+          "pure_calls": 11052,
+          "belief_calls": 0
+        },
+        "belief": {
+          "n": 100,
+          "mean_rank": 2.81,
+          "rank_rates": [
+            0.14,
+            0.29,
+            0.19,
+            0.38
+          ],
+          "mean_score": 19910,
+          "custom_rank_utility": -25.65,
+          "win_rate": 0.1933395004625347,
+          "deal_in_rate": 0.17668825161887142,
+          "hands": 1081,
+          "pure_calls": 11070,
+          "belief_calls": 11070
+        },
+        "belief_minus_learned": {
+          "custom_rank_utility": {
+            "mean": 7.65,
+            "ci95": [
+              -9,
+              24.75
+            ]
+          },
+          "rank": {
+            "mean": -0.11,
+            "ci95": [
+              -0.31,
+              0.08024999999997817
+            ]
+          },
+          "last_rate": {
+            "mean": -0.03,
+            "ci95": [
+              -0.13,
+              0.07
+            ]
+          }
+        }
+      }
+    }
   },
   "previous_runs": [
     {
@@ -85,7 +209,7 @@
   "archive_policy": {
     "public_only": true,
     "raw_private_data": false,
-    "status": "pending_verification"
+    "status": "verified_frozen_models_and_summaries_present"
   },
   "limits": [
     "model files alone not full training-data archive",

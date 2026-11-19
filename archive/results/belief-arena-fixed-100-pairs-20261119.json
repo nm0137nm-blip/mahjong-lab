@@ -1,0 +1,126 @@
+{
+  "split": "prospective",
+  "primary": "S42 opponent paired custom rank utility difference",
+  "secondary": "basic opponent comparison and other metrics",
+  "interpretation": "Fixed 100 matched seed pairs per opponent type. Same seeds across pools, analyze separately; not official Tenhou points. No optional stopping or pilot pooling.",
+  "results": {
+    "basic": {
+      "learned": {
+        "n": 100,
+        "mean_rank": 2.62,
+        "rank_rates": [
+          0.22,
+          0.24,
+          0.24,
+          0.3
+        ],
+        "mean_score": 23723,
+        "custom_rank_utility": -9.9,
+        "win_rate": 0.2144212523719165,
+        "deal_in_rate": 0.1347248576850095,
+        "hands": 1054,
+        "pure_calls": 10852,
+        "belief_calls": 0
+      },
+      "belief": {
+        "n": 100,
+        "mean_rank": 2.56,
+        "rank_rates": [
+          0.23,
+          0.26,
+          0.23,
+          0.28
+        ],
+        "mean_score": 23979,
+        "custom_rank_utility": -5.4,
+        "win_rate": 0.20585457979225685,
+        "deal_in_rate": 0.13220018885741266,
+        "hands": 1059,
+        "pure_calls": 10730,
+        "belief_calls": 10730
+      },
+      "belief_minus_learned": {
+        "custom_rank_utility": {
+          "mean": 4.5,
+          "ci95": [
+            -11.25,
+            20.7
+          ]
+        },
+        "rank": {
+          "mean": -0.06,
+          "ci95": [
+            -0.26,
+            0.14
+          ]
+        },
+        "last_rate": {
+          "mean": -0.02,
+          "ci95": [
+            -0.11,
+            0.07
+          ]
+        }
+      }
+    },
+    "s42": {
+      "learned": {
+        "n": 100,
+        "mean_rank": 2.92,
+        "rank_rates": [
+          0.14,
+          0.21,
+          0.24,
+          0.41
+        ],
+        "mean_score": 19250,
+        "custom_rank_utility": -33.3,
+        "win_rate": 0.19309701492537312,
+        "deal_in_rate": 0.1707089552238806,
+        "hands": 1072,
+        "pure_calls": 11052,
+        "belief_calls": 0
+      },
+      "belief": {
+        "n": 100,
+        "mean_rank": 2.81,
+        "rank_rates": [
+          0.14,
+          0.29,
+          0.19,
+          0.38
+        ],
+        "mean_score": 19910,
+        "custom_rank_utility": -25.65,
+        "win_rate": 0.1933395004625347,
+        "deal_in_rate": 0.17668825161887142,
+        "hands": 1081,
+        "pure_calls": 11070,
+        "belief_calls": 11070
+      },
+      "belief_minus_learned": {
+        "custom_rank_utility": {
+          "mean": 7.65,
+          "ci95": [
+            -9,
+            24.75
+          ]
+        },
+        "rank": {
+          "mean": -0.11,
+          "ci95": [
+            -0.31,
+            0.08024999999997817
+          ]
+        },
+        "last_rate": {
+          "mean": -0.03,
+          "ci95": [
+            -0.13,
+            0.07
+          ]
+        }
+      }
+    }
+  }
+}
