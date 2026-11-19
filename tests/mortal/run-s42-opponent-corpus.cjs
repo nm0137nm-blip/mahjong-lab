@@ -105,6 +105,9 @@ replaceOnce('win: this.allow_hule(this.shoupai), nine:', 'win: this.allow_hule(t
 fs.writeFileSync(htmlPath,html);
 const shard=Number(process.env.S42_SHARD||0);
 const policy=process.env.S42_POLICY||'s42';
+const split=process.env.S42_SPLIT;
+if(!['train','development'].includes(split)||shard<1||shard>20||(shard<=16)!==(split==='train'))throw Error('fixed split registry mismatch');
+const count=5;
 if(!Number.isInteger(shard)||shard<0||shard>100||!['s42','efficiency'].includes(policy))throw Error('bad shard settings');
 (async()=>{
  const browser=await chromium.launch({headless:true,args:['--no-sandbox','--disable-dev-shm-usage']});
@@ -116,9 +119,9 @@ if(!Number.isInteger(shard)||shard<0||shard>100||!['s42','efficiency'].includes(
   await page.locator('#mortalModelFile').setInputFiles('/tmp/lab/tests/mortal/model.onnx');
   await page.waitForFunction(()=>MahjongLabS42Debug().ready,{timeout:120000});
   const all={questions:[],reference:[],teacher:[],matches:[]};
-  for(let g=0;g<2;g++){
-   const seed=crypto.createHash('sha256').update('s42-opponents-v1:'+shard+':'+g).digest().readUInt32LE(0)||1;
-   const prefix='s42op-v1-'+seed;
+  for(let g=0;g<count;g++){
+   const seed=crypto.createHash('sha256').update('s42-opponents-v2:'+shard+':'+g).digest().readUInt32LE(0)||1;
+   const prefix='s42op-v2-'+seed;
    await page.evaluate(seed=>__qaSetSeed(seed),seed);
    await page.locator('input[name="cpuMode"][value="s42"]').check();
    await page.locator('input[name="length"][value="2"]').check();
@@ -149,12 +152,12 @@ if(!Number.isInteger(shard)||shard<0||shard>100||!['s42','efficiency'].includes(
    all.matches.push(m);console.log('S42_SELFPLAY_MATCH='+JSON.stringify(m));
    await page.locator('#homeBtn').click();
   }
-  if(new Set(all.questions.map(q=>q.id)).size!==all.questions.length||all.questions.length!==all.reference.length||all.matches.length!==2||all.teacher.length!==all.questions.filter(q=>q.phase==='turn').length)throw Error('dataset alignment');
+  if(new Set(all.questions.map(q=>q.id)).size!==all.questions.length||all.questions.length!==all.reference.length||all.matches.length!==count||new Set(all.matches.map(m=>m.seed)).size!==count||all.teacher.length!==all.questions.filter(q=>q.phase==='turn').length)throw Error('dataset alignment');
   if(all.questions.some((q,i)=>q.id!==all.reference[i].id))throw Error('misaligned Q labels');
   fs.mkdirSync('/tmp/s42-corpus',{recursive:true});
   fs.writeFileSync('/tmp/s42-corpus/questions.json',JSON.stringify({items:all.questions}));
   fs.writeFileSync('/tmp/s42-corpus/reference.json',JSON.stringify(all.reference));
   fs.writeFileSync('/tmp/s42-corpus/teacher.json',JSON.stringify(all.teacher));
-  fs.writeFileSync('/tmp/s42-corpus/manifest.json',JSON.stringify({shard,policy,split:'development-pilot-only',codeSha:process.env.S42_CODE_SHA,modelSha:'30381bf21389e2d25d3edf48fed11bf772336ef3daeee67d1bdae7fb9dd30cb4',matches:all.matches},null,2));
+  fs.writeFileSync('/tmp/s42-corpus/manifest.json',JSON.stringify({shard,policy,split,seedNamespace:'s42-opponents-v2',codeSha:process.env.S42_CODE_SHA,modelSha:'30381bf21389e2d25d3edf48fed11bf772336ef3daeee67d1bdae7fb9dd30cb4',matches:all.matches},null,2));
  }finally{await browser.close();}
 })().catch(e=>{console.error(e);process.exit(1)});
