@@ -27,6 +27,20 @@ function publicScene(v){
  initialOrder:v.initialOrder.slice(),pendingReach:!!v.pendingReach,
  publicEvents:v.publicEvents?.map(e=>e.種類==='ドラ表示追加'?{種類:e.種類,牌:e.牌}:['自摸','嶺上自摸'].includes(e.種類)?{種類:e.種類,席:e.席}:e.種類==='打牌'?{種類:e.種類,席:e.席,牌:e.牌,ツモ切り:!!e.ツモ切り,立直宣言:!!e.立直宣言}:{種類:e.種類,席:e.席,面子:e.面子})??null};
 }
+// Arena-only blind input builder: no opinion, Q, chosen action, hidden labels required or accepted.
+export function makePublicCase(entry,M,id){
+ if(!entry?.scene||entry.scene.snapshotVersion!==2||!entry.legalChoices)throw Error('missing public snapshot');
+ const opts=options(entry.legalChoices),scene=publicScene(entry.scene);
+ const candidates=(entry.candidates||[]).map(x=>({p:x.p,shanten:x.shanten,ukeire:x.ukeire,handTiles:x.handTiles?.slice(),melds:x.melds?.slice()}));
+ if(entry.legalChoices.phase==='turn'&&opts.some(o=>o.action<37&&!candidates.some(x=>actionForDiscard(x.p)===o.action)))throw Error('turn_candidate_missing');
+ const facts=buildEvidence({scene,candidates,legalChoices:entry.legalChoices},M);
+ if(!facts?.見え枚数)throw Error('invalid_visible_counts');
+ delete facts.二次変化の定義;
+ for(const c of facts.候補別牌姿||[])delete c.二連続向聴改善;
+ const out={id,phase:entry.legalChoices.phase,scene,actions:opts,facts};
+ if(out.phase==='reaction')out.reaction={from:entry.legalChoices.from,tile:entry.legalChoices.tile};
+ return out;
+}
 export function makeCase(entry,M,id){
  if(!entry?.scene||entry.scene.snapshotVersion!==2||entry.mortalDecision==null)return {excluded:'snapshot_or_decision_missing'};
  const op=entry.mortalOpinion;

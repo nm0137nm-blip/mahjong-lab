@@ -1,0 +1,88 @@
+name: Coach arena v1 - paired S42 pilot
+on:
+  pull_request:
+    branches: [feat/mortal-cpu-selfplay-pilot]
+    paths:
+      - tests/arena/**
+      - src/coach/s42-benchmark.mjs
+      - .github/workflows/coach-arena-v1.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  rebuild:
+    if: github.event_name != 'pull_request' || github.head_ref == 'feat/coach-arena-v1'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          path: lab
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - name: Reproduce frozen input and decision hashes
+        env:
+          GH_TOKEN: ${{ github.token }}
+          OMP_NUM_THREADS: '3'
+          OPENBLAS_NUM_THREADS: '1'
+        run: |
+          set -euo pipefail
+          python -m pip install numpy==2.3.5 lightgbm==4.6.0 scikit-learn==1.8.0 requests
+          python -m py_compile lab/tests/arena/policy_features.py lab/tests/arena/rebuild_policy.py lab/tests/arena/policy_rpc.py
+          node --check lab/tests/arena/run-arena.cjs
+          python lab/tests/arena/rebuild_policy.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: arena-frozen-200-policy
+          retention-days: 30
+          path: /tmp/arena-model/
+  paired:
+    needs: rebuild
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        pair: [1, 2, 3, 4, 5]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          path: lab
+      - uses: actions/download-artifact@v4
+        with:
+          name: arena-frozen-200-policy
+          path: /tmp/arena-model
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - name: Install local runtime and verified Mortal
+        run: |
+          set -euo pipefail
+          python -m pip install numpy==2.3.5 lightgbm==4.6.0 scikit-learn==1.8.0
+          mv lab /tmp/lab
+          node --test /tmp/lab/tests/mortal-cpu.test.mjs
+          curl --fail --location --retry 2 --silent --show-error --max-time 160 'https://huggingface.co/xzhe121/Mortal-S42-onnx/resolve/main/model.onnx' -o /tmp/lab/tests/mortal/model.onnx
+          echo '30381bf21389e2d25d3edf48fed11bf772336ef3daeee67d1bdae7fb9dd30cb4  /tmp/lab/tests/mortal/model.onnx' | sha256sum --check
+          mkdir -p /tmp/probe && cd /tmp/probe
+          npm init -y >/dev/null
+          npm install --ignore-scripts --no-audit --no-fund playwright@1.57.0 >/dev/null
+          npx playwright install chromium
+      - name: Paired full half-games - no hidden opponent labels in policy RPC
+        env:
+          COACH_ARENA_QA: '1'
+          ARENA_PAIR: ${{ matrix.pair }}
+        run: |
+          set -euo pipefail
+          (cd /tmp/lab && python3 -m http.server 8788 --bind 127.0.0.1 >/tmp/http-log 2>&1) &
+          sleep 2
+          node /tmp/lab/tests/arena/run-arena.cjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: arena-smoke-${{ matrix.pair }}
+          retention-days: 30
+          path: /tmp/arena-results/paired.json
