@@ -1,0 +1,46 @@
+name: Mortal CPU preview integration
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - src/mortal/mortal-cpu.mjs
+      - tests/mortal-cpu.test.mjs
+      - tests/mortal/run-mortal-cpu.cjs
+      - .github/workflows/mortal-cpu-preview.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  cpu:
+    if: github.event_name != 'pull_request' || github.head_ref == 'feat/mortal-cpu-shared-v1'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, webkit]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          path: lab
+      - name: Unit tests
+        run: node --test lab/tests/mortal-cpu.test.mjs
+      - name: Fetch verified S42 and install browser
+        run: |
+          set -euo pipefail
+          mv lab /tmp/lab
+          curl --fail --location --retry 2 --silent --show-error --max-time 160 'https://huggingface.co/xzhe121/Mortal-S42-onnx/resolve/main/model.onnx' -o /tmp/lab/tests/mortal/model.onnx
+          echo '30381bf21389e2d25d3edf48fed11bf772336ef3daeee67d1bdae7fb9dd30cb4  /tmp/lab/tests/mortal/model.onnx' | sha256sum --check
+          mkdir -p /tmp/probe && cd /tmp/probe
+          npm init -y >/dev/null
+          npm install --ignore-scripts --no-audit --no-fund playwright@1.57.0 >/dev/null
+          npx playwright install --with-deps ${{ matrix.browser }}
+      - name: Three S42 CPUs - full half-game
+        env:
+          CPU_BROWSER: ${{ matrix.browser }}
+        run: |
+          set -euo pipefail
+          (cd /tmp/lab && python3 -m http.server 8788 --bind 127.0.0.1 >/tmp/http-log 2>&1) &
+          sleep 2
+          node /tmp/lab/tests/mortal/run-mortal-cpu.cjs
