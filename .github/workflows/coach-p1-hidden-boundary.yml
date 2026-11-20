@@ -1,0 +1,112 @@
+name: P1 live hidden-state boundary check (development replay)
+on:
+  pull_request:
+    branches: [feat/coach-p1-candidate-freeze-v1]
+permissions:
+  contents: read
+  actions: read
+jobs:
+  collect:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      max-parallel: 12
+      matrix:
+        first: [1, 25]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: lab
+      - uses: actions/checkout@v4
+        with:
+          ref: be911c40e09575a564d704bbae8411e122a58ea1
+          path: frozen
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - run: |
+          cp -r frozen/archive/versions/policy-200-lgb-v1 /tmp/arena-model
+          python -m pip install numpy==2.3.5 lightgbm==4.6.0 scikit-learn==1.8.0
+          echo 'b4ff0a420061b1202e0d7717c7cdea4d6ef7ac0971fff45e0e70f1a49da8edd8  /tmp/arena-model/pure.lgb' | sha256sum -c -
+          echo '11d5699e20319f23040a9e7584e25179615ca8228089de0dce38c527dd7aa42f  /tmp/arena-model/reaction.lgb' | sha256sum -c -
+          echo '0617e41120d1918d69302bf564d294659692e4c35d2a8015c162d003b94a2ff5  /tmp/arena-model/special.lgb' | sha256sum -c -
+      - uses: actions/download-artifact@v4
+        with:
+          name: corrected-encoder
+          run-id: 44673093075
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/fixed-encoder
+      - run: cp /tmp/fixed-encoder/encoder-pkg/encoder* lab/assets/mortal/
+      - name: Install synthetic match environment
+        run: |
+          set -euo pipefail
+          mv lab /tmp/lab
+          node --check /tmp/lab/tests/next/run-hidden-boundary.cjs
+          node --test /tmp/lab/tests/mortal-cpu.test.mjs
+          curl --fail --location --retry 2 --silent --show-error --max-time 160 'https://huggingface.co/xzhe121/Mortal-S42-onnx/resolve/main/model.onnx' -o /tmp/lab/tests/mortal/model.onnx
+          echo '30381bf21389e2d25d3edf48fed11bf772336ef3daeee67d1bdae7fb9dd30cb4  /tmp/lab/tests/mortal/model.onnx' | sha256sum --check
+          mkdir -p /tmp/probe && cd /tmp/probe
+          npm init -y >/dev/null
+          npm install --ignore-scripts --no-audit --no-fund playwright@1.57.0 >/dev/null
+          npx playwright install chromium
+      - name: Capture one development-only match
+        env:
+          COACH_ARENA_QA: '1'
+          ARENA_PAIR: ${{ matrix.first }}
+        run: |
+          set -euo pipefail
+          (cd /tmp/lab && python3 -m http.server 8788 --bind 127.0.0.1 >/tmp/http-log 2>&1) &
+          sleep 2
+          node /tmp/lab/tests/next/run-hidden-boundary.cjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p1-hidden-boundary-${{ matrix.first }}
+          path: /tmp/development/
+          retention-days: 30
+          if-no-files-found: error
+  verify:
+    needs: collect
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - name: Wait for exact candidate freeze
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          for i in $(seq 1 30); do
+            status=$(gh api repos/nm0137nm-blip/mahjong-lab/actions/runs/44712159043 --jq .status)
+            if [ "$status" = completed ]; then
+              test "$(gh api repos/nm0137nm-blip/mahjong-lab/actions/runs/44712159043 --jq .conclusion)" = success
+              exit 0
+            fi
+            sleep 15
+          done
+          exit 1
+      - uses: actions/download-artifact@v4
+        with:
+          name: p1-frozen-candidate
+          run-id: 44712159043
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/model
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: p1-hidden-boundary-*
+          path: /tmp/hidden
+      - run: |
+          python -m pip install numpy==2.3.5 lightgbm==4.6.0 scikit-learn==1.8.0
+          python tests/next/audit-hidden-boundary.py /tmp/model /tmp/hidden > /tmp/hidden-summary.json
+          cat /tmp/hidden-summary.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p1-hidden-summary
+          path: /tmp/hidden-summary.json
+          if-no-files-found: error
