@@ -1,0 +1,216 @@
+name: P1 immutable independent outer campaign
+on:
+  pull_request:
+    branches: [feat/coach-p1-outer-integration-v1]
+permissions:
+  contents: read
+  actions: read
+jobs:
+  preflight:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - name: Require integration QA success for exact parent
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          for i in $(seq 1 40); do
+            status=$(gh api 'repos/nm0137nm-blip/mahjong-lab/actions/runs?branch=feat%2Fcoach-p1-outer-integration-v1&per_page=10' --jq '.workflow_runs[] | select(.head_sha=="17795b74aa3373f835162896fae2206b9d665a1b" and .name=="P1 frozen predictor outer integration QA") | .status+" "+(.conclusion // "")' | head -1)
+            if [[ "$status" = "completed success" ]]; then exit 0; fi
+            if [[ "$status" = completed* ]]; then exit 1; fi
+            sleep 15
+          done
+          exit 1
+      - uses: actions/download-artifact@v4
+        with:
+          name: v11-history-seed-audit
+          run-id: 44692881158
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/history
+      - uses: actions/download-artifact@v4
+        with:
+          name: v11-seed-manifest
+          run-id: 44692148908
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/initial
+      - uses: actions/download-artifact@v4
+        with:
+          name: multifamily-seeds
+          run-id: 44693828778
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/multi
+      - uses: actions/download-artifact@v4
+        with:
+          name: self-opponent-seeds
+          run-id: 44702128580
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/self
+      - uses: actions/download-artifact@v4
+        with:
+          name: r1-dev-rollout-seeds
+          run-id: 44701775478
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/rollout
+      - uses: actions/download-artifact@v4
+        with:
+          name: r1-extension-seeds
+          run-id: 44706812936
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/extension
+      - uses: actions/download-artifact@v4
+        with:
+          name: p1-frozen-candidate
+          run-id: 44712159043
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/model
+      - run: |
+          set -euo pipefail
+          python -m pip install numpy==2.3.5 lightgbm==4.6.0 scikit-learn==1.8.0
+          python tests/next/freeze-p1-outer.py /tmp/history/seed-history.json /tmp/initial/seed-v11.json /tmp/multi/multifamily-manifest.json /tmp/self/self-seeds.json /tmp/rollout/rollout-seeds.json /tmp/extension/rollout-seeds.json /tmp/model/manifest.json
+          PYTHONPATH=tests/next python -c "from p1_public_predictor import Predictor; Predictor('/tmp/model')"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p1-outer-locked-manifest
+          path: /tmp/outer-seeds.json
+          if-no-files-found: error
+          retention-days: 30
+  collect:
+    needs: preflight
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      max-parallel: 12
+      matrix:
+        first: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: lab
+      - uses: actions/checkout@v4
+        with:
+          ref: be911c40e09575a564d704bbae8411e122a58ea1
+          path: frozen
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.23.4'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - run: |
+          cp -r frozen/archive/versions/policy-200-lgb-v1 /tmp/arena-model
+          python -m pip install numpy==2.3.5 lightgbm==4.6.0 scikit-learn==1.8.0
+          echo 'b4ff0a420061b1202e0d7717c7cdea4d6ef7ac0971fff45e0e70f1a49da8edd8  /tmp/arena-model/pure.lgb' | sha256sum -c -
+          echo '11d5699e20319f23040a9e7584e25179615ca8228089de0dce38c527dd7aa42f  /tmp/arena-model/reaction.lgb' | sha256sum -c -
+          echo '0617e41120d1918d69302bf564d294659692e4c35d2a8015c162d003b94a2ff5  /tmp/arena-model/special.lgb' | sha256sum -c -
+      - uses: actions/download-artifact@v4
+        with:
+          name: corrected-encoder
+          run-id: 44673093075
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/fixed-encoder
+      - run: |
+          cp /tmp/fixed-encoder/encoder-pkg/encoder* lab/assets/mortal/
+          echo '886cb7abb09034dcdf348039d651d63a83cd7edb87d3337a452722c960b9d97a  lab/assets/mortal/encoder.js' | sha256sum -c -
+          echo '0e9dcc57545afb5769d42f372bbd82be5c26941d1e352245b225d62ce0c611bf  lab/assets/mortal/encoder_bg.wasm' | sha256sum -c -
+      - uses: actions/download-artifact@v4
+        with:
+          name: p1-outer-locked-manifest
+          path: /tmp/locked
+      - run: cp /tmp/locked/outer-seeds.json /tmp/outer-seeds.json
+      - name: Install synthetic match environment
+        run: |
+          set -euo pipefail
+          mv lab /tmp/lab
+          node --check /tmp/lab/tests/next/run-p1-outer.cjs
+          node --test /tmp/lab/tests/mortal-cpu.test.mjs
+          curl --fail --location --retry 2 --silent --show-error --max-time 160 'https://huggingface.co/xzhe121/Mortal-S42-onnx/resolve/main/model.onnx' -o /tmp/lab/tests/mortal/model.onnx
+          echo '30381bf21389e2d25d3edf48fed11bf772336ef3daeee67d1bdae7fb9dd30cb4  /tmp/lab/tests/mortal/model.onnx' | sha256sum --check
+          mkdir -p /tmp/probe && cd /tmp/probe
+          npm init -y >/dev/null
+          npm install --ignore-scripts --no-audit --no-fund playwright@1.57.0 >/dev/null
+          npx playwright install chromium
+      - name: Capture one pre-locked outer match
+        env:
+          COACH_ARENA_QA: '1'
+          ARENA_PAIR: ${{ matrix.first }}
+        run: |
+          set -euo pipefail
+          (cd /tmp/lab && python3 -m http.server 8788 --bind 127.0.0.1 >/tmp/http-log 2>&1) &
+          sleep 2
+          node /tmp/lab/tests/next/run-p1-outer.cjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p1-outer-data-${{ matrix.first }}
+          path: /tmp/development/
+          retention-days: 30
+          if-no-files-found: error
+  audit:
+    needs: collect
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: p1-outer-data-*
+          path: /tmp/data
+      - run: python -m pip install mahjong==1.4.0
+      - run: python tests/next/audit-independent-p1-outer.py /tmp/data 160
+      - run: python tests/next/audit-temporal-furiten.py /tmp/data 160
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: p1-outer-independent-audits
+          path: |
+            /tmp/independent-p1-label-audit.json
+            /tmp/p1-temporal-furiten.json
+          if-no-files-found: error
+          retention-days: 30
+  evaluate:
+    needs: audit
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: p1-outer-data-*
+          path: /tmp/data
+      - uses: actions/download-artifact@v4
+        with:
+          name: p1-outer-locked-manifest
+          path: /tmp/locked
+      - uses: actions/download-artifact@v4
+        with:
+          name: p1-frozen-candidate
+          run-id: 44712159043
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/model
+      - uses: actions/download-artifact@v4
+        with:
+          name: v11-history-seed-audit
+          run-id: 44692881158
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/history
+      - run: |
+          set -euo pipefail
+          python -m pip install numpy==2.3.5 lightgbm==4.6.0 scikit-learn==1.8.0
+          python tests/next/evaluate-p1-outer.py /tmp/data /tmp/model /tmp/locked/outer-seeds.json /tmp/history/seed-history-public-sha256.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p1-independent-outer-summary
+          path: /tmp/p1-outer-summary.json
+          if-no-files-found: error
+          retention-days: 30
