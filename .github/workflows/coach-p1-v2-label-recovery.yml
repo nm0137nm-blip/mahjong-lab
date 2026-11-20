@@ -1,0 +1,90 @@
+name: P1 v2 exact label recovery and unchanged screen
+on:
+  pull_request:
+    branches: [feat/coach-p1-v2-screen-v1]
+permissions:
+  contents: read
+  actions: read
+jobs:
+  screen:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: lab
+      - uses: actions/checkout@v4
+        with:
+          ref: 6f58994e77131713c1ecd8e0dfb8fe80b1eb9e80
+          path: frozen
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: multifamily-dev-*
+          run-id: 44693828778
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/multi
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: self-opponent-dev-*
+          run-id: 44702128580
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/self
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: p1-v2-dev-data-*
+          run-id: 44726204303
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/v2
+      - uses: actions/download-artifact@v4
+        with:
+          name: p1-v2-dev-locked-manifest
+          run-id: 44726204303
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/v2-manifest
+      - uses: actions/download-artifact@v4
+        with:
+          name: p1-outer-locked-manifest
+          run-id: 44717123756
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/outer-manifest
+      - name: Verify original locked source and repair labels in disposable copy
+        run: |
+          set -euo pipefail
+          python -m pip install mahjong==1.4.0
+          cd lab
+          python - <<'PY'
+          import json,hashlib
+          from pathlib import Path
+          m=json.loads(Path('/tmp/v2-manifest/v2-dev-seeds.json').read_text())
+          for p,h in m['source_hashes'].items():
+              assert hashlib.sha256(Path(p).read_bytes()).hexdigest()==h,p
+          PY
+          python tests/next/repair-p1-v2-physical-tenpai.py /tmp/v2 /tmp/v2-manifest/v2-dev-seeds.json
+          python tests/next/audit-independent-p1-outer.py /tmp/v2 96
+          python tests/next/audit-temporal-furiten.py /tmp/v2 96
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: p1-v2-corrected-label-audits
+          path: |
+            /tmp/p1-v2-label-recovery.json
+            /tmp/independent-p1-label-audit.json
+            /tmp/p1-temporal-furiten.json
+          if-no-files-found: error
+          retention-days: 30
+      - run: |
+          set -euo pipefail
+          python -m pip install numpy==2.3.5 lightgbm==4.6.0 scikit-learn==1.8.0 requests==2.32.5
+          cp -r frozen/archive/versions/belief-120-ab-v1 /tmp/belief-model
+          python lab/tests/next/p1-v2-screen.py /tmp/multi /tmp/self /tmp/v2 /tmp/outer-manifest/outer-seeds.json /tmp/v2-manifest/v2-dev-seeds.json
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p1-v2-screen
+          path: /tmp/p1-v2-screen.json
+          if-no-files-found: error
+          retention-days: 30
