@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-20T23:58:00+09:00",
+  "checkpoint": "2026-11-21T05:40:33+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -9,11 +9,11 @@
   },
   "active_task": {
     "phase": "P2a-pilot",
-    "status": "contrast_and_sampler_bias_verifier_running",
+    "status": "frozen_30_pilot_ready_reference_check_running",
     "branch": "feat/coach-v14-pilot-boundary-v1",
-    "commit": "f0e2e918b8ce7e7a4e19db9dbfa54b536349db16",
+    "commit": "97abb98b61f96c7cef71a43088702a4e7878222b",
     "pr": 61,
-    "run_id": 44758253864,
+    "run_id": 44813459829,
     "prior_runs": [
       {
         "run_id": 44754324733,
@@ -80,10 +80,70 @@
         "efficiencyTopOrTie": 14,
         "passOrFirstTopOrTie": 10,
         "total": 30
+      },
+      {
+        "run_id": 44758253864,
+        "status": "legal_contrast_feasibility_pass",
+        "artifact": 14639197982,
+        "cases": 4,
+        "validatedHistories": 16,
+        "completedRuns": 24,
+        "limitations": "two samples per pair/policy, arbitrary first/last candidate, no labels, varied outcome"
+      },
+      {
+        "run_id": 44758490026,
+        "status": "initial_sampler_bias_diagnostic",
+        "artifact": 14639976210,
+        "actualNonRiichiReady": 0,
+        "nonRiichiSeats": 19,
+        "limitations": "no positive non-riichi examples"
+      },
+      {
+        "run_id": 44812741900,
+        "status": "late_proposal_sensitivity_complete",
+        "artifacts": {
+          "proposal": 14667681340,
+          "aggregate": 14666328843
+        },
+        "cases": 8,
+        "samples": 512,
+        "nonRiichiSeats": 19,
+        "actualReady": 1,
+        "unweightedReady": 0,
+        "mixtureReady": 0.2253289474,
+        "meanTrueShanten": 1,
+        "meanUniformShanten": 3.1101973684,
+        "meanMixtureShanten": 1.6546052632,
+        "uniformBrier": 0.05263157895,
+        "mixtureBrier": 0.09112870066,
+        "weightedMixtureBrier": 0.10921436999,
+        "decision": "Neither proposal credible posterior; no use for strong labels or display"
+      },
+      {
+        "run_id": 44812914197,
+        "status": "freeze_input_overlap_quota_failure_before_labels",
+        "detail": "6 vs quota 7 due duplicate source matches; fixed by public-only replacement"
+      },
+      {
+        "run_id": 44813180639,
+        "status": "frozen_30_pilot_candidate_set_and_calculation_audit_success",
+        "artifacts": {
+          "stage1": 14666619455,
+          "verifier": 14666269429
+        },
+        "natural": 22,
+        "contrastPairs": 4,
+        "distinctMatches": 26,
+        "actions": 284,
+        "shapeRows": 351,
+        "scoreValues": 132,
+        "rankTransfer": 1260,
+        "rankOrder": 1260,
+        "failures": 0
       }
     ],
-    "decision": "Rank transfer + ordering independently matched 1260 each, typed fact tests success. Weak controls locked before reading archived reference; efficiency 14/30, pass-or-first 10/30 group-level matches; not yet proof B3/B4 discriminates. Four legal opponent-riichi contrast pair probes, three continuation variants, same trajectory, run active; isolated development teacher aggregate sampler bias run active. No actual independent inference or formal evaluation.",
-    "next": "Check 44758253864 sampler and 44758490026 bias verifier; fix errors without dropping cases; preserve denominators. Evaluate sampler proposal bias, improve using development only with physically verifiable histories and action consistency; counterfactual Mortal evaluation and contrast labels are still missing. Need actual independent inference method before tactical pilot; no mock/pseudo certification. Build stage1 packet separately without references or weak control scores, stage2 unlock only after lock. No formal B/13222/P1-Lite/P3/main/public release. Current CI prepare/sampler disabled to avoid repeated expensive runs; re-enable explicitly only on relevant changes.",
+    "decision": "Four paired opponent reach/no-reach contexts physically validated; 24 runs (96 single continuations) complete but too few samples and inconsistent deltas to label. Late eight-case 512-sample diagnostic: mixture improves mean shanten but worsens readiness Brier vs unweighted proposal; both biased, no calibrated posterior. Freeze 30 development cases with four contrast pairs, 26 matches and independent fact audit passed; separate stage1 and verifier artifacts. Actual coach inference 0. Pinned corrected WASM+ONNX counterfactual Mortal evaluation of four pairs from original focal-observable prefix scheduled 44813459829; requires original Q reproduction <=0.001 and top agreement, no hidden opponents/future sent to encoder. No B3/B4 definitive labels, no formal evaluation, no main changes.",
+    "next": "Check 44813459829 job136555651208, fix exact errors. Preserve original-vs-counterfactual anchor and reference separate from stage1. Then implement real answer ingestion/lock, same-30 weak controls (own+points and boilerplate variants, substantive rubric, no fake B3/B4 labels), handle uncertainty/rollout claims without strong directions unsupported; no user request until package and grading ready. Frozen stage1 artifact 14666619455 contains 6 batches of 5, verifier artifact 14666269429 separate. No paid API assumed; actual independent GPT inference may require user fresh chat after autonomous work, not this developer chat. Need assess sampler and sufficient replications, phase gate not passed. No formal B/13222/Lite/P3/R/main/distribution.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026
   },
