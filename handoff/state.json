@@ -9,7 +9,7 @@
   },
   "active_task": {
     "phase": "P2a-pilot",
-    "status": "negative_control_detected_structural_proxy_failure",
+    "status": "awaiting_independent_real_coach_answers_user_assistance",
     "branch": "feat/coach-v14-pilot-boundary-v1",
     "commit": "41d13c8ded49d216805b22cb09d92131feaf0c6d",
     "pr": 61,
@@ -174,10 +174,11 @@
         "robustRolloutLabels": 0
       }
     ],
-    "decision": "Cited boilerplate passed all structural links 30/30, measurable shape 30/30 yet missed both changed reference pairs. Cannot claim semantic relative quality or B3/B4. User explicitly requires third-party review at every phase end, including failure/partial closure; no automatic progression.",
-    "next": "Prepare isolated actual inference files and answer intake. Do not use reference keys in stage1. Record unresolved sampler and semantic proxy as actual limitations. Review pilot on closure regardless of outcome.",
+    "decision": "Cited boilerplate passed all structural links 30/30, measurable shape 30/30 yet missed both changed reference pairs. Cannot claim semantic relative quality or B3/B4. User explicitly requires third-party review at every phase end, including failure/partial closure; no automatic progression. Manual stage1 verified 30 request hashes, packet/lineage hashes, exact six payloads, paired cases split, key scan. No independent inference endpoint available. Need fresh chat actual outputs; separate diagnostic from pass.",
+    "next": "User to submit actual stage1 answers (six batches, first batch may be returned first), same displayed model/effort fresh standalone chats; no verifier material, no retries selected for score. Protocol handoff/v14-manual-pilot-execution-20261121.md. Continue remaining independent simulator/semantic diagnostics when feasible; preserve gate, review any closure outcome.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
-    "bias_run_id": 44758490026
+    "bias_run_id": 44758490026,
+    "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md"
   },
   "previous_runs": [
     {
