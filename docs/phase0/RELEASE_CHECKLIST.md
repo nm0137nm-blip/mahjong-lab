@@ -1,0 +1,2 @@
+# Release gate (not passed)
+Verified: two exact MIT texts for embedded Majiang releases; existing AGPL and ORT MIT files present. Candidate build of source package initiated. Remaining: build artifact validation, old binary/source linkage, full dependencies/NOTICE, model licensing and public distribution scope. Do not enable or expand release or assume legal compliance until documented. Local synthetic research kept separate. No deployment or user data.
