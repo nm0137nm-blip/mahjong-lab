@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-20T22:23:00+09:00",
+  "checkpoint": "2026-11-20T22:28:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -15,7 +15,7 @@
     "pr": 60,
     "run_id": 44736644609,
     "decision": "Roadmap v1.2 working adoption based on review. P1-Lite unregistered, no new official trial; P1 original status unchanged. R1 frozen.",
-    "next": "Independent derived fact audit on all 13222 development decisions, global decision identity/provenance and concrete action distinctions; concurrent low-margin comparator using development logs. Draft P1-Lite protocol based only on development data; freeze model/teacher/seeds/bands/support/coverage/safety/strata/thresholds before any fresh outer. No external labels, no production change or release. User requested review break; new formal evaluation has not started. User's primary requirement: high-level relative hand-value and push/fold reasoning against all three opponents, not merely factual extraction or tile efficiency. Follow separate tactical evaluation requirement; prospective criteria before test. P2a/P3-min quality gate, P2b learning evaluation."
+    "next": "Independent derived fact audit on all 13222 development decisions, global decision identity/provenance and concrete action distinctions; concurrent low-margin comparator using development logs. Draft P1-Lite protocol based only on development data; freeze model/teacher/seeds/bands/support/coverage/safety/strata/thresholds before any fresh outer. No external labels, no production change or release. User requested review break; new formal evaluation has not started. User's primary requirement: high-level relative hand-value and push/fold reasoning against all three opponents, not merely factual extraction or tile efficiency. Follow separate tactical evaluation requirement; prospective criteria before test. P2a/P3-min quality gate, P2b learning evaluation. v1.3 proposal saved for review; do not treat proposed thresholds as locked or start official evaluation on their basis until prospective protocol established."
   },
   "previous_runs": [
     {
@@ -1158,7 +1158,13 @@
       "quality_audit_license": 15,
       "research_archive": 5
     },
-    "coach_quality": "handoff/coach-relative-quality-20261120.md"
+    "coach_quality": "handoff/coach-relative-quality-20261120.md",
+    "proposed_revision": {
+      "version": "v1.3-proposal",
+      "path": "handoff/roadmap-v1.3-proposal-20261120.md",
+      "status": "draft_for_review_no_new_formal_evaluation",
+      "summary": "Relative hand-value tactical quality separate mandatory gate; 160 blind cases including 40 contrasts, numeric rubric, independent expert review; later fresh integrated output audit; P1-Lite threshold proposals before outer; product/education gates; research freeze."
+    }
   },
   "workflow_preference": "待機：実行可能作業がすべて終了し外部待機の場合のみ、再開目安必須。問題発生：自力解決不能のみ。対応依頼：ユーザー判断・作業不可欠のみ。Phase完了：全合格基準を満たす場合のみ。中間不具合は自力修正・検証、進行可能作業優先。"
 }
