@@ -25,7 +25,8 @@ jobs:
           run-id: 44673093075
           github-token: ${{ secrets.GITHUB_TOKEN }}
           path: /tmp/fixed
-      - run: |
+      - shell: bash
+        run: |
           set -euo pipefail
           cp /tmp/fixed/encoder-pkg/encoder* assets/mortal/
           echo '0e9dcc57545afb5769d42f372bbd82be5c26941d1e352245b225d62ce0c611bf  assets/mortal/encoder_bg.wasm' | sha256sum -c -
