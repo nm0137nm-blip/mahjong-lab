@@ -6,7 +6,6 @@ const fail=(x)=>{throw Error(x)};
 const hash=x=>createHash('sha256').update(JSON.stringify(x)).digest('hex');
 const exact=(v,ks)=>v&&typeof v==='object'&&!Array.isArray(v)&&Object.keys(v).sort().join('|')===ks.slice().sort().join('|');
 const string=x=>typeof x==='string'&&x.length>0&&x.length<=4000;
-const categories=['事实','仮説']; // internal tags are independent of model reference
 const norm=p=>p[0]+(p[1]==='0'?'5':p[1]);
 const types=[...'mps'].flatMap(s=>Array.from({length:9},(_,i)=>s+(i+1))).concat(Array.from({length:7},(_,i)=>'z'+(i+1)));
 const meldTiles=m=>[...m.slice(1)].filter(x=>/\d/.test(x)).map(x=>m[0]+x);
@@ -60,12 +59,16 @@ export function comparisonRequest(envelope,locked,reference,raw,userAction=null)
  if(hash(envelope.request)!==envelope.requestHash||hash(locked.record)!==locked.recordHash||locked.record.requestHash!==envelope.requestHash)fail('independent record integrity');
  const reconstructed=independentRequest(raw,envelope.request.input.id);
  if(reconstructed.requestHash!==envelope.requestHash)fail('case mismatch');
- const f=factsOnly(raw),r=attachMortalReference(f,reference,raw.id).mortalReference;
+ if(!exact(reference,['pilotId','requestHash','key'])||reference.pilotId!==envelope.request.input.id||reference.requestHash!==envelope.requestHash)fail('reference scope');
+ const f=factsOnly(raw),r=attachMortalReference(f,reference.key,raw.id).mortalReference;
  if(r.status!=='matched_group_only')fail('reference unavailable');
  if(userAction!==null&&!envelope.request.input.actions.some(a=>a.key===userAction))fail('invalid user action');
- return {stage:'comparison',independent:structuredClone(locked),input:structuredClone(envelope.request.input),reference:r,userAction,system:'保存した独立回答は変更しない。比較説明だけを別に出力する。Mortalの内部理由は断定しない。'};
+ const request={stage:'comparison',independent:structuredClone(locked),input:structuredClone(envelope.request.input),reference:r,userAction,system:'保存した独立回答は変更しない。比較説明だけを別に出力する。Mortalの内部理由は断定しない。'};
+ return {request,requestHash:hash(request)};
 }
-export function storeComparison(envelope,locked,request,answer){
+export function storeComparison(envelope,locked,comparison,answer){
+ const request=comparison.request;
+ if(hash(request)!==comparison.requestHash||hash(envelope.request)!==envelope.requestHash||hash(request.input)!==hash(envelope.request.input))fail('comparison request integrity');
  if(hash(locked.record)!==locked.recordHash||locked.record.requestHash!==envelope.requestHash||request.stage!=='comparison'||request.independent.recordHash!==locked.recordHash||hash(request.independent.record)!==locked.recordHash||!exact(answer,['comparison'])||!string(answer.comparison))fail('comparison integrity');
  return {independentHash:locked.recordHash,comparisonRequestHash:hash(request),comparison:answer.comparison};
 }
