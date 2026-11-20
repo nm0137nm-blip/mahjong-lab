@@ -1,0 +1,13 @@
+# Phase 0 action contract / decision record 2026-11-20
+## Source review
+Pinned upstream 0cff2b52982be5b1163aa9a62fb01f03ce91e0d2: libriichi/src/agent/mortal.rs, libriichi/src/mjai/bot.rs, mortal/engine.py, libriichi/src/state/agent_helper.rs. Current comparator code src/mortal/mortal-cpu.mjs at 8c1459d79939d3e95fac0aa91f5cdaaf407400eb.
+- 37 upstream emits Reach then evaluates discard in a subsequent state; adapter groups declaration with discard selected from ordinary Q. Not equivalent without validation.
+- 42 upstream may use encode_obs(version,true) for kan selection, adapter uses first legal detail. Not equivalent for multiple candidates.
+- 38–41 upstream consumes red five where applicable; adapter chooses first legal detail. Match depends on option ordering. Explicit payload audit needed.
+- Guard is optional (upstream engine default False), can reject action 43 based on terminal rank model. Existing adapter raw argmax corresponds to guard-off not guard-on. Published S42 evaluation metadata lists guard false. Do not silently add guard to existing baseline.
+- Discard variant upstream uses last_self_tsumo to decide tsumogiri; adapter option ordering may differ. Native quick_eval can skip single candidate; audit uses quick_eval=False to expose detail.
+- Lab game rule ends after South 4 (no extension), upstream guard/agent may reason about West extension. Fixed rules are local arena conditions, not Tenhou identity. Ties resolved by initial order. Past scores retained as S42-adapter scores, not independent native agent scores.
+## Decision
+S42-adapter is explicitly named, Q/mask parity passed in existing synthetic and sampled live runs. It is NOT certified as original native full agent. This audit measures exact grouped payload and guard differences; group mismatch is blocking, payload differences require correction or explicit separate adapter identity and controlled acceptance. Do not declare Phase 0 complete before results and major discrepancies resolved. No production changes. If comparator implementation is changed, old results remain versioned and fresh duplicate + variance pilot required.
+## Evidence
+Run 44667625456 (100 fixtures, 20 replay/rotation matches); 44668737514 (189 sampled live decisions, 96 paired pilot games). New workflow observes actual action payload from 2 fresh synthetic matches and compares native MJAI Bot with guard off/on. Sampling is first 3 nonforced decisions each seat-hand plus any legal special action. Absent category coverage is not a pass. Complete native game engine parity is out of scope of same-event inspection and cannot be claimed.
