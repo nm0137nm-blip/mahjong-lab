@@ -36,7 +36,7 @@ jobs:
           path: /tmp/self
       - uses: actions/download-artifact@v4
         with:
-          name: r1-extension-seeds
+          name: r1-dev-rollout-seeds
           run-id: 44701775478
           github-token: ${{ secrets.GITHUB_TOKEN }}
           path: /tmp/prior
