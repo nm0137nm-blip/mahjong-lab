@@ -4,7 +4,10 @@ Read no archived key, private hand or oracle. Not all score/yaku or legal action
 import collections,json,sys
 from pathlib import Path
 from mahjong.shanten import Shanten
-SH=Shanten()
+from mahjong.meld import Meld
+from mahjong.hand_calculating.hand import HandCalculator
+from mahjong.hand_calculating.hand_config import HandConfig,OptionalRules
+SH=Shanten();HC=HandCalculator()
 T=[s+str(n) for s in 'mpsz' for n in range(1,8 if s=='z' else 10)]
 I={t:i for i,t in enumerate(T)}
 def norm(t):return t[:2].replace('0','5')
@@ -18,6 +21,23 @@ def dora(t):
  s=t[0];n=int(t[1]) or 5
  return s+str((n%4+1 if n<5 else (n-4)%3+5) if s=='z' else n%9+1)
 def han(ts,ds):return sum((t[1]=='0')+ds.count(norm(t)) for t in ts)
+def win_score(hand,ms,tile,indicators,own,wind,tsumo=False,riichi=False):
+ used=set()
+ def allocate(t):
+  base=I[norm(t)]*4
+  ids=[base] if t[1]=='0' else list(range(base+1,base+4)) if norm(t) in ('m5','p5','s5') else list(range(base,base+4))
+  a=next(i for i in ids if i not in used);used.add(a);return a
+ ts=[allocate(t) for t in hand];mm=[]
+ for m in ms:
+  raw=meld(m);ids=[allocate(t) for t in raw];ts+=ids
+  kind=Meld.KAN if len(raw)==4 else Meld.PON if len(set(map(norm,raw)))==1 else Meld.CHI
+  mm.append(Meld(meld_type=kind,tiles=ids,opened=bool(set(m)&set('+-='))))
+ w=allocate(tile);ts.append(w)
+ ds=[allocate(t) for t in indicators]
+ cfg=HandConfig(is_tsumo=tsumo,is_riichi=riichi,player_wind=27+own,round_wind=27+wind,options=OptionalRules(has_open_tanyao=True,has_aka_dora=True,has_double_yakuman=True,kiriage=False,limit_to_sextuple_yakuman=False))
+ res=HC.estimate_hand_value(ts,w,melds=mm,dora_indicators=ds,config=cfg)
+ if res.error or not res.cost:return None
+ return (res.cost['main']*3 if own==0 else res.cost['main']+2*res.cost['additional']) if tsumo else res.cost['main']
 def audit(e,stats,errors):
  inp=e['request']['input'];eid=inp['id'];ev={x['id']:x['value'] for x in inp['evidence']}
  def check(name,a,b):
@@ -48,7 +68,23 @@ def audit(e,stats,errors):
   check(name+'/dora',v['retainedDoraHan'],han(alltiles,ds))
   if discard:
    check(name+'/genbutsu',v['safety'],[{'seat':i,'ownRiverGenbutsu':any(norm(d['tile'])==norm(discard) for d in ev['seat-'+str(i)]['discards'])} for i in range(4) if i!=own])
-  stats['score_rows_not_checked']+=len(v.get('conditionalNormalWins',[]))
+  wins=v.get('conditionalNormalWins',[])
+  variants=[]
+  if s==0 and v['shanten'] is not None:
+   for z in improve:
+    t=z['tile']
+    if visible[t]>=4:continue
+    if t[0]!='z' and t[1]=='5':
+     r=ev['visible']['redVisible'][t[0]]
+     if visible[t]-r<3:variants.append(t)
+     if r<1:variants.append(t[0]+'0')
+    else:variants.append(t)
+  check(name+'/score_variants',[z['tile'] for z in wins],variants)
+  for z in wins:
+   for k,tsumo,riichi in [('ron',False,False),('tsumo',True,False),('hypotheticalRiichiRon',False,True)]:
+    expected=win_score(expect_hand,expect_meld,z['tile'],ev['own']['doraIndicators'],own,'東南西北'.index(board['round'][0]),tsumo,riichi) if not riichi or v['closed'] else None
+    got=z[k]['basePoints'] if z[k] else None
+    check(name+'/score_'+k,got,expected);stats['score_values_checked']+=1
  board=ev['board'];own=board['ownSeat'];h=ev['own']['hand'];ms=ev['own']['melds'];ds=list(map(dora,ev['own']['doraIndicators']))
  visible=dict(zip(T,counts(h+ev['own']['doraIndicators']+sum(([d['tile'] for d in ev['seat-'+str(i)]['discards'] if not d['called']]+sum(map(meld,ev['seat-'+str(i)]['melds']),[]) for i in range(4)),[]))))
  check('visible',ev['visible']['counts'],visible);check('dora',ev['dora']['actualDora'],ds)
@@ -87,8 +123,8 @@ def main(src,out):
  for e in es:
   try:audit(e,stats,errors)
   except Exception as err:errors.append({'id':e['request']['input']['id'],'exception':repr(err)})
- result={'status':'dev_candidate_shape_audit_only','cases_expected':30,'counts':dict(stats),'failures':errors,'limitations':['candidate score/yaku not independently checked yet','legal availability checked by source engine, not fully independent','no tactical validation']}
+ result={'status':'dev_candidate_shape_audit_only','cases_expected':30,'counts':dict(stats),'failures':errors,'limitations':['candidate score amounts independently checked; yaku names not individually aligned yet','legal availability checked by source engine, not fully independent','no tactical validation']}
  out.write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n')
- print(json.dumps({**result,'failures':errors[:15]},ensure_ascii=False))
+ print(json.dumps({**result,'counts':{k:v for k,v in stats.items() if '/' not in k},'failures':errors[:15]},ensure_ascii=False))
  assert stats['cases']==30 and not errors
 if __name__=='__main__':main(Path(sys.argv[1]),Path(sys.argv[2]))
