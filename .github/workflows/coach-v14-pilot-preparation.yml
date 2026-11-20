@@ -29,3 +29,27 @@ jobs:
           path: /tmp/v14-pilot
           if-no-files-found: warn
           retention-days: 30
+
+  sampler:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - run: python -m pip install mahjong==1.4.0
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: p1-v2-dev-data-*
+          run-id: 44726204303
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/v14-dev
+      - run: python tests/next/v14-sampler-feasibility.py /tmp/v14-dev /tmp/v14-sampler-feasibility.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v14-sampler-feasibility
+          path: /tmp/v14-sampler-feasibility.json
+          if-no-files-found: warn
+          retention-days: 30
