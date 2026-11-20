@@ -84,3 +84,5 @@ Run 44677641101: Rust固定ソースからJS/WASMのSHA完全一致。Run 446809
 Run44692420874 8/8半荘、全診断成功。学習policy実判断596件、教師Q差139件、上位100件抽出（牌効率差48、その他打牌31、鳴き9等は暫定分類）。既存P(合法ロン)>P(聴牌)7件を発見。P1教師は現公開ドラ・裏なし反実仮想、単一family pilot、正式合格ではない。Run44692881158 200train/30dev、478旧seedと33,080公開局面ハッシュ確認、新808 seed重複0、旧山/軌跡全ハッシュは未保有。PR39 run44693369642 独立Python麻雀ライブラリによる向聴/待ち/河フリテン/役/得点照合、成功後に試験的確率制約・条件付き失点・直接/分解期待損失のmatch単位OOF、R1事実票を並列実施。P1/R1未完、正式試験・公開保留。
 
 PR39 independent-label合格 3,069他家状態、33,954合法ロンlabel、211得点label、差0。時系列フリテンは既存snapshot使用で独立再演未了。R1 fact sheet100件作成合格、teacher strict efficiency better11、脅威なし効率仮説4、tradeoff/threat81、特殊15。因果分類・15pt改善余地未証明。校正smoke実行中。
+
+16:17 PR39全成功。8試合OOF試作でP(Ron)>P(tenpai)7→0、聴牌Brier .04085→.03924、合法ロンBrier .005806→.005843 / logloss .025198→.025662 悪化、条件得点RMSE4368 vs平均baseline4121、quantile crossing26。採用なし。PR40 run44693828778 新48開発半荘（S42×3,標準CPU×3各24）を起動、seed固定→独立教師audit→group CV/R1事実票。P1/R1未完・本番変更なし。第三者提言v1.1反映完了。

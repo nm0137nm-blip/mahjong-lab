@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-20T16:13:25+09:00",
+  "checkpoint": "2026-11-20T16:17:06+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -9,47 +9,13 @@
   },
   "active_task": {
     "phase": "P1/R1",
-    "status": "independent_snapshot_pass_and_r1_fact_sheet_pass_calibration_running",
-    "branch": "feat/coach-p1-independent-label-and-calibration-v1",
-    "commit": "ca60223d18ee02be0ac8edff6539c2b8d6c3004f",
-    "pr": 39,
-    "run_id": 44693369642,
-    "scope": "Independent Python scoring library v1.4.0 snapshot validation; if pass, grouped leave-match-out constrained calibration/conditional distribution/direct vs decomposed visible loss smoke. Parallel R1 top100 fact sheet. Development only.",
-    "results": {
-      "pilot": {
-        "run": 44692420874,
-        "artifact": 14608854479,
-        "zip_sha256": "95e7ac60006ba71ba53e2dc88c43c442648f2094e9ff253140b2dab632139c69",
-        "path": "archive/results/p1-r1-pilot-20261120.json"
-      },
-      "history": {
-        "run": 44692881158,
-        "artifact": 14608689261,
-        "zip_sha256": "b61ebdc2d38c64b2884f60ba2b0e8c5f2bd6c0c3570b285dd354c458d1b87e9c",
-        "path": "archive/results/v11-historical-seeds-20261120.json"
-      }
-    },
-    "next": "Read constrained calibration smoke. For P1 independently replay temporary furiten, expand corrected multi-family corpora and freeze train/dev/outer split; R1 top100 facts show only 11 strict efficiency advantages, 4 without threat, 81 tradeoff/threat hypotheses, not proof of fixability. Expand diagnostics and evaluate rollout hypotheses before R2 or frozen candidate formal runs. No main/public release.",
-    "snapshot_audit": {
-      "status": "independent_snapshot_audit_pass",
-      "counts": {
-        "opponent_states": 3069,
-        "candidate_ron_labels": 33954,
-        "score_labels": 211
-      },
-      "scope": "Independent shanten/waits/river furiten/yaku/no-ura score using recorded snapshot. Temporal furiten and full replay, responsibility payment and new kan indicators need separate coverage. No actual Ron choice or full payout claim."
-    },
-    "r1_fact_sheet": {
-      "status": "R1_top100_fact_sheet_prepared_not_causal_or_complete",
-      "n": 100,
-      "hypotheses": {
-        "special_action_policy_or_grouping_requires_review": 15,
-        "tradeoff_or_threat_requires_review": 81,
-        "efficiency_or_missing_shape_signal": 4
-      },
-      "teacher_strict_efficiency_better": 11,
-      "discussion": "Manual/algorithmic causal validation and frequency on more fresh on-policy matches needed; no proof of available 15pt improvement. Do not select final candidate from these test seeds; these are declared development."
-    }
+    "status": "multifamily_development_run_in_progress",
+    "run_id": 44693828778,
+    "branch": "feat/coach-p1-r1-multifamily-dev-v1",
+    "commit": "4a11552f90ce968c821d7f8ae39d029159011b29",
+    "pr": 40,
+    "scope": "48 fresh development-only hanchan, corrected S42×3 24 and bundled standard CPU×3 24, each 12 frozen learned and 12 corrected S42 focal. Freeze seed disjointness before collection; all matches independent snapshot check, diagnostics and six-fold group calibration; R1 fact sheet. No formal candidate trial; no P1 or R1 pass yet.",
+    "next": "Check seed and collection jobs, fix any implementation problems and re-run same seeds; evaluate expanded results, then add learned-opponent family and independent temporal furiten validation, design P1 candidate vs baselines and untouched family-out manifest, R1 fixable-cause/rollout before R2. Public release blocked."
   },
   "previous_runs": [
     {
@@ -776,6 +742,51 @@
       "next": "Check diagnostics and historical audit. Review R1 top100, generate more on-policy with additional opponent families if needed. Validate teacher labels independently; fit conditional payment and direct vs decomposed calibrated P1 estimators using group-separated development datasets, no untouched final until gates/manifest frozen. P2a design parallel; P3-min before P2b. No formal comparison until R1 fixable causes, candidate identity locked and seed audit passes. No production changes.",
       "development_results_path": "archive/results/p1-r1-pilot-20261120.json",
       "seed_results_path": "archive/results/v11-historical-seeds-20261120.json"
+    },
+    {
+      "phase": "P1/R1",
+      "status": "independent_snapshot_and_development_smoke_completed_not_promoted",
+      "branch": "feat/coach-p1-independent-label-and-calibration-v1",
+      "commit": "ca60223d18ee02be0ac8edff6539c2b8d6c3004f",
+      "pr": 39,
+      "run_id": 44693369642,
+      "scope": "Independent Python scoring library v1.4.0 snapshot validation; if pass, grouped leave-match-out constrained calibration/conditional distribution/direct vs decomposed visible loss smoke. Parallel R1 top100 fact sheet. Development only.",
+      "results": {
+        "pilot": {
+          "run": 44692420874,
+          "artifact": 14608854479,
+          "zip_sha256": "95e7ac60006ba71ba53e2dc88c43c442648f2094e9ff253140b2dab632139c69",
+          "path": "archive/results/p1-r1-pilot-20261120.json"
+        },
+        "history": {
+          "run": 44692881158,
+          "artifact": 14608689261,
+          "zip_sha256": "b61ebdc2d38c64b2884f60ba2b0e8c5f2bd6c0c3570b285dd354c458d1b87e9c",
+          "path": "archive/results/v11-historical-seeds-20261120.json"
+        }
+      },
+      "next": "Read constrained calibration smoke. For P1 independently replay temporary furiten, expand corrected multi-family corpora and freeze train/dev/outer split; R1 top100 facts show only 11 strict efficiency advantages, 4 without threat, 81 tradeoff/threat hypotheses, not proof of fixability. Expand diagnostics and evaluate rollout hypotheses before R2 or frozen candidate formal runs. No main/public release.",
+      "snapshot_audit": {
+        "status": "independent_snapshot_audit_pass",
+        "counts": {
+          "opponent_states": 3069,
+          "candidate_ron_labels": 33954,
+          "score_labels": 211
+        },
+        "scope": "Independent shanten/waits/river furiten/yaku/no-ura score using recorded snapshot. Temporal furiten and full replay, responsibility payment and new kan indicators need separate coverage. No actual Ron choice or full payout claim."
+      },
+      "r1_fact_sheet": {
+        "status": "R1_top100_fact_sheet_prepared_not_causal_or_complete",
+        "n": 100,
+        "hypotheses": {
+          "special_action_policy_or_grouping_requires_review": 15,
+          "tradeoff_or_threat_requires_review": 81,
+          "efficiency_or_missing_shape_signal": 4
+        },
+        "teacher_strict_efficiency_better": 11,
+        "discussion": "Manual/algorithmic causal validation and frequency on more fresh on-policy matches needed; no proof of available 15pt improvement. Do not select final candidate from these test seeds; these are declared development."
+      },
+      "calibration_results": "archive/results/p1-calibration-smoke-20261120.json"
     }
   ],
   "roadmap": {

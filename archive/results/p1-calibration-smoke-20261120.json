@@ -1,0 +1,58 @@
+{
+  "run": 44693369642,
+  "artifact_id": 14609198544,
+  "zip_sha256": "dae17e8bf0e482b7d9d0ed40c79c02afeb4c343b1803d5266bcb3a8be444fba8",
+  "status": "leave_match_out_development_smoke_only",
+  "matches": 8,
+  "tenpai_rows": 3069,
+  "ron_rows": 33954,
+  "payment_positives": 211,
+  "frozen_contract_violations": 7,
+  "constrained_contract_violations": 0,
+  "frozen_tenpai": {
+    "n": 3069,
+    "positives": 421,
+    "brier": 0.04084588000929192,
+    "log_loss": 0.1454542185557361,
+    "auprc_ap": 0.8954151727416828
+  },
+  "calibrated_tenpai": {
+    "n": 3069,
+    "positives": 421,
+    "brier": 0.03923644428146759,
+    "log_loss": 0.1360995431170391,
+    "auprc_ap": 0.8928730602480318
+  },
+  "frozen_ron": {
+    "n": 33954,
+    "positives": 211,
+    "brier": 0.00580643361783313,
+    "log_loss": 0.025197779114150092,
+    "auprc_ap": 0.09914621720216053
+  },
+  "constrained_ron": {
+    "n": 33954,
+    "positives": 211,
+    "brier": 0.005843066412888121,
+    "log_loss": 0.025661684606626895,
+    "auprc_ap": 0.09051268844397672
+  },
+  "frozen_rank": {
+    "mixed_sets": 183,
+    "all_sets": 3069,
+    "macro_auc": 0.7091293497031202
+  },
+  "constrained_rank": {
+    "mixed_sets": 183,
+    "all_sets": 3069,
+    "macro_auc": 0.7091293497031202
+  },
+  "conditional_payment_rmse": 4368.129048157875,
+  "conditional_mean_baseline_rmse": 4120.951767553643,
+  "quantile_crossing_count_before_reconciliation": 26,
+  "decomposed_base_exposure_rmse": 977.8367273988407,
+  "direct_base_exposure_rmse": 1005.5556606249019,
+  "direct_all_accept_visible_loss_rmse": 1022.9913846508714,
+  "direct_vs_decomp_mean_abs_disagreement": 116.1884795744172,
+  "limit": "Only eight development games from a single opponent family; out-of-fold diagnostic not final gating, no supported UI risk/score. No ura/temporal replay validation; quantile crossings reported, not hidden."
+}
