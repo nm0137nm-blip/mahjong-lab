@@ -1,0 +1,204 @@
+name: P1/R1 48-match multifamily development and independent audit
+on:
+  pull_request:
+    branches: [feat/coach-p1-independent-label-and-calibration-v1]
+permissions:
+  contents: read
+  actions: read
+jobs:
+  freeze-development:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: v11-history-seed-audit
+          run-id: 44692881158
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/history
+      - uses: actions/download-artifact@v4
+        with:
+          name: v11-seed-manifest
+          run-id: 44692148908
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/initial
+      - run: python3 tests/next/freeze-multifamily-seeds.py /tmp/history/seed-history.json /tmp/initial/seed-v11.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: multifamily-seeds
+          path: /tmp/multifamily-manifest.json
+          if-no-files-found: error
+          retention-days: 30
+  collect:
+    needs: freeze-development
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      max-parallel: 12
+      matrix:
+        first: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: lab
+      - uses: actions/checkout@v4
+        with:
+          ref: be911c40e09575a564d704bbae8411e122a58ea1
+          path: frozen
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - run: |
+          cp -r frozen/archive/versions/policy-200-lgb-v1 /tmp/arena-model
+          python -m pip install numpy==2.3.5 lightgbm==4.6.0 scikit-learn==1.8.0
+          echo 'b4ff0a420061b1202e0d7717c7cdea4d6ef7ac0971fff45e0e70f1a49da8edd8  /tmp/arena-model/pure.lgb' | sha256sum -c -
+          echo '11d5699e20319f23040a9e7584e25179615ca8228089de0dce38c527dd7aa42f  /tmp/arena-model/reaction.lgb' | sha256sum -c -
+          echo '0617e41120d1918d69302bf564d294659692e4c35d2a8015c162d003b94a2ff5  /tmp/arena-model/special.lgb' | sha256sum -c -
+      - uses: actions/download-artifact@v4
+        with:
+          name: corrected-encoder
+          run-id: 44673093075
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/fixed-encoder
+      - run: cp /tmp/fixed-encoder/encoder-pkg/encoder* lab/assets/mortal/
+      - name: Install synthetic match environment
+        run: |
+          set -euo pipefail
+          mv lab /tmp/lab
+          node --check /tmp/lab/tests/next/run-p1-r1-multifamily.cjs
+          node --test /tmp/lab/tests/mortal-cpu.test.mjs
+          curl --fail --location --retry 2 --silent --show-error --max-time 160 'https://huggingface.co/xzhe121/Mortal-S42-onnx/resolve/main/model.onnx' -o /tmp/lab/tests/mortal/model.onnx
+          echo '30381bf21389e2d25d3edf48fed11bf772336ef3daeee67d1bdae7fb9dd30cb4  /tmp/lab/tests/mortal/model.onnx' | sha256sum --check
+          mkdir -p /tmp/probe && cd /tmp/probe
+          npm init -y >/dev/null
+          npm install --ignore-scripts --no-audit --no-fund playwright@1.57.0 >/dev/null
+          npx playwright install chromium
+      - name: Capture one development-only match
+        env:
+          COACH_ARENA_QA: '1'
+          ARENA_PAIR: ${{ matrix.first }}
+        run: |
+          set -euo pipefail
+          (cd /tmp/lab && python3 -m http.server 8788 --bind 127.0.0.1 >/tmp/http-log 2>&1) &
+          sleep 2
+          node /tmp/lab/tests/next/run-p1-r1-multifamily.cjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: multifamily-dev-${{ matrix.first }}
+          path: /tmp/development/
+          retention-days: 30
+          if-no-files-found: error
+  diagnostic:
+    needs: collect
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: lab
+      - uses: actions/checkout@v4
+        with:
+          ref: de3cc31944a2b6b68df11b7c553e346874e8bcad
+          path: frozen
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: multifamily-dev-*
+          path: /tmp/dev
+      - uses: actions/download-artifact@v4
+        with:
+          name: multifamily-seeds
+          path: /tmp/seeds
+      - run: |
+          set -euo pipefail
+          python -m pip install numpy==2.3.5 lightgbm==4.6.0
+          cp -r frozen/archive/versions/belief-120-ab-v1 /tmp/belief-model
+          echo '4b6325559cbcf5fe45145eccfd938d0e68c2c5e2bc1de9985378fae2cb2e5f0a  /tmp/belief-model/t.lgb' | sha256sum -c -
+          echo '1028569ef3889c8b86c1085fecd3fe8789ec284a5b56b9a2cae6d946c8e98fa9  /tmp/belief-model/r.lgb' | sha256sum -c -
+          python3 lab/tests/next/audit-p1-r1-multifamily.py /tmp/dev /tmp/seeds/multifamily-manifest.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: multifamily-diagnostics
+          path: |
+            /tmp/p1-r1-summary.json
+            /tmp/r1-top100-pilot.json
+          if-no-files-found: error
+          retention-days: 30
+  independent-label:
+    needs: collect
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: multifamily-dev-*
+          path: /tmp/dev
+      - run: python -m pip install mahjong==1.4.0
+      - run: python3 tests/next/audit-independent-p1-multifamily.py /tmp/dev
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: multifamily-independent-label
+          path: /tmp/independent-p1-label-audit.json
+          if-no-files-found: error
+          retention-days: 30
+  calibration:
+    needs: [diagnostic,independent-label]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: lab
+      - uses: actions/checkout@v4
+        with:
+          ref: 39f7b96717239cae9e9eee56766f10f843395d24
+          path: frozen
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: multifamily-dev-*
+          path: /tmp/dev
+      - run: |
+          set -euo pipefail
+          python -m pip install numpy==2.3.5 lightgbm==4.6.0 scikit-learn==1.8.0
+          cp -r frozen/archive/versions/belief-120-ab-v1 /tmp/belief-model
+          echo '4b6325559cbcf5fe45145eccfd938d0e68c2c5e2bc1de9985378fae2cb2e5f0a  /tmp/belief-model/t.lgb' | sha256sum -c -
+          echo '1028569ef3889c8b86c1085fecd3fe8789ec284a5b56b9a2cae6d946c8e98fa9  /tmp/belief-model/r.lgb' | sha256sum -c -
+          python3 lab/tests/next/p1-multifamily-calibration.py /tmp/dev
+      - uses: actions/upload-artifact@v4
+        with:
+          name: multifamily-calibration
+          path: /tmp/p1-calibration-smoke.json
+          if-no-files-found: error
+          retention-days: 30
+  r1-facts:
+    needs: diagnostic
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: multifamily-diagnostics
+          path: /tmp/r1
+      - run: python3 tests/next/r1-fact-sheet.py /tmp/r1/r1-top100-pilot.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: multifamily-r1-facts
+          path: |
+            /tmp/r1-fact-sheet.json
+            /tmp/r1-fact-summary.json
+          if-no-files-found: error
+          retention-days: 30
