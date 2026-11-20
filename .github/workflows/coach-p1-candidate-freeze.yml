@@ -1,0 +1,87 @@
+name: P1 freeze review candidate and independently reaggregate R1 extension
+on:
+  pull_request:
+    branches: [feat/coach-p1-joint-risk-dev-v1]
+permissions:
+  contents: read
+  actions: read
+jobs:
+  freeze:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: lab
+      - uses: actions/checkout@v4
+        with:
+          ref: 6f58994e77131713c1ecd8e0dfb8fe80b1eb9e80
+          path: frozen
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: multifamily-dev-*
+          run-id: 44693828778
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/multi
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: self-opponent-dev-*
+          run-id: 44702128580
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/self
+      - run: |
+          set -euo pipefail
+          python -m pip install numpy==2.3.5 lightgbm==4.6.0 scikit-learn==1.8.0 requests==2.32.5
+          cp -r frozen/archive/versions/belief-120-ab-v1 /tmp/belief-model
+          python lab/tests/next/p1-freeze-candidate.py /tmp/multi /tmp/self
+          mkdir -p /tmp/public-smoke
+          cp -r /tmp/multi/* /tmp/self/* /tmp/public-smoke/
+          python lab/tests/next/p1-predictor-smoke.py /tmp/p1-frozen-candidate /tmp/public-smoke
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p1-frozen-candidate
+          path: /tmp/p1-frozen-candidate/
+          if-no-files-found: error
+          retention-days: 30
+  r1-reaggregate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: r1-extension-*
+          run-id: 44706812936
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/rollout
+      - uses: actions/download-artifact@v4
+        with:
+          name: r1-dev-augmented-model
+          run-id: 44701775478
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/candidate
+      - uses: actions/download-artifact@v4
+        with:
+          name: r1-dev-rollout-summary
+          run-id: 44701775478
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/prior
+      - run: |
+          set -euo pipefail
+          python3 tests/next/reaggregate-r1-extension.py /tmp/rollout /tmp/rollout/r1-extension-seeds/rollout-seeds.json /tmp/candidate/candidate.json /tmp/prior/r1-dev-rollout-summary.json
+          python3 - <<'PY'
+          import json
+          p=json.load(open('/tmp/r1-dev-rollout-summary.json'))
+          assert p['n_matches']==128 and p['delta']==0 and p['combined_exploratory']['delta']==1.40625
+          assert p['next_decision']=='archive_candidate_no_formal_trial_on_current_evidence'
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: r1-extension-reaggregated-summary
+          path: /tmp/r1-dev-rollout-summary.json
+          if-no-files-found: error
+          retention-days: 30
