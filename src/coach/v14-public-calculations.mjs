@@ -56,9 +56,32 @@ function metric(h,f,M,visible,dora,redVisible,discard=null){
  }
  return out;
 }
+function rankEvidence(f){
+ if(f.pendingReach)return {status:'withheld_pending_riichi'};
+ const base=f.scores.map(x=>x.points),own=f.ownSeat;
+ const rank=(scores,seat)=>1+scores.filter((v,i)=>i!==seat&&(v>scores[seat]||v===scores[seat]&&f.initialOrder.indexOf(i)<f.initialOrder.indexOf(seat))).length;
+ const rows=[];
+ for(const other of [0,1,2,3].filter(i=>i!==own)){
+  for(const [child,parent] of [[1000,1500],[2000,2900],[3900,5800],[7700,11600],[8000,12000]]){
+   const win=base.slice(),lose=base.slice(),gain=(own===0?parent:child)+300*f.honba,loss=(other===0?parent:child)+300*f.honba;
+   win[own]+=gain+1000*f.kyotaku;win[other]-=gain;lose[own]-=loss;lose[other]+=loss+1000*f.kyotaku;
+   rows.push({other,winBase:own===0?parent:child,winPoints:win,winRanks:win.map((_,i)=>rank(win,i)),lossBase:other===0?parent:child,lossPoints:lose,lossRanks:lose.map((_,i)=>rank(lose,i))});
+  }
+ }
+ const tsumo=[];
+ for(const winner of [0,1,2,3]){
+  for(const unit of [500,1000,2000]){
+   const scores=base.slice();
+   for(const i of [0,1,2,3])if(i!==winner){const pay=(winner===0||i===0?2*unit:unit)+100*f.honba;scores[i]-=pay;scores[winner]+=pay;}
+   scores[winner]+=1000*f.kyotaku;
+   tsumo.push({winner,childPay:winner===0?2*unit:unit,parentPay:winner===0?null:2*unit,points:scores,ranks:scores.map((_,i)=>rank(scores,i))});
+  }
+ }
+ return {status:'hypothetical_settlements_only',initialOrder:f.initialOrder,currentRanks:base.map((_,i)=>rank(base,i)),ron:rows,tsumo,note:'仮の和了・放銃点棒移動。実際の和了可能性・打点や終局・複数和了は推定しない。'};
+}
 export function enrichPublic(input,f,M){
  const {counts:visible,redVisible}=input.evidence.find(x=>x.id==='visible').value,h=handFrom(f,M),r=rule(M),dora=f.doraIndicators.map(p=>M.Shan.zhenbaopai(p)); 
- const evidence=[{id:'dora',kind:'calculated',value:{actualDora:dora}}],actions=[];
+ const evidence=[{id:'dora',kind:'calculated',value:{actualDora:dora}},{id:'rank-scenarios',kind:'calculated',value:rankEvidence(f)}],actions=[];
  const safety=p=>f.rivers.filter(x=>x.seat!==f.ownSeat).map(x=>({seat:x.seat,ownRiverGenbutsu:x.discards.some(d=>norm(d.tile)===norm(p))}));
  for(const opp of f.rivers.filter(x=>x.seat!==f.ownSeat)){
   const ts=opp.melds.flatMap(mt),wind='z'+('東南西北'.indexOf(f.round[0])+1);
