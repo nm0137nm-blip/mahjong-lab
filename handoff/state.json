@@ -8,35 +8,10 @@
     "coach_candidate_promoted": false
   },
   "active_task": {
-    "phase": "P1/R1",
-    "status": "robust_mixture_and_bounded_R1_extension_running",
-    "p1": {
-      "run_id": 44706585961,
-      "branch": "feat/coach-p1-robust-mixture-dev-v1",
-      "commit": "98621360f635bf4a738098daf6d727803e3f35dc",
-      "pr": 47,
-      "scope": "Fixed 25/50/75 mixtures and conservative global blend selected on fourth disjoint internal split, same 72 dev + 120 historical, no family identifier at inference; require coherence and cross-family safety. No formal outer.",
-      "status": "screen_success_not_promoted",
-      "results": "archive/results/p1-robust-mixture-20261120.json",
-      "joint": {
-        "run_id": 44708553398,
-        "branch": "feat/coach-p1-joint-risk-dev-v1",
-        "commit": "95da9736a8aedfce52611dbb8814b98765efdaaa",
-        "pr": 49,
-        "scope": "Fixed frozen T and coherent 50% conditional Ron blend, 72 reused dev matches, family-weighted matched bootstrap and conditional score/exposure/visible all-accept settlement diagnostic. No final certification."
-      }
-    },
-    "r1": {
-      "run_id": 44706812936,
-      "branch": "feat/coach-r1-pure-rollout-extension-v1",
-      "commit": "55030de34da974e71736fceaa52af6fc1c7acb92",
-      "pr": 48,
-      "scope": "One bounded independent 16-block/128-game development extension, same exact candidate/baseline and corrected S42 x3; initial +4.21875 [-19.6875,28.125]. Consider formal only if extension and combined point estimates both >=15; otherwise archive candidate. Adaptive combined interval descriptive only. No formal seeds touched.",
-      "superseded_run": 44706728799,
-      "superseded_reason": "prior seed artifact name incorrectly changed, fixed before collection",
-      "status": "attempt1 two pre-match model initialization timeouts; 61/64 match jobs success, 1 running at latest check. Retry failed only once completed; same code/seeds, no result exclusions."
-    },
-    "next": "Recheck R1 completion and rerun failed jobs with same manifest; no additional extension beyond fixed 16 blocks. Check PR49, fix implementation failure if necessary; no claims of independent evaluation. P1 robust mixture T unchanged, all family Ron point metrics improved but 24 matches below support gate; continue only with frozen candidate and proper independent evaluation before display. No formal seed or main changes."
+    "phase": "P1",
+    "status": "joint_dev_pass_candidate_freeze_preparation",
+    "r1_decision": "Archive pure augmentation candidate, no R2 formal trial: extension 0pt, combined 1.40625pt, both below 15pt predeclared engineering gate. Research paused on this candidate only, not proof no future improvement. 128 games and summary calculations succeeded, upload path mismatch caused run failure; preserve exact CI JSON and independently regenerate from artifacts.",
+    "next": "Freeze coherent visible-only P1 candidate and label/feature isolation audit, independent outer protocol; preserve original T, 50/50 R mixture. No formal R2 budget consumed. Conditional interval coverage 76.18% vs nominal80, further calibration needed; no release."
   },
   "previous_runs": [
     {
@@ -904,6 +879,39 @@
         "archive/results/p1-self-audit-20261120.json",
         "archive/results/p1-threefamily-screen-20261120.json"
       ]
+    },
+    {
+      "phase": "P1/R1",
+      "status": "R1_candidate_archived_P1_joint_dev_complete",
+      "p1": {
+        "run_id": 44706585961,
+        "branch": "feat/coach-p1-robust-mixture-dev-v1",
+        "commit": "98621360f635bf4a738098daf6d727803e3f35dc",
+        "pr": 47,
+        "scope": "Fixed 25/50/75 mixtures and conservative global blend selected on fourth disjoint internal split, same 72 dev + 120 historical, no family identifier at inference; require coherence and cross-family safety. No formal outer.",
+        "status": "screen_success_not_promoted",
+        "results": "archive/results/p1-robust-mixture-20261120.json",
+        "joint": {
+          "run_id": 44708553398,
+          "branch": "feat/coach-p1-joint-risk-dev-v1",
+          "commit": "95da9736a8aedfce52611dbb8814b98765efdaaa",
+          "pr": 49,
+          "scope": "Fixed frozen T and coherent 50% conditional Ron blend, 72 reused dev matches, family-weighted matched bootstrap and conditional score/exposure/visible all-accept settlement diagnostic. No final certification."
+        }
+      },
+      "r1": {
+        "run_id": 44706812936,
+        "branch": "feat/coach-r1-pure-rollout-extension-v1",
+        "commit": "55030de34da974e71736fceaa52af6fc1c7acb92",
+        "pr": 48,
+        "scope": "One bounded independent 16-block/128-game development extension, same exact candidate/baseline and corrected S42 x3; initial +4.21875 [-19.6875,28.125]. Consider formal only if extension and combined point estimates both >=15; otherwise archive candidate. Adaptive combined interval descriptive only. No formal seeds touched.",
+        "superseded_run": 44706728799,
+        "superseded_reason": "prior seed artifact name incorrectly changed, fixed before collection",
+        "status": "attempt1 two pre-match model initialization timeouts; 61/64 match jobs success, 1 running at latest check. Retry failed only once completed; same code/seeds, no result exclusions."
+      },
+      "next": "Recheck R1 completion and rerun failed jobs with same manifest; no additional extension beyond fixed 16 blocks. Check PR49, fix implementation failure if necessary; no claims of independent evaluation. P1 robust mixture T unchanged, all family Ron point metrics improved but 24 matches below support gate; continue only with frozen candidate and proper independent evaluation before display. No formal seed or main changes.",
+      "r1_result": "archive/results/r1-extension-20261120.json",
+      "p1_result": "archive/results/p1-joint-risk-20261120.json"
     }
   ],
   "roadmap": {

@@ -1,0 +1,543 @@
+{
+  "run": 44708553398,
+  "job": 136194125203,
+  "summary_from_ci_log": true,
+  "status": "joint_P1_development_diagnostic_only",
+  "tenpai": "unchanged frozen model, not improved or independently certified",
+  "ron": "50% clipped frozen + 50% recalibrated conditional times frozen T, no opponent identifier input",
+  "development_matches": 72,
+  "scope": "Current visible dora/no ura; base legal-opportunity exposure distinct from actual or all-accept settlement. Repeated use of development data; no independent evidence or final P1 pass. Per family 24 games below 30-game gate.",
+  "scores": {
+    "all": {
+      "matches": 72,
+      "positives": 2368,
+      "candidate": {
+        "n": 242604,
+        "positives": 2368,
+        "brier": 0.008899673851466396,
+        "log_loss": 0.036023929779303916,
+        "auprc_ap": 0.13064286792483043
+      },
+      "baseline_clamped": {
+        "n": 242604,
+        "positives": 2368,
+        "brier": 0.008947593081076236,
+        "log_loss": 0.036494346202010385,
+        "auprc_ap": 0.12231997726931071
+      },
+      "candidate_ranking": {
+        "mixed_sets": 1900,
+        "all_sets": 24413,
+        "macro_auc": 0.6471926643045064
+      },
+      "baseline_ranking": {
+        "mixed_sets": 1900,
+        "all_sets": 24413,
+        "macro_auc": 0.6281119717271033
+      },
+      "logloss_delta_ci": {
+        "estimate": -0.00046386369470340316,
+        "ci95": [
+          -0.0006675850061061371,
+          -0.0002703809181532802
+        ],
+        "scope": "adaptive development only"
+      },
+      "brier_delta_ci": {
+        "estimate": -0.00004710315786511191,
+        "ci95": [
+          -0.0000768847882133705,
+          -0.000019657580389264946
+        ],
+        "scope": "adaptive development only"
+      },
+      "conditional_mae_delta_ci": {
+        "estimate": -348.0632823001718,
+        "ci95": [
+          -571.1228456814024,
+          -122.31203195708274
+        ],
+        "scope": "adaptive development only"
+      },
+      "conditional_rmse_delta_ci": {
+        "estimate": -388.134685537518,
+        "ci95": [
+          -531.5821754298466,
+          -257.9977282541539
+        ],
+        "scope": "adaptive development only"
+      },
+      "per_opponent_exposure_rmse_delta_ci": {
+        "estimate": -23.18991510915411,
+        "ci95": [
+          -29.04142238664911,
+          -16.96907584012385
+        ],
+        "scope": "adaptive development only"
+      },
+      "central80_coverage": 0.7618243243243243,
+      "pinball": [
+        412.97059771715396,
+        1316.0387636807682,
+        805.5545386057549
+      ]
+    },
+    "s42": {
+      "matches": 24,
+      "positives": 770,
+      "candidate": {
+        "n": 77355,
+        "positives": 770,
+        "brier": 0.009024045481840479,
+        "log_loss": 0.037483209051375976,
+        "auprc_ap": 0.154554490264845
+      },
+      "baseline_clamped": {
+        "n": 77355,
+        "positives": 770,
+        "brier": 0.009034032486949915,
+        "log_loss": 0.03764734242232764,
+        "auprc_ap": 0.15007662188839466
+      },
+      "candidate_ranking": {
+        "mixed_sets": 605,
+        "all_sets": 7812,
+        "macro_auc": 0.6517409732905601
+      },
+      "baseline_ranking": {
+        "mixed_sets": 605,
+        "all_sets": 7812,
+        "macro_auc": 0.6452021394583378
+      },
+      "logloss_delta_ci": {
+        "estimate": -0.00016413337095166208,
+        "ci95": [
+          -0.0005099412539626375,
+          0.00016162317194854824
+        ],
+        "scope": "adaptive development only"
+      },
+      "brier_delta_ci": {
+        "estimate": -0.00000998700510943494,
+        "ci95": [
+          -0.00005304820191422638,
+          0.000029193767235903292
+        ],
+        "scope": "adaptive development only"
+      },
+      "conditional_mae_delta_ci": {
+        "estimate": -431.09948130431803,
+        "ci95": [
+          -859.4831946719901,
+          -39.97314236929287
+        ],
+        "scope": "adaptive development only"
+      },
+      "conditional_rmse_delta_ci": {
+        "estimate": -409.73459178015946,
+        "ci95": [
+          -677.9128578193815,
+          -207.5267230204499
+        ],
+        "scope": "adaptive development only"
+      },
+      "per_opponent_exposure_rmse_delta_ci": {
+        "estimate": -24.388683794159192,
+        "ci95": [
+          -35.7207083553537,
+          -12.369831751988695
+        ],
+        "scope": "adaptive development only"
+      },
+      "central80_coverage": 0.7779220779220779,
+      "pinball": [
+        405.36611092862,
+        1206.724246578873,
+        734.3214264777425
+      ]
+    },
+    "basic": {
+      "matches": 24,
+      "positives": 838,
+      "candidate": {
+        "n": 82573,
+        "positives": 838,
+        "brier": 0.009423490920019189,
+        "log_loss": 0.03820461438125904,
+        "auprc_ap": 0.09820007788294317
+      },
+      "baseline_clamped": {
+        "n": 82573,
+        "positives": 838,
+        "brier": 0.009465863779387218,
+        "log_loss": 0.03871844922378084,
+        "auprc_ap": 0.09603459821686354
+      },
+      "candidate_ranking": {
+        "mixed_sets": 700,
+        "all_sets": 8245,
+        "macro_auc": 0.6349665057165057
+      },
+      "baseline_ranking": {
+        "mixed_sets": 700,
+        "all_sets": 8245,
+        "macro_auc": 0.6055989139828426
+      },
+      "logloss_delta_ci": {
+        "estimate": -0.000513834842521807,
+        "ci95": [
+          -0.0008794999554411891,
+          -0.0001650429701375656
+        ],
+        "scope": "adaptive development only"
+      },
+      "brier_delta_ci": {
+        "estimate": -0.00004237285936802872,
+        "ci95": [
+          -0.00008393114964602845,
+          -0.000002498685824285556
+        ],
+        "scope": "adaptive development only"
+      },
+      "conditional_mae_delta_ci": {
+        "estimate": -301.4610061015269,
+        "ci95": [
+          -655.6926720903814,
+          63.142694213836684
+        ],
+        "scope": "adaptive development only"
+      },
+      "conditional_rmse_delta_ci": {
+        "estimate": -411.6892323066022,
+        "ci95": [
+          -681.5272052273075,
+          -177.87610947659385
+        ],
+        "scope": "adaptive development only"
+      },
+      "per_opponent_exposure_rmse_delta_ci": {
+        "estimate": -16.010181807452,
+        "ci95": [
+          -22.515049209343083,
+          -8.802688511231729
+        ],
+        "scope": "adaptive development only"
+      },
+      "central80_coverage": 0.7422434367541766,
+      "pinball": [
+        402.50177004633804,
+        1484.9113228419176,
+        1003.3307147862776
+      ]
+    },
+    "self": {
+      "matches": 24,
+      "positives": 760,
+      "candidate": {
+        "n": 82676,
+        "positives": 760,
+        "brier": 0.008260142255003128,
+        "log_loss": 0.032480601392246296,
+        "auprc_ap": 0.1514613112927177
+      },
+      "baseline_clamped": {
+        "n": 82676,
+        "positives": 760,
+        "brier": 0.008349091864121,
+        "log_loss": 0.03319422426288303,
+        "auprc_ap": 0.13432716094485483
+      },
+      "candidate_ranking": {
+        "mixed_sets": 595,
+        "all_sets": 8356,
+        "macro_auc": 0.6569516291365031
+      },
+      "baseline_ranking": {
+        "mixed_sets": 595,
+        "all_sets": 8356,
+        "macro_auc": 0.6372205245734657
+      },
+      "logloss_delta_ci": {
+        "estimate": -0.0007136228706367403,
+        "ci95": [
+          -0.0010711271057909316,
+          -0.00038194705246441144
+        ],
+        "scope": "adaptive development only"
+      },
+      "brier_delta_ci": {
+        "estimate": -0.00008894960911787209,
+        "ci95": [
+          -0.00015545546975153125,
+          -0.000029954589872378747
+        ],
+        "scope": "adaptive development only"
+      },
+      "conditional_mae_delta_ci": {
+        "estimate": -311.62935949467055,
+        "ci95": [
+          -700.442020153612,
+          101.83704073384024
+        ],
+        "scope": "adaptive development only"
+      },
+      "conditional_rmse_delta_ci": {
+        "estimate": -342.9802325257924,
+        "ci95": [
+          -557.8011140851708,
+          -112.69519778027794
+        ],
+        "scope": "adaptive development only"
+      },
+      "per_opponent_exposure_rmse_delta_ci": {
+        "estimate": -29.170879725851137,
+        "ci95": [
+          -41.12867973234021,
+          -17.08985196530592
+        ],
+        "scope": "adaptive development only"
+      },
+      "central80_coverage": 0.7671052631578947,
+      "pinball": [
+        432.2184035267787,
+        1240.5874131431583,
+        659.6506711048229
+      ]
+    },
+    "riichi": {
+      "matches": 71,
+      "positives": 1500,
+      "candidate": {
+        "n": 15656,
+        "positives": 1500,
+        "brier": 0.08488723937715899,
+        "log_loss": 0.30637943819161556,
+        "auprc_ap": 0.15857424720828794
+      },
+      "baseline_clamped": {
+        "n": 15656,
+        "positives": 1500,
+        "brier": 0.0854082837815271,
+        "log_loss": 0.309929478212551,
+        "auprc_ap": 0.15055068835540444
+      },
+      "candidate_ranking": {
+        "mixed_sets": 1185,
+        "all_sets": 1896,
+        "macro_auc": 0.6089493613122305
+      },
+      "baseline_ranking": {
+        "mixed_sets": 1185,
+        "all_sets": 1896,
+        "macro_auc": 0.5947778212176946
+      },
+      "logloss_delta_ci": {
+        "estimate": -0.0032528001543095653,
+        "ci95": [
+          -0.005513960802060269,
+          -0.001152557709347388
+        ],
+        "scope": "adaptive development only"
+      },
+      "brier_delta_ci": {
+        "estimate": -0.0004736212785868878,
+        "ci95": [
+          -0.0009081776533860474,
+          -0.00007533001655160588
+        ],
+        "scope": "adaptive development only"
+      },
+      "conditional_mae_delta_ci": {
+        "estimate": -406.7532258971507,
+        "ci95": [
+          -745.4375485944798,
+          -57.707834759983626
+        ],
+        "scope": "adaptive development only"
+      },
+      "conditional_rmse_delta_ci": {
+        "estimate": -234.31300141468805,
+        "ci95": [
+          -429.5485560791638,
+          -33.717102631268666
+        ],
+        "scope": "adaptive development only"
+      },
+      "per_opponent_exposure_rmse_delta_ci": {
+        "estimate": -93.61932104285385,
+        "ci95": [
+          -115.4823472194794,
+          -66.81914679228284
+        ],
+        "scope": "adaptive development only"
+      },
+      "central80_coverage": 0.776,
+      "pinball": [
+        493.78388236640876,
+        1481.2685584815363,
+        810.3359208140373
+      ]
+    },
+    "multi_meld": {
+      "matches": 72,
+      "positives": 400,
+      "candidate": {
+        "n": 10453,
+        "positives": 400,
+        "brier": 0.03626520213427801,
+        "log_loss": 0.15347857176934837,
+        "auprc_ap": 0.07346048171029733
+      },
+      "baseline_clamped": {
+        "n": 10453,
+        "positives": 400,
+        "brier": 0.03653797971082229,
+        "log_loss": 0.15602376993500067,
+        "auprc_ap": 0.06706950250512
+      },
+      "candidate_ranking": {
+        "mixed_sets": 331,
+        "all_sets": 1201,
+        "macro_auc": 0.7020221638046411
+      },
+      "baseline_ranking": {
+        "mixed_sets": 331,
+        "all_sets": 1201,
+        "macro_auc": 0.6632316911017817
+      },
+      "logloss_delta_ci": {
+        "estimate": -0.002416373564420029,
+        "ci95": [
+          -0.004143095750372147,
+          -0.0009058941923264317
+        ],
+        "scope": "adaptive development only"
+      },
+      "brier_delta_ci": {
+        "estimate": -0.00028129860190365005,
+        "ci95": [
+          -0.0004633093494754158,
+          -0.00011621629319922107
+        ],
+        "scope": "adaptive development only"
+      },
+      "conditional_mae_delta_ci": {
+        "estimate": -109.42537887999924,
+        "ci95": [
+          -321.82527923621353,
+          126.70296822837688
+        ],
+        "scope": "adaptive development only"
+      },
+      "conditional_rmse_delta_ci": {
+        "estimate": -553.8541029971343,
+        "ci95": [
+          -869.898754207863,
+          -259.0382080368002
+        ],
+        "scope": "adaptive development only"
+      },
+      "per_opponent_exposure_rmse_delta_ci": {
+        "estimate": -9.20357143972573,
+        "ci95": [
+          -16.509375326844253,
+          1.0156697823366954
+        ],
+        "scope": "adaptive development only"
+      },
+      "central80_coverage": 0.7825,
+      "pinball": [
+        274.6592956758861,
+        1080.412135835538,
+        775.179963056355
+      ]
+    },
+    "late": {
+      "matches": 65,
+      "positives": 549,
+      "candidate": {
+        "n": 12943,
+        "positives": 549,
+        "brier": 0.03778828495513483,
+        "log_loss": 0.14225053062356435,
+        "auprc_ap": 0.15955574978252993
+      },
+      "baseline_clamped": {
+        "n": 12943,
+        "positives": 549,
+        "brier": 0.038043336261851246,
+        "log_loss": 0.14345038125982945,
+        "auprc_ap": 0.14681814862871603
+      },
+      "candidate_ranking": {
+        "mixed_sets": 441,
+        "all_sets": 1659,
+        "macro_auc": 0.6337913472267213
+      },
+      "baseline_ranking": {
+        "mixed_sets": 441,
+        "all_sets": 1659,
+        "macro_auc": 0.6141723356009071
+      },
+      "logloss_delta_ci": {
+        "estimate": -0.0011518691625187205,
+        "ci95": [
+          -0.002488011990212123,
+          -0.000057589473767928324
+        ],
+        "scope": "adaptive development only"
+      },
+      "brier_delta_ci": {
+        "estimate": -0.00025165174132943624,
+        "ci95": [
+          -0.0005361961976729648,
+          -0.000014212025472907192
+        ],
+        "scope": "adaptive development only"
+      },
+      "conditional_mae_delta_ci": {
+        "estimate": -259.24932402964214,
+        "ci95": [
+          -625.5414311633089,
+          98.13901495031051
+        ],
+        "scope": "adaptive development only"
+      },
+      "conditional_rmse_delta_ci": {
+        "estimate": -306.73582048639173,
+        "ci95": [
+          -555.6498278780956,
+          -97.21069315740742
+        ],
+        "scope": "adaptive development only"
+      },
+      "per_opponent_exposure_rmse_delta_ci": {
+        "estimate": -60.99174421778639,
+        "ci95": [
+          -83.42048789390225,
+          -34.79565813909486
+        ],
+        "scope": "adaptive development only"
+      },
+      "central80_coverage": 0.7759562841530054,
+      "pinball": [
+        441.9746792661897,
+        1419.1752822825217,
+        838.4181291367038
+      ]
+    }
+  },
+  "quantile_crossings_before_sort": 4440,
+  "aggregate_exposure": {
+    "direct_rmse": 1081.082307891978,
+    "decomposed_rmse": 1061.540682488316,
+    "direct_vs_decomposed_abs_diff_quantiles": [
+      49.8916843428653,
+      242.51489092083713,
+      383.13627638076554,
+      862.8940136599392
+    ],
+    "all_accept_visible_settlement_direct_rmse": 1099.4461110319378
+  },
+  "limitations": "No opponent family outside training, no full ura/settlement expectation, no actual Ron choice probability. No automatic adoption. No hidden data as model features."
+}

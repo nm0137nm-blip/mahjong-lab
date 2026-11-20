@@ -1,0 +1,372 @@
+{
+  "run": 44706812936,
+  "attempt": 2,
+  "job": 136196043937,
+  "summary_from_ci_log": true,
+  "artifact_upload_failure": "output /tmp/r1-dev-rollout-summary.json; upload expected /tmp/r1-extension-summary.json",
+  "status": "R1_rollout_extension_development_only",
+  "scope": "16 new extension blocks × 4 seats × 2 arms vs corrected S42x3. Candidate fitted using 24 development matches, not formal seed inventory. Exploratory CI; not proof +15pt or promotion. No opponent or formal changes.",
+  "candidate": {
+    "status": "frozen_development_candidate_not_formal",
+    "candidate": "pure_augmented_200_plus_24_v1",
+    "training_seeds": [
+      32812839,
+      242684135,
+      375122698,
+      423777650,
+      722870828,
+      829202163,
+      856874257,
+      860520696,
+      1082872228,
+      1144254674,
+      1176002225,
+      1790423793,
+      1945548782,
+      2158353375,
+      2388998453,
+      2575018506,
+      2883861521,
+      2981428919,
+      3033773480,
+      3090638942,
+      3948482166,
+      4246806761,
+      4258810869,
+      4283322091
+    ],
+    "training_old_decisions": 20090,
+    "training_new_decisions": 2497,
+    "training_matrix_sha256": "944607a860657d49bc90087f80f158ffc212601f80a75722891a29585d2b34b3",
+    "training_labels_sha256": "2b2b7ab8201cab8f40c41518df14a9ecd900524766cb895cee633c756d48b822",
+    "training_groups_sha256": "505c52feded285da6f98124e6975ed704c735349e83cbd549c739046c3a217b4",
+    "new_row_weight": 4,
+    "repeat_model_sha256": "cce48c5e8a5b9260c8fc58e5b3dc602cf65dcbe3d61279a9c53fc19a150c0cdf",
+    "files": {
+      "pure": "cce48c5e8a5b9260c8fc58e5b3dc602cf65dcbe3d61279a9c53fc19a150c0cdf",
+      "reaction": "11d5699e20319f23040a9e7584e25179615ca8228089de0dce38c527dd7aa42f",
+      "special": "0617e41120d1918d69302bf564d294659692e4c35d2a8015c162d003b94a2ff5"
+    },
+    "baseline_files": {
+      "pure": "b4ff0a420061b1202e0d7717c7cdea4d6ef7ac0971fff45e0e70f1a49da8edd8",
+      "reaction": "11d5699e20319f23040a9e7584e25179615ca8228089de0dce38c527dd7aa42f",
+      "special": "0617e41120d1918d69302bf564d294659692e4c35d2a8015c162d003b94a2ff5"
+    },
+    "code_sha": "a064bec52bb8aab7cda2ae5105baf79aeedc474f"
+  },
+  "n_blocks": 16,
+  "n_matches": 128,
+  "baseline": {
+    "n": 64,
+    "mean_rank": 2.953125,
+    "last_rate": 0.4375,
+    "utility": -37.265625,
+    "win_rate": 0.16642547033285093,
+    "deal_in_rate": 0.16642547033285093
+  },
+  "candidate_arm": {
+    "n": 64,
+    "mean_rank": 2.953125,
+    "last_rate": 0.4375,
+    "utility": -37.265625,
+    "win_rate": 0.19167904903417535,
+    "deal_in_rate": 0.19316493313521546
+  },
+  "delta": 0,
+  "ci95_descriptive": [
+    -23.203125,
+    23.203125
+  ],
+  "blocks": [
+    {
+      "block": 1,
+      "seed": 1535873886,
+      "delta": 33.75,
+      "baseline_ranks": [
+        2,
+        4,
+        3,
+        3
+      ],
+      "candidate_ranks": [
+        2,
+        3,
+        3,
+        3
+      ]
+    },
+    {
+      "block": 2,
+      "seed": 187993203,
+      "delta": 0,
+      "baseline_ranks": [
+        2,
+        4,
+        4,
+        3
+      ],
+      "candidate_ranks": [
+        2,
+        4,
+        4,
+        3
+      ]
+    },
+    {
+      "block": 3,
+      "seed": 4153404752,
+      "delta": 22.5,
+      "baseline_ranks": [
+        3,
+        4,
+        2,
+        4
+      ],
+      "candidate_ranks": [
+        4,
+        2,
+        1,
+        4
+      ]
+    },
+    {
+      "block": 4,
+      "seed": 3050753820,
+      "delta": -56.25,
+      "baseline_ranks": [
+        1,
+        4,
+        1,
+        4
+      ],
+      "candidate_ranks": [
+        4,
+        4,
+        1,
+        4
+      ]
+    },
+    {
+      "block": 5,
+      "seed": 3357257375,
+      "delta": -67.5,
+      "baseline_ranks": [
+        3,
+        1,
+        3,
+        2
+      ],
+      "candidate_ranks": [
+        4,
+        3,
+        3,
+        3
+      ]
+    },
+    {
+      "block": 6,
+      "seed": 1473930162,
+      "delta": 0,
+      "baseline_ranks": [
+        4,
+        4,
+        4,
+        1
+      ],
+      "candidate_ranks": [
+        4,
+        4,
+        4,
+        1
+      ]
+    },
+    {
+      "block": 7,
+      "seed": 4244640453,
+      "delta": -67.5,
+      "baseline_ranks": [
+        2,
+        4,
+        4,
+        1
+      ],
+      "candidate_ranks": [
+        3,
+        4,
+        4,
+        4
+      ]
+    },
+    {
+      "block": 8,
+      "seed": 1667693174,
+      "delta": 11.25,
+      "baseline_ranks": [
+        2,
+        4,
+        4,
+        3
+      ],
+      "candidate_ranks": [
+        1,
+        4,
+        4,
+        3
+      ]
+    },
+    {
+      "block": 9,
+      "seed": 987973119,
+      "delta": 0,
+      "baseline_ranks": [
+        1,
+        4,
+        4,
+        1
+      ],
+      "candidate_ranks": [
+        1,
+        4,
+        4,
+        1
+      ]
+    },
+    {
+      "block": 10,
+      "seed": 1130658015,
+      "delta": -22.5,
+      "baseline_ranks": [
+        4,
+        2,
+        3,
+        2
+      ],
+      "candidate_ranks": [
+        4,
+        2,
+        4,
+        1
+      ]
+    },
+    {
+      "block": 11,
+      "seed": 4020396518,
+      "delta": 11.25,
+      "baseline_ranks": [
+        2,
+        1,
+        3,
+        4
+      ],
+      "candidate_ranks": [
+        1,
+        1,
+        3,
+        4
+      ]
+    },
+    {
+      "block": 12,
+      "seed": 112843843,
+      "delta": -22.5,
+      "baseline_ranks": [
+        4,
+        4,
+        3,
+        3
+      ],
+      "candidate_ranks": [
+        4,
+        2,
+        4,
+        4
+      ]
+    },
+    {
+      "block": 13,
+      "seed": 1516241111,
+      "delta": -67.5,
+      "baseline_ranks": [
+        3,
+        2,
+        1,
+        4
+      ],
+      "candidate_ranks": [
+        3,
+        4,
+        4,
+        3
+      ]
+    },
+    {
+      "block": 14,
+      "seed": 779413841,
+      "delta": 67.5,
+      "baseline_ranks": [
+        2,
+        3,
+        4,
+        4
+      ],
+      "candidate_ranks": [
+        1,
+        1,
+        4,
+        3
+      ]
+    },
+    {
+      "block": 15,
+      "seed": 2973426374,
+      "delta": 78.75,
+      "baseline_ranks": [
+        3,
+        3,
+        4,
+        4
+      ],
+      "candidate_ranks": [
+        3,
+        3,
+        2,
+        3
+      ]
+    },
+    {
+      "block": 16,
+      "seed": 3391934691,
+      "delta": 78.75,
+      "baseline_ranks": [
+        1,
+        4,
+        4,
+        4
+      ],
+      "candidate_ranks": [
+        1,
+        4,
+        3,
+        2
+      ]
+    }
+  ],
+  "previous_pilot": {
+    "delta": 4.21875,
+    "ci95_descriptive": [
+      -19.6875,
+      28.125
+    ]
+  },
+  "combined_exploratory": {
+    "n_blocks": 24,
+    "n_matches": 192,
+    "delta": 1.40625,
+    "ci95_descriptive": [
+      -16.40625,
+      19.21875
+    ],
+    "warning": "Adaptively extended development pilot; not independent confirmatory inference."
+  },
+  "next_decision": "archive_candidate_no_formal_trial_on_current_evidence"
+}
