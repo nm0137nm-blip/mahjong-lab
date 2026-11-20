@@ -75,6 +75,7 @@ jobs:
           retention-days: 30
 
   bias-verifier:
+    if: false # completed in 44758490026
     runs-on: ubuntu-24.04
     timeout-minutes: 8
     steps:
@@ -102,4 +103,52 @@ jobs:
           name: v14-sampler-bias-aggregate
           path: /tmp/v14-sampler-bias.json
           if-no-files-found: warn
+          retention-days: 30
+
+  late-proposal:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - run: python -m pip install mahjong==1.4.0
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: p1-v2-dev-data-*
+          run-id: 44726204303
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/v14-dev
+      - run: python tests/next/v14-late-proposal-probe.py /tmp/v14-dev /tmp/v14-late-proposal.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v14-late-proposal-frozen
+          path: /tmp/v14-late-proposal.json
+          retention-days: 30
+  late-verifier:
+    needs: late-proposal
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - run: python -m pip install mahjong==1.4.0
+      - uses: actions/download-artifact@v4
+        with:
+          name: v14-late-proposal-frozen
+          path: /tmp/frozen
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: p1-v2-dev-data-*
+          run-id: 44726204303
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/v14-dev
+      - run: python tests/next/v14-late-proposal-verifier.py /tmp/v14-dev /tmp/frozen/v14-late-proposal.json /tmp/v14-late-verification.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v14-late-proposal-aggregate
+          path: /tmp/v14-late-verification.json
           retention-days: 30
