@@ -22,6 +22,11 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           path: /tmp/v14-dev
       - run: node tests/next/prepare-v14-pilot.mjs /tmp/v14-dev /tmp/v14-pilot
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - run: python -m pip install mahjong==1.4.0
+      - run: python tests/next/audit-v14-public-calculations.py /tmp/v14-pilot/independent-requests.json /tmp/v14-pilot/calculation-audit.json
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -31,6 +36,7 @@ jobs:
           retention-days: 30
 
   sampler:
+    if: false # completed diagnostic in run 44755542405, do not repeat on calculation edits
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
