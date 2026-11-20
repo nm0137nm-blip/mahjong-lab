@@ -285,10 +285,10 @@ jobs:
           path: /tmp/v14-dev
       - run: node tests/next/v14-pilot-answer-audit.mjs refs /tmp/stage1/independent-requests.json /tmp/verifier/lineage.json /tmp/contrast-ref/contrast-mortal-result.json /tmp/v14-dev /tmp/verifier/references.json
       - run: |
-          for name in efficiency_own_only own_points boilerplate; do
+          for name in efficiency_own_only own_points boilerplate boilerplate_cited; do
             node tests/next/v14-pilot-answer-audit.mjs grade /tmp/stage1/independent-requests.json /tmp/control-locks/$name.json /tmp/verifier/references.json /tmp/verifier/$name-grade.json
           done
-          node -e 'for(const k of ["efficiency_own_only","own_points","boilerplate"]){const r=require("/tmp/verifier/"+k+"-grade.json");console.log(k,JSON.stringify({...r,rows:undefined}));}'
+          node -e 'for(const k of ["efficiency_own_only","own_points","boilerplate","boilerplate_cited"]){const r=require("/tmp/verifier/"+k+"-grade.json");console.log(k,JSON.stringify({...r,rows:undefined}));}'
       - uses: actions/upload-artifact@v4
         with:
           name: v14-pilot-answer-audit-verifier-only
