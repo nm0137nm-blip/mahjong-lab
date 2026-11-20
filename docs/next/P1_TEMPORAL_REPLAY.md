@@ -1,0 +1,2 @@
+# Temporal furiten independent audit
+Replay exact synthetic paipu using independent Python concealed-multiset state and shanten. Align every oracle observation to ordered public history plus round/honba and own hand. Verify hidden hand/meld reconstruction and eligibility flags independently, including complete-shape passes, own river, reset timing, riichi and added kan. Full native engine identity not claimed. Existing 8 matches first, then 48 if retry succeeds. Do not exclude mismatch or change dataset. No training on formal seeds.

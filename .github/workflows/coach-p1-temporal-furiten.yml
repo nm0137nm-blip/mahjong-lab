@@ -1,0 +1,69 @@
+name: Independent temporal furiten replay
+on:
+  pull_request:
+    branches: [feat/coach-p1-r1-multifamily-dev-v1]
+permissions:
+  contents: read
+  actions: read
+jobs:
+  pilot-replay:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: p1-r1-dev-*
+          run-id: 44692420874
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/dev
+      - run: python -m pip install mahjong==1.4.0
+      - run: python3 tests/next/audit-temporal-furiten.py /tmp/dev 8
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: temporal-furiten-pilot
+          path: /tmp/p1-temporal-furiten.json
+          if-no-files-found: error
+          retention-days: 30
+  expanded-replay:
+    needs: pilot-replay
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - name: Wait for same-seed retry to finish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          for i in $(seq 1 40); do
+            status=$(gh api repos/nm0137nm-blip/mahjong-lab/actions/runs/44693828778 --jq .status)
+            if [ "$status" = completed ]; then
+              test "$(gh api repos/nm0137nm-blip/mahjong-lab/actions/runs/44693828778 --jq .conclusion)" = success
+              exit 0
+            fi
+            sleep 15
+          done
+          exit 1
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: multifamily-dev-*
+          run-id: 44693828778
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/dev
+      - run: python -m pip install mahjong==1.4.0
+      - run: python3 tests/next/audit-temporal-furiten.py /tmp/dev 48
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: temporal-furiten-expanded
+          path: /tmp/p1-temporal-furiten.json
+          if-no-files-found: error
+          retention-days: 30
