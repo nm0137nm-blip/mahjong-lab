@@ -179,7 +179,13 @@ jobs:
           run-id: 44758253864
           github-token: ${{ secrets.GITHUB_TOKEN }}
           path: /tmp/contrast
-      - run: node tests/next/v14-freeze-pilot-set.mjs /tmp/natural /tmp/contrast/v14-contrast-public.json /tmp/frozen-pilot
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: p1-v2-dev-data-*
+          run-id: 44726204303
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/v14-dev
+      - run: node tests/next/v14-freeze-pilot-set.mjs /tmp/natural /tmp/contrast/v14-contrast-public.json /tmp/frozen-pilot /tmp/v14-dev
       - run: python tests/next/audit-v14-public-calculations.py /tmp/frozen-pilot/stage1/independent-requests.json /tmp/frozen-pilot/verifier/calculation-audit.json
       - run: node tests/next/v14-negative-controls.mjs select /tmp/frozen-pilot/stage1/independent-requests.json /tmp/frozen-pilot/verifier/weak-control-lock.json
       - uses: actions/upload-artifact@v4
