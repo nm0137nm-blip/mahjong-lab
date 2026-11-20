@@ -27,6 +27,8 @@ jobs:
           python-version: '3.13.5'
       - run: python -m pip install mahjong==1.4.0
       - run: python tests/next/audit-v14-public-calculations.py /tmp/v14-pilot/independent-requests.json /tmp/v14-pilot/calculation-audit.json
+      - run: node tests/next/v14-negative-controls.mjs select /tmp/v14-pilot/independent-requests.json /tmp/v14-pilot/weak-control-lock.json
+      - run: node tests/next/v14-negative-controls.mjs grade /tmp/v14-pilot/independent-requests.json /tmp/v14-pilot/weak-control-lock.json /tmp/v14-pilot/lineage.json /tmp/v14-dev /tmp/v14-pilot/weak-control-results.json
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -36,7 +38,7 @@ jobs:
           retention-days: 30
 
   sampler:
-    if: false # completed diagnostic in run 44755542405, do not repeat on calculation edits
+    if: true # bounded contrast diagnostic; do not repeat original standard-only probe
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
@@ -55,15 +57,18 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           path: /tmp/v14-dev
       - run: python tests/next/v14-sampler-feasibility.py /tmp/v14-dev /tmp/v14-sampler-feasibility.json /tmp/v14-private-trajectories.json
-      - run: node tests/next/v14-engine-rollout-probe.mjs /tmp/v14-private-trajectories.json /tmp/v14-rollout-probe.json
+      - run: node tests/next/v14-contrast-probe.mjs /tmp/v14-private-trajectories.json /tmp/v14-contrast-probe.json /tmp/v14-contrast-public.json
+      - run: node tests/next/v14-negative-controls.mjs contrast /tmp/v14-contrast-public.json /tmp/v14-contrast-control.json
       - if: always()
         run: rm -f /tmp/v14-private-trajectories.json
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: v14-sampler-feasibility
+          name: v14-contrast-feasibility
           path: |
             /tmp/v14-sampler-feasibility.json
-            /tmp/v14-rollout-probe.json
+            /tmp/v14-contrast-probe.json
+            /tmp/v14-contrast-public.json
+            /tmp/v14-contrast-control.json
           if-no-files-found: warn
           retention-days: 30
