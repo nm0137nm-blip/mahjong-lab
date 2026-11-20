@@ -1,0 +1,45 @@
+name: R1 original-data plus on-policy augmentation diagnostic
+on:
+  pull_request:
+    branches: [feat/coach-p1-r1-targeted-dev-v1]
+permissions:
+  contents: read
+  actions: read
+jobs:
+  diagnostic:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        category: [pure,reaction,special]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: lab
+      - uses: actions/checkout@v4
+        with:
+          ref: 8ac6a3e4e9b18def0299b2098193c22c83921fa4
+          path: frozen
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: multifamily-dev-*
+          run-id: 44693828778
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/dev
+      - run: |
+          set -euo pipefail
+          python -m pip install numpy==2.3.5 lightgbm==4.6.0 scikit-learn==1.8.0 requests==2.32.5
+          cp -r frozen/archive/versions/policy-200-lgb-v1 /tmp/arena-model
+          python lab/tests/next/r1-augmentation.py /tmp/dev "${{ matrix.category }}"
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: r1-augmentation-${{ matrix.category }}
+          path: /tmp/r1-augmentation-*.json
+          if-no-files-found: error
+          retention-days: 30
