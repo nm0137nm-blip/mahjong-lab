@@ -1,0 +1,28 @@
+{
+  "run": 44702128580,
+  "snapshot": {
+    "status": "independent_snapshot_audit_pass",
+    "counts": {
+      "opponent_states": 8361,
+      "candidate_ron_labels": 91044,
+      "score_labels": 760
+    },
+    "scope": "Independent shanten/waits/river furiten/yaku/no-ura score using recorded snapshot. Temporal furiten and full replay, responsibility payment and new kan indicators need separate coverage. No actual Ron choice or full payout claim."
+  },
+  "temporal": {
+    "status": "temporal_replay_pass",
+    "matches": 24,
+    "counts": {
+      "passed_complete_shape": 156,
+      "passed_after_riichi": 61,
+      "reset_on_nonriichi_discard": 37,
+      "turns_aligned": 2787,
+      "opponent_states": 8361,
+      "kan_indicator_notification_reordered": 18,
+      "own_river_furiten": 54,
+      "added_kan": 1,
+      "ron_ineligible": 37
+    },
+    "scope": "Independent concealed-multiset/public-prefix reconstruction and shape-pass temporal eligibility, in actual completed synthetic games. Not full engine identity or true human Ron choice."
+  }
+}

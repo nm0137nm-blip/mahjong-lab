@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-20T17:26:15+09:00",
+  "checkpoint": "2026-11-20T17:59:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -9,47 +9,24 @@
   },
   "active_task": {
     "phase": "P1/R1",
-    "status": "parallel_development_rollout_and_third_family_collection_running",
-    "r1": {
-      "run_id": 44701775478,
-      "branch": "feat/coach-r1-pure-rollout-dev-v1",
-      "commit": "7c7a113bc1bdd8c03dd2b25f8a8a749c99f9e889",
-      "pr": 44,
-      "scope": "Frozen pure-only augmentation, 8 new blocks×4 seats×2 arms vs corrected S42 =64 exploratory matches; not formal comparison. Other heads exact original. Training/byte rebuild passed. Candidate manifest in archive/results/r1-pure-candidate-20261120.json.",
-      "candidate_sha": "cce48c5e8a5b9260c8fc58e5b3dc602cf65dcbe3d61279a9c53fc19a150c0cdf",
-      "artifacts": [
-        {
-          "name": "r1-dev-augmented-model",
-          "id": 14613640863,
-          "digest": "sha256:143aaa95abe8123aacfe9a62701ee58bb81be8d2dcc22ab1bc6c9898327cd20c",
-          "expired": false
-        },
-        {
-          "name": "r1-dev-rollout-seeds",
-          "id": 14613561093,
-          "digest": "sha256:ca24d983631607ef2d28aede1bf2f35fc244c89e87e8d5059c21fb70f92802dd",
-          "expired": false
-        }
-      ],
-      "superseded_run": 44701720906,
-      "superseded_reason": "RPC module path and match summary glob corrected; do not include obsolete run."
-    },
+    "status": "robust_mixture_and_bounded_R1_extension_running",
     "p1": {
-      "run_id": 44702128580,
-      "branch": "feat/coach-p1-self-opponent-dev-v1",
-      "commit": "138db0b577946319f7726b8ebd7b9cb3160fa3fb",
-      "pr": 45,
-      "scope": "24 fresh development games vs frozen learned×3, separate seat Board and RPCs, independent snapshot + temporal audit; initial collection failed on asynchronous decision-time legality, synchronous forced-win resolution and builder preload fix; no model change. Do not use superseded output.",
-      "superseded_run": 44701967759,
-      "screen": {
-        "run_id": 44702508030,
-        "branch": "feat/coach-p1-augmented-threefamily-v1",
-        "commit": "7ad357925e9e2b5fa03e4bca024a3f8f622bf834",
-        "pr": 46,
-        "scope": "Starts only when PR45 audit gate succeeds. Old120+new72, six match-separated development folds with distinct calibration fold, three families, public chronology enriched candidates, proper score/ranking/strata. Old labels not independently replayed; no outer holdout or promotion."
-      }
+      "run_id": 44706585961,
+      "branch": "feat/coach-p1-robust-mixture-dev-v1",
+      "commit": "98621360f635bf4a738098daf6d727803e3f35dc",
+      "pr": 47,
+      "scope": "Fixed 25/50/75 mixtures and conservative global blend selected on fourth disjoint internal split, same 72 dev + 120 historical, no family identifier at inference; require coherence and cross-family safety. No formal outer."
     },
-    "next": "Verify active run statuses and fix failures using same seeds, no dropped matches. R1 examine exploratory paired block outcomes and CI; candidate not formal, no claim +15pt based on Q. P1 review third family and nested screen; only after dev performance supports selection, freeze final candidate/outer protocol and independent fresh data with required support. Current visible-only loss scope held, no general release/main changes. Track superseded runs separately."
+    "r1": {
+      "run_id": 44706812936,
+      "branch": "feat/coach-r1-pure-rollout-extension-v1",
+      "commit": "55030de34da974e71736fceaa52af6fc1c7acb92",
+      "pr": 48,
+      "scope": "One bounded independent 16-block/128-game development extension, same exact candidate/baseline and corrected S42 x3; initial +4.21875 [-19.6875,28.125]. Consider formal only if extension and combined point estimates both >=15; otherwise archive candidate. Adaptive combined interval descriptive only. No formal seeds touched.",
+      "superseded_run": 44706728799,
+      "superseded_reason": "prior seed artifact name incorrectly changed, fixed before collection"
+    },
+    "next": "Check both results; fix actual pipeline errors before reporting. R1 single extension only, respect predeclared engineering stop rule. P1 no outer activation until supported candidate passes development safety, freeze identity and full product score targets/gates, third unseen family, leakage/hidden perturbation audit. Historical label audit limitation. No public release/main changes."
   },
   "previous_runs": [
     {
@@ -868,6 +845,55 @@
       "scope": "Development-only R1 original 200-game corpus augmentation with actual 24 learned focal games. Six grouped folds, independent action heads, fixed 4x new row weights. P1 probability screen not promoted; conditional payment promising but no final gate. No formal evaluation or release.",
       "next": "Check run and correct any failures. If augmented rankers do not improve across both families, do not spend formal R2 budget. If improvement observed, examine action-specific and rollout hypotheses before freezing any candidate. P1 third family implementation and stronger calibration/outer gate still required; 48 development games are not test data. Main unchanged.",
       "results": "archive/results/r1-augmentation-20261120.json"
+    },
+    {
+      "phase": "P1/R1",
+      "status": "all_three_parallel_runs_completed_not_promoted",
+      "r1": {
+        "run_id": 44701775478,
+        "branch": "feat/coach-r1-pure-rollout-dev-v1",
+        "commit": "7c7a113bc1bdd8c03dd2b25f8a8a749c99f9e889",
+        "pr": 44,
+        "scope": "Frozen pure-only augmentation, 8 new blocks×4 seats×2 arms vs corrected S42 =64 exploratory matches; not formal comparison. Other heads exact original. Training/byte rebuild passed. Candidate manifest in archive/results/r1-pure-candidate-20261120.json.",
+        "candidate_sha": "cce48c5e8a5b9260c8fc58e5b3dc602cf65dcbe3d61279a9c53fc19a150c0cdf",
+        "artifacts": [
+          {
+            "name": "r1-dev-augmented-model",
+            "id": 14613640863,
+            "digest": "sha256:143aaa95abe8123aacfe9a62701ee58bb81be8d2dcc22ab1bc6c9898327cd20c",
+            "expired": false
+          },
+          {
+            "name": "r1-dev-rollout-seeds",
+            "id": 14613561093,
+            "digest": "sha256:ca24d983631607ef2d28aede1bf2f35fc244c89e87e8d5059c21fb70f92802dd",
+            "expired": false
+          }
+        ],
+        "superseded_run": 44701720906,
+        "superseded_reason": "RPC module path and match summary glob corrected; do not include obsolete run."
+      },
+      "p1": {
+        "run_id": 44702128580,
+        "branch": "feat/coach-p1-self-opponent-dev-v1",
+        "commit": "138db0b577946319f7726b8ebd7b9cb3160fa3fb",
+        "pr": 45,
+        "scope": "24 fresh development games vs frozen learned×3, separate seat Board and RPCs, independent snapshot + temporal audit; initial collection failed on asynchronous decision-time legality, synchronous forced-win resolution and builder preload fix; no model change. Do not use superseded output.",
+        "superseded_run": 44701967759,
+        "screen": {
+          "run_id": 44702508030,
+          "branch": "feat/coach-p1-augmented-threefamily-v1",
+          "commit": "7ad357925e9e2b5fa03e4bca024a3f8f622bf834",
+          "pr": 46,
+          "scope": "Starts only when PR45 audit gate succeeds. Old120+new72, six match-separated development folds with distinct calibration fold, three families, public chronology enriched candidates, proper score/ranking/strata. Old labels not independently replayed; no outer holdout or promotion."
+        }
+      },
+      "next": "Verify active run statuses and fix failures using same seeds, no dropped matches. R1 examine exploratory paired block outcomes and CI; candidate not formal, no claim +15pt based on Q. P1 review third family and nested screen; only after dev performance supports selection, freeze final candidate/outer protocol and independent fresh data with required support. Current visible-only loss scope held, no general release/main changes. Track superseded runs separately.",
+      "results": [
+        "archive/results/r1-pure-rollout-20261120.json",
+        "archive/results/p1-self-audit-20261120.json",
+        "archive/results/p1-threefamily-screen-20261120.json"
+      ]
     }
   ],
   "roadmap": {

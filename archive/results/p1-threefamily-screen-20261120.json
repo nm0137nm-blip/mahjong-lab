@@ -1,0 +1,701 @@
+{
+  "run": 44702508030,
+  "summary_from_ci_log": true,
+  "status": "three_family_nested_development_screen_only",
+  "tenpai": {
+    "frozen": {
+      "all": {
+        "n": 22528,
+        "positives": 1468,
+        "brier": 0.037103962080640186,
+        "log_loss": 0.13344289110729693,
+        "auprc_ap": 0.5959914089523749
+      },
+      "s42": {
+        "n": 7315,
+        "positives": 522,
+        "brier": 0.04594926342218755,
+        "log_loss": 0.16979348812120468,
+        "auprc_ap": 0.49594662677296436
+      },
+      "basic": {
+        "n": 7571,
+        "positives": 500,
+        "brier": 0.03345646840577909,
+        "log_loss": 0.10612051599386979,
+        "auprc_ap": 0.6740938351091118
+      },
+      "self": {
+        "n": 7642,
+        "positives": 446,
+        "brier": 0.032250755498456775,
+        "log_loss": 0.12571625996715322,
+        "auprc_ap": 0.6643575235971219
+      }
+    },
+    "retrained": {
+      "all": {
+        "n": 22528,
+        "positives": 1468,
+        "brier": 0.03696336478427719,
+        "log_loss": 0.12824528673684182,
+        "auprc_ap": 0.5909702517090023
+      },
+      "s42": {
+        "n": 7315,
+        "positives": 522,
+        "brier": 0.044755221121965776,
+        "log_loss": 0.1566051111214464,
+        "auprc_ap": 0.5090392371736889
+      },
+      "basic": {
+        "n": 7571,
+        "positives": 500,
+        "brier": 0.03540602519827403,
+        "log_loss": 0.11402477396568668,
+        "auprc_ap": 0.6419459234684387
+      },
+      "self": {
+        "n": 7642,
+        "positives": 446,
+        "brier": 0.031047791491348363,
+        "log_loss": 0.11518736823606104,
+        "auprc_ap": 0.6897919382163082
+      }
+    },
+    "retrained_platt": {
+      "all": {
+        "n": 22528,
+        "positives": 1468,
+        "brier": 0.03689012038648349,
+        "log_loss": 0.1279399607286776,
+        "auprc_ap": 0.5884058581547623
+      },
+      "s42": {
+        "n": 7315,
+        "positives": 522,
+        "brier": 0.0444830604701918,
+        "log_loss": 0.15477550484084554,
+        "auprc_ap": 0.5114983666511609
+      },
+      "basic": {
+        "n": 7571,
+        "positives": 500,
+        "brier": 0.035601589010088586,
+        "log_loss": 0.1159669140300199,
+        "auprc_ap": 0.6358444602109887
+      },
+      "self": {
+        "n": 7642,
+        "positives": 446,
+        "brier": 0.03089864097511992,
+        "log_loss": 0.11411451338178272,
+        "auprc_ap": 0.6790751251167328
+      }
+    }
+  },
+  "ron": {
+    "frozen": {
+      "all": {
+        "n": 242604,
+        "positives": 2368,
+        "brier": 0.008947593462501176,
+        "log_loss": 0.0364944388806147,
+        "auprc_ap": 0.12231974001869281,
+        "ranking": {
+          "mixed_sets": 1900,
+          "all_sets": 24413,
+          "macro_auc": 0.6281119717271033
+        }
+      },
+      "s42": {
+        "n": 77355,
+        "positives": 770,
+        "brier": 0.00903403287218684,
+        "log_loss": 0.037647435772600886,
+        "auprc_ap": 0.15007623689206762,
+        "ranking": {
+          "mixed_sets": 605,
+          "all_sets": 7812,
+          "macro_auc": 0.6452021394583378
+        }
+      },
+      "basic": {
+        "n": 82573,
+        "positives": 838,
+        "brier": 0.009465864202991666,
+        "log_loss": 0.03871855902424595,
+        "auprc_ap": 0.09603453811261727,
+        "ranking": {
+          "mixed_sets": 700,
+          "all_sets": 8245,
+          "macro_auc": 0.6055989139828426
+        }
+      },
+      "self": {
+        "n": 82676,
+        "positives": 760,
+        "brier": 0.008349092199852337,
+        "log_loss": 0.03319429921251689,
+        "auprc_ap": 0.13432690624568613,
+        "ranking": {
+          "mixed_sets": 595,
+          "all_sets": 8356,
+          "macro_auc": 0.6372205245734657
+        }
+      },
+      "riichi": {
+        "n": 15656,
+        "positives": 1500,
+        "brier": 0.0854082837815271,
+        "log_loss": 0.309929478212551,
+        "auprc_ap": 0.15055068835540444,
+        "ranking": {
+          "mixed_sets": 1185,
+          "all_sets": 1896,
+          "macro_auc": 0.5947778212176946
+        }
+      },
+      "multi_meld": {
+        "n": 10453,
+        "positives": 400,
+        "brier": 0.03653797971082229,
+        "log_loss": 0.15602376993500067,
+        "auprc_ap": 0.06706950250512,
+        "ranking": {
+          "mixed_sets": 331,
+          "all_sets": 1201,
+          "macro_auc": 0.6632316911017817
+        }
+      },
+      "late": {
+        "n": 12943,
+        "positives": 549,
+        "brier": 0.038043336261851246,
+        "log_loss": 0.14345038125982945,
+        "auprc_ap": 0.14681814862871603,
+        "ranking": {
+          "mixed_sets": 441,
+          "all_sets": 1659,
+          "macro_auc": 0.6141723356009071
+        }
+      }
+    },
+    "frozen_clamp": {
+      "all": {
+        "n": 242604,
+        "positives": 2368,
+        "brier": 0.008947593081076236,
+        "log_loss": 0.036494346202010385,
+        "auprc_ap": 0.12231997726931071,
+        "ranking": {
+          "mixed_sets": 1900,
+          "all_sets": 24413,
+          "macro_auc": 0.6281119717271033
+        }
+      },
+      "s42": {
+        "n": 77355,
+        "positives": 770,
+        "brier": 0.009034032486949915,
+        "log_loss": 0.03764734242232764,
+        "auprc_ap": 0.15007662188839466,
+        "ranking": {
+          "mixed_sets": 605,
+          "all_sets": 7812,
+          "macro_auc": 0.6452021394583378
+        }
+      },
+      "basic": {
+        "n": 82573,
+        "positives": 838,
+        "brier": 0.009465863779387218,
+        "log_loss": 0.03871844922378084,
+        "auprc_ap": 0.09603459821686354,
+        "ranking": {
+          "mixed_sets": 700,
+          "all_sets": 8245,
+          "macro_auc": 0.6055989139828426
+        }
+      },
+      "self": {
+        "n": 82676,
+        "positives": 760,
+        "brier": 0.008349091864121,
+        "log_loss": 0.03319422426288303,
+        "auprc_ap": 0.13432716094485483,
+        "ranking": {
+          "mixed_sets": 595,
+          "all_sets": 8356,
+          "macro_auc": 0.6372205245734657
+        }
+      },
+      "riichi": {
+        "n": 15656,
+        "positives": 1500,
+        "brier": 0.0854082837815271,
+        "log_loss": 0.309929478212551,
+        "auprc_ap": 0.15055068835540444,
+        "ranking": {
+          "mixed_sets": 1185,
+          "all_sets": 1896,
+          "macro_auc": 0.5947778212176946
+        }
+      },
+      "multi_meld": {
+        "n": 10453,
+        "positives": 400,
+        "brier": 0.03653797971082229,
+        "log_loss": 0.15602376993500067,
+        "auprc_ap": 0.06706950250512,
+        "ranking": {
+          "mixed_sets": 331,
+          "all_sets": 1201,
+          "macro_auc": 0.6632316911017817
+        }
+      },
+      "late": {
+        "n": 12943,
+        "positives": 549,
+        "brier": 0.038043336261851246,
+        "log_loss": 0.14345038125982945,
+        "auprc_ap": 0.14681814862871603,
+        "ranking": {
+          "mixed_sets": 441,
+          "all_sets": 1659,
+          "macro_auc": 0.6141723356009071
+        }
+      }
+    },
+    "retrained_direct": {
+      "all": {
+        "n": 242604,
+        "positives": 2368,
+        "brier": 0.008931792561233548,
+        "log_loss": 0.03642040053586039,
+        "auprc_ap": 0.12276043091359176,
+        "ranking": {
+          "mixed_sets": 1900,
+          "all_sets": 24413,
+          "macro_auc": 0.6437850979429927
+        }
+      },
+      "s42": {
+        "n": 77355,
+        "positives": 770,
+        "brier": 0.009075079393987585,
+        "log_loss": 0.03782744923687089,
+        "auprc_ap": 0.13865700893726537,
+        "ranking": {
+          "mixed_sets": 605,
+          "all_sets": 7812,
+          "macro_auc": 0.6328630758589436
+        }
+      },
+      "basic": {
+        "n": 82573,
+        "positives": 838,
+        "brier": 0.009449562390514542,
+        "log_loss": 0.03870274331521088,
+        "auprc_ap": 0.09415603576043208,
+        "ranking": {
+          "mixed_sets": 700,
+          "all_sets": 8245,
+          "macro_auc": 0.6378012543012542
+        }
+      },
+      "self": {
+        "n": 82676,
+        "positives": 760,
+        "brier": 0.00828060284401322,
+        "log_loss": 0.03282440964871084,
+        "auprc_ap": 0.15219220386033308,
+        "ranking": {
+          "mixed_sets": 595,
+          "all_sets": 8356,
+          "macro_auc": 0.6619304994725163
+        }
+      },
+      "riichi": {
+        "n": 15656,
+        "positives": 1500,
+        "brier": 0.085160272388893,
+        "log_loss": 0.30788873840837855,
+        "auprc_ap": 0.14938291422392797,
+        "ranking": {
+          "mixed_sets": 1185,
+          "all_sets": 1896,
+          "macro_auc": 0.6094917084790503
+        }
+      },
+      "multi_meld": {
+        "n": 10453,
+        "positives": 400,
+        "brier": 0.036395982607627365,
+        "log_loss": 0.15498055652497753,
+        "auprc_ap": 0.07155077065264626,
+        "ranking": {
+          "mixed_sets": 331,
+          "all_sets": 1201,
+          "macro_auc": 0.7127137255158403
+        }
+      },
+      "late": {
+        "n": 12943,
+        "positives": 549,
+        "brier": 0.037884814617426585,
+        "log_loss": 0.14307510105833915,
+        "auprc_ap": 0.15201666004267683,
+        "ranking": {
+          "mixed_sets": 441,
+          "all_sets": 1659,
+          "macro_auc": 0.6232433052586114
+        }
+      }
+    },
+    "retrained_direct_platt": {
+      "all": {
+        "n": 242604,
+        "positives": 2368,
+        "brier": 0.008959716348501363,
+        "log_loss": 0.03646923070572129,
+        "auprc_ap": 0.1186427476663234,
+        "ranking": {
+          "mixed_sets": 1900,
+          "all_sets": 24413,
+          "macro_auc": 0.6437850979429927
+        }
+      },
+      "s42": {
+        "n": 77355,
+        "positives": 770,
+        "brier": 0.00909098476651173,
+        "log_loss": 0.037881783239850024,
+        "auprc_ap": 0.13437876009895244,
+        "ranking": {
+          "mixed_sets": 605,
+          "all_sets": 7812,
+          "macro_auc": 0.6328630758589436
+        }
+      },
+      "basic": {
+        "n": 82573,
+        "positives": 838,
+        "brier": 0.009472114218387454,
+        "log_loss": 0.038721857330264155,
+        "auprc_ap": 0.09399530744143908,
+        "ranking": {
+          "mixed_sets": 700,
+          "all_sets": 8245,
+          "macro_auc": 0.6378012543012542
+        }
+      },
+      "self": {
+        "n": 82676,
+        "positives": 760,
+        "brier": 0.008325136811691449,
+        "log_loss": 0.03289776934394876,
+        "auprc_ap": 0.13476041072629913,
+        "ranking": {
+          "mixed_sets": 595,
+          "all_sets": 8356,
+          "macro_auc": 0.6619304994725163
+        }
+      },
+      "riichi": {
+        "n": 15656,
+        "positives": 1500,
+        "brier": 0.08554037739569162,
+        "log_loss": 0.3092439877360715,
+        "auprc_ap": 0.14177980036443802,
+        "ranking": {
+          "mixed_sets": 1185,
+          "all_sets": 1896,
+          "macro_auc": 0.6094917084790503
+        }
+      },
+      "multi_meld": {
+        "n": 10453,
+        "positives": 400,
+        "brier": 0.0364877324592896,
+        "log_loss": 0.15531650418236342,
+        "auprc_ap": 0.07283878387043219,
+        "ranking": {
+          "mixed_sets": 331,
+          "all_sets": 1201,
+          "macro_auc": 0.7127137255158403
+        }
+      },
+      "late": {
+        "n": 12943,
+        "positives": 549,
+        "brier": 0.03802335967930398,
+        "log_loss": 0.14379792625876636,
+        "auprc_ap": 0.14722535309082782,
+        "ranking": {
+          "mixed_sets": 441,
+          "all_sets": 1659,
+          "macro_auc": 0.6232433052586114
+        }
+      }
+    },
+    "retrained_factor_platt": {
+      "all": {
+        "n": 242604,
+        "positives": 2368,
+        "brier": 0.008913506584698631,
+        "log_loss": 0.03615433196038975,
+        "auprc_ap": 0.12628477947760378,
+        "ranking": {
+          "mixed_sets": 1900,
+          "all_sets": 24413,
+          "macro_auc": 0.6509710564776354
+        }
+      },
+      "s42": {
+        "n": 77355,
+        "positives": 770,
+        "brier": 0.009060300801249076,
+        "log_loss": 0.037441977097072004,
+        "auprc_ap": 0.1385451385041992,
+        "ranking": {
+          "mixed_sets": 605,
+          "all_sets": 7812,
+          "macro_auc": 0.647333418800361
+        }
+      },
+      "basic": {
+        "n": 82573,
+        "positives": 838,
+        "brier": 0.009461935967904051,
+        "log_loss": 0.03866419910016811,
+        "auprc_ap": 0.09618333718141513,
+        "ranking": {
+          "mixed_sets": 700,
+          "all_sets": 8245,
+          "macro_auc": 0.6436434121434121
+        }
+      },
+      "self": {
+        "n": 82676,
+        "positives": 760,
+        "brier": 0.008228413860320567,
+        "log_loss": 0.032442818959265186,
+        "auprc_ap": 0.15610527600996818,
+        "ranking": {
+          "mixed_sets": 595,
+          "all_sets": 8356,
+          "macro_auc": 0.6632905889628579
+        }
+      },
+      "riichi": {
+        "n": 15656,
+        "positives": 1500,
+        "brier": 0.08506926693594344,
+        "log_loss": 0.30677215566050586,
+        "auprc_ap": 0.1517651549666414,
+        "ranking": {
+          "mixed_sets": 1185,
+          "all_sets": 1896,
+          "macro_auc": 0.6150744414984921
+        }
+      },
+      "multi_meld": {
+        "n": 10453,
+        "positives": 400,
+        "brier": 0.03620708547688148,
+        "log_loss": 0.15290185985005467,
+        "auprc_ap": 0.07600202585548894,
+        "ranking": {
+          "mixed_sets": 331,
+          "all_sets": 1201,
+          "macro_auc": 0.7259066713749494
+        }
+      },
+      "late": {
+        "n": 12943,
+        "positives": 549,
+        "brier": 0.037894394649778014,
+        "log_loss": 0.14369564055788,
+        "auprc_ap": 0.15348659348312146,
+        "ranking": {
+          "mixed_sets": 441,
+          "all_sets": 1659,
+          "macro_auc": 0.63092943526617
+        }
+      }
+    },
+    "enriched_direct_platt": {
+      "all": {
+        "n": 242604,
+        "positives": 2368,
+        "brier": 0.008951151333130448,
+        "log_loss": 0.03642580669929212,
+        "auprc_ap": 0.11988812225598425,
+        "ranking": {
+          "mixed_sets": 1900,
+          "all_sets": 24413,
+          "macro_auc": 0.6384628271338798
+        }
+      },
+      "s42": {
+        "n": 77355,
+        "positives": 770,
+        "brier": 0.009054474827294068,
+        "log_loss": 0.03773638074793222,
+        "auprc_ap": 0.14228536288724267,
+        "ranking": {
+          "mixed_sets": 605,
+          "all_sets": 7812,
+          "macro_auc": 0.6308802507562837
+        }
+      },
+      "basic": {
+        "n": 82573,
+        "positives": 838,
+        "brier": 0.009499454503058592,
+        "log_loss": 0.03888013899398291,
+        "auprc_ap": 0.09162734609653796,
+        "ranking": {
+          "mixed_sets": 700,
+          "all_sets": 8245,
+          "macro_auc": 0.6327106702820988
+        }
+      },
+      "self": {
+        "n": 82676,
+        "positives": 760,
+        "brier": 0.00830685762586953,
+        "log_loss": 0.032748306141668904,
+        "auprc_ap": 0.13824681572261008,
+        "ranking": {
+          "mixed_sets": 595,
+          "all_sets": 8356,
+          "macro_auc": 0.6529400851249592
+        }
+      },
+      "riichi": {
+        "n": 15656,
+        "positives": 1500,
+        "brier": 0.085465213373542,
+        "log_loss": 0.30917590969485464,
+        "auprc_ap": 0.14384312169722688,
+        "ranking": {
+          "mixed_sets": 1185,
+          "all_sets": 1896,
+          "macro_auc": 0.5983683838430675
+        }
+      },
+      "multi_meld": {
+        "n": 10453,
+        "positives": 400,
+        "brier": 0.03657537251224386,
+        "log_loss": 0.15626183971655153,
+        "auprc_ap": 0.06532529745386292,
+        "ranking": {
+          "mixed_sets": 331,
+          "all_sets": 1201,
+          "macro_auc": 0.72283331807501
+        }
+      },
+      "late": {
+        "n": 12943,
+        "positives": 549,
+        "brier": 0.0378296886884353,
+        "log_loss": 0.14305822342830654,
+        "auprc_ap": 0.16066202233968221,
+        "ranking": {
+          "mixed_sets": 441,
+          "all_sets": 1659,
+          "macro_auc": 0.6240277327862361
+        }
+      }
+    },
+    "enriched_factor_platt": {
+      "all": {
+        "n": 242604,
+        "positives": 2368,
+        "brier": 0.008935840476623706,
+        "log_loss": 0.036183859275139944,
+        "auprc_ap": 0.11878047924925521,
+        "ranking": {
+          "mixed_sets": 1900,
+          "all_sets": 24413,
+          "macro_auc": 0.6443804548278232
+        }
+      },
+      "s42": {
+        "n": 77355,
+        "positives": 770,
+        "brier": 0.009050569634792978,
+        "log_loss": 0.03733032238586532,
+        "auprc_ap": 0.1405901619822741,
+        "ranking": {
+          "mixed_sets": 605,
+          "all_sets": 7812,
+          "macro_auc": 0.6465558079814278
+        }
+      },
+      "basic": {
+        "n": 82573,
+        "positives": 838,
+        "brier": 0.009448580849801049,
+        "log_loss": 0.03869458524800864,
+        "auprc_ap": 0.09694959916658182,
+        "ranking": {
+          "mixed_sets": 700,
+          "all_sets": 8245,
+          "macro_auc": 0.6323378149628149
+        }
+      },
+      "self": {
+        "n": 82676,
+        "positives": 760,
+        "brier": 0.008316393661773483,
+        "log_loss": 0.0326035841083703,
+        "auprc_ap": 0.1312680513128523,
+        "ranking": {
+          "mixed_sets": 595,
+          "all_sets": 8356,
+          "macro_auc": 0.6563363527229074
+        }
+      },
+      "riichi": {
+        "n": 15656,
+        "positives": 1500,
+        "brier": 0.08547741842126964,
+        "log_loss": 0.30799993006480786,
+        "auprc_ap": 0.13913220826231767,
+        "ranking": {
+          "mixed_sets": 1185,
+          "all_sets": 1896,
+          "macro_auc": 0.6032484771830764
+        }
+      },
+      "multi_meld": {
+        "n": 10453,
+        "positives": 400,
+        "brier": 0.03624985013696208,
+        "log_loss": 0.15342571036283573,
+        "auprc_ap": 0.0731653636314362,
+        "ranking": {
+          "mixed_sets": 331,
+          "all_sets": 1201,
+          "macro_auc": 0.7168201762990283
+        }
+      },
+      "late": {
+        "n": 12943,
+        "positives": 549,
+        "brier": 0.03800314988018317,
+        "log_loss": 0.14415174108590675,
+        "auprc_ap": 0.14459329495229226,
+        "ranking": {
+          "mixed_sets": 441,
+          "all_sets": 1659,
+          "macro_auc": 0.6189319907857322
+        }
+      }
+    }
+  }
+}
