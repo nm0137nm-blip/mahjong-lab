@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-20T21:33:00+09:00",
+  "checkpoint": "2026-11-20T22:12:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -9,20 +9,13 @@
   },
   "active_task": {
     "phase": "P2a",
-    "status": "facts_only_preparation_schema_fix_qa_running",
-    "run_id": 44736644609,
+    "status": "projection_preparation_pass_review_received_next_full_fact_audit",
     "branch": "feat/coach-p2a-facts-only-v1",
     "commit": "56f8e47e1c7832b2841a1232098640868d612eb0",
     "pr": 60,
-    "decision": "P1 full gate remains unmet; one bounded v2 cycle finished, no release, no uncertified numbers. P2a deterministic preparation allowed, not full P2a or P3 pilot. R1 archived and R2 formal unused.",
-    "scope": "Explicit public projection, separate matched model group rank, withheld external probability/loss, no inferred reason. Unit and all 96 development public/reference-only cases, no oracle or V1 outer data. Production global match provenance, full factual derivations, integration and evaluation remain open.",
-    "next": "Check run44736644609; fix concrete schema errors without dropping records; no P1 v2 tuning or P3. Facts-only remains preparation, not release or Phase pass.",
-    "previous_run": {
-      "run_id": 44736460105,
-      "commit": "e12ce3156facc42770d6a3453cc5640d6b782011",
-      "status": "unit_pass_archive_schema_rejected",
-      "reason": "all 13222 cases denied due round label suffix 局; reaction tile includes tsumogiri/riichi suffix. Archive sample verified actual formats; no gate relaxation."
-    }
+    "run_id": 44736644609,
+    "decision": "Roadmap v1.2 working adoption based on review. P1-Lite unregistered, no new official trial; P1 original status unchanged. R1 frozen.",
+    "next": "Independent derived fact audit on all 13222 development decisions, global decision identity/provenance and concrete action distinctions; concurrent low-margin comparator using development logs. Draft P1-Lite protocol based only on development data; freeze model/teacher/seeds/bands/support/coverage/safety/strata/thresholds before any fresh outer. No external labels, no production change or release. User requested review break; new formal evaluation has not started."
   },
   "previous_runs": [
     {
@@ -1103,32 +1096,68 @@
         "turns_aligned": 10231,
         "differences": 0
       }
+    },
+    {
+      "phase": "P2a",
+      "status": "preparation_projection_qa_pass_not_phase",
+      "run_id": 44736644609,
+      "branch": "feat/coach-p2a-facts-only-v1",
+      "commit": "56f8e47e1c7832b2841a1232098640868d612eb0",
+      "pr": 60,
+      "decision": "P1 full gate remains unmet; one bounded v2 cycle finished, no release, no uncertified numbers. P2a deterministic preparation allowed, not full P2a or P3 pilot. R1 archived and R2 formal unused.",
+      "scope": "Explicit public projection, separate matched model group rank, withheld external probability/loss, no inferred reason. Unit and all 96 development public/reference-only cases, no oracle or V1 outer data. Production global match provenance, full factual derivations, integration and evaluation remain open.",
+      "next": "Check run44736644609; fix concrete schema errors without dropping records; no P1 v2 tuning or P3. Facts-only remains preparation, not release or Phase pass.",
+      "previous_run": {
+        "run_id": 44736460105,
+        "commit": "e12ce3156facc42770d6a3453cc5640d6b782011",
+        "status": "unit_pass_archive_schema_rejected",
+        "reason": "all 13222 cases denied due round label suffix 局; reaction tile includes tsumogiri/riichi suffix. Archive sample verified actual formats; no gate relaxation."
+      },
+      "results": {
+        "matches": 96,
+        "cases": 13222,
+        "turn": 10231,
+        "reaction": 2991,
+        "valid": 13222,
+        "matchedGroups": 13222,
+        "failures": 0,
+        "limitations": "No independent full derived fact audit, concrete action equivalence, or global production identity yet."
+      }
     }
   ],
   "roadmap": {
-    "source": "ユーザー提供　麻雀コーチAI開発　実行計画確定版 18ページ写真（2026-11-20）",
-    "decision": "Mortal主体の製品と自作研究を並行",
+    "source": "ユーザー提供 Copilot/Claude Sonnet 5.5/Gemini 統合レビュー写真30枚 IMG_4816–4845",
+    "decision": "review-adopted working roadmap; P2a/P3-min product priority; P1-Lite separate prospective one-time certification; existing R candidate frozen",
     "product": [
-      "P1",
-      "P2",
+      "P2a",
+      "P1-Lite (parallel optional)",
+      "P3-min",
       "P2b",
-      "P3"
+      "P3-full"
     ],
     "research": [
-      "R1",
-      "R2",
-      "R3"
+      "R1 frozen",
+      "R1-New only with structural hypothesis",
+      "R2 reserved",
+      "R3 reserved"
     ],
     "max_cycles": 2,
     "generated_hanchan_cap": 4000,
     "formal_hanchan_cap": 6400,
     "mme_rank_pt": 15,
     "production_release_gate": "license review and evidence gates pending",
-    "version": "v1.1",
-    "path": "handoff/roadmap-v1.1-20261120.md",
-    "design": "product P1→P2a→P3-min→P2b→P3-full; research R1→R2-1 interim→R2-2 cumulative final→R3",
+    "version": "v1.2",
+    "path": "handoff/roadmap-v1.2-20261120.md",
+    "design": "P2a→P3-min→P2b→P3-full independent of P1-Lite; parallel low-margin audit; P1-Lite one fresh 160 match independent evaluation after preregistration",
     "formal": "handoff/formal-protocol-v1.1.json",
-    "p1": "handoff/p1-evaluation-v1.1.json"
+    "p1": "handoff/p1-evaluation-v1.1.json (historic only; new Lite protocol not yet locked)",
+    "prior": "handoff/roadmap-v1.1-20261120.md",
+    "allocation": {
+      "product": 65,
+      "p1_lite": 15,
+      "quality_audit_license": 15,
+      "research_archive": 5
+    }
   },
-  "workflow_preference": "Only stop when phase passes all gates, or all presently executable work is complete and external execution/user decision blocks further work. No intermediate final status-only stops; independently fix and test. User specifically frustrated with prior failure to follow this."
+  "workflow_preference": "待機：実行可能作業がすべて終了し外部待機の場合のみ、再開目安必須。問題発生：自力解決不能のみ。対応依頼：ユーザー判断・作業不可欠のみ。Phase完了：全合格基準を満たす場合のみ。中間不具合は自力修正・検証、進行可能作業優先。"
 }
