@@ -91,6 +91,25 @@ pub unsafe extern "C" fn encode_state(handle:u32, obs_dest:u32, mask_dest:u32)->
     }
     0
 }
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn clone_state(handle:u32)->u32{
+    if handle==0{return 0;}
+    let st=unsafe{&*(handle as *const PlayerState)};
+    Box::into_raw(Box::new(st.clone())) as u32
+}
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn encode_kan_state(handle:u32,obs_dest:u32,mask_dest:u32)->i32{
+    if handle==0||obs_dest==0||mask_dest==0{return -1;}
+    let st=unsafe{&*(handle as *const PlayerState)};
+    let (obs,mask)=st.encode_obs(4,true);
+    let Some(flat)=obs.as_slice() else{return -2;};
+    if flat.len()!=1012*34||mask.len()!=46{return -3;}
+    unsafe{
+      std::ptr::copy_nonoverlapping(flat.as_ptr(),obs_dest as *mut f32,flat.len());
+      for(i,&v) in mask.iter().enumerate(){*((mask_dest as *mut u8).add(i))=u8::from(v);}
+    }
+    0
+}
 ''')
 (out/'Cargo.toml').write_text("""
 [package]
