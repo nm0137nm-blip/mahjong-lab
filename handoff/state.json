@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-20T18:12:00+09:00",
+  "checkpoint": "2026-11-20T18:27:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -9,9 +9,14 @@
   },
   "active_task": {
     "phase": "P1",
-    "status": "joint_dev_pass_candidate_freeze_preparation",
+    "status": "P1_frozen_candidate_build_running_R1_artifact_reaggregation",
     "r1_decision": "Archive pure augmentation candidate, no R2 formal trial: extension 0pt, combined 1.40625pt, both below 15pt predeclared engineering gate. Research paused on this candidate only, not proof no future improvement. 128 games and summary calculations succeeded, upload path mismatch caused run failure; preserve exact CI JSON and independently regenerate from artifacts.",
-    "next": "Freeze coherent visible-only P1 candidate and label/feature isolation audit, independent outer protocol; preserve original T, 50/50 R mixture. No formal R2 budget consumed. Conditional interval coverage 76.18% vs nominal80, further calibration needed; no release."
+    "next": "Check both jobs, fix implementation errors if needed. R1 candidate archived as predeclared; no extra games. For P1 independently verify source/feature identity and full hidden-state perturbation, preregister independent outer cohort and frozen gates, implement mixed/unseen progression/opponent family, disjoint match manifests and minimum support, no final metrics before freeze. Model package not released or yet certified. Main unchanged.",
+    "run_id": 44710762797,
+    "branch": "feat/coach-p1-candidate-freeze-v1",
+    "commit": "46b78d5a84d0864464700098abfffd00fcd150e2",
+    "pr": 50,
+    "scope": "Freeze P1 T unchanged, coherent 50% conditional R mixture, old120+recent60 training, distinct recent12 calibration, audited recent60 payment models, explicit visible-only/no-ura target, interval widening and public request boundary smoke. R1 reaggregate existing 128 matches, no new game or changed result."
   },
   "previous_runs": [
     {
