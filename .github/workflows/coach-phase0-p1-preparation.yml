@@ -1,0 +1,36 @@
+name: Phase 0 discrepancy review and P1 metric contract
+on:
+  pull_request:
+    branches: [feat/coach-phase0-final-gates-v1]
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  review-and-unit-test:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: native-agent-detail-summary
+          run-id: 44671374727
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/native-agent-audit
+      - name: Inspect exact seven differences from previous completed audit
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          a=json.loads(Path('/tmp/native-agent-audit/agent-detail-summary.json').read_text())
+          assert a['counts']['sampled']==317 and a['counts']['detail_mismatch']==7
+          d=a['differences']
+          assert len([v for v in d if v['kind']=='payload'])==7
+          print(json.dumps(d,ensure_ascii=False,indent=2))
+          PY
+      - name: Validate P1 protocol and metric primitives
+        run: |
+          python3 -m json.tool docs/phase0/p1-evaluation-v1.json >/dev/null
+          cd tests/phase0
+          python3 -m unittest -v test_p1_metrics
