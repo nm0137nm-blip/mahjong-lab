@@ -3,6 +3,7 @@ import json,sys,hashlib
 from pathlib import Path
 import numpy as np
 import lightgbm as lgb
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'arena'))
 from policy_features import public_features
 root=Path(sys.argv[1]);assert root in (Path('/tmp/arena-model'),Path('/tmp/augmented-model'))
 freeze=json.loads((root/'freeze.json').read_text())

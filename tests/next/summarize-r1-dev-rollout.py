@@ -2,7 +2,7 @@ import json,sys,statistics,random
 from pathlib import Path
 from collections import defaultdict
 root=Path(sys.argv[1]);manifest=json.loads(Path(sys.argv[2]).read_text());candidate=json.loads(Path(sys.argv[3]).read_text())
-files=list(root.rglob('rollout-*.json'));assert len(files)==32
+files=[p for p in root.rglob('rollout-*.json') if p.name!='rollout-seeds.json'];assert len(files)==32
 pairs=defaultdict(dict)
 for p in files:
  q=json.loads(p.read_text())
