@@ -1,0 +1,108 @@
+{
+  "run": 44698566009,
+  "job": 136161125278,
+  "status": "R1_fixability_diagnostic_only",
+  "scope": "Full 24 learned-focal development games, no Q at inference, six group folds, baseline exact choices. Teacher relative loss not game payoff, no proof of 15pt improvement. Only reaction/special heads tested, teacher group not concrete action equivalence.",
+  "opportunities": [
+    {
+      "family": "s42",
+      "category": "pure",
+      "count": 1212
+    },
+    {
+      "family": "s42",
+      "category": "reaction",
+      "count": 369
+    },
+    {
+      "family": "s42",
+      "category": "special",
+      "count": 100
+    },
+    {
+      "family": "basic",
+      "category": "pure",
+      "count": 1285
+    },
+    {
+      "family": "basic",
+      "category": "reaction",
+      "count": 377
+    },
+    {
+      "family": "basic",
+      "category": "special",
+      "count": 104
+    }
+  ],
+  "grouped": {
+    "s42:reaction": {
+      "n": 369,
+      "matches": 12,
+      "baseline_relative_q_loss": 0.0709226490731181,
+      "candidate_relative_q_loss": 0.0709226490731181,
+      "baseline_top1": 0.926829268292683,
+      "candidate_top1": 0.926829268292683,
+      "changed": 0,
+      "improved": 0,
+      "worsened": 0
+    },
+    "s42:special": {
+      "n": 100,
+      "matches": 12,
+      "baseline_relative_q_loss": 0.06654703399744548,
+      "candidate_relative_q_loss": 0.06594208723062446,
+      "baseline_top1": 0.68,
+      "candidate_top1": 0.68,
+      "changed": 1,
+      "improved": 1,
+      "worsened": 0
+    },
+    "basic:reaction": {
+      "n": 377,
+      "matches": 12,
+      "baseline_relative_q_loss": 0.0244266306317624,
+      "candidate_relative_q_loss": 0.0244266306317624,
+      "baseline_top1": 0.9708222811671088,
+      "candidate_top1": 0.9708222811671088,
+      "changed": 0,
+      "improved": 0,
+      "worsened": 0
+    },
+    "basic:special": {
+      "n": 104,
+      "matches": 12,
+      "baseline_relative_q_loss": 0.05238516736102653,
+      "candidate_relative_q_loss": 0.05632258902075467,
+      "baseline_top1": 0.7211538461538461,
+      "candidate_top1": 0.7211538461538461,
+      "changed": 2,
+      "improved": 1,
+      "worsened": 1
+    }
+  },
+  "overall": {
+    "reaction": {
+      "n": 746,
+      "matches": 24,
+      "baseline_relative_q_loss": 0.04742533144256703,
+      "candidate_relative_q_loss": 0.04742533144256703,
+      "baseline_top1": 0.9490616621983914,
+      "candidate_top1": 0.9490616621983914,
+      "changed": 0,
+      "improved": 0,
+      "worsened": 0
+    },
+    "special": {
+      "n": 204,
+      "matches": 24,
+      "baseline_relative_q_loss": 0.05932725884946719,
+      "candidate_relative_q_loss": 0.061038029319710446,
+      "baseline_top1": 0.7009803921568627,
+      "candidate_top1": 0.7009803921568627,
+      "changed": 3,
+      "improved": 2,
+      "worsened": 1
+    }
+  }
+}

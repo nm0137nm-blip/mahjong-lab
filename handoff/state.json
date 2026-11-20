@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-20T16:54:23+09:00",
+  "checkpoint": "2026-11-20T16:58:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -9,24 +9,13 @@
   },
   "active_task": {
     "phase": "P1/R1",
-    "status": "targeted_development_screen_running",
-    "run_id": 44698566009,
-    "branch": "feat/coach-p1-r1-targeted-dev-v1",
-    "commit": "5bba41a398daf12bc5e2b0cf52a972192632e04f",
-    "pr": 42,
-    "scope": "Development-only six-fold probability models, family/danger strata and conditional payment; R1 on-policy grouped re-ranking of reaction and special (24 learned games) using actual frozen scores and public features. No formal evaluation or promotion.",
-    "completed_audits": {
-      "multifamily_run": 44693828778,
-      "temporal_run": 44698024834,
-      "temporal_first_failed": 44697823107,
-      "temporal_fix": "Independent audit reconstructs actual kaigang notification order instead of paipu append order; exact all 1023 +5355 turns aligned, no exclusion or changed labels."
-    },
-    "next": "Read retry and R1 results; ensure P1 deterministic replay of same screen. Only clamp improves proper scores negligibly; no P1 probability candidate promoted. Conditional payment promising (RMSE 3781 vs baseline 4170); quantile coverage .741 vs nominal .8 and high-risk calibration need work. Develop independent third opponent family / distribution shift and larger development data, no outer holdout yet. No R2 formal selection without fixability and frozen protocol.",
-    "failed_run": {
-      "id": 44698398245,
-      "reason": "R1 missing scikit-learn in CI before model fitting; dependency only fixed, data and candidate unchanged; P1 screen passed"
-    },
-    "p1_first_screen": "archive/results/p1-candidate-screen-20261120.json"
+    "status": "historical_plus_onpolicy_augmentation_running",
+    "run_id": 44698837755,
+    "branch": "feat/coach-r1-onpolicy-augmentation-v1",
+    "commit": "d4d8c02996bb23bf3e7753571949eb6093be9c48",
+    "pr": 43,
+    "scope": "Development-only R1 original 200-game corpus augmentation with actual 24 learned focal games. Six grouped folds, independent action heads, fixed 4x new row weights. P1 probability screen not promoted; conditional payment promising but no final gate. No formal evaluation or release.",
+    "next": "Check run and correct any failures. If augmented rankers do not improve across both families, do not spend formal R2 budget. If improvement observed, examine action-specific and rollout hypotheses before freezing any candidate. P1 third family implementation and stronger calibration/outer gate still required; 48 development games are not test data. Main unchanged."
   },
   "previous_runs": [
     {
@@ -812,6 +801,28 @@
       "initial_failure": "collect34 timeout loading model before match; retried failed job only same seed/code; run successful on attempt2",
       "results": "archive/results/p1-r1-multifamily-20261120.json",
       "temporal": "archive/results/p1-temporal-replay-20261120.json"
+    },
+    {
+      "phase": "P1/R1",
+      "status": "screen_complete_p1_probability_and_R1_small_head_not_promoted",
+      "run_id": 44698566009,
+      "branch": "feat/coach-p1-r1-targeted-dev-v1",
+      "commit": "5bba41a398daf12bc5e2b0cf52a972192632e04f",
+      "pr": 42,
+      "scope": "Development-only six-fold probability models, family/danger strata and conditional payment; R1 on-policy grouped re-ranking of reaction and special (24 learned games) using actual frozen scores and public features. No formal evaluation or promotion.",
+      "completed_audits": {
+        "multifamily_run": 44693828778,
+        "temporal_run": 44698024834,
+        "temporal_first_failed": 44697823107,
+        "temporal_fix": "Independent audit reconstructs actual kaigang notification order instead of paipu append order; exact all 1023 +5355 turns aligned, no exclusion or changed labels."
+      },
+      "next": "Read retry and R1 results; ensure P1 deterministic replay of same screen. Only clamp improves proper scores negligibly; no P1 probability candidate promoted. Conditional payment promising (RMSE 3781 vs baseline 4170); quantile coverage .741 vs nominal .8 and high-risk calibration need work. Develop independent third opponent family / distribution shift and larger development data, no outer holdout yet. No R2 formal selection without fixability and frozen protocol.",
+      "failed_run": {
+        "id": 44698398245,
+        "reason": "R1 missing scikit-learn in CI before model fitting; dependency only fixed, data and candidate unchanged; P1 screen passed"
+      },
+      "p1_first_screen": "archive/results/p1-candidate-screen-20261120.json",
+      "r1_results": "archive/results/r1-targeted-20261120.json"
     }
   ],
   "roadmap": {
