@@ -22,9 +22,9 @@ jobs:
         run: |
           set -euo pipefail
           for i in $(seq 1 60); do
-            status=$(gh api repos/nm0137nm-blip/mahjong-lab/actions/runs/44679264357 --jq .status)
+            status=$(gh api repos/nm0137nm-blip/mahjong-lab/actions/runs/44680960295 --jq .status)
             if [ "$status" = completed ]; then
-              test "$(gh api repos/nm0137nm-blip/mahjong-lab/actions/runs/44679264357 --jq .conclusion)" = success
+              test "$(gh api repos/nm0137nm-blip/mahjong-lab/actions/runs/44680960295 --jq .conclusion)" = success
               exit 0
             fi
             sleep 20

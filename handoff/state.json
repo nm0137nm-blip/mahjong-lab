@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-20T14:08:53+09:00",
+  "checkpoint": "2026-11-20T14:25:44+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -10,16 +10,22 @@
   "active_task": {
     "phase": "0",
     "status": "phase0_margin_gate_running",
-    "run_id": 44679264357,
+    "run_id": 44680960295,
     "branch": "feat/coach-phase0-margin-gate-v1",
-    "commit": "d89528c52ba5767b97796b60ec756e0a32978acd",
+    "commit": "68e4b50f2cc2876a14d4f35ccc0663b3dd082f07",
     "pr": 35,
-    "scope": "p14 user plan: 100 synthetic calibration states, 12 repeated CPU/browser runs, threshold 10x max drift, separately tabulate 445 archived concrete actions. Source rebuild passed. Automatic final archive if successful. No new candidate training, no public release.",
+    "scope": "p14 user plan: 100 synthetic calibration states, 12 repeated CPU/browser runs, threshold 10x max drift, separately tabulate 445 archived concrete actions. Source rebuild passed. Automatic final archive if successful. No new candidate training, no public release.. Browser initialization availability tracked separately; cannot claim release reliability from successful retry.",
     "next": "On margin gate success verify all evidence and mark controlled internal Phase 0 complete; release remains blocked. Review concise text report for previous external reviewers. On failure fix without waiting for user instructions.",
-    "failed_run": {
-      "id": 44679059648,
-      "reason": "Container default sh rejected bash pipefail; no browser calibration performed; CPU job passed; unchanged protocol and inputs, explicit bash shell only."
-    }
+    "failed_runs": [
+      {
+        "id": 44679059648,
+        "reason": "Container default sh rejected bash pipefail; no browser calibration performed; CPU job passed; unchanged protocol and inputs, explicit bash shell only."
+      },
+      {
+        "id": 44679264357,
+        "reason": "Three Chromium numeric replicates passed, corrected WASM 100/100 raw observations identical, WebKit initialization ORT out of bounds memory access; threshold never computed. New run uses six isolated jobs, retries only known startup OOM at most three, records attempts; full numeric gate unchanged."
+      }
+    ]
   },
   "previous_runs": [
     {
