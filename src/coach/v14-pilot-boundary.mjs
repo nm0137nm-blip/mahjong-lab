@@ -23,7 +23,7 @@ export function makeIndependent(raw,id,engine=null){
  if(Object.values(visible).some(n=>n>4)||Object.values(red).some(n=>n>1)||Object.keys(red).some(s=>visible[s+'5']-red[s]>3))fail('visible multiplicity');
  const actions=f.legalActions.slice().sort((a,b)=>a.id-b.id).flatMap(a=>a.details.slice().sort().map((detail,i)=>({key:'a'+a.id+'-'+i,group:a.id,detail})));
  const evidence=[
-  {id:'board',kind:'public_record',value:{round:f.round,honba:f.honba,kyotaku:f.kyotaku,pendingReach:f.pendingReach,remaining:f.remaining,ownSeat:f.ownSeat,activeSeat:f.activeSeat,rank:f.rank,scores:f.scores}},
+  {id:'board',kind:'public_record',value:{round:f.round,honba:f.honba,kyotaku:f.kyotaku,pendingReach:f.pendingReach,remaining:f.remaining,ownSeat:f.ownSeat,activeSeat:f.activeSeat,rank:f.rank,scores:f.scores,initialOrder:f.initialOrder}},
   {id:'own',kind:'public_record',value:{hand:f.hand,drawn:f.drawn,melds:f.ownMelds,doraIndicators:f.doraIndicators,reaction:f.reaction}},
   {id:'history',kind:'public_record',value:f.events},
   ...f.rivers.map(r=>({id:'seat-'+r.seat,kind:'public_record',value:r})),
@@ -34,18 +34,31 @@ export function makeIndependent(raw,id,engine=null){
  const input={version:engine?'v14-pilot-calculated-1':VERSION,id,phase:raw.phase,actions,evidence};
  return engine?enrichPublic(input,{...f,phase:raw.phase},engine):input;
 }
-export const independentInstruction='四人麻雀の開発診断。公開記録のみで判断。全合法候補を公平に比較し、他家3人と自手の速度・打点・将来押す牌・局目的を具体的に比較する。確定情報以外は仮説として根拠ID・候補・方向・適用条件・反証条件を明記し、未計算の確率や打点を捏造しない。推奨はactionsのkey。JSONのみ、指定形に厳密に従う。根拠にない事実は不明。';
-export const responseShape={recommendation:'a0-0',confidence:'low|medium|high',claims:[{type:'fact|hypothesis',seat:0,action:'a0-0',against:'a1-0',evidenceIds:['board'],metric:'speed|value|defense|rank|progress|deal_in|win|round_net|rank_utility',direction:'higher|lower|same|unknown',condition:'適用条件',falsifier:'反証条件',statement:'根拠に沿った主張'}],sections:{objective:'局目的',relative:'相対価値',comparison:'候補比較',tradeoff:'利益・代償',reversal:'変更条件',lesson:'教訓'}};
+export const independentInstruction='四人麻雀の開発診断。公開記録のみで判断。全合法候補を公平に比較し、他家3人と自手の速度・打点・将来押す牌・局目的を具体的に比較する。確定情報以外は仮説として根拠ID・候補・方向・適用条件・反証条件を明記し、未計算の確率や打点を捏造しない。推奨はactionsのkey。事実引用はfacts配列にevidenceId・path・一致する値を記録する。claims配列は戦術仮説のみ。JSONのみ、指定形に厳密に従う。根拠にない事実は不明。';
+export const responseShape={recommendation:'a0-0',confidence:'low|medium|high',claims:[{type:'hypothesis',seat:0,action:'a0-0',against:'a1-0',evidenceIds:['board'],metric:'speed|value|defense|rank|progress|deal_in|win|round_net|rank_utility',direction:'higher|lower|same|unknown',condition:'適用条件',falsifier:'反証条件',statement:'根拠に沿った主張'}],facts:[{evidenceId:'board',path:['ownSeat'],value:0}],sections:{objective:'局目的',relative:'相対価値',comparison:'候補比較',tradeoff:'利益・代償',reversal:'変更条件',lesson:'教訓'}};
 export function independentRequest(raw,id,engine=null){
  const input=makeIndependent(raw,id,engine);
  const request={stage:'independent',system:independentInstruction,responseShape,input};
  return {request,requestHash:hash(request)};
 }
 function validateAnswer(input,answer){
- if(!exact(answer,['recommendation','confidence','claims','sections'])||!input.actions.some(a=>a.key===answer.recommendation)||!['low','medium','high'].includes(answer.confidence)||!Array.isArray(answer.claims)||!answer.claims.length||answer.claims.length>80||!exact(answer.sections,['objective','relative','comparison','tradeoff','reversal','lesson'])||!Object.values(answer.sections).every(string))fail('invalid response structure');
+ if(!exact(answer,['recommendation','confidence','claims','facts','sections'])||!input.actions.some(a=>a.key===answer.recommendation)||!['low','medium','high'].includes(answer.confidence)||!Array.isArray(answer.claims)||!answer.claims.length||answer.claims.length>80||!exact(answer.sections,['objective','relative','comparison','tradeoff','reversal','lesson'])||!Object.values(answer.sections).every(string))fail('invalid response structure');
  const ids=new Set(input.evidence.map(e=>e.id)),actions=new Set(input.actions.map(x=>x.key));
  for(const c of answer.claims){
-  if(!exact(c,['type','seat','action','against','evidenceIds','metric','direction','condition','falsifier','statement'])||!['fact','hypothesis'].includes(c.type)||!Number.isInteger(c.seat)||c.seat<0||c.seat>3||!actions.has(c.action)||!actions.has(c.against)||!Array.isArray(c.evidenceIds)||!c.evidenceIds.length||new Set(c.evidenceIds).size!==c.evidenceIds.length||!c.evidenceIds.every(id=>ids.has(id))||!['speed','value','defense','rank','progress','deal_in','win','round_net','rank_utility'].includes(c.metric)||!['higher','lower','same','unknown'].includes(c.direction)||![c.condition,c.falsifier,c.statement].every(string))fail('invalid claim');
+  if(!exact(c,['type','seat','action','against','evidenceIds','metric','direction','condition','falsifier','statement'])||c.type!=='hypothesis'||!Number.isInteger(c.seat)||c.seat<0||c.seat>3||!actions.has(c.action)||!actions.has(c.against)||c.against===c.action||!Array.isArray(c.evidenceIds)||!c.evidenceIds.length||new Set(c.evidenceIds).size!==c.evidenceIds.length||!c.evidenceIds.every(id=>ids.has(id))||!['speed','value','defense','rank','progress','deal_in','win','round_net','rank_utility'].includes(c.metric)||!['higher','lower','same','unknown'].includes(c.direction)||![c.condition,c.falsifier,c.statement].every(string))fail('invalid claim');
+ }
+ const fids=new Set();
+ if(!Array.isArray(answer.facts)||answer.facts.length<2||answer.facts.length>80)fail('invalid fact structure');
+ for(const fact of answer.facts){
+  if(!exact(fact,['evidenceId','path','value'])||!ids.has(fact.evidenceId)||!Array.isArray(fact.path)||fact.path.length<1||fact.path.length>12)fail('invalid fact structure');
+  const key=JSON.stringify([fact.evidenceId,fact.path]);
+  if(fids.has(key))fail('duplicate fact');fids.add(key);
+  let v=input.evidence.find(x=>x.id===fact.evidenceId).value;
+  for(const p of fact.path){
+   if(!(typeof p==='string'||Number.isInteger(p))||v===null||typeof v!=='object'||!Object.hasOwn(v,p))fail('invalid fact path');
+   v=v[p];
+  }
+  if(hash(v)!==hash(fact.value))fail('fact mismatch');
  }
  return true;
 }
