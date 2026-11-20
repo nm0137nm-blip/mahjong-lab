@@ -1,0 +1,31 @@
+name: v1.4 pilot transport preparation
+on:
+  pull_request:
+    branches: [feat/coach-p2a-facts-only-v1]
+permissions:
+  contents: read
+  actions: read
+jobs:
+  prepare:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.23.4'
+      - run: node --test tests/next/v14-pilot-boundary.test.mjs
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: p1-v2-dev-data-*
+          run-id: 44726204303
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/v14-dev
+      - run: node tests/next/prepare-v14-pilot.mjs /tmp/v14-dev /tmp/v14-pilot
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v14-pilot-public-preparation
+          path: /tmp/v14-pilot
+          if-no-files-found: warn
+          retention-days: 30
