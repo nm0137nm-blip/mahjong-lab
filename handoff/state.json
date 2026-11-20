@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-20T23:49:42+09:00",
+  "checkpoint": "2026-11-20T23:58:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -9,11 +9,11 @@
   },
   "active_task": {
     "phase": "P2a-pilot",
-    "status": "rank_and_fact_audit_running",
+    "status": "contrast_and_sampler_bias_verifier_running",
     "branch": "feat/coach-v14-pilot-boundary-v1",
-    "commit": "7ce64b72dd045780a27234b19fc26edd9f30985b",
+    "commit": "f0e2e918b8ce7e7a4e19db9dbfa54b536349db16",
     "pr": 61,
-    "run_id": 44757147882,
+    "run_id": 44758253864,
     "prior_runs": [
       {
         "run_id": 44754324733,
@@ -62,11 +62,30 @@
         "shapeRows": 341,
         "scoreValues": 138,
         "failures": 0
+      },
+      {
+        "run_id": 44757147882,
+        "status": "rank_and_typed_fact_audit_pass",
+        "artifact": 14640060006,
+        "cases": 30,
+        "rankTransferChecks": 1260,
+        "rankOrderChecks": 1260,
+        "failures": 0
+      },
+      {
+        "run_id": 44758253864,
+        "job_id": 136363619031,
+        "status": "natural_weak_controls_descriptive_complete",
+        "artifact": 14640965777,
+        "efficiencyTopOrTie": 14,
+        "passOrFirstTopOrTie": 10,
+        "total": 30
       }
     ],
-    "decision": "Restricted engine rollout 32/32 pairs; 30 public cases, independent shape and hypothetical point values verified (341 and 138; no failures). Added rank/score hypothetical scenario evidence and typed factual citations, rank and schema audit running. Yaku names not independently aligned; legal action availability source engine only; natural cases not contrast pairs. Actual inference 0, no B3/B4 tactical pass. No main changes.",
-    "next": "Check run44757147882; repair concrete issues; proceed with legitimate contrast cases before actual inference. Candidate approach: from existing restricted no-call reconstructable histories, remove opponent riichi declaration, reverse 1000 transfer, replay both via engine to verify all moves and focal legal mask; no arbitrary editing unsupported states. Then preregister label procedure and Mortal/rollout separately, negative controls and sampler sensitivity. Existing 30 natural packets are provisional; no actual inference yet. Keep formal tests and P3 blocked. No paid inference or fabricated real outputs.",
-    "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md"
+    "decision": "Rank transfer + ordering independently matched 1260 each, typed fact tests success. Weak controls locked before reading archived reference; efficiency 14/30, pass-or-first 10/30 group-level matches; not yet proof B3/B4 discriminates. Four legal opponent-riichi contrast pair probes, three continuation variants, same trajectory, run active; isolated development teacher aggregate sampler bias run active. No actual independent inference or formal evaluation.",
+    "next": "Check 44758253864 sampler and 44758490026 bias verifier; fix errors without dropping cases; preserve denominators. Evaluate sampler proposal bias, improve using development only with physically verifiable histories and action consistency; counterfactual Mortal evaluation and contrast labels are still missing. Need actual independent inference method before tactical pilot; no mock/pseudo certification. Build stage1 packet separately without references or weak control scores, stage2 unlock only after lock. No formal B/13222/P1-Lite/P3/main/public release. Current CI prepare/sampler disabled to avoid repeated expensive runs; re-enable explicitly only on relevant changes.",
+    "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
+    "bias_run_id": 44758490026
   },
   "previous_runs": [
     {
