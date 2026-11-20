@@ -1,0 +1,2 @@
+# Historical data audit
+Recovered original 23 manifest artifact IDs from previously exported project namespace audit. Re-read source manifests and corresponding public-only training/development questions in CI; assert exact seeds and canonical decision uniqueness for 200 training and 30 development matches, compare 120-game known frozen seeds, add historical arena and Phase0 namespaces, exclude all 808 prospective seeds. This does not prove absence of historical raw wall duplication or near-clones, and no formal activation yet. No private labels read by this workflow.
