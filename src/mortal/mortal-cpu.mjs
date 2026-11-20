@@ -40,6 +40,32 @@ export function resolveAction(options,result){
  }
  return {action:i,payload,grouped:details.length>1};
 }
+
+// Native greedy (guard off) detail contract. Separate from legacy learned resolver.
+const preferDraw=ds=>ds.find(p=>p.dapai?.includes('_'))||ds[0];
+const consumedRed=m=>Array.from(m).reduce((n,c,i)=>n+Number(c==='0'&&!/[+=-]/.test(m[i+1]||'')),0);
+export async function resolveNativeAction(options,result,seatEval){
+ const initial=resolveAction(options,result),i=initial.action,ds=options.get(i);
+ let payload=initial.payload;
+ if(i<=36)payload=preferDraw(ds);
+ else if(i===37){
+  const next=await seatEval.evaluateDetail('reach');
+  const sub=new Map();
+  for(const p of ds)add(sub,actionForDiscard(p.dapai),p);
+  const selected=resolveAction(sub,next);
+  payload=preferDraw(sub.get(selected.action));
+ }else if(i===42&&ds.length>1&&ds.every(p=>p.gang)){
+  const next=await seatEval.evaluateDetail('kan');
+  const sub=new Map();
+  for(const p of ds){const m=p.gang;const key=m[0]+m[1].replace('0','5');add(sub,actionForDiscard(key),p);}
+  // Native kan mask is tile-type only; require exact group coverage.
+  payload=resolveAction(sub,next).payload;
+ }else if(i>=38&&i<=41){
+  payload=ds.slice().sort((a,b)=>consumedRed(b.fulou)-consumedRed(a.fulou))[0];
+ }
+ return {...initial,payload};
+}
+
 export function assertPrivatePacket(msg,bridge){
  if(msg.qipai){
   const h=msg.qipai.shoupai;
@@ -75,13 +101,13 @@ export class SeatEvaluator{
    }
   }catch(e){this.broken=true;this.ready=false;this.error=String(e.message||e);}
  }
- evaluate(){
+ evaluate(handle=this.state,kan=false,detail=false){
   if(!this.ready||this.broken||!this.state||!this.client.workerReady||this.client.broken)throw Error(this.error||'CPU encoder unavailable');
   const w=this.client.wasm,worker=this.client.worker;
   let obs=0,mask=0,data,legal;
   try{
    obs=w.alloc_bytes(1012*34*4);mask=w.alloc_bytes(46);
-   if(!obs||!mask||w.encode_state(this.state,obs,mask)!==0)throw Error('CPU encoding failed');
+   if(!obs||!mask||(kan?w.encode_kan_state(handle,obs,mask):w.encode_state(handle,obs,mask))!==0)throw Error('CPU encoding failed');
    data=new Float32Array(w.memory.buffer,obs,1012*34).slice();
    legal=new Uint8Array(w.memory.buffer,mask,46).slice();
   }finally{if(obs)w.free_bytes(obs,1012*34*4);if(mask)w.free_bytes(mask,46);}
@@ -99,6 +125,20 @@ export class SeatEvaluator{
    try{worker.postMessage({type:'eval',id,obs:data,mask:legal},[data.buffer,legal.buffer]);}
    catch(e){finish(e);}
   });
+ }
+ async evaluateDetail(kind){
+  const w=this.client.wasm;
+  if(kind==='kan')return this.evaluate(this.state,true,true);
+  if(kind!=='reach')throw Error('unknown detail');
+  const h=w.clone_state(this.state);if(!h)throw Error('state clone failed');
+  const bytes=new TextEncoder().encode(JSON.stringify({type:'reach',actor:this.bridge.seat}));
+  const p=w.alloc_bytes(bytes.length);
+  try{
+   if(!p)throw Error('reach buffer');
+   new Uint8Array(w.memory.buffer,p,bytes.length).set(bytes);
+   if(w.apply_event(h,p,bytes.length)!==1)throw Error('reach state not actionable');
+   return await this.evaluate(h,false,true);
+  }finally{if(p)w.free_bytes(p,bytes.length);w.drop_state(h);}
  }
  close(){this.broken=true;this.ready=false;for(const cancel of [...this.jobs])cancel();if(this.state){this.client.wasm.drop_state(this.state);this.state=0;}}
 }
@@ -118,9 +158,9 @@ export function createMortalCpuClass(AI){
    if(this.evalSeat.broken)return fail(Error(this.evalSeat.error||'CPU state broken'));
    if(options.size===1&&[...options.values()][0].length===1){this.audit.forced++;return reply([...options.values()][0][0]);}
    if(!options.size)return fail(Error('empty options'));
-   try{this.evalSeat.evaluate().then(result=>{
+   try{this.evalSeat.evaluate().then(async result=>{
     if(this.closed)return;
-    let choice;try{choice=resolveAction(options,result);}catch(e){return fail(e);}
+    let choice;try{choice=await resolveNativeAction(options,result,this.evalSeat);}catch(e){return fail(e);}
     this.audit.model++;this.audit.grouped+=Number(choice.grouped);this.audit.totalMs+=result.elapsed||0;
     this.audit.maxMs=Math.max(this.audit.maxMs,result.elapsed||0);
     this.audit.actions[choice.action]=(this.audit.actions[choice.action]||0)+1;

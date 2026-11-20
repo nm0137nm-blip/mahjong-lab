@@ -1,0 +1,120 @@
+name: Phase 0 concrete action correction and source build
+on:
+  pull_request:
+    branches: [feat/coach-p1-evaluation-contract-v1]
+permissions:
+  contents: read
+  actions: read
+jobs:
+  encoder-build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          set -euo pipefail
+          git clone https://github.com/Equim-chan/Mortal.git /tmp/Mortal
+          git -C /tmp/Mortal checkout 0cff2b52982be5b1163aa9a62fb01f03ce91e0d2
+          rustup target add wasm32-unknown-unknown
+          python3 scripts/mortal/build_browser_encoder.py /tmp/Mortal /tmp/browser-encoder
+          cd /tmp/browser-encoder
+          cargo generate-lockfile
+          cargo build --locked --lib --release --target wasm32-unknown-unknown
+          cargo install wasm-bindgen-cli --version 0.2.130 --locked
+          mkdir -p /tmp/encoder-pkg
+          wasm-bindgen --target web --out-dir /tmp/encoder-pkg target/wasm32-unknown-unknown/release/mahjong_lab_mortal_encoder.wasm
+          cp /tmp/Mortal/LICENSE /tmp/browser-encoder/LICENSE
+          rustc -Vv > /tmp/browser-encoder/BUILD-ENV.txt
+          cargo -V >> /tmp/browser-encoder/BUILD-ENV.txt
+          cp /tmp/encoder-pkg/mahjong_lab_mortal_encoder.js /tmp/encoder-pkg/encoder.js
+          cp /tmp/encoder-pkg/mahjong_lab_mortal_encoder_bg.wasm /tmp/encoder-pkg/encoder_bg.wasm
+          rm -rf target
+          tar -C /tmp -czf /tmp/encoder-corresponding-source.tar.gz browser-encoder
+          sha256sum /tmp/encoder-pkg/encoder.js /tmp/encoder-pkg/encoder_bg.wasm /tmp/encoder-corresponding-source.tar.gz
+      - uses: actions/upload-artifact@v4
+        with:
+          name: corrected-encoder
+          path: |
+            /tmp/encoder-pkg/encoder.js
+            /tmp/encoder-pkg/encoder_bg.wasm
+            /tmp/encoder-corresponding-source.tar.gz
+          if-no-files-found: error
+          retention-days: 30
+  replay-old:
+    needs: encoder-build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/download-artifact@v4
+        with:
+          name: corrected-encoder
+          path: /tmp/build
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: live-[12]
+          run-id: 44671374727
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/old
+      - run: |
+          set -euo pipefail
+          cp /tmp/build/encoder-pkg/encoder* assets/mortal/
+          node --test tests/mortal-cpu.test.mjs
+          npm install --no-save --no-package-lock playwright@1.57.0
+          npx playwright install chromium
+          curl -fL --retry 2 https://huggingface.co/xzhe121/Mortal-S42-onnx/resolve/main/model.onnx -o tests/mortal/model.onnx
+          echo '30381bf21389e2d25d3edf48fed11bf772336ef3daeee67d1bdae7fb9dd30cb4  tests/mortal/model.onnx' | sha256sum -c -
+          python3 -m http.server 8788 --bind 127.0.0.1 >/tmp/http-log 2>&1 &
+          sleep 2
+          node tests/phase0/replay-corrected-details.mjs /tmp/old
+      - uses: actions/upload-artifact@v4
+        with:
+          name: corrected-old-states
+          path: /tmp/repaired-old
+          if-no-files-found: error
+          retention-days: 30
+  native-gate:
+    needs: replay-old
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: corrected-old-states
+          path: /tmp/live
+      - name: Prepare pinned original native reference
+        run: |
+          git clone https://github.com/Equim-chan/Mortal.git /tmp/Mortal
+          git -C /tmp/Mortal checkout 0cff2b52982be5b1163aa9a62fb01f03ce91e0d2
+          python -m pip install numpy==2.2.6 onnxruntime==1.21.0
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu torch==2.7.1
+          cd /tmp/Mortal
+          PYO3_PYTHON="$(which python)" cargo build -p libriichi --lib --release --locked
+          cp target/release/libriichi.so /tmp/libriichi.so
+      - name: Get and verify exact public checkpoints
+        run: |
+          curl -fL --retry 2 --max-time 240 https://huggingface.co/haor/Mortal-S42/resolve/524981f21a929e3c3b269f65af79b84163bd02ca/weights/s42-inference.pth -o /tmp/s42.pth
+          curl -fL --retry 2 --max-time 240 https://huggingface.co/xzhe121/Mortal-S42-onnx/resolve/main/model.onnx -o /tmp/s42.onnx
+          echo 'e5f6955b6f19007fd65315e53291b36994493046bc118b991b959e9dc596d660  /tmp/s42.pth' | sha256sum -c -
+          echo '30381bf21389e2d25d3edf48fed11bf772336ef3daeee67d1bdae7fb9dd30cb4  /tmp/s42.onnx' | sha256sum -c -
+      - name: Compare native feature, masks, original PyTorch and ONNX
+        env:
+          PYTHONPATH: /tmp
+          MORTAL_SOURCE: /tmp/Mortal
+          S42_PTH: /tmp/s42.pth
+          S42_ONNX: /tmp/s42.onnx
+        run: python tests/phase0/native-agent-detail-fixed.py /tmp/live /tmp/agent-detail-summary.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: corrected-native-summary
+          path: /tmp/agent-detail-summary.json
+          if-no-files-found: error
+          retention-days: 30
