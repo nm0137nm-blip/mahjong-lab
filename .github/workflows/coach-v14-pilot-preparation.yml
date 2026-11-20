@@ -156,6 +156,7 @@ jobs:
           retention-days: 30
 
   freeze-pilot:
+    if: false # quota-repair run already dispatched; inspect separately
     runs-on: ubuntu-24.04
     timeout-minutes: 8
     steps:
@@ -197,4 +198,52 @@ jobs:
         with:
           name: v14-frozen-verifier-only
           path: /tmp/frozen-pilot/verifier
+          retention-days: 30
+
+  contrast-mortal:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.23.4'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.10'
+      - run: python -m pip install onnxruntime==1.22.1 numpy==2.2.6
+      - uses: actions/download-artifact@v4
+        with:
+          name: corrected-encoder
+          run-id: 44673093075
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/fixed-encoder
+      - run: |
+          cp /tmp/fixed-encoder/encoder-pkg/encoder* assets/mortal/
+          echo '886cb7abb09034dcdf348039d651d63a83cd7edb87d3337a452722c960b9d97a  assets/mortal/encoder.js' | sha256sum -c -
+          echo '0e9dcc57545afb5769d42f372bbd82be5c26941d1e352245b225d62ce0c611bf  assets/mortal/encoder_bg.wasm' | sha256sum -c -
+          curl --fail --location --retry 2 --silent --show-error --max-time 160 'https://huggingface.co/xzhe121/Mortal-S42-onnx/resolve/main/model.onnx' -o /tmp/mortal.onnx
+          echo '30381bf21389e2d25d3edf48fed11bf772336ef3daeee67d1bdae7fb9dd30cb4  /tmp/mortal.onnx' | sha256sum -c -
+      - uses: actions/download-artifact@v4
+        with:
+          name: v14-contrast-feasibility
+          run-id: 44758253864
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/contrast
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: p1-v2-dev-data-*
+          run-id: 44726204303
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/v14-dev
+      - run: node tests/next/v14-contrast-mortal-encode.mjs /tmp/v14-dev /tmp/contrast/v14-contrast-public.json /tmp/contrast-obs
+      - run: python tests/next/v14-contrast-mortal-grade.py /tmp/contrast-obs /tmp/mortal.onnx /tmp/contrast-mortal-result.json
+      - if: always()
+        run: rm -rf /tmp/contrast-obs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v14-contrast-mortal-verifier-only
+          path: /tmp/contrast-mortal-result.json
+          if-no-files-found: warn
           retention-days: 30
