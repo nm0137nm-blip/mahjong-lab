@@ -3,8 +3,9 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import assert from 'node:assert/strict';
+import {loadEngine} from '../../src/coach/v14-public-calculations.mjs';
 import {independentRequest} from '../../src/coach/v14-pilot-boundary.mjs';
-const root=process.argv[2],out=process.argv[3];
+const root=process.argv[2],out=process.argv[3],engine=loadEngine();
 const dirs=fs.readdirSync(root).filter(d=>/^p1-v2-dev-data-\d+$/.test(d)).sort((a,b)=>Number(a.split('-').at(-1))-Number(b.split('-').at(-1)));
 assert.equal(dirs.length,96);
 const groups={discard:[],reach:[],reaction:[]};const seeds=new Set();
@@ -35,15 +36,15 @@ const envelopes=[],lineage=[],failures=[];
 for(const [i,row] of chosen.entries()){
  const id='pilot-'+String(i+1).padStart(2,'0');
  try{
-  const e=independentRequest(row.x,id);
+  const e=independentRequest(row.x,id,engine);
   const evil=structuredClone(row.x);Object.assign(evil,{oracle:{hand:'PRIVATE'},mortalOpinion:{q:[999]},reference:{best:99},facts:{future:'PRIVATE'},discard:'z7'});
   Object.assign(evil.scene,{wall:['z7'],ura:['z7'],privateHands:['PRIVATE']});
-  assert.deepEqual(independentRequest(evil,id),e);
+  assert.deepEqual(independentRequest(evil,id,engine),e);
   envelopes.push(e);lineage.push({pilotId:id,requestHash:e.requestHash,seed:row.seed,shard:row.shard,decisionId:row.x.id,group:row.group,threat:row.threat,multi:row.multi,late:row.late,target:row.target});
- }catch(err){failures.push({id,shard:row.shard,decisionId:row.x.id,error:String(err)});}
+ }catch(err){failures.push({id,shard:row.shard,decisionId:row.x.id,error:String(err),stack:err.stack?.split('\n').slice(0,5)});}
 }
 fs.mkdirSync(out,{recursive:true});
 fs.writeFileSync(path.join(out,'independent-requests.json'),JSON.stringify(envelopes,null,2)+'\n');
 fs.writeFileSync(path.join(out,'lineage.json'),JSON.stringify(lineage,null,2)+'\n');
-const summary={status:'transport_preparation_only_not_tactical_evaluation',planned:30,prepared:envelopes.length,distinctShards:used.size,missingTarget:missing,failures,coverage:Object.fromEntries(Object.keys(groups).map(k=>[k,lineage.filter(x=>x.group===k).length])),threat:lineage.filter(x=>x.threat).length,multi:lineage.filter(x=>x.multi).length,late:lineage.filter(x=>x.late).length,limitations:['No legal contrast labels yet','No independent full calculation evidence yet','No model inference executed','No reference or outcome data inspected','No tactical pass']};
+const summary={status:'transport_preparation_only_not_tactical_evaluation',planned:30,prepared:envelopes.length,distinctShards:used.size,missingTarget:missing,failures,coverage:Object.fromEntries(Object.keys(groups).map(k=>[k,lineage.filter(x=>x.group===k).length])),threat:lineage.filter(x=>x.threat).length,multi:lineage.filter(x=>x.multi).length,late:lineage.filter(x=>x.late).length,limitations:['No legal contrast labels yet','Public candidate calculations recomputed; independent audit required','No model inference executed','No reference or outcome data inspected','No tactical pass']};
 fs.writeFileSync(path.join(out,'summary.json'),JSON.stringify(summary,null,2)+'\n');console.log(JSON.stringify(summary,null,2));assert.equal(failures.length,0);
