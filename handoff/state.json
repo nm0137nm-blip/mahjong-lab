@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-20T17:59:00+09:00",
+  "checkpoint": "2026-11-20T18:12:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -15,7 +15,16 @@
       "branch": "feat/coach-p1-robust-mixture-dev-v1",
       "commit": "98621360f635bf4a738098daf6d727803e3f35dc",
       "pr": 47,
-      "scope": "Fixed 25/50/75 mixtures and conservative global blend selected on fourth disjoint internal split, same 72 dev + 120 historical, no family identifier at inference; require coherence and cross-family safety. No formal outer."
+      "scope": "Fixed 25/50/75 mixtures and conservative global blend selected on fourth disjoint internal split, same 72 dev + 120 historical, no family identifier at inference; require coherence and cross-family safety. No formal outer.",
+      "status": "screen_success_not_promoted",
+      "results": "archive/results/p1-robust-mixture-20261120.json",
+      "joint": {
+        "run_id": 44708553398,
+        "branch": "feat/coach-p1-joint-risk-dev-v1",
+        "commit": "95da9736a8aedfce52611dbb8814b98765efdaaa",
+        "pr": 49,
+        "scope": "Fixed frozen T and coherent 50% conditional Ron blend, 72 reused dev matches, family-weighted matched bootstrap and conditional score/exposure/visible all-accept settlement diagnostic. No final certification."
+      }
     },
     "r1": {
       "run_id": 44706812936,
@@ -24,9 +33,10 @@
       "pr": 48,
       "scope": "One bounded independent 16-block/128-game development extension, same exact candidate/baseline and corrected S42 x3; initial +4.21875 [-19.6875,28.125]. Consider formal only if extension and combined point estimates both >=15; otherwise archive candidate. Adaptive combined interval descriptive only. No formal seeds touched.",
       "superseded_run": 44706728799,
-      "superseded_reason": "prior seed artifact name incorrectly changed, fixed before collection"
+      "superseded_reason": "prior seed artifact name incorrectly changed, fixed before collection",
+      "status": "attempt1 two pre-match model initialization timeouts; 61/64 match jobs success, 1 running at latest check. Retry failed only once completed; same code/seeds, no result exclusions."
     },
-    "next": "Check both results; fix actual pipeline errors before reporting. R1 single extension only, respect predeclared engineering stop rule. P1 no outer activation until supported candidate passes development safety, freeze identity and full product score targets/gates, third unseen family, leakage/hidden perturbation audit. Historical label audit limitation. No public release/main changes."
+    "next": "Recheck R1 completion and rerun failed jobs with same manifest; no additional extension beyond fixed 16 blocks. Check PR49, fix implementation failure if necessary; no claims of independent evaluation. P1 robust mixture T unchanged, all family Ron point metrics improved but 24 matches below support gate; continue only with frozen candidate and proper independent evaluation before display. No formal seed or main changes."
   },
   "previous_runs": [
     {
