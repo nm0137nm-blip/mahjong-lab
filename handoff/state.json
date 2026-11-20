@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-20T12:59:29+09:00",
+  "checkpoint": "2026-11-20T13:04:18+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -8,17 +8,14 @@
     "coach_candidate_promoted": false
   },
   "active_task": {
-    "status": "phase0_original_agent_audit_queued_release_blocked",
-    "branch": "feat/coach-phase0-final-gates-v1",
-    "commit": "e7fb41f4e91e02805f93db3a214652952474b828",
-    "pr": 30,
-    "run_id": 44671374727,
-    "protocol": "docs/phase0/formal-protocol-v1.json",
-    "scope": "fresh two synthetic matches; actual grouped concrete actions vs original native MJAI Bot with guard off/on; source and license audit; no production changes",
-    "next": "Check original-agent audit outputs and coverage. Correct or explicitly resolve actual payload discrepancies with user-reviewed comparator choice, revalidate changed comparator; do not mark Phase 0 passed on partial evidence. Freeze P1 detailed gates before new evaluation; report concise Japanese text for prior external reviewers. Release blocked until notices/corresponding source and legal scope review.",
-    "formal_protocol": "handoff/formal-protocol-v1.json",
-    "license_decision": "handoff/license-decision-v1-20261120.md",
-    "action_contract": "handoff/action-contract-20261120.md"
+    "status": "phase0_discrepancy_review_and_p1_preparation_in_progress",
+    "branch": "feat/coach-p1-evaluation-contract-v1",
+    "commit": "048f135563dff388875c2ac72b6b50aaa8e1d000",
+    "pr": 31,
+    "run_id": 44671922598,
+    "protocol": "docs/phase0/p1-evaluation-v1.json",
+    "scope": "retrieve seven native action-detail discrepancies; unit test P1 metric primitives; no P1 training yet",
+    "next": "Read exact discrepancies, determine correction with strict action parity, then rerun relevant gates. Correct P1 preregistration ambiguity before training. Phase 0 not passed. Provide concise report to external models when audit resolved."
   },
   "previous_runs": [
     {
@@ -358,6 +355,77 @@
           "P1 acceptance criteria before evaluation"
         ]
       }
+    },
+    {
+      "status": "phase0_agent_group_pass_detail_discrepancies",
+      "branch": "feat/coach-phase0-final-gates-v1",
+      "commit": "e7fb41f4e91e02805f93db3a214652952474b828",
+      "pr": 30,
+      "run_id": 44671374727,
+      "protocol": "docs/phase0/formal-protocol-v1.json",
+      "scope": "fresh two synthetic matches; actual grouped concrete actions vs original native MJAI Bot with guard off/on; source and license audit; no production changes",
+      "next": "Check original-agent audit outputs and coverage. Correct or explicitly resolve actual payload discrepancies with user-reviewed comparator choice, revalidate changed comparator; do not mark Phase 0 passed on partial evidence. Freeze P1 detailed gates before new evaluation; report concise Japanese text for prior external reviewers. Release blocked until notices/corresponding source and legal scope review.",
+      "formal_protocol": "handoff/formal-protocol-v1.json",
+      "license_decision": "handoff/license-decision-v1-20261120.md",
+      "action_contract": "handoff/action-contract-20261120.md",
+      "results": {
+        "status": "group_audit_complete_detail_not_assumed",
+        "sampled_matches": 2,
+        "seat_hands": 48,
+        "counts": {
+          "sampled": 317,
+          "raw_group_match": 317,
+          "detail_match": 310,
+          "grouped_adapter": 10,
+          "reach": 11,
+          "reach_second_stage_checked": 11,
+          "detail_mismatch": 7,
+          "native_extra_kan_head": 1
+        },
+        "group_coverage": {
+          "0": 6,
+          "1": 3,
+          "2": 2,
+          "3": 2,
+          "4": 2,
+          "6": 1,
+          "7": 6,
+          "8": 8,
+          "9": 6,
+          "10": 3,
+          "11": 3,
+          "12": 1,
+          "13": 2,
+          "14": 2,
+          "16": 2,
+          "17": 5,
+          "18": 9,
+          "19": 4,
+          "21": 1,
+          "22": 1,
+          "23": 2,
+          "25": 3,
+          "26": 11,
+          "27": 8,
+          "28": 10,
+          "29": 7,
+          "30": 15,
+          "31": 8,
+          "32": 10,
+          "33": 6,
+          "37": 11,
+          "38": 2,
+          "39": 5,
+          "41": 18,
+          "42": 1,
+          "43": 10,
+          "45": 121
+        },
+        "max_q_error": 0.000004272216797218675,
+        "scope": "original MJAI Bot on sampled actual CPU states, guard off/on; not native full-game engine parity; unsampled categories remain unverified"
+      },
+      "summary_artifact": 14599877599,
+      "result_path": "archive/results/phase0-agent-audit-20261120.json"
     }
   ],
   "roadmap": {
@@ -379,5 +447,6 @@
     "formal_hanchan_cap": 6400,
     "mme_rank_pt": 15,
     "production_release_gate": "license review and evidence gates pending"
-  }
+  },
+  "workflow_preference": "User explicitly requests proceed with all feasible work without stopping at each step. Stop only at actual external execution/dependency blockers; provide measured or bounded estimate for external execution, no invented future assistant ETA."
 }

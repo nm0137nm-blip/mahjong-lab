@@ -55,3 +55,7 @@ Run 44668737514 attempt 1、12:49:48 JST 完了、16ジョブ成功。実戦生�
 
 ## 2026-11-20 12:59 Phase 0 残余ゲート
 PR #30、run 44671374727、commit e7fb41f4e91e02805f93db3a214652952474b828。上流source監査で立直2段階・追加kan head・赤牌選択・guardの相違を確認。従来の成績はS42-adapter基準に限定。native Botとの実payload比較2半荘を起動（結果未確認）。試験計画v1.0登録: 初期計画160 seed blocks × 4席 ×2方式=1,280半荘/サイクル、MME+15pt、95%CI下限>0かつ点推定>=15を昇格条件、上限<15で候補futility、最大2サイクル。利用条件は研究継続可・新規リリース保留のdecision record、既存公開の対応ソース/NOTICE等の適合未確認。Phase0完了ではない。ユーザーは残工程完了後、前回相談相手へコピペ/手打ち可能な簡潔な進捗・ロードマップ報告文を希望。仕様: handoff/formal-protocol-v1.json, handoff/action-contract-20261120.md, handoff/license-decision-v1-20261120.md。
+
+## 2026-11-20 13:04 行動監査結果とP1準備
+Run 44671374727 success 13:02:32 JST。2半荘48 seat-hand、317判断 raw group一致317、具体行動一致310、不一致7、立直2段目11件照合、追加kan head1件、guard変更0件（観測範囲）。不一致は解消未了、未観測カテゴリも合格としない。結果: archive/results/phase0-agent-audit-20261120.json; 詳細artifact14599877599。
+PR #31 run 44671922598、P1評価仕様/メトリクス単体試験と不一致7件の詳細取得を起動。Phase0未完、本番変更なし。ユーザー指示: 実施可能な作業は逐次止めず進め、真の外部待ちに達した場合は外部実行の見通しと残課題を報告する。後で他モデルに短いコピペ/手打ち可能な報告を作る。

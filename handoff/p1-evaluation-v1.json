@@ -1,0 +1,39 @@
+{
+  "version": "P1-eval-v1.0",
+  "status": "pre-data specification; preparation only, no training or release gate bypass",
+  "source": "2026-11-20 提言確定版 p.14: calibration, within-decision risk ranking, conditional loss, family-out evaluation, suppress unreliable estimates",
+  "decisions": "Numeric thresholds below are engineering preregistration proposals not literal reviewer thresholds; freeze before outer holdout acquisition/evaluation; no change after viewing results.",
+  "split": {
+    "unit": "campaign x seed lineage x complete match; all players, candidates, labels and calibration rows from one match stay together",
+    "development": "existing 120 training and 30 development matches are development only",
+    "outer": "new opponent-family and progression-policy holdouts; distinct campaigns and seeds; separate S42-adapter, bundled basic, and not-trained-in policy family (fixed efficiency-policy holdout allowed if not used for training or calibration)",
+    "leak": "audit all available historical train/development/pilot/formal seed manifests and wall/trajectory hashes; lack of a manifest is a recorded limitation/blocker for strict independence; independent label replay and hidden-input perturbation tests",
+    "calibration": "nested grouped cross-fit; tune calibrators only via training-side folds, refit on development side and freeze before outer evaluation"
+  },
+  "targets": {
+    "tenpai": "structural tenpai at decision time",
+    "legal_ron": "per opponent and candidate red-aware exact legal Ron possibility before chosen action; not probability of choosing to Ron",
+    "conditional_loss": "counterfactual base Ron payment plus honba if legally accepted; exact settlement rules, ura uncertainty stated, not actual payment unless all relevant outcome/priority rules included",
+    "expected_loss": "legal-opportunity exposure points E[1(legal Ron)*counterfactual payment]; do not equate sum across opponents with any-Ron probability or actual total payout. Need separately evaluated all-accept settlement label accounting for multiple Ron and abortive draws for aggregate.",
+    "not_q": "no physical outcome probability/score from S42 raw Q"
+  },
+  "baselines": [
+    "frozen 120-match T/R predictions, unchanged deterministic certain cases",
+    "candidate-side simple empirical frequency baseline trained on training fold only",
+    "conditional payment conditional median and mean baselines (mean for expected point loss), training-only"
+  ],
+  "core_gate": {
+    "validity": "all input/label/seed audits pass; probabilities finite and bounded; confirmed legal furiten/riichi deterministic cases respected; P(legal Ron per opponent/candidate)<=P(tenpai same opponent) after consistent calibration; nonnegative point predictions; no hidden/future feature",
+    "sample_support": "per family and displayed stratum >=30 independent half-games, >=100 positive and >=100 negative for binary calibration; payment conditional >=100 positive labels across >=30 matches; mixed-response decision ranking >=100 choice sets with both classes across >=30 matches; otherwise suppress numbers, report insufficiency, no full gate pass",
+    "calibration": "excluding deterministic cases, log loss and Brier each not worse than frozen model by point estimate, lower log loss or lower Brier on pooled untouched cohorts with paired match-bootstrap 95% CI improvement excluding 0; per-family both proper scores must not show statistically supported deterioration (upper bound for candidate-minus-baseline deterioration >0 alone is insufficient to call deterioration; uncertainty reported); max abs calibration bin gap <=0.05 in supported bins, bins fixed deciles and >=200 rows, >=30 matches, report counts and positive rate, no unsupported claims",
+    "risk_ranking": "per-opponent, per-decision pairwise positive-negative AUC with ties half; candidate point estimate >= frozen and no supported deterioration per holdout family, report pooled and macro family AUC, no rank credit on all-negative or all-positive groups",
+    "loss": "conditional payment MAE must beat or tie training-only conditional median; conditional payment RMSE must beat or tie training-only mean; unconditional per-opponent exposure RMSE <= training-only frequency x mean baseline; 95% match-paired CIs on all; count and uncertainty by family; no unconditional exposure claim for unsupported strata",
+    "release": "P1 output used solely as explanation/comparison, never overrides Mortal; suppress inadequate calibration and legally uncertain labels; P1 development metrics are not final product approval"
+  },
+  "statistics": {
+    "resample": "paired match blocks within each family, 20000 draws, seed 261120; no candidate-level IID inference",
+    "report": "Brier/log_loss/AUPRC, fixed-bin reliability with support, mixed-candidate ranking, conditional MAE/RMSE, exposure RMSE; ECE descriptive only",
+    "multiple": "single primary calibration endpoint predeclared as candidate-minus-frozen legal-Ron log loss; Brier safety co-criterion, remaining metrics secondary/gates; claims of improvement confined to supported endpoint and family; no unplanned tuning on outer test"
+  },
+  "remaining": "Need counterfactual score label generator independent audit and documented ura rules, full evaluator/CI/selection and data collection; first unit-tested metric primitives here."
+}
