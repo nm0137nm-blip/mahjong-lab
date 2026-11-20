@@ -106,6 +106,7 @@ jobs:
           retention-days: 30
 
   late-proposal:
+    if: false # run 44812741900 already dispatched
     runs-on: ubuntu-24.04
     timeout-minutes: 12
     steps:
@@ -127,6 +128,7 @@ jobs:
           path: /tmp/v14-late-proposal.json
           retention-days: 30
   late-verifier:
+    if: false # run 44812741900 already dispatched
     needs: late-proposal
     runs-on: ubuntu-24.04
     timeout-minutes: 8
@@ -151,4 +153,42 @@ jobs:
         with:
           name: v14-late-proposal-aggregate
           path: /tmp/v14-late-verification.json
+          retention-days: 30
+
+  freeze-pilot:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.23.4'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - run: python -m pip install mahjong==1.4.0
+      - uses: actions/download-artifact@v4
+        with:
+          name: v14-pilot-public-preparation
+          run-id: 44758253864
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/natural
+      - uses: actions/download-artifact@v4
+        with:
+          name: v14-contrast-feasibility
+          run-id: 44758253864
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/contrast
+      - run: node tests/next/v14-freeze-pilot-set.mjs /tmp/natural /tmp/contrast/v14-contrast-public.json /tmp/frozen-pilot
+      - run: python tests/next/audit-v14-public-calculations.py /tmp/frozen-pilot/stage1/independent-requests.json /tmp/frozen-pilot/verifier/calculation-audit.json
+      - run: node tests/next/v14-negative-controls.mjs select /tmp/frozen-pilot/stage1/independent-requests.json /tmp/frozen-pilot/verifier/weak-control-lock.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v14-frozen-stage1-only
+          path: /tmp/frozen-pilot/stage1
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v14-frozen-verifier-only
+          path: /tmp/frozen-pilot/verifier
           retention-days: 30
