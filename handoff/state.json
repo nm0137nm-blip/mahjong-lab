@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-20T21:10:00+09:00",
+  "checkpoint": "2026-11-20T21:31:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -8,18 +8,15 @@
     "coach_candidate_promoted": false
   },
   "active_task": {
-    "phase": "P1",
-    "status": "v2_label_recovery_and_strict_audits_running",
-    "run_id": 44733467016,
-    "branch": "feat/coach-p1-v2-label-recovery-v1",
-    "commit": "119bdda9b30e45a2cfe2920e04051f0de208eb43",
-    "pr": 59,
-    "source_run": 44726204303,
-    "source_manifest_artifact": 14624007542,
-    "audit_artifact": 14626710646,
-    "decision": "All 96 games retained; original 3 own-fifth-tile impossible ready labels are source errors. Derived copy only, independent physical shanten and complete-shape proof require no legal waits/score. Correct T and shanten only, record original and derived hashes. No threshold relaxation. R1 candidate archived; formal R2 untouched.",
-    "scope": "Verify source lock hashes; require 96 games and precisely three proven corrections; run unchanged independent snapshot and temporal audits, then original v2 screen. Prior V1 outer manifest only; no labels, no retraining on outer. No production changes. Prior historical120 teacher labels not newly audited.",
-    "next": "Check run44733467016. If strict audits or screen fail, diagnose exact cause; never omit games or relax gates. If screen supports candidate, lock T physical target and teacher generation on all fresh data before candidate-freeze and independent outer design; preserve V1 and report prior historic label limit. If screen fails merit gates, stop bounded v2 iteration; only P2a facts preparation without numeric certification. No main/public release."
+    "phase": "P2a",
+    "status": "facts_only_preparation_qa_running_P1_limited",
+    "run_id": 44736460105,
+    "branch": "feat/coach-p2a-facts-only-v1",
+    "commit": "e12ce3156facc42770d6a3453cc5640d6b782011",
+    "pr": 60,
+    "decision": "P1 full gate remains unmet; one bounded v2 cycle finished, no release, no uncertified numbers. P2a deterministic preparation allowed, not full P2a or P3 pilot. R1 archived and R2 formal unused.",
+    "scope": "Explicit public projection, separate matched model group rank, withheld external probability/loss, no inferred reason. Unit and all 96 development public/reference-only cases, no oracle or V1 outer data. Production global match provenance, full factual derivations, integration and evaluation remain open.",
+    "next": "Check run44736460105 and resolve implementation errors without omitting records. Continue permitted facts-only preparation only. If no further authorized work, report decision needed on limited P1 / revised product scope, no Phase pass. Main/public release unchanged."
   },
   "previous_runs": [
     {
@@ -1077,6 +1074,28 @@
         "run_id": 44730779024,
         "conclusion": "failure",
         "reason": "source snapshot audit failed; no screen fitting"
+      }
+    },
+    {
+      "phase": "P1",
+      "status": "v2_screen_completed_no_full_candidate",
+      "run_id": 44733467016,
+      "branch": "feat/coach-p1-v2-label-recovery-v1",
+      "commit": "119bdda9b30e45a2cfe2920e04051f0de208eb43",
+      "pr": 59,
+      "source_run": 44726204303,
+      "source_manifest_artifact": 14624007542,
+      "audit_artifact": 14626710646,
+      "decision": "P1 bounded v2 cycle closed; all T variants miss gate: retrained Platt pooled gap .064681, multi-meld .078745, basic logloss delta +.001254. R blend pooled logloss delta -.000460873 CI[-.000675834,-.000257798], all family proper score/rank point improvement, risk strata gap <=.05 and rank improved; payment MAE/RMSE deltas -324.70/-472.41. Development-only; no full candidate, no v2 outer or further tuning.",
+      "scope": "Verify source lock hashes; require 96 games and precisely three proven corrections; run unchanged independent snapshot and temporal audits, then original v2 screen. Prior V1 outer manifest only; no labels, no retraining on outer. No production changes. Prior historical120 teacher labels not newly audited.",
+      "next": "Check run44733467016. If strict audits or screen fail, diagnose exact cause; never omit games or relax gates. If screen supports candidate, lock T physical target and teacher generation on all fresh data before candidate-freeze and independent outer design; preserve V1 and report prior historic label limit. If screen fails merit gates, stop bounded v2 iteration; only P2a facts preparation without numeric certification. No main/public release.",
+      "results": "archive/results/p1-v2-screen-20261120.json",
+      "audit": {
+        "states": 30693,
+        "ron_labels": 333723,
+        "score_labels": 2886,
+        "turns_aligned": 10231,
+        "differences": 0
       }
     }
   ],
