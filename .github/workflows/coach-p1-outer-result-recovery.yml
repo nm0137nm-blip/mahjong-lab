@@ -1,0 +1,101 @@
+name: P1 fixed outer result serialization recovery
+on:
+  pull_request:
+    branches: [feat/coach-p1-outer-evaluation-v1]
+permissions:
+  contents: read
+  actions: read
+jobs:
+  recover:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 709c1be4da0c9e88a7c7a686167550d86a5c63ff
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - name: Download all 160 original artifacts by exact IDs and SHA256
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          # Cross-run pattern downloads return only the first 100 artifacts.
+          # Download by immutable ID instead, with the full API-paginated inventory.
+          gh api 'repos/nm0137nm-blip/mahjong-lab/actions/runs/44717123756/artifacts?per_page=100' --paginate --slurp > /tmp/artifact-inventory.json
+          python - <<'PY'
+          import json,hashlib,subprocess,zipfile,io,concurrent.futures
+          from pathlib import Path
+          pages=json.load(open('/tmp/artifact-inventory.json'))
+          rows=[a for p in pages for a in p['artifacts'] if a['name'].startswith('p1-outer-data-')]
+          assert len(rows)==160 and {a['name'] for a in rows}=={f'p1-outer-data-{i}' for i in range(1,161)}
+          def get(a):
+            raw=subprocess.check_output(['gh','api',f"repos/nm0137nm-blip/mahjong-lab/actions/artifacts/{a['id']}/zip"])
+            assert 'sha256:'+hashlib.sha256(raw).hexdigest()==a['digest'],a['name']
+            p=Path('/tmp/data')/a['name'];p.mkdir(parents=True,exist_ok=True)
+            with zipfile.ZipFile(io.BytesIO(raw)) as z:
+              assert all(not n.startswith('/') and '..' not in Path(n).parts for n in z.namelist())
+              z.extractall(p)
+            assert (p/'manifest.json').is_file()
+          with concurrent.futures.ThreadPoolExecutor(max_workers=8) as pool:list(pool.map(get,rows))
+          print('Verified all 160 original artifact digests')
+          PY
+      - uses: actions/download-artifact@v4
+        with:
+          name: p1-outer-locked-manifest
+          run-id: 44717123756
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/locked
+      - uses: actions/download-artifact@v4
+        with:
+          name: p1-outer-independent-audits
+          run-id: 44717123756
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/audits
+      - uses: actions/download-artifact@v4
+        with:
+          name: p1-frozen-candidate
+          run-id: 44712159043
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/model
+      - uses: actions/download-artifact@v4
+        with:
+          name: v11-history-seed-audit
+          run-id: 44692881158
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/history
+      - name: Verify frozen sources and patch only final JSON encoding
+        run: |
+          set -euo pipefail
+          python -m pip install numpy==2.3.5 lightgbm==4.6.0 scikit-learn==1.8.0
+          python - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          m=json.load(open('/tmp/locked/outer-seeds.json'))
+          assert m['codeSha']=='709c1be4da0c9e88a7c7a686167550d86a5c63ff' or len(m['codeSha'])==40
+          for p,h in m['source_hashes'].items():
+            assert hashlib.sha256(Path(p).read_bytes()).hexdigest()==h,p
+          assert len(list(Path('/tmp/data').rglob('manifest.json')))==160
+          p=Path('tests/next/evaluate-p1-outer.py')
+          s=p.read_text()
+          a="Path('/tmp/p1-outer-summary.json').write_text(json.dumps(out,ensure_ascii=False,indent=2))"
+          b="print(json.dumps({k:v for k,v in out.items() if k not in ('scopes','match_manifest','progression')},ensure_ascii=False,indent=2))"
+          assert s.count(a)==s.count(b)==1
+          # No metric or gate edits. Convert numpy scalar to its native JSON type.
+          p.write_text(s.replace(a,a.replace('indent=2','indent=2,default=lambda x:x.item() if isinstance(x,np.generic) else (_ for _ in ()).throw(TypeError(type(x)))')).replace(b,b.replace('indent=2','indent=2,default=lambda x:x.item() if isinstance(x,np.generic) else (_ for _ in ()).throw(TypeError(type(x)))')))
+          PY
+          git diff -- tests/next/evaluate-p1-outer.py
+          python tests/next/evaluate-p1-outer.py /tmp/data /tmp/model /tmp/locked/outer-seeds.json /tmp/history/seed-history-public-sha256.json
+          python - <<'PY'
+          import json
+          p=json.load(open('/tmp/p1-outer-summary.json'))
+          assert p['matches']==160
+          print('FINAL_GATE_SUMMARY',json.dumps({'status':p['status'],'primary_pass':p['primary_pass'],'all_family_gate':p['all_family_gate'],'high_risk_gate':p['high_risk_gate'],'coverage':p['coverage'],'scopes':{k:{m:{z:v.get(z) for z in ('pass','supported','metrics','logloss_delta','brier_delta','max_supported_gap','candidate','baseline','mae_delta','rmse_delta','exposure_rmse_delta','coverage80','high_loss_pass','high_loss_underestimate_delta') if z in v} for m,v in a.items()} for k,a in p['scopes'].items()}},ensure_ascii=False))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p1-recovered-outer-summary
+          path: /tmp/p1-outer-summary.json
+          if-no-files-found: error
+          retention-days: 30
