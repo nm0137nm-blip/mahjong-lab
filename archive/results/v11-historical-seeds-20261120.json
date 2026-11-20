@@ -1,0 +1,18 @@
+{
+  "run": 44692881158,
+  "summary_artifact": 14608689261,
+  "status": "all_available_historical_training_development_seed_inventory_verified",
+  "train_matches": 200,
+  "development_matches": 30,
+  "unique_excluded_seeds": 478,
+  "formal_reserved_seeds": 800,
+  "pilot_development_seeds": 8,
+  "historical_public_hashes": 33080,
+  "overlap": 0,
+  "counts": {
+    "old-train": 11338,
+    "belief-train": 17323,
+    "development": 4419
+  },
+  "limitations": "Historical raw wall/trajectory hashes were not retained for all 700 games. Direct seed identity and exact public scene hash audit are verified; near-clones and all legacy wall hashes not established. Before formal evaluation require candidate identity, runtime/rule hashes, per-match initial wall/log hashes, prospective train/dev exclusion and exact collision check; no activation by this result alone."
+}

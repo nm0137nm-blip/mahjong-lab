@@ -1,0 +1,142 @@
+{
+  "run": 44692420874,
+  "summary_artifact": 14608854479,
+  "status": "development_pilot_audited_not_P1_or_R1_pass",
+  "matches": [
+    {
+      "seed": 1810495625,
+      "policy": "learned",
+      "decisions": 155,
+      "teacher_turns": 124,
+      "rank": 3
+    },
+    {
+      "seed": 271648244,
+      "policy": "learned",
+      "decisions": 151,
+      "teacher_turns": 120,
+      "rank": 1
+    },
+    {
+      "seed": 1485740086,
+      "policy": "learned",
+      "decisions": 107,
+      "teacher_turns": 79,
+      "rank": 2
+    },
+    {
+      "seed": 2027820340,
+      "policy": "learned",
+      "decisions": 183,
+      "teacher_turns": 148,
+      "rank": 4
+    },
+    {
+      "seed": 1710350283,
+      "policy": "s42",
+      "decisions": 198,
+      "teacher_turns": 147,
+      "rank": 1
+    },
+    {
+      "seed": 4070231024,
+      "policy": "s42",
+      "decisions": 184,
+      "teacher_turns": 145,
+      "rank": 4
+    },
+    {
+      "seed": 1174140849,
+      "policy": "s42",
+      "decisions": 141,
+      "teacher_turns": 108,
+      "rank": 4
+    },
+    {
+      "seed": 3611320700,
+      "policy": "s42",
+      "decisions": 186,
+      "teacher_turns": 152,
+      "rank": 3
+    }
+  ],
+  "frozen_belief_baseline": {
+    "learned": {
+      "tenpai": {
+        "n": 1413,
+        "positives": 177,
+        "brier": 0.04000626302600211,
+        "log_loss": 0.14726211603270575,
+        "auprc_ap": 0.8778120485660895
+      },
+      "legal_ron": {
+        "n": 15486,
+        "positives": 93,
+        "brier": 0.00564631793123976,
+        "log_loss": 0.025092357253931108,
+        "auprc_ap": 0.0902468777623027
+      },
+      "within_decision": {
+        "mixed_sets": 83,
+        "all_sets": 1413,
+        "macro_auc": 0.6831699090735235
+      },
+      "conditional_payment_count": 93,
+      "payment_mean_no_honba_no_ura": 5109.677419354839
+    },
+    "s42": {
+      "tenpai": {
+        "n": 1656,
+        "positives": 244,
+        "brier": 0.04156229232655552,
+        "log_loss": 0.1439116103824522,
+        "auprc_ap": 0.9083588212125626
+      },
+      "legal_ron": {
+        "n": 18468,
+        "positives": 118,
+        "brier": 0.005940695666922632,
+        "log_loss": 0.02528617866620506,
+        "auprc_ap": 0.11239942947006433
+      },
+      "within_decision": {
+        "mixed_sets": 100,
+        "all_sets": 1656,
+        "macro_auc": 0.7306756854256854
+      },
+      "conditional_payment_count": 118,
+      "payment_mean_no_honba_no_ura": 6277.966101694915
+    }
+  },
+  "warnings": {
+    "frozen_ron_gt_tenpai": 7,
+    "pending_kan_dora_turn_rows": 3
+  },
+  "r1": {
+    "scope": "actual frozen200 on-policy choices; Q deviation not physical score or causal diagnosis; provisional category only",
+    "decisions": 596,
+    "disagreements": 139,
+    "category_counts": {
+      "other_discard": 285,
+      "call_or_pass": 118,
+      "push_fold_candidate": 50,
+      "efficiency_difference": 73,
+      "riichi": 11,
+      "win_decision": 10,
+      "placement_candidate": 48,
+      "abort": 1
+    },
+    "top_count": 100,
+    "top_categories": {
+      "call_or_pass": 9,
+      "other_discard": 31,
+      "efficiency_difference": 48,
+      "push_fold_candidate": 1,
+      "placement_candidate": 5,
+      "riichi": 5,
+      "abort": 1
+    },
+    "ranking": "normalized teacher gap × predeclared importance × sqrt(category frequency); engineering diagnostic, not EV"
+  },
+  "p1": "Current-visible-dora/no-ura counterfactual; labels from same engine, independent replay validation still required. 8 games insufficient for formal P1. Direct/decomposed model development not yet run; no outer holdout or promotion."
+}
