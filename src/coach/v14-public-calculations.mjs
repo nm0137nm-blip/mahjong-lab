@@ -29,7 +29,7 @@ function handFrom(f,M){
  return h;
 }
 function doraHan(ts,dora){return ts.reduce((n,t)=>n+Number(t[1]==='0')+dora.filter(d=>d===norm(t)).length,0);}
-function metric(h,f,M,visible,dora,discard=null){
+function metric(h,f,M,visible,dora,redVisible,discard=null){
  const ts=tiles(h),melds=Array.from(h._fulou),all=ts.concat(melds.flatMap(mt));
  assert.equal(ts.length+3*melds.length,13);
  const counts=Object.fromEntries(TYPES.map(t=>[t,0]));for(const t of all)counts[norm(t)]++;
@@ -49,14 +49,15 @@ function metric(h,f,M,visible,dora,discard=null){
   out.conditionalNormalWins=improving.flatMap(t=>{
    // Only a physically available tile type can be used in a hypothetical score.
    if(visible[t]>=4)return [];
-   return [{tile:t,ron:price(M.Util.hule(h,t+'+',param)),tsumo:price(M.Util.hule(h.clone().zimo(t),null,param)),hypotheticalRiichiRon:reach?price(M.Util.hule(h,t+'+',reach)):null}];
+   const variants=t[0]!=='z'&&t[1]==='5'?[...(visible[t]-redVisible[t[0]]<3?[t]:[]),...(redVisible[t[0]]<1?[t[0]+'0']:[])]:[t];
+   return variants.map(p=>({tile:p,ron:price(M.Util.hule(h,p+'+',param)),tsumo:price(M.Util.hule(h.clone().zimo(p),null,param)),hypotheticalRiichiRon:reach?price(M.Util.hule(h,p+'+',reach)):null}));
   });
-  out.scoreAssumptions='通常牌による仮の和了基本点。裏・一発・海底等・本場供託なし。赤和了牌は通常5で代用、自己河フリテン等のロン可否と別。';
+  out.scoreAssumptions='見え枚数上で残り得る通常牌・赤牌別の仮の和了基本点。裏・一発・海底等・本場供託なし。自己河フリテン等のロン可否と別。';
  }
  return out;
 }
 export function enrichPublic(input,f,M){
- const visible=input.evidence.find(x=>x.id==='visible').value.counts,h=handFrom(f,M),r=rule(M),dora=f.doraIndicators.map(p=>M.Shan.zhenbaopai(p)); 
+ const {counts:visible,redVisible}=input.evidence.find(x=>x.id==='visible').value,h=handFrom(f,M),r=rule(M),dora=f.doraIndicators.map(p=>M.Shan.zhenbaopai(p)); 
  const evidence=[{id:'dora',kind:'calculated',value:{actualDora:dora}}],actions=[];
  const safety=p=>f.rivers.filter(x=>x.seat!==f.ownSeat).map(x=>({seat:x.seat,ownRiverGenbutsu:x.discards.some(d=>norm(d.tile)===norm(p))}));
  for(const opp of f.rivers.filter(x=>x.seat!==f.ownSeat)){
@@ -68,7 +69,7 @@ export function enrichPublic(input,f,M){
  if(f.phase==='turn')equal(sort(ds),sort(input.actions.filter(a=>a.group<37).map(a=>a.detail)));
  const rd=f.phase==='turn'?ds.filter(p=>M.Game.allow_lizhi(r,h,p,f.remaining,f.scores[f.ownSeat].points)):[];
  if(f.phase==='turn')assert.equal(Boolean(rd.length),input.actions.some(a=>a.group===37),'riichi group mismatch');
- const calc=(id,x,p=null)=>({id,kind:'calculated',value:{...metric(x,f,M,visible,dora,p),safety:p?safety(p):null}});
+ const calc=(id,x,p=null)=>({id,kind:'calculated',value:{...metric(x,f,M,visible,dora,redVisible,p),safety:p?safety(p):null}});
  for(const a of input.actions){
   if(a.group===37){
    // Concrete riichi discard is reconstructed uniformly; group-only model comparison remains separate.
@@ -82,7 +83,7 @@ export function enrichPublic(input,f,M){
    else if(a.group===45)evidence.push(calc('calc-'+a.key,h.clone()));
    else if(a.group>=38&&a.group<=41){
     const after=h.clone().fulou(a.detail),ps=sort(M.Game.get_dapai(r,after)||[]);
-    assert(ps.length);const choices=ps.map(p=>({discard:p,...metric(after.clone().dapai(p),f,M,visible,dora,p),safety:safety(p)}));
+    assert(ps.length);const choices=ps.map(p=>({discard:p,...metric(after.clone().dapai(p),f,M,visible,dora,redVisible,p),safety:safety(p)}));
     evidence.push({id:'calc-'+a.key,kind:'calculated',value:{afterCallDiscards:choices}});
    }else if(a.group===42){
     const after=f.phase==='turn'?h.clone().gang(a.detail):h.clone().fulou(a.detail);
