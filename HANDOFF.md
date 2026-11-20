@@ -123,3 +123,5 @@ PR56初回44723934431 cross-run artifact downloadがfirst pageのみで99/160。
 
 ## 20:17 P1 v1正式判定・単回v2改善試験
 44724172479 全160元artifact SHA検証・原source hash検証・JSON変換のみで復旧成功。正式full gate不合格、主Ron logloss差 -0.000438181 CI[-0.000595306,-0.000286436]、全4family Ron点推定合格、Brier差-0.00003756。全体危険順位AUC .645006→.650825、条件平均RMSE差-224.11点、80%区間実測85.046%。T最大校正gap .089758 >.05（S42 .10384/self .10736）、未学習効率family非立直聴牌陽性6で支持不足、標準順位/MAE、効率MAE/RMSE、立直・複数鳴き・終盤の順位基準未達。V1結果固定・160生データの学習/校正禁止。PR57 run44726204303 新規96開発半荘3family×32のみ、全過去seed及びV1 outer160除外、独立監査付き。単回v2改善の工程決定、閾値維持、P2a事実のみ準備可能、未認証数値非表示。R1終了、R2未使用、main不変。
+
+20:50 PR57初回93/96半荘成功、36/63/90は対局開始前model ready timeout120s、同一run44726204303 attempt2で失敗分のみretry。PR58 run44730779024 96半荘独立監査合格後に新v2開発screen自動開始。4fold（held24/cal24/new train48+旧dev72+hist120）、T校正・R順位保存単調校正/共通縮尺/条件モデル、条件中央値と平均別head、family/risk paired CI。V1 outerはseed manifestのみ参照、教師label/局面不使用。正式試験なし、main不変。
