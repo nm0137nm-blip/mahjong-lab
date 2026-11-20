@@ -1,0 +1,72 @@
+name: P1 probability candidates and R1 targeted fixability diagnostics
+on:
+  pull_request:
+    branches: [feat/coach-p1-temporal-furiten-v1]
+permissions:
+  contents: read
+  actions: read
+jobs:
+  p1-screen:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: lab
+      - uses: actions/checkout@v4
+        with:
+          ref: c3e37b56e2e41cac552ba6118ce97573e4734c81
+          path: frozen
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: multifamily-dev-*
+          run-id: 44693828778
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/dev
+      - run: |
+          set -euo pipefail
+          python -m pip install numpy==2.3.5 lightgbm==4.6.0 scikit-learn==1.8.0
+          cp -r frozen/archive/versions/belief-120-ab-v1 /tmp/belief-model
+          echo '4b6325559cbcf5fe45145eccfd938d0e68c2c5e2bc1de9985378fae2cb2e5f0a  /tmp/belief-model/t.lgb' | sha256sum -c -
+          echo '1028569ef3889c8b86c1085fecd3fe8789ec284a5b56b9a2cae6d946c8e98fa9  /tmp/belief-model/r.lgb' | sha256sum -c -
+          python lab/tests/next/p1-screen-dev.py /tmp/dev
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p1-dev-candidate-screen
+          path: /tmp/p1-screen.json
+          if-no-files-found: error
+          retention-days: 30
+  r1-targeted:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: lab
+      - uses: actions/checkout@v4
+        with:
+          ref: c3e37b56e2e41cac552ba6118ce97573e4734c81
+          path: frozen
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: multifamily-dev-*
+          run-id: 44693828778
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/dev
+      - run: |
+          set -euo pipefail
+          python -m pip install numpy==2.3.5 lightgbm==4.6.0 scikit-learn==1.8.0
+          cp -r frozen/archive/versions/policy-200-lgb-v1 /tmp/arena-model
+          python lab/tests/next/r1-targeted-diagnostic.py /tmp/dev
+      - uses: actions/upload-artifact@v4
+        with:
+          name: r1-targeted-diagnostic
+          path: /tmp/r1-targeted-diagnostic.json
+          if-no-files-found: error
+          retention-days: 30
