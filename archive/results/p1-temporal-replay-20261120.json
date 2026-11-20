@@ -1,0 +1,37 @@
+{
+  "run": 44698024834,
+  "initial_failure": 44697823107,
+  "fix": "kaigang notification sequence before recorded event broadcast; no changed label or exclusion",
+  "pilot": {
+    "status": "temporal_replay_pass",
+    "matches": 8,
+    "counts": {
+      "passed_complete_shape": 53,
+      "passed_after_riichi": 17,
+      "reset_on_nonriichi_discard": 14,
+      "own_river_furiten": 25,
+      "turns_aligned": 1023,
+      "opponent_states": 3069,
+      "ron_ineligible": 14,
+      "kan_indicator_notification_reordered": 10,
+      "added_kan": 1
+    },
+    "scope": "Independent concealed-multiset/public-prefix reconstruction and shape-pass temporal eligibility, in actual completed synthetic games. Not full engine identity or true human Ron choice."
+  },
+  "expanded": {
+    "status": "temporal_replay_pass",
+    "matches": 48,
+    "counts": {
+      "passed_complete_shape": 298,
+      "passed_after_riichi": 105,
+      "turns_aligned": 5355,
+      "opponent_states": 16065,
+      "kan_indicator_notification_reordered": 53,
+      "added_kan": 25,
+      "own_river_furiten": 63,
+      "reset_on_nonriichi_discard": 38,
+      "ron_ineligible": 46
+    },
+    "scope": "Independent concealed-multiset/public-prefix reconstruction and shape-pass temporal eligibility, in actual completed synthetic games. Not full engine identity or true human Ron choice."
+  }
+}

@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-20T16:17:06+09:00",
+  "checkpoint": "2026-11-20T16:54:23+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -9,13 +9,19 @@
   },
   "active_task": {
     "phase": "P1/R1",
-    "status": "multifamily_development_run_in_progress",
-    "run_id": 44693828778,
-    "branch": "feat/coach-p1-r1-multifamily-dev-v1",
-    "commit": "4a11552f90ce968c821d7f8ae39d029159011b29",
-    "pr": 40,
-    "scope": "48 fresh development-only hanchan, corrected S42×3 24 and bundled standard CPU×3 24, each 12 frozen learned and 12 corrected S42 focal. Freeze seed disjointness before collection; all matches independent snapshot check, diagnostics and six-fold group calibration; R1 fact sheet. No formal candidate trial; no P1 or R1 pass yet.",
-    "next": "Check seed and collection jobs, fix any implementation problems and re-run same seeds; evaluate expanded results, then add learned-opponent family and independent temporal furiten validation, design P1 candidate vs baselines and untouched family-out manifest, R1 fixable-cause/rollout before R2. Public release blocked."
+    "status": "targeted_development_screen_running",
+    "run_id": 44698398245,
+    "branch": "feat/coach-p1-r1-targeted-dev-v1",
+    "commit": "64cb36159fcfba123e59de6ed302c81f296c22e5",
+    "pr": 42,
+    "scope": "Development-only six-fold probability models, family/danger strata and conditional payment; R1 on-policy grouped re-ranking of reaction and special (24 learned games) using actual frozen scores and public features. No formal evaluation or promotion.",
+    "completed_audits": {
+      "multifamily_run": 44693828778,
+      "temporal_run": 44698024834,
+      "temporal_first_failed": 44697823107,
+      "temporal_fix": "Independent audit reconstructs actual kaigang notification order instead of paipu append order; exact all 1023 +5355 turns aligned, no exclusion or changed labels."
+    },
+    "next": "Check run 44698398245 and fix failures before continuing. P1 compare candidate family and danger metrics; further learned-opponent family, untouched outer manifest, full product scoring scope and independent release gates required. R1 investigate action-type transition and fixability; no +15pt claim, no formal trial until exact candidate protocol and distinct seeds fixed. General distribution held, main unchanged."
   },
   "previous_runs": [
     {
@@ -787,6 +793,20 @@
         "discussion": "Manual/algorithmic causal validation and frequency on more fresh on-policy matches needed; no proof of available 15pt improvement. Do not select final candidate from these test seeds; these are declared development."
       },
       "calibration_results": "archive/results/p1-calibration-smoke-20261120.json"
+    },
+    {
+      "phase": "P1/R1",
+      "status": "48_game_multifamily_development_and_independent_audits_pass",
+      "run_id": 44693828778,
+      "branch": "feat/coach-p1-r1-multifamily-dev-v1",
+      "commit": "4a11552f90ce968c821d7f8ae39d029159011b29",
+      "pr": 40,
+      "scope": "48 fresh development-only hanchan, corrected S42×3 24 and bundled standard CPU×3 24, each 12 frozen learned and 12 corrected S42 focal. Freeze seed disjointness before collection; all matches independent snapshot check, diagnostics and six-fold group calibration; R1 fact sheet. No formal candidate trial; no P1 or R1 pass yet.",
+      "next": "Check seed and collection jobs, fix any implementation problems and re-run same seeds; evaluate expanded results, then add learned-opponent family and independent temporal furiten validation, design P1 candidate vs baselines and untouched family-out manifest, R1 fixable-cause/rollout before R2. Public release blocked.",
+      "run_attempt": 2,
+      "initial_failure": "collect34 timeout loading model before match; retried failed job only same seed/code; run successful on attempt2",
+      "results": "archive/results/p1-r1-multifamily-20261120.json",
+      "temporal": "archive/results/p1-temporal-replay-20261120.json"
     }
   ],
   "roadmap": {

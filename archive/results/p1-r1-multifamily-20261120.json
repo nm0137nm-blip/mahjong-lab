@@ -1,0 +1,592 @@
+{
+  "run": 44693828778,
+  "attempt": 2,
+  "diagnostic": {
+    "status": "development_pilot_audited_not_P1_or_R1_pass",
+    "matches": [
+      {
+        "seed": 1082872228,
+        "family": "s42",
+        "policy": "learned",
+        "decisions": 149,
+        "teacher_turns": 113,
+        "rank": 3
+      },
+      {
+        "seed": 3406324518,
+        "family": "s42",
+        "policy": "s42",
+        "decisions": 136,
+        "teacher_turns": 107,
+        "rank": 1
+      },
+      {
+        "seed": 1144254674,
+        "family": "s42",
+        "policy": "learned",
+        "decisions": 125,
+        "teacher_turns": 94,
+        "rank": 3
+      },
+      {
+        "seed": 2253514679,
+        "family": "s42",
+        "policy": "s42",
+        "decisions": 27,
+        "teacher_turns": 19,
+        "rank": 2
+      },
+      {
+        "seed": 1790423793,
+        "family": "s42",
+        "policy": "learned",
+        "decisions": 125,
+        "teacher_turns": 98,
+        "rank": 1
+      },
+      {
+        "seed": 2959300802,
+        "family": "s42",
+        "policy": "s42",
+        "decisions": 116,
+        "teacher_turns": 96,
+        "rank": 4
+      },
+      {
+        "seed": 3948482166,
+        "family": "s42",
+        "policy": "learned",
+        "decisions": 144,
+        "teacher_turns": 113,
+        "rank": 4
+      },
+      {
+        "seed": 201249932,
+        "family": "s42",
+        "policy": "s42",
+        "decisions": 208,
+        "teacher_turns": 159,
+        "rank": 1
+      },
+      {
+        "seed": 2883861521,
+        "family": "s42",
+        "policy": "learned",
+        "decisions": 117,
+        "teacher_turns": 90,
+        "rank": 4
+      },
+      {
+        "seed": 3972309322,
+        "family": "s42",
+        "policy": "s42",
+        "decisions": 90,
+        "teacher_turns": 75,
+        "rank": 4
+      },
+      {
+        "seed": 242684135,
+        "family": "s42",
+        "policy": "learned",
+        "decisions": 208,
+        "teacher_turns": 162,
+        "rank": 1
+      },
+      {
+        "seed": 1121842965,
+        "family": "s42",
+        "policy": "s42",
+        "decisions": 167,
+        "teacher_turns": 122,
+        "rank": 3
+      },
+      {
+        "seed": 4026575558,
+        "family": "s42",
+        "policy": "s42",
+        "decisions": 159,
+        "teacher_turns": 120,
+        "rank": 1
+      },
+      {
+        "seed": 3090638942,
+        "family": "s42",
+        "policy": "learned",
+        "decisions": 141,
+        "teacher_turns": 112,
+        "rank": 2
+      },
+      {
+        "seed": 1208928853,
+        "family": "s42",
+        "policy": "s42",
+        "decisions": 197,
+        "teacher_turns": 151,
+        "rank": 1
+      },
+      {
+        "seed": 856874257,
+        "family": "s42",
+        "policy": "learned",
+        "decisions": 110,
+        "teacher_turns": 91,
+        "rank": 3
+      },
+      {
+        "seed": 2060428354,
+        "family": "s42",
+        "policy": "s42",
+        "decisions": 168,
+        "teacher_turns": 137,
+        "rank": 2
+      },
+      {
+        "seed": 4283322091,
+        "family": "basic",
+        "policy": "learned",
+        "decisions": 119,
+        "teacher_turns": 86,
+        "rank": 1
+      },
+      {
+        "seed": 605875880,
+        "family": "basic",
+        "policy": "s42",
+        "decisions": 135,
+        "teacher_turns": 109,
+        "rank": 4
+      },
+      {
+        "seed": 2388998453,
+        "family": "basic",
+        "policy": "learned",
+        "decisions": 162,
+        "teacher_turns": 136,
+        "rank": 4
+      },
+      {
+        "seed": 1449745622,
+        "family": "basic",
+        "policy": "s42",
+        "decisions": 149,
+        "teacher_turns": 120,
+        "rank": 3
+      },
+      {
+        "seed": 722870828,
+        "family": "basic",
+        "policy": "learned",
+        "decisions": 121,
+        "teacher_turns": 92,
+        "rank": 3
+      },
+      {
+        "seed": 423777650,
+        "family": "s42",
+        "policy": "learned",
+        "decisions": 124,
+        "teacher_turns": 95,
+        "rank": 4
+      },
+      {
+        "seed": 3836149603,
+        "family": "basic",
+        "policy": "s42",
+        "decisions": 175,
+        "teacher_turns": 143,
+        "rank": 2
+      },
+      {
+        "seed": 860520696,
+        "family": "basic",
+        "policy": "learned",
+        "decisions": 236,
+        "teacher_turns": 189,
+        "rank": 4
+      },
+      {
+        "seed": 3793546845,
+        "family": "basic",
+        "policy": "s42",
+        "decisions": 117,
+        "teacher_turns": 90,
+        "rank": 1
+      },
+      {
+        "seed": 2158353375,
+        "family": "basic",
+        "policy": "learned",
+        "decisions": 95,
+        "teacher_turns": 75,
+        "rank": 2
+      },
+      {
+        "seed": 879398486,
+        "family": "basic",
+        "policy": "s42",
+        "decisions": 144,
+        "teacher_turns": 107,
+        "rank": 3
+      },
+      {
+        "seed": 2981428919,
+        "family": "basic",
+        "policy": "learned",
+        "decisions": 176,
+        "teacher_turns": 138,
+        "rank": 3
+      },
+      {
+        "seed": 1991857581,
+        "family": "basic",
+        "policy": "s42",
+        "decisions": 235,
+        "teacher_turns": 179,
+        "rank": 1
+      },
+      {
+        "seed": 32812839,
+        "family": "basic",
+        "policy": "learned",
+        "decisions": 163,
+        "teacher_turns": 127,
+        "rank": 4
+      },
+      {
+        "seed": 3485599145,
+        "family": "basic",
+        "policy": "s42",
+        "decisions": 122,
+        "teacher_turns": 99,
+        "rank": 1
+      },
+      {
+        "seed": 4258810869,
+        "family": "basic",
+        "policy": "learned",
+        "decisions": 147,
+        "teacher_turns": 117,
+        "rank": 2
+      },
+      {
+        "seed": 1168652116,
+        "family": "s42",
+        "policy": "s42",
+        "decisions": 118,
+        "teacher_turns": 94,
+        "rank": 4
+      },
+      {
+        "seed": 625499565,
+        "family": "basic",
+        "policy": "s42",
+        "decisions": 98,
+        "teacher_turns": 83,
+        "rank": 3
+      },
+      {
+        "seed": 829202163,
+        "family": "basic",
+        "policy": "learned",
+        "decisions": 132,
+        "teacher_turns": 98,
+        "rank": 2
+      },
+      {
+        "seed": 3628665916,
+        "family": "basic",
+        "policy": "s42",
+        "decisions": 112,
+        "teacher_turns": 91,
+        "rank": 3
+      },
+      {
+        "seed": 3033773480,
+        "family": "basic",
+        "policy": "learned",
+        "decisions": 109,
+        "teacher_turns": 86,
+        "rank": 2
+      },
+      {
+        "seed": 4167841491,
+        "family": "basic",
+        "policy": "s42",
+        "decisions": 173,
+        "teacher_turns": 130,
+        "rank": 2
+      },
+      {
+        "seed": 4246806761,
+        "family": "basic",
+        "policy": "learned",
+        "decisions": 144,
+        "teacher_turns": 117,
+        "rank": 1
+      },
+      {
+        "seed": 3871723001,
+        "family": "basic",
+        "policy": "s42",
+        "decisions": 138,
+        "teacher_turns": 114,
+        "rank": 1
+      },
+      {
+        "seed": 375122698,
+        "family": "basic",
+        "policy": "learned",
+        "decisions": 162,
+        "teacher_turns": 128,
+        "rank": 4
+      },
+      {
+        "seed": 1658387856,
+        "family": "basic",
+        "policy": "s42",
+        "decisions": 118,
+        "teacher_turns": 97,
+        "rank": 1
+      },
+      {
+        "seed": 1176002225,
+        "family": "s42",
+        "policy": "learned",
+        "decisions": 142,
+        "teacher_turns": 109,
+        "rank": 4
+      },
+      {
+        "seed": 3555728321,
+        "family": "s42",
+        "policy": "s42",
+        "decisions": 129,
+        "teacher_turns": 102,
+        "rank": 3
+      },
+      {
+        "seed": 2575018506,
+        "family": "s42",
+        "policy": "learned",
+        "decisions": 147,
+        "teacher_turns": 117,
+        "rank": 2
+      },
+      {
+        "seed": 2637459227,
+        "family": "s42",
+        "policy": "s42",
+        "decisions": 139,
+        "teacher_turns": 110,
+        "rank": 3
+      },
+      {
+        "seed": 1945548782,
+        "family": "s42",
+        "policy": "learned",
+        "decisions": 149,
+        "teacher_turns": 118,
+        "rank": 2
+      }
+    ],
+    "frozen_belief_baseline": {
+      "s42:learned": {
+        "tenpai": {
+          "n": 3936,
+          "positives": 430,
+          "brier": 0.039144406911817003,
+          "log_loss": 0.1399307159569637,
+          "auprc_ap": 0.8379793157909716
+        },
+        "legal_ron": {
+          "n": 42600,
+          "positives": 287,
+          "brier": 0.006224402523133915,
+          "log_loss": 0.02692241415210977,
+          "auprc_ap": 0.143253547781642
+        },
+        "within_decision": {
+          "mixed_sets": 233,
+          "all_sets": 3936,
+          "macro_auc": 0.714275289167993
+        },
+        "conditional_payment_count": 287,
+        "payment_mean_no_honba_no_ura": 4656.09756097561
+      },
+      "s42:s42": {
+        "tenpai": {
+          "n": 3876,
+          "positives": 589,
+          "brier": 0.04696761515180348,
+          "log_loss": 0.17834676666666746,
+          "auprc_ap": 0.8752650385086508
+        },
+        "legal_ron": {
+          "n": 42462,
+          "positives": 483,
+          "brier": 0.010213086179231032,
+          "log_loss": 0.04157417340939346,
+          "auprc_ap": 0.15992012958060917
+        },
+        "within_decision": {
+          "mixed_sets": 372,
+          "all_sets": 3876,
+          "macro_auc": 0.7172725584351928
+        },
+        "conditional_payment_count": 483,
+        "payment_mean_no_honba_no_ura": 5841.614906832298
+      },
+      "basic:learned": {
+        "tenpai": {
+          "n": 4167,
+          "positives": 586,
+          "brier": 0.03242124966515998,
+          "log_loss": 0.10091310514717089,
+          "auprc_ap": 0.9305740565696864
+        },
+        "legal_ron": {
+          "n": 45525,
+          "positives": 455,
+          "brier": 0.009269046681079366,
+          "log_loss": 0.03750362457747015,
+          "auprc_ap": 0.10930708595274453
+        },
+        "within_decision": {
+          "mixed_sets": 379,
+          "all_sets": 4167,
+          "macro_auc": 0.6884507752581632
+        },
+        "conditional_payment_count": 455,
+        "payment_mean_no_honba_no_ura": 5821.0989010989015
+      },
+      "basic:s42": {
+        "tenpai": {
+          "n": 4086,
+          "positives": 596,
+          "brier": 0.028927942962660755,
+          "log_loss": 0.09371843304976188,
+          "auprc_ap": 0.9483771524668332
+        },
+        "legal_ron": {
+          "n": 44688,
+          "positives": 383,
+          "brier": 0.00804805439217447,
+          "log_loss": 0.03333680328991525,
+          "auprc_ap": 0.08453235105363584
+        },
+        "within_decision": {
+          "mixed_sets": 321,
+          "all_sets": 4086,
+          "macro_auc": 0.6679492020613516
+        },
+        "conditional_payment_count": 383,
+        "payment_mean_no_honba_no_ura": 4771.54046997389
+      }
+    },
+    "warnings": {
+      "frozen_ron_gt_tenpai": 54,
+      "pending_kan_dora_turn_rows": 3
+    },
+    "r1": {
+      "scope": "actual frozen200 on-policy choices; Q deviation not physical score or causal diagnosis; provisional category only",
+      "decisions": 3447,
+      "disagreements": 771,
+      "category_counts": {
+        "other_discard": 1370,
+        "call_or_pass": 727,
+        "efficiency_difference": 429,
+        "win_decision": 53,
+        "push_fold_candidate": 353,
+        "placement_candidate": 426,
+        "riichi": 88,
+        "abort": 1
+      },
+      "top_count": 100,
+      "top_categories": {
+        "call_or_pass": 40,
+        "placement_candidate": 10,
+        "other_discard": 20,
+        "efficiency_difference": 20,
+        "riichi": 7,
+        "push_fold_candidate": 3
+      },
+      "ranking": "normalized teacher gap × predeclared importance × sqrt(category frequency); engineering diagnostic, not EV"
+    },
+    "p1": "Current-visible-dora/no-ura counterfactual; labels from same engine, independent replay validation still required. 48 development games in two families; no formal P1. Direct/decomposed model development not yet run; no outer holdout or promotion."
+  },
+  "independent": {
+    "status": "independent_snapshot_audit_pass",
+    "counts": {
+      "opponent_states": 16065,
+      "candidate_ron_labels": 175275,
+      "score_labels": 1608
+    },
+    "scope": "Independent shanten/waits/river furiten/yaku/no-ura score using recorded snapshot. Temporal furiten and full replay, responsibility payment and new kan indicators need separate coverage. No actual Ron choice or full payout claim."
+  },
+  "calibration": {
+    "status": "six_fold_multifamily_development_only",
+    "matches": 48,
+    "tenpai_rows": 16065,
+    "ron_rows": 175275,
+    "payment_positives": 1608,
+    "frozen_contract_violations": 54,
+    "constrained_contract_violations": 0,
+    "frozen_tenpai": {
+      "n": 16065,
+      "positives": 2201,
+      "brier": 0.036689560176374446,
+      "log_loss": 0.12732510377816372,
+      "auprc_ap": 0.902345632777439
+    },
+    "calibrated_tenpai": {
+      "n": 16065,
+      "positives": 2201,
+      "brier": 0.03685263898942213,
+      "log_loss": 0.12590936471888464,
+      "auprc_ap": 0.9015003518725526
+    },
+    "frozen_ron": {
+      "n": 175275,
+      "positives": 1608,
+      "brier": 0.008446455100052168,
+      "log_loss": 0.03485565521893369,
+      "auprc_ap": 0.11858496796557597
+    },
+    "constrained_ron": {
+      "n": 175275,
+      "positives": 1608,
+      "brier": 0.00846555036336669,
+      "log_loss": 0.035108776308937224,
+      "auprc_ap": 0.11020862065607032
+    },
+    "frozen_rank": {
+      "mixed_sets": 1305,
+      "all_sets": 16065,
+      "macro_auc": 0.6962345377766833
+    },
+    "constrained_rank": {
+      "mixed_sets": 1305,
+      "all_sets": 16065,
+      "macro_auc": 0.6962345377766833
+    },
+    "conditional_payment_rmse": 3794.431779350236,
+    "conditional_mean_baseline_rmse": 4169.851549830508,
+    "quantile_crossing_count_before_reconciliation": 9189,
+    "decomposed_base_exposure_rmse": 1096.7574120720915,
+    "direct_base_exposure_rmse": 1116.8209650397753,
+    "direct_all_accept_visible_loss_rmse": 1132.1775617148817,
+    "direct_vs_decomp_mean_abs_disagreement": 115.28861043395959,
+    "limit": "48 development matches across two opponent families (third and unseen outer family not yet acquired); out-of-fold diagnostic not final gating, no supported UI risk/score. No ura/temporal replay validation; quantile crossings reported, not hidden."
+  },
+  "r1_facts": {
+    "status": "R1_top100_fact_sheet_prepared_not_causal_or_complete",
+    "n": 100,
+    "hypotheses": {
+      "special_action_policy_or_grouping_requires_review": 47,
+      "tradeoff_or_threat_requires_review": 52,
+      "efficiency_or_missing_shape_signal": 1
+    },
+    "teacher_strict_efficiency_better": 2,
+    "discussion": "Manual/algorithmic causal validation and frequency on more fresh on-policy matches needed; no proof of available 15pt improvement. Do not select final candidate from these test seeds; these are declared development."
+  }
+}

@@ -86,3 +86,6 @@ Run44692420874 8/8半荘、全診断成功。学習policy実判断596件、教�
 PR39 independent-label合格 3,069他家状態、33,954合法ロンlabel、211得点label、差0。時系列フリテンは既存snapshot使用で独立再演未了。R1 fact sheet100件作成合格、teacher strict efficiency better11、脅威なし効率仮説4、tradeoff/threat81、特殊15。因果分類・15pt改善余地未証明。校正smoke実行中。
 
 16:17 PR39全成功。8試合OOF試作でP(Ron)>P(tenpai)7→0、聴牌Brier .04085→.03924、合法ロンBrier .005806→.005843 / logloss .025198→.025662 悪化、条件得点RMSE4368 vs平均baseline4121、quantile crossing26。採用なし。PR40 run44693828778 新48開発半荘（S42×3,標準CPU×3各24）を起動、seed固定→独立教師audit→group CV/R1事実票。P1/R1未完・本番変更なし。第三者提言v1.1反映完了。
+
+## 16:54 48半荘と独立時系列監査完了
+run44693828778 初回モデル準備timeout 1件、同一条件で失敗job再実行、attempt2成功。48試合他家状態16,065/合法Ron 175,275/得点1,608ラベルの独立snapshot照合差0。P1 6fold coherence 54→0、Ron logloss .0348557→.0351088悪化で未採用、条件得点RMSE3794 vs mean baseline4170、quantile crossing9189。R1 frozen200実判断3447、教師差771、top100鳴き・パス40、特殊47、strict効率優位2、原因仮説に過ぎない。run44697823107 時系列監査はカンドラ通知順を誤認し54 turns整列失敗、監査コードのみ修正しrun44698024834で8+48全件成功、1023+5355局面の他家3069+16065状態・furiten照合差0。次PR42 run44698398245 6種類の確率推定比較・高危険層/相手別、R1反応/特殊headの公開特徴のみ開発OOFを開始。正式評価・公開未実施。
