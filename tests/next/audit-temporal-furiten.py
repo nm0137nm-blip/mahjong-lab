@@ -115,7 +115,13 @@ def replay(paipu):
      old=m[:-1];assert old in ms[l],(m,ms[l])
      remove(hs[l],m[0]+m[-1]);ms[l][ms[l].index(old)]=m
      settle_misses(l,m[0]+m[-1]);coverage['added_kan']+=1
-   hist.append(public(k,e))
+   # The engine appends the discard/kan/draw to paipu BEFORE calling
+   # kaigang(), but notifies other seats of the new indicator BEFORE it
+   # broadcasts that pending event. Reconstruct notification order exactly.
+   if k=='kaigang' and hist and hist[-1]['種類'] in ('打牌','槓','嶺上自摸'):
+    hist.insert(len(hist)-1,public(k,e));coverage['kan_indicator_notification_reordered']+=1
+   else:
+    hist.append(public(k,e))
    # Use exact ordered public event prefix + round and honba for alignment.
    # Duplicated keys are retained, not arbitrarily selected.
    key=(p['zhuangfeng'],p['jushu'],p['changbang'],canon(hist))
@@ -149,5 +155,5 @@ for p in paths:
  print('TEMPORAL_REPLAY_MATCH',seed,flush=True)
 out={'status':'temporal_replay_pass' if not diff else 'temporal_replay_mismatch','matches':expected,'counts':dict(counts_checked),'differences':diff,'scope':'Independent concealed-multiset/public-prefix reconstruction and shape-pass temporal eligibility, in actual completed synthetic games. Not full engine identity or true human Ron choice.'}
 Path('/tmp/p1-temporal-furiten.json').write_text(json.dumps(out,ensure_ascii=False,indent=2))
-print(json.dumps({k:v for k,v in out.items() if k!='differences'},ensure_ascii=False,indent=2));print('FIRST_DIFFERENCES',json.dumps(diff[:10],ensure_ascii=False))
+print(json.dumps({k:v for k,v in out.items() if k!='differences'},ensure_ascii=False,indent=2));print('DIFFERENCE_COUNTS',dict(collections.Counter(v['kind'] for v in diff)));print('FIRST_DIFFERENCES',json.dumps(diff[:10],ensure_ascii=False))
 assert not diff
