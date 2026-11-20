@@ -9,6 +9,11 @@ jobs:
   browser-calibration:
     runs-on: ubuntu-24.04
     timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        engine: [chromium, webkit]
+        replicate: [1, 2, 3]
     container:
       image: mcr.microsoft.com/playwright:v1.56.1-noble
     steps:
@@ -38,14 +43,25 @@ jobs:
           node --input-type=module -e 'import http from "node:http"; import fs from "node:fs"; import path from "node:path"; http.createServer((req,res)=>{const p=path.resolve("."+new URL(req.url,"http://localhost").pathname);if(!p.startsWith(process.cwd()+"/")){res.writeHead(404);res.end();return;} const ext=path.extname(p);res.setHeader("Content-Type",({".mjs":"text/javascript",".js":"text/javascript",".wasm":"application/wasm",".html":"text/html"})[ext]||"application/octet-stream");const stream=fs.createReadStream(p);stream.on("error",()=>{res.statusCode=404;res.end();});stream.pipe(res);}).listen(8765,"127.0.0.1")' >/tmp/s42-audit-http.log 2>&1 &
           for i in $(seq 1 20); do curl -fsS http://127.0.0.1:8765/index.html >/dev/null && break; sleep 1; done
           mkdir -p /tmp/browser
-          for engine in chromium webkit; do
-            for rep in 1 2 3; do
-              node tests/phase0/repeat-q-browser.mjs /tmp/s42.onnx /tmp/ref/s42-q-reference.json "$engine" "/tmp/browser/browser-$engine-$rep.json"
-            done
+          engine='${{ matrix.engine }}'; rep='${{ matrix.replicate }}'
+          # Each replicate runs in a fresh runner/container. At most 3 startup attempts.
+          # A numerical/mask failure is never retried. Preserve initialization failures.
+          attempt=1
+          while true; do
+            set +e
+            timeout 90s node tests/phase0/repeat-q-browser.mjs /tmp/s42.onnx /tmp/ref/s42-q-reference.json "$engine" "/tmp/browser/browser-$engine-$rep.json" 2>&1 | tee "/tmp/browser/startup-$engine-$rep-$attempt.log"
+            rc=${PIPESTATUS[0]}
+            set -e
+            if [ "$rc" = 0 ]; then break; fi
+            if [ "$rc" != 42 ] || [ "$attempt" -ge 3 ]; then exit "$rc"; fi
+            attempt=$((attempt+1))
+            sleep 2
           done
+          printf '{"engine":"%s","replicate":%s,"attempts":%s,"startup_failures":%s}\n' "$engine" "$rep" "$attempt" "$((attempt-1))" > "/tmp/browser/startup-$engine-$rep.json"
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
-          name: margin-browser-calibration
+          name: margin-browser-${{ matrix.engine }}-${{ matrix.replicate }}-calibration
           path: /tmp/browser/
           if-no-files-found: error
           retention-days: 30

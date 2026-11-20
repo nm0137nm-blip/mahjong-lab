@@ -12,7 +12,7 @@ try{
  await page.route('**/audit-sandbox.html',r=>r.fulfill({contentType:'text/html',body:'<!doctype html><title>S42 synthetic audit</title>'}));
  await page.route('**/audit-model.onnx',r=>r.fulfill({contentType:'application/octet-stream',path:process.argv[2]}));
  await page.goto('http://127.0.0.1:8765/audit-sandbox.html');
- await page.evaluate(async()=>{
+ try { await page.evaluate(async()=>{
    const w=new Worker('/src/mortal/mortal-worker.mjs',{type:'module'});
    let id=0;
    window.auditRequest=(packet,transfers)=>new Promise((resolve,reject)=>{
@@ -24,7 +24,11 @@ try{
    const model=await (await fetch('/audit-model.onnx')).arrayBuffer();
    const ready=await window.auditRequest({type:'init',model},[model]);
    if(ready.type!=='ready')throw Error('worker did not become ready');
- });
+ }); } catch(e) {
+   // Only retry known ORT session initialization OOM, not any numerical test.
+   if(/Out of bounds memory access|out of memory|memory access out of bounds/i.test(String(e))){console.error('ORT_STARTUP_MEMORY_FAILURE',String(e));throw Object.assign(new Error('ORT_STARTUP_MEMORY_FAILURE'),{startupMemoryFailure:true});}
+   throw e;
+ }
  let max=0,count=0;
  for(const ref of refs){
    const result=await page.evaluate(async raw=>{
@@ -43,5 +47,5 @@ try{
    }
  }
  writeFileSync(process.argv[5],JSON.stringify({engine:kind,rows}));
- console.log(JSON.stringify({status:'PASS_PRODUCTION_WEBKIT_Q_PARITY',decisions:refs.length,legal_q_values:count,max_q_error:max}));
-}finally{await browser.close();}
+ console.log(JSON.stringify({status:'PASS_PRODUCTION_BROWSER_Q_PARITY',engine:kind,decisions:refs.length,legal_q_values:count,max_q_error:max}));
+}catch(e){if(e.startupMemoryFailure)process.exitCode=42;else throw e;}finally{await browser.close();}
