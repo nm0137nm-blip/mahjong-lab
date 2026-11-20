@@ -1,0 +1,10 @@
+{
+  "version": "P1-visible-outer-v1",
+  "status": "preregistered before fresh outcomes",
+  "parent": "P1-eval-v1.1",
+  "candidate": "exact artifact 14616369981, manifest equality and all file hashes verified",
+  "design": "160 independent seeds, 4 families × 2 progression policies × 4 starting seats ×5; no extensions/exclusions, nonforced turn observations",
+  "primary": "equal-family 20k paired match bootstrap upper 95% CI candidate minus frozen R logloss <0 excluding deterministic safe; Brier <=0; original T/R references; all family point proper scores nonworse; supported bins gap <=.05; supported ranking nonworse",
+  "secondary": "unchanged T absolute calibration, conditional mean/median baselines and exposure frequency×mean; >=30 matches and +100/-100 binary, payment +100, mixed sets >=100 across 30 matches; interval nominal80% empirical>=.75; riichi/>=2 melds/remaining<=18 high risk; >=8000 loss underestimation no worse than frozen R×training mean with support; suppress direct/decomp difference >1000 AND >50%",
+  "limits": "visible dora/no ura; base legal opportunity not actual payout; separate all-accept settlement. Historical raw wall hashes incomplete. Additional numerical gates engineering choices; no new tuning on outer. On fail freeze data for evaluation; new candidate requires fresh holdout. No product release."
+}
