@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-20T14:25:44+09:00",
+  "checkpoint": "2026-11-20T16:10:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -8,12 +8,33 @@
     "coach_candidate_promoted": false
   },
   "active_task": {
-    "status": "phase0_controlled_internal_complete",
-    "phase": "0",
-    "result_path": "archive/results/phase0-final-20261120.json",
-    "next": "Product P1 and research R1 after Phase0 report. Freeze specific data manifests and candidate protocol before new evaluation; public release remains blocked. User requested phase-boundary status and copy/paste or manually typable short external reviewer report.",
-    "margin_run": 44680960295,
-    "source_archive_run": 44677641101
+    "phase": "P1/R1",
+    "status": "v11_protocol_pass_development_pilot_and_historical_audit_running",
+    "review": "2026-11-20 12-page Phase 0 進捗レビュー (6 user photos) accepted limited Phase0 scope; P1/R1 begin, formal comparison conditional.",
+    "protocol": {
+      "run_id": 44692148908,
+      "status": "success",
+      "branch": "feat/coach-v11-p1-r1-v1",
+      "commit": "5180d59d9227eb44c6133b70dbab3eae44189c23",
+      "pr": 36
+    },
+    "development": {
+      "run_id": 44692420874,
+      "branch": "feat/coach-p1-r1-development-pilot-v1",
+      "commit": "aba2384348d7c32ff78116ae3d9dc773174f6b15",
+      "pr": 37,
+      "status": "8/8 collection jobs succeeded, diagnostic running",
+      "scope": "4 frozen200 learned on-policy + 4 S42, corrected opponents S42×3, current-visible no-ura counterfactual labels; development only, no primary test or P1 gate pass"
+    },
+    "historical_seed_audit": {
+      "run_id": 44692881158,
+      "branch": "feat/coach-v11-historical-seed-audit-v1",
+      "commit": "dfb25be9168f39cd7dc8b4e1e1507aa37938b9b5",
+      "pr": 38,
+      "status": "running",
+      "scope": "original 23 manifests, 200 train/30 dev, exact public hashes, old 700 arena seed namespaces; historical full wall hashes absent"
+    },
+    "next": "Check diagnostics and historical audit. Review R1 top100, generate more on-policy with additional opponent families if needed. Validate teacher labels independently; fit conditional payment and direct vs decomposed calibrated P1 estimators using group-separated development datasets, no untouched final until gates/manifest frozen. P2a design parallel; P3-min before P2b. No formal comparison until R1 fixable causes, candidate identity locked and seed audit passes. No production changes."
   },
   "previous_runs": [
     {
@@ -246,12 +267,12 @@
           "legal_q_values": 1376,
           "max_obs_error": 0,
           "non_bit_exact_observations": 0,
-          "max_q_error": 5.7220458984375e-06
+          "max_q_error": 0.0000057220458984375
         },
         "webkit": {
           "decisions": 100,
           "legal_q_values": 1376,
-          "max_q_error": 4.76837158203125e-06
+          "max_q_error": 0.00000476837158203125
         },
         "duplicate": {
           "n_matches": 20,
@@ -317,7 +338,7 @@
           "legal_q_values": 1943,
           "max_obs_error": 0,
           "non_bit_exact_observations": 0,
-          "max_q_error": 4.76837158203125e-06
+          "max_q_error": 0.00000476837158203125
         },
         "variance": {
           "status": "variance_pilot_complete",
@@ -419,7 +440,7 @@
           "43": 10,
           "45": 121
         },
-        "max_q_error": 4.272216797218675e-06,
+        "max_q_error": 0.000004272216797218675,
         "scope": "original MJAI Bot on sampled actual CPU states, guard off/on; not native full-game engine parity; unsampled categories remain unverified"
       },
       "summary_artifact": 14599877599,
@@ -513,7 +534,7 @@
             "43": 10,
             "45": 121
           },
-          "max_q_error": 4.272216797218675e-06,
+          "max_q_error": 0.000004272216797218675,
           "differences": [],
           "scope": "original MJAI Bot on sampled actual CPU states, guard off/on; not native full-game engine parity; unsampled categories remain unverified"
         },
@@ -574,7 +595,7 @@
             "44": 1,
             "45": 172
           },
-          "max_q_error": 6.054687499812417e-06,
+          "max_q_error": 0.000006054687499812417,
           "differences": [],
           "scope": "original MJAI Bot on sampled actual CPU states, guard off/on; not native full-game engine parity; unsampled categories remain unverified"
         },
@@ -701,6 +722,14 @@
         }
       ],
       "results_path": "archive/results/phase0-final-20261120.json"
+    },
+    {
+      "status": "phase0_controlled_internal_complete",
+      "phase": "0",
+      "result_path": "archive/results/phase0-final-20261120.json",
+      "next": "Product P1 and research R1 after Phase0 report. Freeze specific data manifests and candidate protocol before new evaluation; public release remains blocked. User requested phase-boundary status and copy/paste or manually typable short external reviewer report.",
+      "margin_run": 44680960295,
+      "source_archive_run": 44677641101
     }
   ],
   "roadmap": {
@@ -721,7 +750,12 @@
     "generated_hanchan_cap": 4000,
     "formal_hanchan_cap": 6400,
     "mme_rank_pt": 15,
-    "production_release_gate": "license review and evidence gates pending"
+    "production_release_gate": "license review and evidence gates pending",
+    "version": "v1.1",
+    "path": "handoff/roadmap-v1.1-20261120.md",
+    "design": "product P1→P2a→P3-min→P2b→P3-full; research R1→R2-1 interim→R2-2 cumulative final→R3",
+    "formal": "handoff/formal-protocol-v1.1.json",
+    "p1": "handoff/p1-evaluation-v1.1.json"
   },
   "workflow_preference": "Only stop when phase passes all gates, or all presently executable work is complete and external execution/user decision blocks further work. No intermediate final status-only stops; independently fix and test. User specifically frustrated with prior failure to follow this."
 }
