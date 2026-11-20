@@ -31,7 +31,7 @@ class Defense extends AI {
  }
 }
 export function simulate(row,trajectory,action,policy='standard'){
- const s=row.scene,own=s.ownSeat,r=rule(),players=Array.from({length:4},(_,i)=>i===s.initialOrder[own]||policy==='standard'?new AI():policy==='attack'?new Attack():policy==='defense'?new Defense():null);
+ const s=row.scene,own=s.ownSeat,r=rule(),players=Array.from({length:4},(_,i)=>i===s.initialOrder.indexOf(own)||policy==='standard'?new AI():policy==='attack'?new Attack():policy==='defense'?new Defense():null);
  assert(players.every(Boolean));
  const g=new M.Game(players,()=>{},r,'v14 internal rollout');
  const b=g.model;g._sync=true;let done=false;g.last=()=>{done=true};
