@@ -59,7 +59,8 @@ def draw_ready(pool,rng):
             if ready(h):return h,left
         except (ValueError,IndexError):pass
     raise ValueError('ready proposal exhausted')
-def reconstruct(s,rng):
+def reconstruct(s,rng,proposal='uniform'):
+    if proposal not in ('uniform','mixture'):raise ValueError('unknown proposal')
     own=s['ownSeat'];ev=s['publicEvents'];pool=stock()
     for t in s['hand']+s['dora']+[d['tile'] for r in s['rivers'] for d in r['discards']]:remove(pool,t)
     h=[None]*4;h[own]=s['hand'].copy()
@@ -67,8 +68,18 @@ def reconstruct(s,rng):
     for i in sorted(order,key=lambda i:not s['rivers'][i]['riichi']):
         if s['rivers'][i]['riichi']:h[i],pool=draw_ready(pool,rng)
         else:
-            h[i]=rng.sample(pool,13)
-            for t in h[i]:remove(pool,t)
+            # Deliberately broad alternative proposal, NOT a calibrated prior.
+            # Independent of true hidden state and frozen before verifier access.
+            u=rng.random() if proposal=='mixture' else 1
+            if u<.65:
+                h[i],pool=draw_ready(pool,rng)
+                n=0 if u<.15 else 1 if u<.45 else 2
+                for _ in range(n):
+                    loc=rng.randrange(len(h[i]));k=rng.randrange(len(pool))
+                    h[i][loc],pool[k]=pool[k],h[i][loc]
+            else:
+                h[i]=rng.sample(pool,13)
+                for t in h[i]:remove(pool,t)
     assert len(pool)==s['remaining']+13
     rng.shuffle(pool);wall=pool[:s['remaining']];dead=pool[s['remaining']:]
     current=[sorted(x) for x in h];past={};pending={}
@@ -118,7 +129,10 @@ def reconstruct(s,rng):
     # Verify full physical inventory both at round start and current state.
     if collections.Counter(sum(initial,[])+draws+wall+dead+s['dora'])!=collections.Counter(stock()):raise ValueError('initial inventory')
     if collections.Counter(sum(h,[])+[d['tile'] for r in s['rivers'] for d in r['discards']]+wall+dead+s['dora'])!=collections.Counter(stock()):raise ValueError('current inventory')
-    return {'ready':[ready(h[i]) if i!=own else None for i in range(4)],'penalty':penalty,'hand_discards':hand_discards,'weight':math.exp(-.25*penalty),'trajectory':{'initial':initial,'draws':draws,'wall':wall,'dead':dead,'current':current}}
+    waits=[]
+    for i in range(4):
+        cc=count(h[i]);waits.append([T[k] for k in range(34) if cc[k]<4 and SH.calculate_shanten(cc[:k]+[cc[k]+1]+cc[k+1:])==-1] if i!=own and ready(h[i]) else [])
+    return {'waits':waits,'shanten':[sh(h[i]) if i!=own else None for i in range(4)],'ready':[ready(h[i]) if i!=own else None for i in range(4)],'penalty':penalty,'hand_discards':hand_discards,'weight':math.exp(-.25*penalty),'trajectory':{'initial':initial,'draws':draws,'wall':wall,'dead':dead,'current':current}}
 def eligible(x):
     s=x['scene'];ev=s['publicEvents'];own=s['ownSeat']
     if x['phase']!='turn' or not s['drawn'] or s['pendingReach'] or len(s['hand'])!=14 or len(s['dora'])!=1 or s['remaining']<8 or not ev:return False
