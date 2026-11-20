@@ -40,10 +40,14 @@
     },
     "recovery": {
       "branch": "feat/coach-p1-outer-result-recovery-v1",
-      "commit": "8e8c9b63d691be4a2b1a9f84230ca4e919443e05",
+      "commit": "b339d23938ac1ee1e1b4dc1d440c6fb8f37f3462",
       "pr": 56,
-      "run_id": 44723934431,
-      "reason": "All 160 games, independent audits and metrics calculation completed; numpy bool JSON serialization failure at final output. Reuse exact original artifacts, verify frozen source hashes, change final JSON scalar encoder only; no new games/model/metrics/threshold changes."
+      "run_id": 44724172479,
+      "reason": "All 160 games, independent audits and metrics calculation completed; numpy bool JSON serialization failure at final output. Reuse exact original artifacts, verify frozen source hashes, change final JSON scalar encoder only; no new games/model/metrics/threshold changes.",
+      "previous_failure": {
+        "run_id": 44723934431,
+        "reason": "Cross-run artifact pattern download returned 99/160 due first-page limit. Original full API inventory 160/160 verified. Updated to paginate and verify every original archive SHA256; no match or metric changes."
+      }
     }
   },
   "previous_runs": [

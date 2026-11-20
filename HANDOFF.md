@@ -118,3 +118,5 @@ PR51 run44712422825 全成功、再利用2半荘199turnで他家手牌・山順�
 PR52 run44714465352 8半荘と独立監査成功、PR53 run44714628933 単体全成功、PR54 run44716885967 既存8半荘の予測先行/教師結合通し試験成功（support不足を正しく不合格判定）。PR55 run44717123756 起動。候補固定・旧seed排除、160新seed・4family×2progression×4seat×5、親gate維持、source/runtime/manifest固定後のみ収集。全snapshot/時系列独立監査後に最終metrics。正式結果未取得。追加閾値は事前engineering基準、歴史全山hash未保有の限界記録。R1現候補終了、main未変更、公開留保。
 
 20:01 run44717123756 全160半荘と独立snapshot/時系列監査成功（52491他家状態、573540合法ロンlabel、4788得点、17497turn整列、差0）。最終集計計算終了後numpy bool JSON出力エラー。PR56は原コードcheckout・固定source hash検証後のJSON scalar変換のみ、原160artifact再集計。再対局・基準変更なし。最終合否未確定、公開留保。
+
+PR56初回44723934431 cross-run artifact downloadがfirst pageのみで99/160。全160 IDをAPIで再確認。全ページ取得・個別SHA256照合に修正し44724172479起動。原対局/評価式/基準不変、再対局なし。
