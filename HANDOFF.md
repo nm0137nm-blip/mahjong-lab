@@ -110,3 +110,6 @@ Run44698837755全成功。pure 2497件、教師相対Q損失 .040427→.037189�
 18:39 PR50初回run44710762797 学習完了後manifestのnumpy uint32 JSON保存で停止。seed int化のみ修正run44712159043、R1再集計再度合格。PR51 run44712422825 開発済み2seedでlive hidden read poison境界監査を起動、候補freeze成功後同一公開推論比較。正式P1 outer設計draft（4family×40=160半荘、未学習効率policy・固定progression交差、親gate維持、全manifest固定後のみ取得）を保存。追加閾値は提案、未確定・未評価。main不変・公開留保。
 
 PR50再実行44712159043 全件成功。120旧+60新 training、12新 calibration。R conditional fit 2回hash一致、P1 package artifact14616369981 SHA256 05f7ebd0…。公開input216件の再実行一致、禁止top-level1080件拒否。区間校正503陽性、70.18→79.52%、幅82.64点追加（同一校正群、独立精度ではない）。R1再集計成功。PR51 live hidden監査待ち。独立outer未取得、公開留保。
+
+## 18:55 P1 outer準備
+PR51 run44712422825 全成功、再利用2半荘199turnで他家手牌・山順序・裏ドラ・ロン資格read poison下で公開抽出/推論完全一致。PR52初回44713525288は引用符構文エラーで対局前停止。修正後run44714465352、4family×2progressionの再利用8seed QA。PR53 run44714628933、親gate維持の集計/判定unit、40半荘/family support、primary equal-family match bootstrap、危険層、80%区間の下限75%、8000点以上過小推定とdirect/decomp乖離の保守的追加基準案。outer未取得、正式合否未判定。R1現候補終了・R2予算未使用。main変更なし。

@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-20T18:39:00+09:00",
+  "checkpoint": "2026-11-20T18:55:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -9,30 +9,29 @@
   },
   "active_task": {
     "phase": "P1",
-    "status": "P1_candidate_frozen_live_hidden_boundary_running",
-    "r1_decision": "Archive pure augmentation candidate, no R2 formal trial: extension 0pt, combined 1.40625pt, both below 15pt predeclared engineering gate. Research paused on this candidate only, not proof no future improvement. 128 games and summary calculations succeeded, upload path mismatch caused run failure; preserve exact CI JSON and independently regenerate from artifacts.",
-    "next": "Check PR51; fix any issues. Freeze outer family/progression implementation and evaluation before acquisition. Candidate training/interval calibration fixed and public RPC smoke passed; no final evaluation or release. R1 closed current candidate.",
-    "run_id": 44712159043,
-    "branch": "feat/coach-p1-candidate-freeze-v1",
-    "commit": "a4f472e023857d9d59446e6cc7a0daf90163b734",
-    "pr": 50,
-    "scope": "Freeze P1 T unchanged, coherent 50% conditional R mixture, old120+recent60 training, distinct recent12 calibration, audited recent60 payment models, explicit visible-only/no-ura target, interval widening and public request boundary smoke. R1 reaggregate existing 128 matches, no new game or changed result.",
-    "failed_run": {
-      "id": 44710762797,
-      "reason": "numpy uint32 seed IDs not JSON serializable after all fitting; convert seed IDs to int, no training or calibration change"
-    },
-    "hidden": {
-      "run_id": 44712422825,
-      "branch": "feat/coach-p1-hidden-boundary-v1",
-      "commit": "5db86c67007ba6df38976cfc298c242ce1bb51db",
-      "pr": 51,
-      "scope": "Two reused development seeds, actual public capture/recompute under hidden-field read poisoning, exact predictor equality, no progress while poisoned, exact frozen artifact dependency."
-    },
-    "freeze_result": "archive/results/p1-frozen-candidate-20261120.json",
-    "artifact": {
-      "id": 14616369981,
+    "status": "outer_runner_QA_retry_and_metric_unit_tests_running",
+    "r1_decision": "Current R1 candidate closed; no R2 budget consumed. Further research requires genuinely new improvement hypothesis, not another extension.",
+    "candidate": {
+      "run": 44712159043,
+      "artifact": 14616369981,
       "sha256": "05f7ebd026ffe73af605be0b1a94b2904402af24435b288027f60ce384fd08fe"
-    }
+    },
+    "runner_qa": {
+      "run": 44714465352,
+      "branch": "feat/coach-p1-outer-runner-qa-v1",
+      "commit": "5bd6af53ebdc7180891afde43e4f98f7c058f54c",
+      "pr": 52,
+      "failed_run": 44713525288,
+      "reason": "SyntaxError in quoted injected player constructor before any match. Corrected quoting, both outer script and injected code parsed; reused eight QA seeds only."
+    },
+    "metric_qa": {
+      "run": 44714628933,
+      "branch": "feat/coach-p1-outer-metrics-v1",
+      "commit": "159f4e403d4fe0d0948e3f77a66aa68b8da72aef",
+      "pr": 53,
+      "scope": "Unit test of draft proper-score, calibrated bin, whole-match family bootstrap, support, payment, high risk and divergence gates. No outer data."
+    },
+    "next": "Check both QA runs, fix failures. Implement exact manifest verification, full joined predictor/baseline/evaluation from public inputs and audited labels, aggregate and focal-progression diagnostics. Freeze complete code/runtime/rule/candidate/seed manifest before 160 fresh matches. Do not acquire outer until QA passes; no model selection or threshold changes on outer; unsupported strata cannot pass. General release held, main unchanged."
   },
   "previous_runs": [
     {
@@ -933,6 +932,34 @@
       "next": "Recheck R1 completion and rerun failed jobs with same manifest; no additional extension beyond fixed 16 blocks. Check PR49, fix implementation failure if necessary; no claims of independent evaluation. P1 robust mixture T unchanged, all family Ron point metrics improved but 24 matches below support gate; continue only with frozen candidate and proper independent evaluation before display. No formal seed or main changes.",
       "r1_result": "archive/results/r1-extension-20261120.json",
       "p1_result": "archive/results/p1-joint-risk-20261120.json"
+    },
+    {
+      "phase": "P1",
+      "status": "P1_frozen_candidate_and_live_hidden_boundary_pass",
+      "r1_decision": "Archive pure augmentation candidate, no R2 formal trial: extension 0pt, combined 1.40625pt, both below 15pt predeclared engineering gate. Research paused on this candidate only, not proof no future improvement. 128 games and summary calculations succeeded, upload path mismatch caused run failure; preserve exact CI JSON and independently regenerate from artifacts.",
+      "next": "Check PR51; fix any issues. Freeze outer family/progression implementation and evaluation before acquisition. Candidate training/interval calibration fixed and public RPC smoke passed; no final evaluation or release. R1 closed current candidate.",
+      "run_id": 44712159043,
+      "branch": "feat/coach-p1-candidate-freeze-v1",
+      "commit": "a4f472e023857d9d59446e6cc7a0daf90163b734",
+      "pr": 50,
+      "scope": "Freeze P1 T unchanged, coherent 50% conditional R mixture, old120+recent60 training, distinct recent12 calibration, audited recent60 payment models, explicit visible-only/no-ura target, interval widening and public request boundary smoke. R1 reaggregate existing 128 matches, no new game or changed result.",
+      "failed_run": {
+        "id": 44710762797,
+        "reason": "numpy uint32 seed IDs not JSON serializable after all fitting; convert seed IDs to int, no training or calibration change"
+      },
+      "hidden": {
+        "run_id": 44712422825,
+        "branch": "feat/coach-p1-hidden-boundary-v1",
+        "commit": "5db86c67007ba6df38976cfc298c242ce1bb51db",
+        "pr": 51,
+        "scope": "Two reused development seeds, actual public capture/recompute under hidden-field read poisoning, exact predictor equality, no progress while poisoned, exact frozen artifact dependency."
+      },
+      "freeze_result": "archive/results/p1-frozen-candidate-20261120.json",
+      "artifact": {
+        "id": 14616369981,
+        "sha256": "05f7ebd026ffe73af605be0b1a94b2904402af24435b288027f60ce384fd08fe"
+      },
+      "hidden_result": "archive/results/p1-hidden-boundary-20261120.json"
     }
   ],
   "roadmap": {
