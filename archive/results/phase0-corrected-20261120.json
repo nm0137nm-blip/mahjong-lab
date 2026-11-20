@@ -1,0 +1,210 @@
+{
+  "regression_run": 44673093075,
+  "revalidation_run": 44673238225,
+  "completed_at": "2026-11-20T04:34:51Z",
+  "regression": {
+    "status": "group_audit_complete_detail_not_assumed",
+    "sampled_matches": 2,
+    "seat_hands": 48,
+    "counts": {
+      "sampled": 317,
+      "raw_group_match": 317,
+      "detail_match": 317,
+      "grouped_adapter": 10,
+      "reach": 11,
+      "reach_second_stage_checked": 11,
+      "native_extra_kan_head": 1
+    },
+    "group_coverage": {
+      "0": 6,
+      "1": 3,
+      "2": 2,
+      "3": 2,
+      "4": 2,
+      "6": 1,
+      "7": 6,
+      "8": 8,
+      "9": 6,
+      "10": 3,
+      "11": 3,
+      "12": 1,
+      "13": 2,
+      "14": 2,
+      "16": 2,
+      "17": 5,
+      "18": 9,
+      "19": 4,
+      "21": 1,
+      "22": 1,
+      "23": 2,
+      "25": 3,
+      "26": 11,
+      "27": 8,
+      "28": 10,
+      "29": 7,
+      "30": 15,
+      "31": 8,
+      "32": 10,
+      "33": 6,
+      "37": 11,
+      "38": 2,
+      "39": 5,
+      "41": 18,
+      "42": 1,
+      "43": 10,
+      "45": 121
+    },
+    "max_q_error": 0.000004272216797218675,
+    "differences": [],
+    "scope": "original MJAI Bot on sampled actual CPU states, guard off/on; not native full-game engine parity; unsampled categories remain unverified"
+  },
+  "fresh": {
+    "status": "group_audit_complete_detail_not_assumed",
+    "sampled_matches": 2,
+    "seat_hands": 70,
+    "counts": {
+      "sampled": 445,
+      "raw_group_match": 445,
+      "detail_match": 445,
+      "grouped_adapter": 10,
+      "reach": 18,
+      "reach_second_stage_checked": 18,
+      "native_extra_kan_head": 4
+    },
+    "group_coverage": {
+      "0": 4,
+      "1": 4,
+      "2": 2,
+      "3": 2,
+      "4": 1,
+      "5": 2,
+      "6": 1,
+      "7": 6,
+      "8": 9,
+      "9": 14,
+      "10": 1,
+      "12": 1,
+      "13": 1,
+      "14": 1,
+      "15": 3,
+      "16": 6,
+      "17": 11,
+      "18": 11,
+      "19": 7,
+      "20": 2,
+      "21": 3,
+      "23": 3,
+      "24": 4,
+      "25": 4,
+      "26": 12,
+      "27": 10,
+      "28": 16,
+      "29": 17,
+      "30": 23,
+      "31": 8,
+      "32": 11,
+      "33": 8,
+      "34": 1,
+      "37": 18,
+      "38": 3,
+      "39": 3,
+      "40": 5,
+      "41": 14,
+      "42": 4,
+      "43": 16,
+      "44": 1,
+      "45": 172
+    },
+    "max_q_error": 0.000006054687499812417,
+    "differences": [],
+    "scope": "original MJAI Bot on sampled actual CPU states, guard off/on; not native full-game engine parity; unsampled categories remain unverified"
+  },
+  "duplicate": {
+    "status": "duplicate_operational_pass",
+    "blocks": [
+      {
+        "pair": 1,
+        "rank_by_dealer": [
+          4,
+          3,
+          2,
+          1
+        ],
+        "block_utility": 0,
+        "repeat_exact": true
+      },
+      {
+        "pair": 2,
+        "rank_by_dealer": [
+          2,
+          4,
+          1,
+          3
+        ],
+        "block_utility": 0,
+        "repeat_exact": true
+      },
+      {
+        "pair": 3,
+        "rank_by_dealer": [
+          1,
+          3,
+          2,
+          4
+        ],
+        "block_utility": 0,
+        "repeat_exact": true
+      },
+      {
+        "pair": 4,
+        "rank_by_dealer": [
+          3,
+          2,
+          4,
+          1
+        ],
+        "block_utility": 0,
+        "repeat_exact": true
+      }
+    ],
+    "n_matches": 20,
+    "mean_focal_utility": 0,
+    "sd_all_s42_block_utility": 0,
+    "limitation": "same-policy operational check only; candidate-vs-baseline paired variance still needs a separate pilot"
+  },
+  "variance": {
+    "status": "variance_pilot_complete",
+    "n_blocks": 12,
+    "n_matches": 96,
+    "block_sd": 25.59033131513115,
+    "upper_sd_normal_approx": 39.680460360563224,
+    "mme": 15,
+    "target_power_approx": 0.8,
+    "recommended_blocks_approx": 55,
+    "formal_cap_blocks": 400,
+    "cap_sufficient_under_approx": true,
+    "deltas": [
+      -45,
+      -33.75,
+      -22.5,
+      -33.75,
+      -22.5,
+      -22.5,
+      -90,
+      -11.25,
+      0,
+      0,
+      -11.25,
+      -56.25
+    ],
+    "limitations": "small disjoint pilot; normal approximation for planning, not evidence of skill or proof of future variance; freeze candidate-specific protocol before formal test; no pilot pooling"
+  },
+  "encoder": {
+    "artifact_id": 14600538641,
+    "zip_sha256": "83284f18afba6a5076ed4090df7a5be644f627ff5f8723eb6525685e6f37db92",
+    "js_sha256": "886cb7abb09034dcdf348039d651d63a83cd7edb87d3337a452722c960b9d97a",
+    "wasm_sha256": "0e9dcc57545afb5769d42f372bbd82be5c26941d1e352245b225d62ce0c611bf",
+    "source_tar_sha256": "0a7328acff784ffb7a8aa9534d6d11713f88cacfb807767e755c200415e2b411"
+  },
+  "scope": "guard-off corrected adapter, sampled action parity; not full native engine/rules equivalence. No deployment."
+}

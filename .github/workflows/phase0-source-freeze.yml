@@ -1,0 +1,54 @@
+name: Phase 0 corrected encoder source freeze and rebuild
+on:
+  push:
+    branches: [project-handoff]
+    paths:
+      - handoff/verify_corrected_encoder.py
+      - .github/workflows/phase0-source-freeze.yml
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: phase0-source-freeze
+  cancel-in-progress: false
+jobs:
+  source:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: project-handoff
+      - name: Verify artifact and inspect source archive
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 handoff/verify_corrected_encoder.py
+      - name: Rebuild from exact locked source, verify binaries
+        run: |
+          set -euo pipefail
+          cd /tmp/phase0-source/browser-encoder
+          version=$(sed -n 's/^release: //p' BUILD-ENV.txt | head -1)
+          test -n "$version"
+          rustup toolchain install "$version" --profile minimal --target wasm32-unknown-unknown
+          cargo +"$version" build --locked --lib --release --target wasm32-unknown-unknown
+          cargo +"$version" install wasm-bindgen-cli --version 0.2.130 --locked
+          mkdir -p /tmp/rebuilt
+          wasm-bindgen --target web --out-dir /tmp/rebuilt target/wasm32-unknown-unknown/release/mahjong_lab_mortal_encoder.wasm
+          echo '886cb7abb09034dcdf348039d651d63a83cd7edb87d3337a452722c960b9d97a  /tmp/rebuilt/mahjong_lab_mortal_encoder.js' | sha256sum -c -
+          echo '0e9dcc57545afb5769d42f372bbd82be5c26941d1e352245b225d62ce0c611bf  /tmp/rebuilt/mahjong_lab_mortal_encoder_bg.wasm' | sha256sum -c -
+          echo 'PASS_EXACT_LOCKED_REBUILD'
+      - name: Preserve source and append verified rebuild record
+        env:
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import os,json,pathlib
+          p=pathlib.Path('archive/versions/s42-corrected-encoder-v1/rebuild.json')
+          p.write_text(json.dumps({'status':'PASS_EXACT_LOCKED_REBUILD','run_id':os.environ['RUN_ID'],'scope':'source reproducibility only; no distribution compliance certification'},indent=2)+'\n')
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add archive/versions/s42-corrected-encoder-v1/
+          git commit -m "Archive exact corrected encoder source and verified reproducibility"
+          git push origin HEAD:project-handoff

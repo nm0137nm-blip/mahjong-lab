@@ -62,3 +62,6 @@ PR #31 run 44671922598、P1評価仕様/メトリクス単体試験と不一致7
 
 ## 2026-11-20 13:17 修正と自動連続試験
 不一致7件の内訳5ツモ切り変種・2立直宣言後打牌。PR32 run 44673093075、CPUの立直後clone state推論・kan head・赤牌・ツモ切り修正、locked Rust source bundle build成功、317旧判断replay進行中。PR33 run 44673238225はprior-gateで待機、成功後自動で新規2半荘native action照合・20半荘duplicate・96半荘varianceを実行（focalにも同じresolver）。PR34 exact MIT notices 2件とP1評価仕様の主endpointの事前明確化、本番main変更なし。利用・配布条件の最終リリース審査未了。Phase0完了ではない。ユーザー要求: 作業可能な原因分析・修正・再検証を途中で区切らず、外部結果待ちかphase完了時のみ停止。終了見通しは実行中の外部試験に限定して伝える。
+
+## 2026-11-20 13:54 修正版技術検証全件成功
+13:19:41旧317判断、13:34:51後続試験全件成功。旧317/317、新規445/445具体行動一致（不一致0）、20半荘duplicate、96半荘variance。修正版SD25.590、保守上限39.680、必要55 blocks概算、既定160 blocksを維持。source archive/rebuild検証を別workflowで起動。本番公開保留。資料: archive/results/phase0-corrected-20261120.json, handoff/phase0-corrected-decision.md。
