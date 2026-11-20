@@ -1,0 +1,37 @@
+name: P1 frozen predictor outer integration QA
+on:
+  pull_request:
+    branches: [feat/coach-p1-outer-metrics-v1]
+permissions:
+  contents: read
+  actions: read
+jobs:
+  integration:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: p1-outer-qa-[1-8]
+          run-id: 44714465352
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/qa
+      - uses: actions/download-artifact@v4
+        with:
+          name: p1-frozen-candidate
+          run-id: 44712159043
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/model
+      - run: |
+          set -euo pipefail
+          python -m pip install numpy==2.3.5 lightgbm==4.6.0 scikit-learn==1.8.0
+          python tests/next/p1-outer-integration.py /tmp/qa /tmp/model
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p1-outer-integration-qa
+          path: /tmp/p1-integration-qa.json
+          if-no-files-found: error

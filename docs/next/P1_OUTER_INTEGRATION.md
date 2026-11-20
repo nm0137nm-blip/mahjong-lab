@@ -1,0 +1,2 @@
+# Integration QA before untouched acquisition
+Exact frozen candidate manifest and model file integrity. Public-only inference before reading oracle file per match, exact match/decision/seat/tile joins, deterministic safe and T constraints through evaluator, aggregate target separation. Reuse eight independently audited QA games, assert insufficient support cannot pass. No new game outcomes, no tuning, no formal evaluation. Next lock fresh manifest and exact runner sources before collecting 160 matches.
