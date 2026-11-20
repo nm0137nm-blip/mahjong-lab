@@ -1,0 +1,48 @@
+{
+  "run_id": 44668737514,
+  "attempt": 1,
+  "completed_at": "2026-11-20T03:49:48Z",
+  "status": "success",
+  "live": {
+    "status": "PASS_LIVE_SAMPLED_NATIVE_ENCODER_AND_BROWSER_Q_PARITY",
+    "scenes": 63,
+    "decisions": 189,
+    "legal_q_values": 1943,
+    "max_obs_error": 0,
+    "non_bit_exact_observations": 0,
+    "max_q_error": 0.00000476837158203125
+  },
+  "variance": {
+    "status": "variance_pilot_complete",
+    "n_blocks": 12,
+    "n_matches": 96,
+    "block_sd": 40.08690842747451,
+    "upper_sd_normal_approx": 62.158905300823314,
+    "mme": 15,
+    "target_power_approx": 0.8,
+    "recommended_blocks_approx": 135,
+    "formal_cap_blocks": 400,
+    "cap_sufficient_under_approx": true,
+    "deltas": [
+      -33.75,
+      -22.5,
+      0,
+      -45,
+      -90,
+      -11.25,
+      -67.5,
+      33.75,
+      0,
+      -101.25,
+      -45,
+      0
+    ],
+    "limitations": "small disjoint pilot; normal approximation for planning, not evidence of skill or proof of future variance; freeze candidate-specific protocol before formal test; no pilot pooling"
+  },
+  "remaining": [
+    "original independent agent grouped payload/guard parity and rule alignment",
+    "license distribution and corresponding-source decision",
+    "formal candidate-specific sample size and gate freeze",
+    "P1 acceptance criteria before evaluation"
+  ]
+}

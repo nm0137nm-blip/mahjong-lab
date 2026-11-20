@@ -49,3 +49,6 @@ Run 44667625456 全7ジョブ成功（12:29:45 JST）。合成100局面、合法
 
 ## 2026-11-20 12:35 Phase 0 追加試験起動
 PR #29, run 44668737514, commit 8c1459d79939d3e95fac0aa91f5cdaaf407400eb。96半荘の4席対比較分散pilot（凍結200半荘LGB対S42）と実戦生成2半荘から採取する実際のCPU観測・合法手・Q値を独立PyTorchで照合する追加試験を起動。結果未確認。正式評価ではなく必要数の計画用。独立エージェントのグループ内行動・guard整合や公開条件は別途未完。本番変更なし。仕様: handoff/phase0-pilot-v1.json。
+
+## 2026-11-20 12:54 Phase 0 追加検証成功
+Run 44668737514 attempt 1、12:49:48 JST 完了、16ジョブ成功。実戦生成2半荘の63 seat-hand traces、189判断・1,943合法Q、観測完全一致、native/ONNX最大Q差4.768e-6。96半荘・12 paired 4-seat blocks、SD40.087、正規近似片側95%上限SD62.159、MME15・両側5%・80%検出力の計画値135 blocks=1,080半荘（上限400 blocks）。候補別の分散・ゲートは別途事前確定。Phase0残：独立エージェントの具体的payload/guard/ルール整合、公開条件、正式試験仕様。結果: archive/results/phase0-live-variance-20261120.json。現時点でPhase0全体合格とはしない。
