@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-20T21:31:00+09:00",
+  "checkpoint": "2026-11-20T21:33:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -9,14 +9,20 @@
   },
   "active_task": {
     "phase": "P2a",
-    "status": "facts_only_preparation_qa_running_P1_limited",
-    "run_id": 44736460105,
+    "status": "facts_only_preparation_schema_fix_qa_running",
+    "run_id": 44736644609,
     "branch": "feat/coach-p2a-facts-only-v1",
-    "commit": "e12ce3156facc42770d6a3453cc5640d6b782011",
+    "commit": "56f8e47e1c7832b2841a1232098640868d612eb0",
     "pr": 60,
     "decision": "P1 full gate remains unmet; one bounded v2 cycle finished, no release, no uncertified numbers. P2a deterministic preparation allowed, not full P2a or P3 pilot. R1 archived and R2 formal unused.",
     "scope": "Explicit public projection, separate matched model group rank, withheld external probability/loss, no inferred reason. Unit and all 96 development public/reference-only cases, no oracle or V1 outer data. Production global match provenance, full factual derivations, integration and evaluation remain open.",
-    "next": "Check run44736460105 and resolve implementation errors without omitting records. Continue permitted facts-only preparation only. If no further authorized work, report decision needed on limited P1 / revised product scope, no Phase pass. Main/public release unchanged."
+    "next": "Check run44736644609; fix concrete schema errors without dropping records; no P1 v2 tuning or P3. Facts-only remains preparation, not release or Phase pass.",
+    "previous_run": {
+      "run_id": 44736460105,
+      "commit": "e12ce3156facc42770d6a3453cc5640d6b782011",
+      "status": "unit_pass_archive_schema_rejected",
+      "reason": "all 13222 cases denied due round label suffix 局; reaction tile includes tsumogiri/riichi suffix. Archive sample verified actual formats; no gate relaxation."
+    }
   },
   "previous_runs": [
     {
