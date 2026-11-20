@@ -106,3 +106,5 @@ Run44698837755全成功。pure 2497件、教師相対Q損失 .040427→.037189�
 44706812936 attempt2 全128半荘と集計成功、最終artifact uploadは出力名違いで失敗（JSONをCI logから保存）。追加16block差0pt CI[-23.203125,23.203125]、192半荘累積+1.40625 CI[-16.40625,19.21875]（適応的記述）。事前規定により候補凍結、R2正式評価なし、追加延長なし。44708553398 P1成功、旧T維持＋50% R混合、3family全てBrier/logloss点推定改善、equal-family delta logloss -0.00046386 CI[-.00066759,-.00027038]、条件得点RMSE差-388.13 CI[-531.58,-258.00]、80%区間実測76.18%、direct/decomp RMSE1081.08/1061.54。再利用開発データのみ、各24matchは正式support不足。候補freeze/独立評価の準備へ。公開留保、正式R2未使用。
 
 18:27 PR50 run44710762797 起動。P1候補の学習・校正分離freeze（旧120+新60 train、新12 calibration）、T旧固定、R50%混合、見えるドラのみ条件得点と区間幅校正、公開入力のみの推論契約。R1既存artifact再集計・保存先修正（再対局なし）。P1正式外部試験未開始、全hidden-state perturbation未了、合格基準維持、公開留保。
+
+18:39 PR50初回run44710762797 学習完了後manifestのnumpy uint32 JSON保存で停止。seed int化のみ修正run44712159043、R1再集計再度合格。PR51 run44712422825 開発済み2seedでlive hidden read poison境界監査を起動、候補freeze成功後同一公開推論比較。正式P1 outer設計draft（4family×40=160半荘、未学習効率policy・固定progression交差、親gate維持、全manifest固定後のみ取得）を保存。追加閾値は提案、未確定・未評価。main不変・公開留保。

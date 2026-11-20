@@ -1,0 +1,38 @@
+{
+  "version": "P1-outer-draft-v1",
+  "status": "draft engineering design; not activated; no data acquired",
+  "parent_protocol": "handoff/p1-evaluation-v1.1.json",
+  "candidate": "P1-visible-risk-v1; exact package manifest and runtime hashes required before collection",
+  "target_scope": "current visible dora; no ura; per-opponent base legal-opportunity exposure (no honba), distinct all-eligible-accept visible settlement with honba; not actual Ron response or payment",
+  "cohorts": {
+    "families": [
+      "corrected S42 x3",
+      "bundled standard x3",
+      "frozen learned200 x3",
+      "unseen deterministic own-hand efficiency x3"
+    ],
+    "matches_per_family": 40,
+    "total_matches": 160,
+    "progression": "20 fixed corrected S42 focal and 20 unseen fixed efficiency focal, rotated seats; separate progression sensitivity results, no family or focal ID in prediction features",
+    "activation": "define and validate unseen policy on disjoint QA fixtures, freeze exact code, rules and candidate hashes, verify seed inventory disjoint from all past train/dev/pilot/reserved formal and R1 extension, then commit complete immutable manifest before generating outcomes"
+  },
+  "gates": {
+    "unchanged_parent": {
+      "validity": "all input/label/seed audits pass; probabilities finite and bounded; confirmed legal furiten/riichi deterministic cases respected; P(legal Ron per opponent/candidate)<=P(tenpai same opponent) after consistent calibration; nonnegative point predictions; no hidden/future feature",
+      "sample_support": "per family and displayed stratum >=30 independent half-games, >=100 positive and >=100 negative for binary calibration; payment conditional >=100 positive labels across >=30 matches; mixed-response decision ranking >=100 choice sets with both classes across >=30 matches; otherwise suppress numbers, report insufficiency, no full gate pass",
+      "calibration": "Primary endpoint: candidate minus frozen legal-Ron log loss, excluding deterministic cases; promotion requires upper 95% paired match-bootstrap CI <0 pooled with pre-fixed equal family weighting. Brier candidate-minus-frozen point estimate <=0. For every supported family, both scores must have point estimate <=0; independently report CI (lower bound >0 implies supported deterioration). Tenpai calibration evaluated separately with same proper-score and reliability support rules. Max absolute calibration gap <=0.05 for supported fixed decile bins (>=200 rows, >=30 matches); unsupported bins not certified. Require supported strata for any numbers displayed; do not treat absence of statistical significance as noninferiority.",
+      "risk_ranking": "per-opponent, per-decision pairwise positive-negative AUC with ties half; candidate point estimate >= frozen and no supported deterioration per holdout family, report pooled and macro family AUC, no rank credit on all-negative or all-positive groups",
+      "loss": "conditional payment MAE must beat or tie training-only conditional median; conditional payment RMSE must beat or tie training-only mean; unconditional per-opponent exposure RMSE <= training-only frequency x mean baseline; 95% match-paired CIs on all; count and uncertainty by family; no unconditional exposure claim for unsupported strata",
+      "release": "P1 output used solely as explanation/comparison, never overrides Mortal; suppress inadequate calibration and legally uncertain labels; P1 development metrics are not final product approval",
+      "high_risk": "Report high-risk strata (riichi / open threat / endgame), upper tails and dangerous underestimation; predefine actual target tolerance before final test. Direct/decomposed divergence must be flagged/suppressed, not silently averaged."
+    },
+    "additional_engineering_proposals": {
+      "interval": "nominal80% conditional interval, supported overall/family observed coverage >=0.75, report interval width, pinball and high-risk undercoverage; no claim exact 80% coverage",
+      "high_risk": "for public riichi, >=2 visible melds, <=18 wall tiles, report slice support, proper scores, underestimation on positives and 90th percentile actual exposure; no new display claims if inadequate support or point deterioration vs baseline; before acquisition specify exact numeric tolerances in executable evaluator",
+      "divergence": "report absolute direct vs decomp differences on identical base target; proposed suppression when absolute divergence >1000 points AND >50% of max(100, both predictions); freeze threshold after verifying engineering consistency without outer results",
+      "reference": "primary original frozen R as registered; additionally show coherent clamp as safety baseline. Tenpai unchanged; report independent absolute calibration and support, not improvement. No showing unsupported numbers",
+      "no_optional_stopping": "all 160 fixed games, startup-only retries same seed and no exclusions; insufficient support means no pass for relevant scope, not adding matches after seeing outcomes"
+    }
+  },
+  "limitations": "Historic raw wall/trajectory hashes incomplete; seed and available canonical public-hash inventory verified. New exact wall/log hashes and provenance required. Label audits independently re-run on all outer games; hidden probe not universal proof. No actual full payout or ura claim. No public release."
+}
