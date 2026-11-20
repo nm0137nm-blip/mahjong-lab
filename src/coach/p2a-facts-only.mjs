@@ -33,7 +33,7 @@ function publicEvent(e){
 }
 export function factsOnly(caseData){
  const s=caseData?.scene,phase=caseData?.phase;
- if(typeof caseData?.id!=='string'||!/^(?:d-[1-9][0-9]*|case-[1-9][0-9]*)$/.test(caseData.id)||!s||s.snapshotVersion!==2||!['turn','reaction'].includes(phase)||!seat(s.ownSeat)||!seat(s.activeSeat)||typeof s.round!=='string'||!/^[東南西北][1-4]$/.test(s.round)||!list(s.hand,tile)||!list(s.selfMelds,meld)||!list(s.dora,tile)||!int(s.remaining)||s.remaining<0||s.remaining>70||!int(s.honba)||s.honba<0||!int(s.kyotaku)||s.kyotaku<0||!bool(s.pendingReach)||!list(s.initialOrder,seat)||s.initialOrder.length!==4||new Set(s.initialOrder).size!==4||!list(s.scores,x=>int(x?.points))||s.scores.length!==4||!Array.isArray(s.rivers)||s.rivers.length!==4||!Array.isArray(s.publicEvents)||!Array.isArray(caseData.actions)||!caseData.actions.length)fail();
+ if(typeof caseData?.id!=='string'||!/^(?:d-[1-9][0-9]*|case-[1-9][0-9]*)$/.test(caseData.id)||!s||s.snapshotVersion!==2||!['turn','reaction'].includes(phase)||!seat(s.ownSeat)||!seat(s.activeSeat)||typeof s.round!=='string'||!/^[東南西北][1-4]局$/.test(s.round)||!list(s.hand,tile)||!list(s.selfMelds,meld)||!list(s.dora,tile)||!int(s.remaining)||s.remaining<0||s.remaining>70||!int(s.honba)||s.honba<0||!int(s.kyotaku)||s.kyotaku<0||!bool(s.pendingReach)||!list(s.initialOrder,seat)||s.initialOrder.length!==4||new Set(s.initialOrder).size!==4||!list(s.scores,x=>int(x?.points))||s.scores.length!==4||!Array.isArray(s.rivers)||s.rivers.length!==4||!Array.isArray(s.publicEvents)||!Array.isArray(caseData.actions)||!caseData.actions.length)fail();
  if(s.drawn!=null&&!tile(s.drawn))fail();
  const rivers=s.rivers.map((r,i)=>{
   if(!bool(r?.riichi)||!list(r.melds,meld)||!list(r.discards,d=>tile(d?.tile)&&bool(d.tsumogiri)&&bool(d.riichi)&&bool(d.called)))fail();
@@ -43,7 +43,7 @@ export function factsOnly(caseData){
  const actions=caseData.actions.map(a=>action(a,phase));
  if(new Set(actions.map(a=>a.id)).size!==actions.length)fail();
  const reaction=phase==='reaction'?caseData.reaction:null;
- if(phase==='reaction'&&(!seat(reaction?.from)||reaction.from===s.ownSeat||!tile(reaction.tile)))fail();
+ if(phase==='reaction'&&(!seat(reaction?.from)||reaction.from===s.ownSeat||!(typeof reaction.tile==='string'&&/^(?:[mps][0-9]|z[1-7])_?\*?$/.test(reaction.tile))))fail();
  // Only an opponent's own river is a deterministic genbutsu source.
  const safety=actions.filter(a=>a.id<37).map(a=>({action:a.id,ownRiverSameTypeSeats:rivers.filter(r=>r.seat!==s.ownSeat&&r.discards.some(d=>norm(d.tile)===norm(idTile(a.id)))).map(r=>r.seat)}));
  const scores=s.scores.map((v,i)=>({seat:i,points:v.points}));
