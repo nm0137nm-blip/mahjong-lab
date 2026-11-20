@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-20T20:50:00+09:00",
+  "checkpoint": "2026-11-20T21:10:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -9,31 +9,17 @@
   },
   "active_task": {
     "phase": "P1",
-    "status": "v2_collection_93_success_3_startup_retry_and_screen_waiting",
-    "run_id": 44726204303,
-    "branch": "feat/coach-p1-v2-development-data-v1",
-    "commit": "75c87e621b85bc411ef92152f84918a1802dbd2b",
-    "pr": 57,
-    "decision": "V1 primary Ron logloss and Brier pass pooled and all four families, pooled rank and payment pass; full P1 gate fails on T calibration (S42/self/all), unseen efficiency nonriichi positives only 6, basic rank and MAE, efficiency MAE/RMSE and high-risk ranking. V1 outer sealed, never train or calibrate on its case rows or labels; only aggregate failure categories motivate v2. All uncertified numeric outputs suppressed; no release. One bounded v2 development cycle, no automatic looping if candidate fails. R1 current candidate archived, formal R2 untouched.",
-    "scope": "96 fresh development games 32 each S42/basic/frozen learned × two fixed progressions × four seats × four repetitions; exclude all V1 outer seeds and all prior development/history and reserved R2 seeds. Independent label/replay audits. P2a deterministic explanation preparation may proceed separately with numbers suppressed, no participant pilot or claim P1 full pass.",
-    "next": "Check retry (3 shards) and screening gate. Fix actual pipeline errors if necessary, same seed/no dropping. If v2 screening fails, stop bounded improvement rather than endlessly retune; report limited P1 and continue facts-only P2a with uncertified numbers suppressed. If supported candidate merits independent test, freeze exact identity, new unseen family and progression with non-riichi T support, interval/direct calibration and fresh holdout; never reuse V1 outer labels. No main/release.",
-    "retry": {
-      "attempt": 2,
-      "run_id": 44726204303,
-      "failed_shards": [
-        36,
-        63,
-        90
-      ],
-      "reason": "all before match at line72 model readiness timeout120s, no game outcome; retry failed jobs only unchanged code/seed"
-    },
-    "screen": {
-      "run_id": 44730779024,
-      "branch": "feat/coach-p1-v2-screen-v1",
-      "commit": "12a018037d120ee45290c0954d5f6f061a4be128",
-      "pr": 58,
-      "scope": "Waits for 96-match independent audits. Four grouped folds using 24 new held, 24 new calibration, 48 new+72 prior +120 historic training. T frozen Platt/retrained Platt; R rank-preserving monotone calibrator and common decision scale, conditional and scaled blend; separate median/mean payment heads; family/risk scores and paired CIs. V1 outer manifest only used for seed exclusion, no raw rows. No interval/direct certification or formal evaluation."
-    }
+    "status": "v2_label_recovery_and_strict_audits_running",
+    "run_id": 44733467016,
+    "branch": "feat/coach-p1-v2-label-recovery-v1",
+    "commit": "119bdda9b30e45a2cfe2920e04051f0de208eb43",
+    "pr": 59,
+    "source_run": 44726204303,
+    "source_manifest_artifact": 14624007542,
+    "audit_artifact": 14626710646,
+    "decision": "All 96 games retained; original 3 own-fifth-tile impossible ready labels are source errors. Derived copy only, independent physical shanten and complete-shape proof require no legal waits/score. Correct T and shanten only, record original and derived hashes. No threshold relaxation. R1 candidate archived; formal R2 untouched.",
+    "scope": "Verify source lock hashes; require 96 games and precisely three proven corrections; run unchanged independent snapshot and temporal audits, then original v2 screen. Prior V1 outer manifest only; no labels, no retraining on outer. No production changes. Prior historical120 teacher labels not newly audited.",
+    "next": "Check run44733467016. If strict audits or screen fail, diagnose exact cause; never omit games or relax gates. If screen supports candidate, lock T physical target and teacher generation on all fresh data before candidate-freeze and independent outer design; preserve V1 and report prior historic label limit. If screen fails merit gates, stop bounded v2 iteration; only P2a facts preparation without numeric certification. No main/public release."
   },
   "previous_runs": [
     {
@@ -1033,6 +1019,65 @@
         }
       },
       "result": "archive/results/p1-outer-final-v1-20261120.json"
+    },
+    {
+      "phase": "P1",
+      "status": "96_games_complete_snapshot_audit_found_three_physical_tenpai_mislabels_screen_blocked",
+      "run_id": 44726204303,
+      "branch": "feat/coach-p1-v2-development-data-v1",
+      "commit": "75c87e621b85bc411ef92152f84918a1802dbd2b",
+      "pr": 57,
+      "decision": "V1 primary Ron logloss and Brier pass pooled and all four families, pooled rank and payment pass; full P1 gate fails on T calibration (S42/self/all), unseen efficiency nonriichi positives only 6, basic rank and MAE, efficiency MAE/RMSE and high-risk ranking. V1 outer sealed, never train or calibrate on its case rows or labels; only aggregate failure categories motivate v2. All uncertified numeric outputs suppressed; no release. One bounded v2 development cycle, no automatic looping if candidate fails. R1 current candidate archived, formal R2 untouched.",
+      "scope": "96 fresh development games 32 each S42/basic/frozen learned × two fixed progressions × four seats × four repetitions; exclude all V1 outer seeds and all prior development/history and reserved R2 seeds. Independent label/replay audits. P2a deterministic explanation preparation may proceed separately with numbers suppressed, no participant pilot or claim P1 full pass.",
+      "next": "Check retry (3 shards) and screening gate. Fix actual pipeline errors if necessary, same seed/no dropping. If v2 screening fails, stop bounded improvement rather than endlessly retune; report limited P1 and continue facts-only P2a with uncertified numbers suppressed. If supported candidate merits independent test, freeze exact identity, new unseen family and progression with non-riichi T support, interval/direct calibration and fresh holdout; never reuse V1 outer labels. No main/release.",
+      "retry": {
+        "attempt": 2,
+        "run_id": 44726204303,
+        "failed_shards": [
+          36,
+          63,
+          90
+        ],
+        "reason": "all before match at line72 model readiness timeout120s, no game outcome; retry failed jobs only unchanged code/seed"
+      },
+      "screen": {
+        "run_id": 44730779024,
+        "branch": "feat/coach-p1-v2-screen-v1",
+        "commit": "12a018037d120ee45290c0954d5f6f061a4be128",
+        "pr": 58,
+        "scope": "Waits for 96-match independent audits. Four grouped folds using 24 new held, 24 new calibration, 48 new+72 prior +120 historic training. T frozen Platt/retrained Platt; R rank-preserving monotone calibrator and common decision scale, conditional and scaled blend; separate median/mean payment heads; family/risk scores and paired CIs. V1 outer manifest only used for seed exclusion, no raw rows. No interval/direct certification or formal evaluation."
+      },
+      "audit": {
+        "artifact": 14626710646,
+        "counts": {
+          "opponent_states": 30693,
+          "candidate_ron_labels": 333723,
+          "score_labels": 2886
+        },
+        "differences": [
+          {
+            "seed": 3794127802,
+            "shard": 93,
+            "seat": 2,
+            "decisions": [
+              "d-51",
+              "d-53",
+              "d-54"
+            ],
+            "hand": "p345s456z4444,z555-",
+            "embedded_shanten": 0,
+            "independent_shanten": 1,
+            "structural_waits": [],
+            "legal_ron": false
+          }
+        ],
+        "temporal": "not executed because snapshot audit failed"
+      },
+      "screen_result": {
+        "run_id": 44730779024,
+        "conclusion": "failure",
+        "reason": "source snapshot audit failed; no screen fitting"
+      }
     }
   ],
   "roadmap": {
