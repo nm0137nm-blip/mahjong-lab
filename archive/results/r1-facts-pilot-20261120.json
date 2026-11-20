@@ -1,0 +1,12 @@
+{
+  "run": 44693369642,
+  "status": "R1_top100_fact_sheet_prepared_not_causal_or_complete",
+  "n": 100,
+  "hypotheses": {
+    "special_action_policy_or_grouping_requires_review": 15,
+    "tradeoff_or_threat_requires_review": 81,
+    "efficiency_or_missing_shape_signal": 4
+  },
+  "teacher_strict_efficiency_better": 11,
+  "discussion": "Manual/algorithmic causal validation and frequency on more fresh on-policy matches needed; no proof of available 15pt improvement. Do not select final candidate from these test seeds; these are declared development."
+}

@@ -9,7 +9,7 @@
   },
   "active_task": {
     "phase": "P1/R1",
-    "status": "independent_label_and_grouped_calibration_in_progress",
+    "status": "independent_snapshot_pass_and_r1_fact_sheet_pass_calibration_running",
     "branch": "feat/coach-p1-independent-label-and-calibration-v1",
     "commit": "ca60223d18ee02be0ac8edff6539c2b8d6c3004f",
     "pr": 39,
@@ -29,7 +29,27 @@
         "path": "archive/results/v11-historical-seeds-20261120.json"
       }
     },
-    "next": "Check independent snapshot mismatches and fix/audit as necessary. Inspect R1 fact sheet. After label audit, extend multi-family development collection + independent temporary furiten replay, explicit physical loss/ura scope, freeze final P1 gates and held-out family. Formal comparison not authorized until R1 diagnosis and candidate/runtime identity freeze. No production changes."
+    "next": "Read constrained calibration smoke. For P1 independently replay temporary furiten, expand corrected multi-family corpora and freeze train/dev/outer split; R1 top100 facts show only 11 strict efficiency advantages, 4 without threat, 81 tradeoff/threat hypotheses, not proof of fixability. Expand diagnostics and evaluate rollout hypotheses before R2 or frozen candidate formal runs. No main/public release.",
+    "snapshot_audit": {
+      "status": "independent_snapshot_audit_pass",
+      "counts": {
+        "opponent_states": 3069,
+        "candidate_ron_labels": 33954,
+        "score_labels": 211
+      },
+      "scope": "Independent shanten/waits/river furiten/yaku/no-ura score using recorded snapshot. Temporal furiten and full replay, responsibility payment and new kan indicators need separate coverage. No actual Ron choice or full payout claim."
+    },
+    "r1_fact_sheet": {
+      "status": "R1_top100_fact_sheet_prepared_not_causal_or_complete",
+      "n": 100,
+      "hypotheses": {
+        "special_action_policy_or_grouping_requires_review": 15,
+        "tradeoff_or_threat_requires_review": 81,
+        "efficiency_or_missing_shape_signal": 4
+      },
+      "teacher_strict_efficiency_better": 11,
+      "discussion": "Manual/algorithmic causal validation and frequency on more fresh on-policy matches needed; no proof of available 15pt improvement. Do not select final candidate from these test seeds; these are declared development."
+    }
   },
   "previous_runs": [
     {

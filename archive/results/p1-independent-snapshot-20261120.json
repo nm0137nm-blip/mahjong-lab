@@ -1,0 +1,10 @@
+{
+  "run": 44693369642,
+  "status": "independent_snapshot_audit_pass",
+  "counts": {
+    "opponent_states": 3069,
+    "candidate_ron_labels": 33954,
+    "score_labels": 211
+  },
+  "scope": "Independent shanten/waits/river furiten/yaku/no-ura score using recorded snapshot. Temporal furiten and full replay, responsibility payment and new kan indicators need separate coverage. No actual Ron choice or full payout claim."
+}
