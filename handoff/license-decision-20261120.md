@@ -9,3 +9,6 @@
 - 再配布、Webサービス/端末配布、改変WASM/ONNXの対応ソース及びNOTICE、ライセンスの表示・提供手段、ソースのビルド再現性、関連依存ライセンスは別途確認が必要。
 - 製品公開・配布範囲拡大は上記の確認と必要措置が完了するまで保留。本番mainを変更しない。既存公開版への対応要否も未確認。
 - APIキー・個人牌譜・学習元の非公開データは保存/公開しない。法的適合性の最終判断・専門家による法的確認の代替ではない。
+
+## v1.4 先行再確認 (2026-11-20)
+公開元を再閲覧: Equim-chan/Mortal repo はAGPL-3.0表示、xzhe121/Mortal-S42-onnx model card の重みApache-2.0・グラフAGPL-3.0-or-later、元commit 0cff2b52982be5b1163aa9a62fb01f03ce91e0d2、ONNX SHA256 30381bf21389e2d25d3edf48fed11bf772336ef3daeee67d1bdae7fb9dd30cb4、NOTICE SHA256 23724aa97bcab1e29695616c0a0ac1bdd1b28517751211c4766b9a8ea0dbf9a9 を確認。haorの固定revisionページは今回閲覧不能、元重み許諾についてはONNXカードの記載に依拠し直接再確認未了。現行index.htmlはmajiang-core v1.4.1/MIT表示とvendor通知、追加課金APIなし（ChatGPTへの手動貼付/iPhoneショートカット）。全配布構成・対応ソース・既存公開版の適合までは未確認。研究用新規コードと公開合成局面の取得・内部QAのみ継続、モデル/秘密/個人牌譜を新規コミットしない。第三者配布・main変更・ネットワークサービスは保留。法的保証なし。
