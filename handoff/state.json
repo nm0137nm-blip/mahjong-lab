@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-20T23:20:00+09:00",
+  "checkpoint": "2026-11-20T23:39:35+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -9,13 +9,33 @@
   },
   "active_task": {
     "phase": "P2a-pilot",
-    "status": "conditional_go_recorded_not_started",
-    "branch": "feat/coach-p2a-facts-only-v1",
-    "commit": "56f8e47e1c7832b2841a1232098640868d612eb0",
-    "pr": 60,
-    "run_id": 44736644609,
-    "decision": "Previous projection QA passed only. Review break ended; pilot design adopted, no new trial or code modification this turn.",
-    "next": "Start with license decision record and actual inference runtime/model availability; implement physical blind/comparison separation, typed claims and hashed logs, 30 dev cases and negative controls, 5–10 rollout prototype; comply with pilot gate document. No 13222 formal full-fact trial, 360 formal B, Lite outer, large P3-min, main changes or distribution before measured review GO. Formal thresholds not frozen. Next review report after actual pilot measurements.",
+    "status": "restricted_rollout_probe_queued",
+    "branch": "feat/coach-v14-pilot-boundary-v1",
+    "commit": "2cea9d713472db2f3af862f5c04016d2e62b7d94",
+    "pr": 61,
+    "run_id": 44755542405,
+    "prior_runs": [
+      {
+        "run_id": 44754324733,
+        "status": "transport_preparation_only_success",
+        "artifact": 14635469952,
+        "prepared": 30,
+        "distinctMatches": 30
+      },
+      {
+        "run_id": 44754866010,
+        "status": "transport_and_restricted_sampler_success",
+        "artifacts": {
+          "transport": 14637705179,
+          "sampler": 14636803218
+        },
+        "cases": 8,
+        "accepted": 128,
+        "limits": "closed no-call only, non-riichi ready 0 in all samples, not conditional posterior; no continuation in that run"
+      }
+    ],
+    "decision": "v1.4 conditional pilot only. Implemented independent/public request and comparison transport, hashes, schema and scope guard. 30 natural case packets prepared 10 each discard/reach/reaction; 18 riichi threat,12 multiple meld,10 late (overlap). Unit tests 4 pass; no real independent model inference, legal contrast labels, derived full facts, B3/B4 or weak comparator validation. No paid API: existing product manual ChatGPT paste/iPhone shortcut, no callable independent inference endpoint/credentials available in current environment. No user action requested before complete dev packets. Sampler 8 cases 16 each physical/reverse/forward consistency; now actual bundled engine continuation scheduled, 4 synthetic histories each, paired first/last candidate, standard CPU only; not tactical eval.",
+    "next": "Check workflow 44755542405; fix errors without user intervention, preserve full denominators. Then add independent own-shape evidence for all legal candidates (no raw archived facts), concrete reach/calls, negative controls and legal contrasts, diagnosis of sampler bias against development-only oracle by isolated verifier; broaden sampler to calls and opponent policies as needed. Actual GPT independent calls require external fresh-chat/manual workflow or authorized available inference runtime, no paid path assumed. Once dev packets complete and all autonomous work exhausted, if needed request user assistance with fresh independent chat outputs, not a paid API. Formal B/13222/Lite/large integration/main/distribution remain blocked.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md"
   },
   "previous_runs": [
