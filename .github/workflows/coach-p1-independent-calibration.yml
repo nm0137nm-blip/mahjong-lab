@@ -1,0 +1,85 @@
+name: P1 independent snapshot verification and grouped calibration smoke
+on:
+  pull_request:
+    branches: [feat/coach-p1-r1-development-pilot-v1]
+permissions:
+  contents: read
+  actions: read
+jobs:
+  independent-label:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: p1-r1-dev-*
+          run-id: 44692420874
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/dev
+      - run: python -m pip install mahjong==1.4.0
+      - run: python tests/next/audit-independent-p1.py /tmp/dev
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: independent-p1-label-audit
+          path: /tmp/independent-p1-label-audit.json
+          if-no-files-found: error
+          retention-days: 30
+  calibration-smoke:
+    needs: independent-label
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: lab
+      - uses: actions/checkout@v4
+        with:
+          ref: 6b2fd50644a405f440a70d9b117c2ee90fabf151
+          path: frozen
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: p1-r1-dev-*
+          run-id: 44692420874
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/dev
+      - run: |
+          set -euo pipefail
+          python -m pip install numpy==2.3.5 lightgbm==4.6.0 scikit-learn==1.8.0
+          cp -r frozen/archive/versions/belief-120-ab-v1 /tmp/belief-model
+          echo '4b6325559cbcf5fe45145eccfd938d0e68c2c5e2bc1de9985378fae2cb2e5f0a  /tmp/belief-model/t.lgb' | sha256sum -c -
+          echo '1028569ef3889c8b86c1085fecd3fe8789ec284a5b56b9a2cae6d946c8e98fa9  /tmp/belief-model/r.lgb' | sha256sum -c -
+          python lab/tests/next/p1-calibration-smoke.py /tmp/dev
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p1-calibration-smoke
+          path: /tmp/p1-calibration-smoke.json
+          if-no-files-found: error
+          retention-days: 30
+  r1-facts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: p1-r1-diagnostics
+          run-id: 44692420874
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/r1
+      - run: python3 tests/next/r1-fact-sheet.py /tmp/r1/r1-top100-pilot.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: r1-fact-sheet
+          path: |
+            /tmp/r1-fact-sheet.json
+            /tmp/r1-fact-summary.json
+          if-no-files-found: error
+          retention-days: 30
