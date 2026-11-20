@@ -1,0 +1,41 @@
+{
+  "version": "P1-eval-v1.1",
+  "status": "pre-pilot; only development label verification and diagnostic training may start; untouched outer evaluation not yet activated",
+  "source": "Phase 0 progress review pp.7–10; earlier P1 contract retained",
+  "decisions": "Numeric thresholds below are engineering preregistration proposals not literal reviewer thresholds; freeze before outer holdout acquisition/evaluation; no change after viewing results.",
+  "split": {
+    "unit": "campaign x seed lineage x complete match; all players, candidates, labels and calibration rows from one match stay together",
+    "development": "existing 120 training and 30 development matches are development only",
+    "outer": "new opponent-family and progression-policy holdouts; distinct campaigns and seeds; separate S42-adapter, bundled basic, and not-trained-in policy family (fixed efficiency-policy holdout allowed if not used for training or calibration)",
+    "leak": "audit all available historical train/development/pilot/formal seed manifests and wall/trajectory hashes; lack of a manifest is a recorded limitation/blocker for strict independence; independent label replay and hidden-input perturbation tests",
+    "calibration": "nested grouped cross-fit; tune calibrators only via training-side folds, refit on development side and freeze before outer evaluation"
+  },
+  "targets": {
+    "tenpai": "structural tenpai at decision time",
+    "legal_ron": "per opponent and candidate red-aware exact legal Ron possibility before chosen action; not probability of choosing to Ron",
+    "conditional_loss": "Counterfactual legal Ron payment to each opponent conditional on legal acceptance, current public dora and yaku, honba convention explicit, ura excluded from initial pilot and not represent actual loss. Later full expectation requires ura and response/settlement rule definition.",
+    "expected_loss": "legal-opportunity exposure points E[1(legal Ron)*counterfactual payment]; do not equate sum across opponents with any-Ron probability or actual total payout. Need separately evaluated all-accept settlement label accounting for multiple Ron and abortive draws for aggregate.",
+    "not_q": "no physical outcome probability/score from S42 raw Q",
+    "direct_loss": "Separate direct supervised model of immediate counterfactual payout under explicit all-eligible-accept settlement rule; compare with decomposed calibrated estimates; do not equate sum of per-player probabilities with any-Ron probability."
+  },
+  "baselines": [
+    "frozen 120-match T/R predictions, unchanged deterministic certain cases",
+    "candidate-side simple empirical frequency baseline trained on training fold only",
+    "conditional payment conditional median and mean baselines (mean for expected point loss), training-only"
+  ],
+  "core_gate": {
+    "validity": "all input/label/seed audits pass; probabilities finite and bounded; confirmed legal furiten/riichi deterministic cases respected; P(legal Ron per opponent/candidate)<=P(tenpai same opponent) after consistent calibration; nonnegative point predictions; no hidden/future feature",
+    "sample_support": "per family and displayed stratum >=30 independent half-games, >=100 positive and >=100 negative for binary calibration; payment conditional >=100 positive labels across >=30 matches; mixed-response decision ranking >=100 choice sets with both classes across >=30 matches; otherwise suppress numbers, report insufficiency, no full gate pass",
+    "calibration": "Primary endpoint: candidate minus frozen legal-Ron log loss, excluding deterministic cases; promotion requires upper 95% paired match-bootstrap CI <0 pooled with pre-fixed equal family weighting. Brier candidate-minus-frozen point estimate <=0. For every supported family, both scores must have point estimate <=0; independently report CI (lower bound >0 implies supported deterioration). Tenpai calibration evaluated separately with same proper-score and reliability support rules. Max absolute calibration gap <=0.05 for supported fixed decile bins (>=200 rows, >=30 matches); unsupported bins not certified. Require supported strata for any numbers displayed; do not treat absence of statistical significance as noninferiority.",
+    "risk_ranking": "per-opponent, per-decision pairwise positive-negative AUC with ties half; candidate point estimate >= frozen and no supported deterioration per holdout family, report pooled and macro family AUC, no rank credit on all-negative or all-positive groups",
+    "loss": "conditional payment MAE must beat or tie training-only conditional median; conditional payment RMSE must beat or tie training-only mean; unconditional per-opponent exposure RMSE <= training-only frequency x mean baseline; 95% match-paired CIs on all; count and uncertainty by family; no unconditional exposure claim for unsupported strata",
+    "release": "P1 output used solely as explanation/comparison, never overrides Mortal; suppress inadequate calibration and legally uncertain labels; P1 development metrics are not final product approval",
+    "high_risk": "Report high-risk strata (riichi / open threat / endgame), upper tails and dangerous underestimation; predefine actual target tolerance before final test. Direct/decomposed divergence must be flagged/suppressed, not silently averaged."
+  },
+  "statistics": {
+    "resample": "paired match blocks within each family, 20000 draws, seed 261120; no candidate-level IID inference",
+    "report": "Brier/log_loss/AUPRC, fixed-bin reliability with support, mixed-candidate ranking, conditional MAE/RMSE, exposure RMSE; ECE descriptive only",
+    "multiple": "single primary calibration endpoint predeclared as candidate-minus-frozen legal-Ron log loss; Brier safety co-criterion, remaining metrics secondary/gates; claims of improvement confined to supported endpoint and family; no unplanned tuning on outer test"
+  },
+  "remaining": "Need counterfactual score label generator independent audit and documented ura rules, full evaluator/CI/selection and data collection; first unit-tested metric primitives here."
+}

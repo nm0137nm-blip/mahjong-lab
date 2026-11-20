@@ -1,0 +1,31 @@
+name: Coach v1.1 protocol and seed gate
+on:
+  pull_request:
+    branches: [feat/coach-phase0-margin-gate-v1]
+permissions:
+  contents: read
+jobs:
+  protocol:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: lab
+      - uses: actions/checkout@v4
+        with:
+          ref: de3cc31944a2b6b68df11b7c553e346874e8bcad
+          path: frozen
+      - run: |
+          set -euo pipefail
+          cd lab/tests/next
+          python3 -m unittest -v test_formal_v11
+          python3 seed_manifest_v11.py ../../../frozen/archive/versions/belief-120-ab-v1/freeze.json > /tmp/seed-v11.json
+          python3 -m json.tool ../../docs/next/formal-v1.1.json >/dev/null
+          python3 -m json.tool ../../docs/next/p1-eval-v1.1.json >/dev/null
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v11-seed-manifest
+          path: /tmp/seed-v11.json
+          if-no-files-found: error
+          retention-days: 30
