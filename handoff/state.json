@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-20T14:47:41.335Z",
+  "checkpoint": "2026-11-20T23:49:42+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -9,11 +9,11 @@
   },
   "active_task": {
     "phase": "P2a-pilot",
-    "status": "independent_score_audit_running",
+    "status": "rank_and_fact_audit_running",
     "branch": "feat/coach-v14-pilot-boundary-v1",
-    "commit": "a60f350a853061c2e8a391b34aa70113c5eafc63",
+    "commit": "7ce64b72dd045780a27234b19fc26edd9f30985b",
     "pr": 61,
-    "run_id": 44756791561,
+    "run_id": 44757147882,
     "prior_runs": [
       {
         "run_id": 44754324733,
@@ -52,10 +52,20 @@
         "shapeRows": 341,
         "scoreRowsNotChecked": 44,
         "failures": 0
+      },
+      {
+        "run_id": 44756791561,
+        "status": "independent_shape_and_hypothetical_score_audit_pass",
+        "artifact": 14639036272,
+        "cases": 30,
+        "actionRows": 265,
+        "shapeRows": 341,
+        "scoreValues": 138,
+        "failures": 0
       }
     ],
-    "decision": "Actual restricted rollout 32/32 pairs complete, no failure. 30 natural cases regenerated with candidate-specific public shape, dora, furiten, genbutsu and calls including individual riichi discards; independent Python shape audit 341 rows/265 legal actions passes. Added exact red/normal hypothetical scoring and independent points audit, running. No actual model inference or formal tactical evaluation.",
-    "next": "Check 44756791561; if failure repair exact discrepancy without deleting cases. Add rank movement evidence and typed path-value fact checking, negative controls with meaningful B3/B4 checks, valid paired public context contrasts, sampler bias and opponent-policy sensitivity. No paid inference or production changes. Actual tactical pilot requires independent real inference, not mocked. Confirm time and issue four-type report.",
+    "decision": "Restricted engine rollout 32/32 pairs; 30 public cases, independent shape and hypothetical point values verified (341 and 138; no failures). Added rank/score hypothetical scenario evidence and typed factual citations, rank and schema audit running. Yaku names not independently aligned; legal action availability source engine only; natural cases not contrast pairs. Actual inference 0, no B3/B4 tactical pass. No main changes.",
+    "next": "Check run44757147882; repair concrete issues; proceed with legitimate contrast cases before actual inference. Candidate approach: from existing restricted no-call reconstructable histories, remove opponent riichi declaration, reverse 1000 transfer, replay both via engine to verify all moves and focal legal mask; no arbitrary editing unsupported states. Then preregister label procedure and Mortal/rollout separately, negative controls and sampler sensitivity. Existing 30 natural packets are provisional; no actual inference yet. Keep formal tests and P3 blocked. No paid inference or fabricated real outputs.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md"
   },
   "previous_runs": [
