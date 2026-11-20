@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-20T22:50:00+09:00",
+  "checkpoint": "2026-11-20T23:20:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -8,14 +8,15 @@
     "coach_candidate_promoted": false
   },
   "active_task": {
-    "phase": "P2a",
-    "status": "projection_preparation_pass_review_received_next_full_fact_audit",
+    "phase": "P2a-pilot",
+    "status": "conditional_go_recorded_not_started",
     "branch": "feat/coach-p2a-facts-only-v1",
     "commit": "56f8e47e1c7832b2841a1232098640868d612eb0",
     "pr": 60,
     "run_id": 44736644609,
-    "decision": "Roadmap v1.2 working adoption based on review. P1-Lite unregistered, no new official trial; P1 original status unchanged. R1 frozen.",
-    "next": "Independent derived fact audit on all 13222 development decisions, global decision identity/provenance and concrete action distinctions; concurrent low-margin comparator using development logs. Draft P1-Lite protocol based only on development data; freeze model/teacher/seeds/bands/support/coverage/safety/strata/thresholds before any fresh outer. No external labels, no production change or release. User requested review break; new formal evaluation has not started. User's primary requirement: high-level relative hand-value and push/fold reasoning against all three opponents, not merely factual extraction or tile efficiency. Follow separate tactical evaluation requirement; prospective criteria before test. P2a/P3-min quality gate, P2b learning evaluation. v1.3 proposal saved for review; do not treat proposed thresholds as locked or start official evaluation on their basis until prospective protocol established. Apply v1.4 review amendment in preparation: prioritize license scope check, true blind input/evidence contract, fixed inference model and 30 development cases, machine-checkable typed claims, public-consistent paired counterfactual rollouts; no heavy integration before early pilot; Lite simple-rule comparator and threat-specific calibration; single-person education case. No official evaluation until prospective protocol frozen."
+    "decision": "Previous projection QA passed only. Review break ended; pilot design adopted, no new trial or code modification this turn.",
+    "next": "Start with license decision record and actual inference runtime/model availability; implement physical blind/comparison separation, typed claims and hashed logs, 30 dev cases and negative controls, 5–10 rollout prototype; comply with pilot gate document. No 13222 formal full-fact trial, 360 formal B, Lite outer, large P3-min, main changes or distribution before measured review GO. Formal thresholds not frozen. Next review report after actual pilot measurements.",
+    "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md"
   },
   "previous_runs": [
     {
@@ -1126,8 +1127,8 @@
     }
   ],
   "roadmap": {
-    "source": "ユーザー提供 Copilot/Claude Sonnet 5.5/Gemini 統合レビュー写真30枚 IMG_4816–4845",
-    "decision": "review-adopted working roadmap; P2a/P3-min product priority; P1-Lite separate prospective one-time certification; existing R candidate frozen",
+    "source": "Claude Sonnet 5.5再レビュー全文 + Copilot再レビュー写真20枚 IMG_4846–4865; v1.2/1.3/1.4差分は履歴として保持",
+    "decision": "adopted conditional GO for internal 30-case development pilot only; no formal evaluations or large integration until next go/no-go",
     "product": [
       "P2a",
       "P1-Lite (parallel optional)",
@@ -1146,9 +1147,9 @@
     "formal_hanchan_cap": 6400,
     "mme_rank_pt": 15,
     "production_release_gate": "license review and evidence gates pending",
-    "version": "v1.2",
-    "path": "handoff/roadmap-v1.2-20261120.md",
-    "design": "P2a→P3-min→P2b→P3-full independent of P1-Lite; parallel low-margin audit; P1-Lite one fresh 160 match independent evaluation after preregistration",
+    "version": "v1.4",
+    "path": "handoff/roadmap-v1.4-pilot-go-20261120.md",
+    "design": "P2a early pilot (license/inference/physical separation/typed claims/negative controls/30 cases/5-10 rollout feasibility) → measured review GO/NO-GO → preregister formal trials only after GO → P3-min → P2b → P3-full. Lite nonblocking; research frozen.",
     "formal": "handoff/formal-protocol-v1.1.json",
     "p1": "handoff/p1-evaluation-v1.1.json (historic only; new Lite protocol not yet locked)",
     "prior": "handoff/roadmap-v1.1-20261120.md",
@@ -1169,7 +1170,7 @@
       "version": "v1.4-proposal",
       "path": "handoff/roadmap-v1.4-review-amendment-20261120.md",
       "base": "handoff/roadmap-v1.3-proposal-20261120.md",
-      "status": "review-derived amendment; prospective thresholds and execution protocol not locked",
+      "status": "adopted subject to pilot-go overlay; formal thresholds not locked",
       "human_evaluators": 1,
       "scope": "mechanical tactical consistency and personal learning case study; not proof of human expert coaching or general educational effect"
     }
