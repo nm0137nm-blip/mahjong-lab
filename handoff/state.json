@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-21T05:50:00+09:00",
+  "checkpoint": "2026-11-21T06:01:08+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -9,7 +9,7 @@
   },
   "active_task": {
     "phase": "P2a-pilot",
-    "status": "answer_audit_adversarial_control_running",
+    "status": "negative_control_detected_structural_proxy_failure",
     "branch": "feat/coach-v14-pilot-boundary-v1",
     "commit": "41d13c8ded49d216805b22cb09d92131feaf0c6d",
     "pr": 61,
@@ -161,10 +161,21 @@
         "measurableClaimShapeEach": 30,
         "referenceChangePairsMissedEach": 2,
         "robustRolloutLabels": 0
+      },
+      {
+        "run_id": 44814792884,
+        "status": "adversarial_cited_boilerplate_exposes_proxy_failure",
+        "artifact": 14669481009,
+        "controls": 4,
+        "lockedEach": 30,
+        "exactOrTieEach": 12,
+        "citedBoilerplateOpponentLinks": 30,
+        "measurableClaimShapeEach": 30,
+        "robustRolloutLabels": 0
       }
     ],
-    "decision": "All four paired original anchors reproduce archived S42 group Q within 1.91e-6. Two change best group when opponent riichi removed; two maintain. Implement actual answer intake, exact fact/path check, request/answer hash, frozen refs joined, missing/invalid denominators retained. Three weak controls 30/30 formal schema, 12/30 group top each, fail both reference-change pairs and opponent-link proxy, yet pass measurable claim shape 30/30: no semantic or B3/B4 pass. Added adversarial boilerplate with actual citations to expose structural check vulnerability; also post-complete-lock comparison request generator (not executed on real answers). Latest CI running. Real independent inference 0; no robust rollout labels.",
-    "next": "Check 44814792884 job136560210218; if fails fix. Compare cited boilerplate structural pass vs real tactical evidence; record limitation. Before requesting user actual independent GPT fresh chats, deliver stage1-only six 5-case files, each paired variants in different batches, no verifier/keys; verify exact input hashes and retain originals. Actual model/effort and elapsed metadata as available, no paid API. Need actual answers for pilot diagnostic; grading not semantic certification. If no independent execution tool, request user to run fresh chats with personalization disabled (may begin one batch) after other runnable tasks exhausted. B3/B4 robust labels and sampler unresolved, no promotion/formal evaluation. Keep main unchanged.",
+    "decision": "Cited boilerplate passed all structural links 30/30, measurable shape 30/30 yet missed both changed reference pairs. Cannot claim semantic relative quality or B3/B4. User explicitly requires third-party review at every phase end, including failure/partial closure; no automatic progression.",
+    "next": "Prepare isolated actual inference files and answer intake. Do not use reference keys in stage1. Record unresolved sampler and semantic proxy as actual limitations. Review pilot on closure regardless of outcome.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026
   },
@@ -1325,5 +1336,5 @@
       "scope": "mechanical tactical consistency and personal learning case study; not proof of human expert coaching or general educational effect"
     }
   },
-  "workflow_preference": "待機：実行可能作業がすべて終了し外部待機の場合のみ、再開目安必須。問題発生：自力解決不能のみ。対応依頼：ユーザー判断・作業不可欠のみ。Phase完了：全合格基準を満たす場合のみ。中間不具合は自力修正・検証、進行可能作業優先。"
+  "workflow_preference": "待機：実行可能作業がすべて終了し外部待機の場合のみ、再開目安必須。問題発生：自力解決不能のみ。対応依頼：ユーザー判断・作業不可欠のみ。Phase終了（旧Phase完了報告の拡張）：合格・不合格・部分合格・中止を区別し、いずれも終了時に第三者レビューを受け、次工程GO/NO-GOを決める。合格は全基準達成の場合のみ。中間不具合は自力修正、正式評価後の基準緩和禁止。"
 }
