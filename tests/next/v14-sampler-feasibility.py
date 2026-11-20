@@ -118,7 +118,7 @@ def reconstruct(s,rng):
     # Verify full physical inventory both at round start and current state.
     if collections.Counter(sum(initial,[])+draws+wall+dead+s['dora'])!=collections.Counter(stock()):raise ValueError('initial inventory')
     if collections.Counter(sum(h,[])+[d['tile'] for r in s['rivers'] for d in r['discards']]+wall+dead+s['dora'])!=collections.Counter(stock()):raise ValueError('current inventory')
-    return {'ready':[ready(h[i]) if i!=own else None for i in range(4)],'penalty':penalty,'hand_discards':hand_discards,'weight':math.exp(-.25*penalty)}
+    return {'ready':[ready(h[i]) if i!=own else None for i in range(4)],'penalty':penalty,'hand_discards':hand_discards,'weight':math.exp(-.25*penalty),'trajectory':{'initial':initial,'draws':draws,'wall':wall,'dead':dead,'current':current}}
 def eligible(x):
     s=x['scene'];ev=s['publicEvents'];own=s['ownSeat']
     if x['phase']!='turn' or not s['drawn'] or s['pendingReach'] or len(s['hand'])!=14 or len(s['dora'])!=1 or s['remaining']<8 or not ev:return False
@@ -144,7 +144,7 @@ def main(root,out):
             rec=next((r for r in choices[riichi] if r[0] not in used),None)
             if not rec:break
             used.add(rec[0]);selected.append((riichi,*rec))
-    result=[]
+    result=[]; trajectories=[]
     for riichi,shard,seed,x in selected:
         s=x['scene'];rng=random.Random(810044+shard);start=time.perf_counter();rows=[];errors=collections.Counter();attempts=0
         for _ in range(120):
@@ -152,6 +152,7 @@ def main(root,out):
             attempts+=1
             try:rows.append(reconstruct(s,rng))
             except ValueError as e:errors[str(e)]+=1
+        trajectories.append({'shard':shard,'decision':x['id'],'scene':s,'actions':x['actions'],'samples':[r['trajectory'] for r in rows[:4]]})
         elapsed=time.perf_counter()-start;weights=[r['weight'] for r in rows];ess=sum(weights)**2/sum(v*v for v in weights) if weights and sum(v*v for v in weights) else 0
         # Descriptive readiness sensitivity: no posterior/certification claim.
         other=[i for i in range(4) if i!=s['ownSeat']]
@@ -161,5 +162,6 @@ def main(root,out):
         print('SAMPLER',shard,len(rows),round(elapsed,3),flush=True)
     summary={'status':'restricted_feasibility_only_no_rollout','planned':8,'selected':len(result),'accepted_samples':sum(x['accepted'] for x in result),'cases':result,'limitations':['closed no-call own turn only','constructive ready proposal biased; weights are heuristic not policy likelihood','unknown history of own prior draws reconstructed not observed','temporary furiten and legal win availability not replayed','no candidate continuation or score','no formal inference, no product use']}
     out.write_text(json.dumps(summary,ensure_ascii=False,indent=2)+'\n')
+    if len(sys.argv)>3:Path(sys.argv[3]).write_text(json.dumps(trajectories,ensure_ascii=False,separators=(',',':')))
     print(json.dumps(summary,ensure_ascii=False))
 if __name__=='__main__':main(Path(sys.argv[1]),Path(sys.argv[2]))
