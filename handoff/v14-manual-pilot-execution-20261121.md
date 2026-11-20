@@ -1,0 +1,12 @@
+# v1.4 independent coach pilot manual execution (2026-11-21)
+Real independent GPT inference cannot be invoked from the current developer tool environment. No paid API assumed. Request user to submit six text files to six fresh standalone temporary chats, same chosen model/effort, no project, prior context, verifier material or tools to look up answers. Start with batch 1 if preferred; preserve all outputs unchanged, no retry or selection for scoring. Record model as actually displayed, thinking setting, date, time if available; unknown version/temperature/seed explicitly unavailable. Do not claim API-equivalent repeatability. Stage1 only; stage2 not yet exposed.
+Source: run44813180639 stage1 artifact14666619455; original 30 request hashes and packet/lineage hashes reverified, six original payload arrays match, each paired version in separate batch, forbidden structural keys scan zero. Frozen packet SHA e79e07a23e2ed149d00fbeda403ae96b1409016cf33551cce86dba6e6301777b. Stage1 packet is unchanged. Manual wrapper clarifies existing response schema and desired analysis, frozen for six batches before any real inference. Added text:
+出力形式の補足（全6ファイル共通）：factsは2件以上、重複する根拠IDとpathの組は不可。pathの値は入力のvalueから辿ったJSON値をそのまま転記する。各claimのactionとagainstは異なる合法候補のkeyを指定する。typeはhypothesisのみ。confidence・metric・directionはresponseShapeの選択肢から1つ指定する。事実と仮説を混同せず、他家3人それぞれの公開根拠に基づく具体的な比較を行う。検証できる主張は比較対象、指標、方向、条件、反証条件を明示し、不明は無理に断定しない。解答JSONをファイルとして作成し、本文に全解答を貼らない。
+File SHA256:
+01 086fca82bd6d12b88dd52e0d29e11c36503c155e788ff1581a86cd358d5ffc9f
+02 57a97f68f342852ab0855e8c87e06a04235474d2c1be92ff8af0243578c91749
+03 03175d415d67a7680d2133336d9099412e691729b77fd5a4562dd1aaf0a5979b
+04 6400f3018d37ae3e514dded4532485ff6b8c8e1462862eb8a1672b361cad119e
+05 d26e6731b74c3447a107ffaec8a99f07d6dd65e8297674fb924c4437e25cf0b6
+06 33daa701d1e999413bcd79b21e9f1419437914bdba1d75d5415de34a96e60d70
+Assessment: actual inference diagnostic only; missing/invalid included; user model metadata is self-reported, not cryptographic inference provenance. Opponent links and measurable claim shape only structural proxies; cited boilerplate passed both 30/30, failed 2 changed reference pairs. Robust rollout labels 0. No full pilot GO or formal B approval possible on structural checks alone. Upon pilot closure (including failed/partial/stopped), mandatory third-party review under new user instruction. No paid purchase, official evaluation, main or public distribution.
