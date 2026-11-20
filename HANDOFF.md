@@ -68,3 +68,5 @@ PR #31 run 44671922598、P1評価仕様/メトリクス単体試験と不一致7
 
 ## 2026-11-20 14:09 最終マージンゲート
 locked source rebuild 44677641101 13:57:46成功、JS/WASM SHA完全一致、source archive長期保存済み。確定版p14の高マージン閾値/僅差別集計を再確認し、PR35 run 44679059648（100合成局面12反復+native参照、10倍max drift閾値固定後に445実戦判断を別集計）を開始。自動finalizeで成功時のみ証拠を保存して内部Phase0を閉じる。公開条件留保は維持。本番main変更なし。
+
+14:10 Margin gate first run failed at container default sh/pipefail before browser test; CPU passed. Explicit bash shell only corrected. Retry run 44679264357, commit d89528c52ba5767b97796b60ec756e0a32978acd. Inputs/threshold/gates unchanged.

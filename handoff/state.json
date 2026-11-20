@@ -10,12 +10,16 @@
   "active_task": {
     "phase": "0",
     "status": "phase0_margin_gate_running",
-    "run_id": 44679059648,
+    "run_id": 44679264357,
     "branch": "feat/coach-phase0-margin-gate-v1",
-    "commit": "721073cbf66d82409ac338aaf2a8cf9b104d7ef5",
+    "commit": "d89528c52ba5767b97796b60ec756e0a32978acd",
     "pr": 35,
     "scope": "p14 user plan: 100 synthetic calibration states, 12 repeated CPU/browser runs, threshold 10x max drift, separately tabulate 445 archived concrete actions. Source rebuild passed. Automatic final archive if successful. No new candidate training, no public release.",
-    "next": "On margin gate success verify all evidence and mark controlled internal Phase 0 complete; release remains blocked. Review concise text report for previous external reviewers. On failure fix without waiting for user instructions."
+    "next": "On margin gate success verify all evidence and mark controlled internal Phase 0 complete; release remains blocked. Review concise text report for previous external reviewers. On failure fix without waiting for user instructions.",
+    "failed_run": {
+      "id": 44679059648,
+      "reason": "Container default sh rejected bash pipefail; no browser calibration performed; CPU job passed; unchanged protocol and inputs, explicit bash shell only."
+    }
   },
   "previous_runs": [
     {
