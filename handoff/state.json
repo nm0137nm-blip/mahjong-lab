@@ -10,9 +10,9 @@
   "active_task": {
     "phase": "P1/R1",
     "status": "targeted_development_screen_running",
-    "run_id": 44698398245,
+    "run_id": 44698566009,
     "branch": "feat/coach-p1-r1-targeted-dev-v1",
-    "commit": "64cb36159fcfba123e59de6ed302c81f296c22e5",
+    "commit": "5bba41a398daf12bc5e2b0cf52a972192632e04f",
     "pr": 42,
     "scope": "Development-only six-fold probability models, family/danger strata and conditional payment; R1 on-policy grouped re-ranking of reaction and special (24 learned games) using actual frozen scores and public features. No formal evaluation or promotion.",
     "completed_audits": {
@@ -21,7 +21,12 @@
       "temporal_first_failed": 44697823107,
       "temporal_fix": "Independent audit reconstructs actual kaigang notification order instead of paipu append order; exact all 1023 +5355 turns aligned, no exclusion or changed labels."
     },
-    "next": "Check run 44698398245 and fix failures before continuing. P1 compare candidate family and danger metrics; further learned-opponent family, untouched outer manifest, full product scoring scope and independent release gates required. R1 investigate action-type transition and fixability; no +15pt claim, no formal trial until exact candidate protocol and distinct seeds fixed. General distribution held, main unchanged."
+    "next": "Read retry and R1 results; ensure P1 deterministic replay of same screen. Only clamp improves proper scores negligibly; no P1 probability candidate promoted. Conditional payment promising (RMSE 3781 vs baseline 4170); quantile coverage .741 vs nominal .8 and high-risk calibration need work. Develop independent third opponent family / distribution shift and larger development data, no outer holdout yet. No R2 formal selection without fixability and frozen protocol.",
+    "failed_run": {
+      "id": 44698398245,
+      "reason": "R1 missing scikit-learn in CI before model fitting; dependency only fixed, data and candidate unchanged; P1 screen passed"
+    },
+    "p1_first_screen": "archive/results/p1-candidate-screen-20261120.json"
   },
   "previous_runs": [
     {
