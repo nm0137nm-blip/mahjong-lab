@@ -1,0 +1,33 @@
+{
+  "scope": "operational pilot; no formal skill claim",
+  "parent_audit_run": 44667625456,
+  "variance": {
+    "blocks": 12,
+    "matches": 96,
+    "seed_namespace": "coach-phase0-variance-v1",
+    "arms": [
+      "frozen 200-game LGB",
+      "S42"
+    ],
+    "four_seats": true,
+    "pilot_only": true,
+    "planned_mme": 15,
+    "design": "two-sided 5%, 80% approximate planning power, upper 95% SD bound using chi-square df=11; minimum 30, cap 400 blocks; no pooling",
+    "limits": "small pilot; future DAgger variance may differ"
+  },
+  "live": {
+    "matches": 2,
+    "seed_namespace": "coach-phase0-live-v1",
+    "sampling": "first 3 non-forced CPU evaluations per seat per hand; actual played synthetic trajectories, not human games",
+    "observations": "native replay of same per-seat MJAI events; compare actual browser WASM observation, legal mask, Q and argmax with pinned original PyTorch",
+    "max_obs_error": 0.000001,
+    "max_q_error": 0.0001,
+    "limits": "independent native numerical parity at sampled states only; not full independent agent action payload equivalence, not independent engine replay; no private data from human games"
+  },
+  "open": [
+    "original agent grouped action payload parity/guard",
+    "license distribution review",
+    "candidate formal trial count and gate after pilot",
+    "P1 thresholds"
+  ]
+}
