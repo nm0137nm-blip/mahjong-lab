@@ -61,7 +61,7 @@ jobs:
           path: /tmp/dev
       - run: |
           set -euo pipefail
-          python -m pip install numpy==2.3.5 lightgbm==4.6.0
+          python -m pip install numpy==2.3.5 lightgbm==4.6.0 scikit-learn==1.8.0
           cp -r frozen/archive/versions/policy-200-lgb-v1 /tmp/arena-model
           python lab/tests/next/r1-targeted-diagnostic.py /tmp/dev
       - uses: actions/upload-artifact@v4
