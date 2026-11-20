@@ -1,0 +1,24 @@
+{
+  "run": 44717123756,
+  "job": 136233721867,
+  "artifact": 14621955659,
+  "snapshot": {
+    "opponent_states": 52491,
+    "candidate_ron_labels": 573540,
+    "score_labels": 4788,
+    "differences": 0
+  },
+  "temporal": {
+    "matches": 160,
+    "turns_aligned": 17497,
+    "opponent_states": 52491,
+    "passed_complete_shape": 1027,
+    "passed_after_riichi": 571,
+    "reset_on_nonriichi_discard": 149,
+    "added_kan": 38,
+    "kan_indicator_notification_reordered": 108,
+    "ron_ineligible": 133,
+    "own_river_furiten": 202,
+    "differences": 0
+  }
+}

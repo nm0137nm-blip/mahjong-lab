@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-20T19:12:00+09:00",
+  "checkpoint": "2026-11-20T20:01:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -9,7 +9,7 @@
   },
   "active_task": {
     "phase": "P1",
-    "status": "independent_outer_campaign_preflight_running",
+    "status": "outer_160_and_independent_audits_pass_final_serialization_recovery",
     "run_id": 44717123756,
     "branch": "feat/coach-p1-outer-evaluation-v1",
     "commit": "709c1be4da0c9e88a7c7a686167550d86a5c63ff",
@@ -27,7 +27,24 @@
       "all": "success"
     },
     "protocol": "handoff/p1-outer-protocol-v1.json",
-    "next": "Check run44717123756 preflight and all collection jobs; if startup-only failure, retry identical seeds and code. Any correctness mismatch investigate, no result exclusions or threshold changes. If audit and metrics complete, archive full independent evaluation and adjudicate P1; nonpass does not imply general predictive value absent, suppress unsupported scope, do not retune on same holdout. R1 current candidate archived, general release blocked. Historical full wall/trajectory hashes not available; independent scope limited to verified seed and available exact public-hash audit."
+    "next": "Check PR56 recovery and archive full final summary. Adjudicate P1 by preregistered gates, report supported/nonpass scopes; do not tune or repeat independent holdout. R1 current candidate closed. No release/main changes.",
+    "original_run": 44717123756,
+    "audit": {
+      "job": 136233721867,
+      "opponent_states": 52491,
+      "legal_ron_labels": 573540,
+      "score_labels": 4788,
+      "turns_aligned": 17497,
+      "differences": 0,
+      "artifact": 14621955659
+    },
+    "recovery": {
+      "branch": "feat/coach-p1-outer-result-recovery-v1",
+      "commit": "8e8c9b63d691be4a2b1a9f84230ca4e919443e05",
+      "pr": 56,
+      "run_id": 44723934431,
+      "reason": "All 160 games, independent audits and metrics calculation completed; numpy bool JSON serialization failure at final output. Reuse exact original artifacts, verify frozen source hashes, change final JSON scalar encoder only; no new games/model/metrics/threshold changes."
+    }
   },
   "previous_runs": [
     {
