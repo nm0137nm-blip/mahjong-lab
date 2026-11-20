@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-20T23:39:35+09:00",
+  "checkpoint": "2026-11-20T14:47:41.335Z",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -9,11 +9,11 @@
   },
   "active_task": {
     "phase": "P2a-pilot",
-    "status": "restricted_rollout_probe_queued",
+    "status": "independent_score_audit_running",
     "branch": "feat/coach-v14-pilot-boundary-v1",
-    "commit": "2cea9d713472db2f3af862f5c04016d2e62b7d94",
+    "commit": "a60f350a853061c2e8a391b34aa70113c5eafc63",
     "pr": 61,
-    "run_id": 44755542405,
+    "run_id": 44756791561,
     "prior_runs": [
       {
         "run_id": 44754324733,
@@ -32,10 +32,30 @@
         "cases": 8,
         "accepted": 128,
         "limits": "closed no-call only, non-riichi ready 0 in all samples, not conditional posterior; no continuation in that run"
+      },
+      {
+        "run_id": 44755542405,
+        "status": "restricted_engine_rollout_success",
+        "artifact": 14638351171,
+        "cases": 8,
+        "plannedPairs": 32,
+        "completedPairs": 32,
+        "elapsedSeconds": 106.301910866,
+        "limits": "standard CPU only, four samples per case, closed no-call starting history, no tactical conclusion"
+      },
+      {
+        "run_id": 44756585787,
+        "status": "public_shape_independent_audit_success",
+        "artifact": 14638130856,
+        "cases": 30,
+        "actionRows": 265,
+        "shapeRows": 341,
+        "scoreRowsNotChecked": 44,
+        "failures": 0
       }
     ],
-    "decision": "v1.4 conditional pilot only. Implemented independent/public request and comparison transport, hashes, schema and scope guard. 30 natural case packets prepared 10 each discard/reach/reaction; 18 riichi threat,12 multiple meld,10 late (overlap). Unit tests 4 pass; no real independent model inference, legal contrast labels, derived full facts, B3/B4 or weak comparator validation. No paid API: existing product manual ChatGPT paste/iPhone shortcut, no callable independent inference endpoint/credentials available in current environment. No user action requested before complete dev packets. Sampler 8 cases 16 each physical/reverse/forward consistency; now actual bundled engine continuation scheduled, 4 synthetic histories each, paired first/last candidate, standard CPU only; not tactical eval.",
-    "next": "Check workflow 44755542405; fix errors without user intervention, preserve full denominators. Then add independent own-shape evidence for all legal candidates (no raw archived facts), concrete reach/calls, negative controls and legal contrasts, diagnosis of sampler bias against development-only oracle by isolated verifier; broaden sampler to calls and opponent policies as needed. Actual GPT independent calls require external fresh-chat/manual workflow or authorized available inference runtime, no paid path assumed. Once dev packets complete and all autonomous work exhausted, if needed request user assistance with fresh independent chat outputs, not a paid API. Formal B/13222/Lite/large integration/main/distribution remain blocked.",
+    "decision": "Actual restricted rollout 32/32 pairs complete, no failure. 30 natural cases regenerated with candidate-specific public shape, dora, furiten, genbutsu and calls including individual riichi discards; independent Python shape audit 341 rows/265 legal actions passes. Added exact red/normal hypothetical scoring and independent points audit, running. No actual model inference or formal tactical evaluation.",
+    "next": "Check 44756791561; if failure repair exact discrepancy without deleting cases. Add rank movement evidence and typed path-value fact checking, negative controls with meaningful B3/B4 checks, valid paired public context contrasts, sampler bias and opponent-policy sensitivity. No paid inference or production changes. Actual tactical pilot requires independent real inference, not mocked. Confirm time and issue four-type report.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md"
   },
   "previous_runs": [
