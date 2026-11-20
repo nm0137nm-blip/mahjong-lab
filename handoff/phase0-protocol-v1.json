@@ -1,0 +1,65 @@
+{
+  "version": "phase0-v1.0-draft-operational-locked",
+  "source": "2026-11-20 麻雀コーチAI開発 実行計画確定版（写真18頁）",
+  "base_commit": "6f52cca3d15759641a7d130474ad878ba2458d98",
+  "phase0": {
+    "scope": "synthetic/public controlled research only",
+    "legal_gate": "license decision record; no expanded release pending review",
+    "parity": {
+      "upstream_commit": "0cff2b52982be5b1163aa9a62fb01f03ce91e0d2",
+      "pth_sha256": "e5f6955b6f19007fd65315e53291b36994493046bc118b991b959e9dc596d660",
+      "onnx_sha256": "30381bf21389e2d25d3edf48fed11bf772336ef3daeee67d1bdae7fb9dd30cb4",
+      "obs_error_max": 0.000001,
+      "legal_q_error_max": 0.0001,
+      "legal_mask_exact": true,
+      "top1_exact": true,
+      "scope": "existing synthetic fixtures + repeat checks; live trajectory parity remains separate"
+    },
+    "duplicate": {
+      "seed_namespace": "coach-phase0-duplicate-v1",
+      "blocks": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "rotations": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "repeat_dealer": 0,
+      "matches": 20,
+      "gate": "all assigned matches, first wall same across rotations, exact canonical match log/replay for fixed seat, zero fallback, audit legal actions; later walls keyed by wind/round/honba/occurrence",
+      "interpretation": "operational only. No skill claim. Candidate paired variance pilot and independent runtime live scenes still required."
+    }
+  },
+  "research": {
+    "max_cycles": 2,
+    "generated_hanchan_cap": 4000,
+    "formal_hanchan_cap": 6400,
+    "mme_rank_pt_per_cycle": 15,
+    "per_cycle_formal_cap": 3200,
+    "design": "400 seed blocks cap, 2 arms x 4 seats; analyze block paired differences, no optional stopping",
+    "sample_size": "estimate candidate-vs-baseline block variance on disjoint pilot before freezing exact N; if underpowered at cap, report inconclusive",
+    "utility": [
+      90,
+      45,
+      0,
+      -135
+    ]
+  },
+  "product": {
+    "policy": "Mortal top action unchanged",
+    "next": "calibrate existing estimates (OOF), same-decision candidate risk ranking, conditional loss and immediate expected loss; distinguish estimated from observed; no claim of causal explanation of Mortal",
+    "evaluation": "separate opponent families, score/risk and calibration metrics; small learning transfer pilot after P2"
+  },
+  "unresolved": [
+    "exact research stopping/gate CI and sample size after pilot",
+    "live independent S42 action parity and guard/group detail rule",
+    "license/NOTICE distribution completeness and full corresponding source",
+    "P1 exact acceptance thresholds before evaluation",
+    "P2b learner pilot protocol before recruitment"
+  ]
+}
