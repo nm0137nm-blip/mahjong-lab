@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-20T20:01:00+09:00",
+  "checkpoint": "2026-11-20T20:17:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -9,46 +9,14 @@
   },
   "active_task": {
     "phase": "P1",
-    "status": "outer_160_and_independent_audits_pass_final_serialization_recovery",
-    "run_id": 44717123756,
-    "branch": "feat/coach-p1-outer-evaluation-v1",
-    "commit": "709c1be4da0c9e88a7c7a686167550d86a5c63ff",
-    "pr": 55,
-    "scope": "Frozen candidate, 160 disjoint matches, four opponent families × two progressions × four seats × five repeats. Preflight locks source/runtime and seed manifest; collection requires exact parent integration QA (44716885967 success). Independent snapshot and temporal audits before metrics. No tuning, no new formal R2 games, no product release.",
-    "candidate": {
-      "run": 44712159043,
-      "artifact": 14616369981,
-      "sha256": "05f7ebd026ffe73af605be0b1a94b2904402af24435b288027f60ce384fd08fe"
-    },
-    "qa": {
-      "runner": 44714465352,
-      "metrics": 44714628933,
-      "integration": 44716885967,
-      "all": "success"
-    },
-    "protocol": "handoff/p1-outer-protocol-v1.json",
-    "next": "Check PR56 recovery and archive full final summary. Adjudicate P1 by preregistered gates, report supported/nonpass scopes; do not tune or repeat independent holdout. R1 current candidate closed. No release/main changes.",
-    "original_run": 44717123756,
-    "audit": {
-      "job": 136233721867,
-      "opponent_states": 52491,
-      "legal_ron_labels": 573540,
-      "score_labels": 4788,
-      "turns_aligned": 17497,
-      "differences": 0,
-      "artifact": 14621955659
-    },
-    "recovery": {
-      "branch": "feat/coach-p1-outer-result-recovery-v1",
-      "commit": "b339d23938ac1ee1e1b4dc1d440c6fb8f37f3462",
-      "pr": 56,
-      "run_id": 44724172479,
-      "reason": "All 160 games, independent audits and metrics calculation completed; numpy bool JSON serialization failure at final output. Reuse exact original artifacts, verify frozen source hashes, change final JSON scalar encoder only; no new games/model/metrics/threshold changes.",
-      "previous_failure": {
-        "run_id": 44723934431,
-        "reason": "Cross-run artifact pattern download returned 99/160 due first-page limit. Original full API inventory 160/160 verified. Updated to paginate and verify every original archive SHA256; no match or metric changes."
-      }
-    }
+    "status": "v1_outer_final_not_full_pass_v2_bounded_development_collection",
+    "run_id": 44726204303,
+    "branch": "feat/coach-p1-v2-development-data-v1",
+    "commit": "75c87e621b85bc411ef92152f84918a1802dbd2b",
+    "pr": 57,
+    "decision": "V1 primary Ron logloss and Brier pass pooled and all four families, pooled rank and payment pass; full P1 gate fails on T calibration (S42/self/all), unseen efficiency nonriichi positives only 6, basic rank and MAE, efficiency MAE/RMSE and high-risk ranking. V1 outer sealed, never train or calibrate on its case rows or labels; only aggregate failure categories motivate v2. All uncertified numeric outputs suppressed; no release. One bounded v2 development cycle, no automatic looping if candidate fails. R1 current candidate archived, formal R2 untouched.",
+    "scope": "96 fresh development games 32 each S42/basic/frozen learned × two fixed progressions × four seats × four repetitions; exclude all V1 outer seeds and all prior development/history and reserved R2 seeds. Independent label/replay audits. P2a deterministic explanation preparation may proceed separately with numbers suppressed, no participant pilot or claim P1 full pass.",
+    "next": "Check run44726204303. Develop grouped public-only T calibration, rank-sensitive coherent R, separate median/mean payment models using only old120+72 dev and new96, never V1 heldout rows. New independent outer only if v2 dev gates support, with new unseen progression/family and adequate nonriichi support, frozen prereg thresholds, no automatic repeated tuning. Preserve V1 formal result. P2a facts-only contract preparation in parallel if feasible. No main or distribution."
   },
   "previous_runs": [
     {
@@ -1004,6 +972,50 @@
       },
       "next": "Check both QA runs, fix failures. Implement exact manifest verification, full joined predictor/baseline/evaluation from public inputs and audited labels, aggregate and focal-progression diagnostics. Freeze complete code/runtime/rule/candidate/seed manifest before 160 fresh matches. Do not acquire outer until QA passes; no model selection or threshold changes on outer; unsupported strata cannot pass. General release held, main unchanged.",
       "integration_run": 44716885967
+    },
+    {
+      "phase": "P1",
+      "status": "outer_v1_final_full_gate_failed_primary_pass",
+      "run_id": 44717123756,
+      "branch": "feat/coach-p1-outer-evaluation-v1",
+      "commit": "709c1be4da0c9e88a7c7a686167550d86a5c63ff",
+      "pr": 55,
+      "scope": "Frozen candidate, 160 disjoint matches, four opponent families × two progressions × four seats × five repeats. Preflight locks source/runtime and seed manifest; collection requires exact parent integration QA (44716885967 success). Independent snapshot and temporal audits before metrics. No tuning, no new formal R2 games, no product release.",
+      "candidate": {
+        "run": 44712159043,
+        "artifact": 14616369981,
+        "sha256": "05f7ebd026ffe73af605be0b1a94b2904402af24435b288027f60ce384fd08fe"
+      },
+      "qa": {
+        "runner": 44714465352,
+        "metrics": 44714628933,
+        "integration": 44716885967,
+        "all": "success"
+      },
+      "protocol": "handoff/p1-outer-protocol-v1.json",
+      "next": "Check PR56 recovery and archive full final summary. Adjudicate P1 by preregistered gates, report supported/nonpass scopes; do not tune or repeat independent holdout. R1 current candidate closed. No release/main changes.",
+      "original_run": 44717123756,
+      "audit": {
+        "job": 136233721867,
+        "opponent_states": 52491,
+        "legal_ron_labels": 573540,
+        "score_labels": 4788,
+        "turns_aligned": 17497,
+        "differences": 0,
+        "artifact": 14621955659
+      },
+      "recovery": {
+        "branch": "feat/coach-p1-outer-result-recovery-v1",
+        "commit": "b339d23938ac1ee1e1b4dc1d440c6fb8f37f3462",
+        "pr": 56,
+        "run_id": 44724172479,
+        "reason": "All 160 games, independent audits and metrics calculation completed; numpy bool JSON serialization failure at final output. Reuse exact original artifacts, verify frozen source hashes, change final JSON scalar encoder only; no new games/model/metrics/threshold changes.",
+        "previous_failure": {
+          "run_id": 44723934431,
+          "reason": "Cross-run artifact pattern download returned 99/160 due first-page limit. Original full API inventory 160/160 verified. Updated to paginate and verify every original archive SHA256; no match or metric changes."
+        }
+      },
+      "result": "archive/results/p1-outer-final-v1-20261120.json"
     }
   ],
   "roadmap": {

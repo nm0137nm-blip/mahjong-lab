@@ -1,0 +1,972 @@
+{
+  "original_run": 44717123756,
+  "recovery_run": 44724172479,
+  "job": 136247253063,
+  "artifact": [
+    {
+      "id": 14623611168,
+      "name": "p1-recovered-outer-summary",
+      "digest": "sha256:9a3e364961cfce41215b022cd0d2597907c220537f071bd8c355f7e9998f5e7b"
+    }
+  ],
+  "summary": {
+    "status": "P1_visible_outer_not_full_pass",
+    "primary_pass": true,
+    "all_family_gate": false,
+    "high_risk_gate": {
+      "riichi": false,
+      "multi_meld": false,
+      "late": false
+    },
+    "coverage": {
+      "tenpai_rows": 52491,
+      "ron_rows": 573540,
+      "aggregate_candidates": 191180,
+      "deterministic_riichi": 4369,
+      "deterministic_safe": 56820
+    },
+    "scopes": {
+      "all": {
+        "tenpai": {
+          "pass": false,
+          "supported": true,
+          "metrics": {
+            "n": 48122,
+            "positives": 2742,
+            "brier": 0.03326883597331405,
+            "log_loss": 0.12566108242924592,
+            "auprc_ap": 0.5932865916029549
+          },
+          "logloss_delta": {
+            "estimate": 0,
+            "ci95": [
+              0,
+              0
+            ]
+          },
+          "brier_delta": {
+            "estimate": 0,
+            "ci95": [
+              0,
+              0
+            ]
+          },
+          "max_supported_gap": 0.08975764751858406,
+          "baseline": {
+            "n": 48122,
+            "positives": 2742,
+            "brier": 0.03326883597331405,
+            "log_loss": 0.12566108242924592,
+            "auprc_ap": 0.5932865916029549
+          }
+        },
+        "ron": {
+          "pass": true,
+          "supported": true,
+          "metrics": {
+            "n": 516720,
+            "positives": 4788,
+            "brier": 0.00843343937320129,
+            "log_loss": 0.03406885614158126,
+            "auprc_ap": 0.12750847702994478
+          },
+          "logloss_delta": {
+            "estimate": -0.00043818096385532523,
+            "ci95": [
+              -0.000595306452522673,
+              -0.0002864361326563894
+            ]
+          },
+          "brier_delta": {
+            "estimate": -0.00003756435709769291,
+            "ci95": [
+              -0.00005593795471075192,
+              -0.00001928491272964523
+            ]
+          },
+          "max_supported_gap": 0.018489069967791677,
+          "baseline": {
+            "n": 516720,
+            "positives": 4788,
+            "brier": 0.008471143308071855,
+            "log_loss": 0.03450689162201071,
+            "auprc_ap": 0.12193959579754987
+          }
+        },
+        "ranking": {
+          "pass": true,
+          "supported": true,
+          "candidate": {
+            "mixed_sets": 4040,
+            "all_sets": 52460,
+            "macro_auc": 0.6508251845102093
+          },
+          "baseline": {
+            "mixed_sets": 4040,
+            "all_sets": 52460,
+            "macro_auc": 0.6450062700294754
+          }
+        },
+        "payment": {
+          "pass": true,
+          "supported": true,
+          "mae_delta": {
+            "estimate": -33.73511025702726,
+            "ci95": [
+              -170.80955134209722,
+              93.66433047784871
+            ]
+          },
+          "rmse_delta": {
+            "estimate": -224.11196417114093,
+            "ci95": [
+              -342.5650086534991,
+              -105.84211796403437
+            ]
+          },
+          "exposure_rmse_delta": {
+            "estimate": -18.524551645377343,
+            "ci95": [
+              -21.472816125954356,
+              -15.46692585994706
+            ]
+          },
+          "coverage80": 0.8504594820384294,
+          "high_loss_pass": true,
+          "high_loss_underestimate_delta": -115.64950199531357
+        }
+      },
+      "s42": {
+        "tenpai": {
+          "pass": false,
+          "supported": true,
+          "metrics": {
+            "n": 12847,
+            "positives": 1052,
+            "brier": 0.05039652212034734,
+            "log_loss": 0.1926777342007694,
+            "auprc_ap": 0.5825260735255275
+          },
+          "logloss_delta": {
+            "estimate": 0,
+            "ci95": [
+              0,
+              0
+            ]
+          },
+          "brier_delta": {
+            "estimate": 0,
+            "ci95": [
+              0,
+              0
+            ]
+          },
+          "max_supported_gap": 0.10383602653021201,
+          "baseline": {
+            "n": 12847,
+            "positives": 1052,
+            "brier": 0.05039652212034734,
+            "log_loss": 0.1926777342007694,
+            "auprc_ap": 0.5825260735255275
+          }
+        },
+        "ron": {
+          "pass": true,
+          "supported": true,
+          "metrics": {
+            "n": 135909,
+            "positives": 1369,
+            "brier": 0.009227370734998668,
+            "log_loss": 0.03869091772727986,
+            "auprc_ap": 0.12289799421003485
+          },
+          "logloss_delta": {
+            "estimate": -0.0004518236180094254,
+            "ci95": [
+              -0.0008473598775159555,
+              -0.00011539616916034249
+            ]
+          },
+          "brier_delta": {
+            "estimate": -0.00004946953188835444,
+            "ci95": [
+              -0.00008470929148192679,
+              -0.0000168103596489271
+            ]
+          },
+          "max_supported_gap": 0.025951046400952305,
+          "baseline": {
+            "n": 135909,
+            "positives": 1369,
+            "brier": 0.009276840266887024,
+            "log_loss": 0.039142741345289285,
+            "auprc_ap": 0.11805841893227755
+          }
+        },
+        "ranking": {
+          "pass": true,
+          "supported": true,
+          "candidate": {
+            "mixed_sets": 1120,
+            "all_sets": 13656,
+            "macro_auc": 0.6569199649556793
+          },
+          "baseline": {
+            "mixed_sets": 1120,
+            "all_sets": 13656,
+            "macro_auc": 0.6517443890434962
+          }
+        },
+        "payment": {
+          "pass": true,
+          "supported": true,
+          "mae_delta": {
+            "estimate": -330.2697815457145,
+            "ci95": [
+              -585.1479301898568,
+              -117.65807053375222
+            ]
+          },
+          "rmse_delta": {
+            "estimate": -515.2549773750147,
+            "ci95": [
+              -700.4652690338493,
+              -340.015704757744
+            ]
+          },
+          "exposure_rmse_delta": {
+            "estimate": -20.466741309521467,
+            "ci95": [
+              -25.06312476496667,
+              -15.785036763354068
+            ]
+          },
+          "coverage80": 0.8889700511322133,
+          "high_loss_pass": true,
+          "high_loss_underestimate_delta": -111.31170623736061
+        }
+      },
+      "basic": {
+        "tenpai": {
+          "pass": true,
+          "supported": true,
+          "metrics": {
+            "n": 11381,
+            "positives": 766,
+            "brier": 0.03312457808778775,
+            "log_loss": 0.10593001837894854,
+            "auprc_ap": 0.6499429041500563
+          },
+          "logloss_delta": {
+            "estimate": 0,
+            "ci95": [
+              0,
+              0
+            ]
+          },
+          "brier_delta": {
+            "estimate": 0,
+            "ci95": [
+              0,
+              0
+            ]
+          },
+          "max_supported_gap": 0.04467263646773356,
+          "baseline": {
+            "n": 11381,
+            "positives": 766,
+            "brier": 0.03312457808778775,
+            "log_loss": 0.10593001837894854,
+            "auprc_ap": 0.6499429041500563
+          }
+        },
+        "ron": {
+          "pass": true,
+          "supported": true,
+          "metrics": {
+            "n": 123533,
+            "positives": 1186,
+            "brier": 0.008768127563624521,
+            "log_loss": 0.035178607439478045,
+            "auprc_ap": 0.12106726807593175
+          },
+          "logloss_delta": {
+            "estimate": -0.0004845370851884537,
+            "ci95": [
+              -0.0007707022338313085,
+              -0.00021254260679627832
+            ]
+          },
+          "brier_delta": {
+            "estimate": -0.00003094007587445616,
+            "ci95": [
+              -0.00006789651522403866,
+              0.0000023086997983122175
+            ]
+          },
+          "max_supported_gap": 0.011196810816470365,
+          "baseline": {
+            "n": 123533,
+            "positives": 1186,
+            "brier": 0.008799067639498977,
+            "log_loss": 0.0356631445246665,
+            "auprc_ap": 0.1173511275518781
+          }
+        },
+        "ranking": {
+          "pass": false,
+          "supported": true,
+          "candidate": {
+            "mixed_sets": 1004,
+            "all_sets": 12423,
+            "macro_auc": 0.6577658494117657
+          },
+          "baseline": {
+            "mixed_sets": 1004,
+            "all_sets": 12423,
+            "macro_auc": 0.6580077389962848
+          }
+        },
+        "payment": {
+          "pass": false,
+          "supported": true,
+          "mae_delta": {
+            "estimate": 68.23951325055486,
+            "ci95": [
+              -194.57738724144102,
+              324.97814942461997
+            ]
+          },
+          "rmse_delta": {
+            "estimate": -211.6079555658598,
+            "ci95": [
+              -512.0085820964289,
+              130.24957711597136
+            ]
+          },
+          "exposure_rmse_delta": {
+            "estimate": -20.385671372285856,
+            "ci95": [
+              -27.14859742680337,
+              -13.754466269365748
+            ]
+          },
+          "coverage80": 0.9013490725126475,
+          "high_loss_pass": true,
+          "high_loss_underestimate_delta": -176.5687664568508
+        }
+      },
+      "self": {
+        "tenpai": {
+          "pass": false,
+          "supported": true,
+          "metrics": {
+            "n": 12254,
+            "positives": 918,
+            "brier": 0.04652799542754321,
+            "log_loss": 0.18694640486246786,
+            "auprc_ap": 0.6236999739242789
+          },
+          "logloss_delta": {
+            "estimate": 0,
+            "ci95": [
+              0,
+              0
+            ]
+          },
+          "brier_delta": {
+            "estimate": 0,
+            "ci95": [
+              0,
+              0
+            ]
+          },
+          "max_supported_gap": 0.10735561364442989,
+          "baseline": {
+            "n": 12254,
+            "positives": 918,
+            "brier": 0.04652799542754321,
+            "log_loss": 0.18694640486246786,
+            "auprc_ap": 0.6236999739242789
+          }
+        },
+        "ron": {
+          "pass": true,
+          "supported": true,
+          "metrics": {
+            "n": 131498,
+            "positives": 1412,
+            "brier": 0.009686240157941828,
+            "log_loss": 0.03895229538988104,
+            "auprc_ap": 0.14655005040715147
+          },
+          "logloss_delta": {
+            "estimate": -0.00041908365096500477,
+            "ci95": [
+              -0.0008089251945425007,
+              -0.00005358695243966263
+            ]
+          },
+          "brier_delta": {
+            "estimate": -0.000026485369940303788,
+            "ci95": [
+              -0.0000734775408883121,
+              0.000021535552492699966
+            ]
+          },
+          "max_supported_gap": 0.019678565434329054,
+          "baseline": {
+            "n": 131498,
+            "positives": 1412,
+            "brier": 0.009712725527882136,
+            "log_loss": 0.03937137904084604,
+            "auprc_ap": 0.1431275116080473
+          }
+        },
+        "ranking": {
+          "pass": true,
+          "supported": true,
+          "candidate": {
+            "mixed_sets": 1185,
+            "all_sets": 13417,
+            "macro_auc": 0.6583831686363332
+          },
+          "baseline": {
+            "mixed_sets": 1185,
+            "all_sets": 13417,
+            "macro_auc": 0.6501593161877972
+          }
+        },
+        "payment": {
+          "pass": true,
+          "supported": true,
+          "mae_delta": {
+            "estimate": -200.48866029225837,
+            "ci95": [
+              -470.84054617687735,
+              48.11703367638615
+            ]
+          },
+          "rmse_delta": {
+            "estimate": -289.66959775243004,
+            "ci95": [
+              -525.5163130028089,
+              -68.96262907712837
+            ]
+          },
+          "exposure_rmse_delta": {
+            "estimate": -22.069367134902564,
+            "ci95": [
+              -29.01569957023909,
+              -15.367437466691372
+            ]
+          },
+          "coverage80": 0.8186968838526912,
+          "high_loss_pass": true,
+          "high_loss_underestimate_delta": -105.83820922141996
+        }
+      },
+      "efficiency": {
+        "tenpai": {
+          "pass": false,
+          "supported": false,
+          "metrics": {
+            "n": 11640,
+            "positives": 6,
+            "brier": 0.0005475881307121657,
+            "log_loss": 0.006469155758367148,
+            "auprc_ap": 0.05721171444364243
+          },
+          "logloss_delta": {
+            "estimate": 0,
+            "ci95": [
+              0,
+              0
+            ]
+          },
+          "brier_delta": {
+            "estimate": 0,
+            "ci95": [
+              0,
+              0
+            ]
+          },
+          "max_supported_gap": 0.0037153655368816502,
+          "baseline": {
+            "n": 11640,
+            "positives": 6,
+            "brier": 0.0005475881307121657,
+            "log_loss": 0.006469155758367148,
+            "auprc_ap": 0.05721171444364243
+          }
+        },
+        "ron": {
+          "pass": true,
+          "supported": true,
+          "metrics": {
+            "n": 125780,
+            "positives": 821,
+            "brier": 0.005937110455488747,
+            "log_loss": 0.022879214152340368,
+            "auprc_ap": 0.12418923884968047
+          },
+          "logloss_delta": {
+            "estimate": -0.0003972795012584171,
+            "ci95": [
+              -0.0005648031500559579,
+              -0.00023294025046294295
+            ]
+          },
+          "brier_delta": {
+            "estimate": -0.00004336245068765725,
+            "ci95": [
+              -0.00007256275956533946,
+              -0.000015095116306368637
+            ]
+          },
+          "max_supported_gap": 0.020431780589149573,
+          "baseline": {
+            "n": 125780,
+            "positives": 821,
+            "brier": 0.005980472906176404,
+            "log_loss": 0.023276493653598785,
+            "auprc_ap": 0.11027237670595927
+          }
+        },
+        "ranking": {
+          "pass": true,
+          "supported": true,
+          "candidate": {
+            "mixed_sets": 731,
+            "all_sets": 12964,
+            "macro_auc": 0.6197023488747155
+          },
+          "baseline": {
+            "mixed_sets": 731,
+            "all_sets": 12964,
+            "macro_auc": 0.6084720322237422
+          }
+        },
+        "payment": {
+          "pass": false,
+          "supported": true,
+          "mae_delta": {
+            "estimate": 327.578487559309,
+            "ci95": [
+              31.660890182576615,
+              621.7885896227515
+            ]
+          },
+          "rmse_delta": {
+            "estimate": 120.08467400874088,
+            "ci95": [
+              -56.634642998163564,
+              294.4607223568247
+            ]
+          },
+          "exposure_rmse_delta": {
+            "estimate": -11.176426764799487,
+            "ci95": [
+              -16.377646622664862,
+              -5.483527361011074
+            ]
+          },
+          "coverage80": 0.7673568818514007,
+          "high_loss_pass": true,
+          "high_loss_underestimate_delta": -69.03448430101606
+        }
+      },
+      "riichi": {
+        "tenpai": {
+          "pass": false,
+          "supported": false
+        },
+        "ron": {
+          "pass": true,
+          "supported": true,
+          "metrics": {
+            "n": 34830,
+            "positives": 3157,
+            "brier": 0.08058211226622669,
+            "log_loss": 0.29218762554105565,
+            "auprc_ap": 0.14704597433683703
+          },
+          "logloss_delta": {
+            "estimate": -0.0022529336838802844,
+            "ci95": [
+              -0.0038912519464570157,
+              -0.000623612274731216
+            ]
+          },
+          "brier_delta": {
+            "estimate": -0.0003391378328765765,
+            "ci95": [
+              -0.0005937532106551524,
+              -0.00008470610655284594
+            ]
+          },
+          "max_supported_gap": 0.021967902568880593,
+          "baseline": {
+            "n": 34830,
+            "positives": 3157,
+            "brier": 0.08091195828040629,
+            "log_loss": 0.2943375250901944,
+            "auprc_ap": 0.14161218044669727
+          }
+        },
+        "ranking": {
+          "pass": false,
+          "supported": true,
+          "candidate": {
+            "mixed_sets": 2632,
+            "all_sets": 4361,
+            "macro_auc": 0.6349044398483988
+          },
+          "baseline": {
+            "mixed_sets": 2632,
+            "all_sets": 4361,
+            "macro_auc": 0.6383171183869322
+          }
+        },
+        "payment": {
+          "pass": true,
+          "supported": true,
+          "mae_delta": {
+            "estimate": -22.988616048753784,
+            "ci95": [
+              -228.35753138383495,
+              161.49474889931693
+            ]
+          },
+          "rmse_delta": {
+            "estimate": -110.87524029538599,
+            "ci95": [
+              -258.0083075909859,
+              37.029672490180886
+            ]
+          },
+          "exposure_rmse_delta": {
+            "estimate": -66.94354500424396,
+            "ci95": [
+              -78.31673177630671,
+              -54.812265056950984
+            ]
+          },
+          "coverage80": 0.8197656002534052,
+          "high_loss_pass": true,
+          "high_loss_underestimate_delta": -148.70669709789368
+        }
+      },
+      "multi_meld": {
+        "tenpai": {
+          "pass": false,
+          "supported": true,
+          "metrics": {
+            "n": 1931,
+            "positives": 1118,
+            "brier": 0.2013988458488305,
+            "log_loss": 0.5884660328089459,
+            "auprc_ap": 0.7756461317357786
+          },
+          "logloss_delta": {
+            "estimate": 0,
+            "ci95": [
+              0,
+              0
+            ]
+          },
+          "brier_delta": {
+            "estimate": 0,
+            "ci95": [
+              0,
+              0
+            ]
+          },
+          "max_supported_gap": 0.0993306521121845,
+          "baseline": {
+            "n": 1931,
+            "positives": 1118,
+            "brier": 0.2013988458488305,
+            "log_loss": 0.5884660328089459,
+            "auprc_ap": 0.7756461317357786
+          }
+        },
+        "ron": {
+          "pass": true,
+          "supported": true,
+          "metrics": {
+            "n": 16673,
+            "positives": 710,
+            "brier": 0.039668405718780574,
+            "log_loss": 0.1623905779870571,
+            "auprc_ap": 0.09980084017981894
+          },
+          "logloss_delta": {
+            "estimate": -0.0021735233424184375,
+            "ci95": [
+              -0.004016234005157051,
+              -0.00040372862844353246
+            ]
+          },
+          "brier_delta": {
+            "estimate": -0.00022379906492821464,
+            "ci95": [
+              -0.0003920164076854947,
+              -0.000057442920742914336
+            ]
+          },
+          "max_supported_gap": 0.004334320129935627,
+          "baseline": {
+            "n": 16673,
+            "positives": 710,
+            "brier": 0.03987728723626303,
+            "log_loss": 0.1644195746543004,
+            "auprc_ap": 0.09273938873748955
+          }
+        },
+        "ranking": {
+          "pass": false,
+          "supported": true,
+          "candidate": {
+            "mixed_sets": 608,
+            "all_sets": 1930,
+            "macro_auc": 0.6942689346472242
+          },
+          "baseline": {
+            "mixed_sets": 608,
+            "all_sets": 1930,
+            "macro_auc": 0.698354106146047
+          }
+        },
+        "payment": {
+          "pass": true,
+          "supported": true,
+          "mae_delta": {
+            "estimate": -289.43703121838536,
+            "ci95": [
+              -386.93458545655886,
+              -185.255359927116
+            ]
+          },
+          "rmse_delta": {
+            "estimate": -903.7673111377125,
+            "ci95": [
+              -1166.8169093203846,
+              -629.3670979616506
+            ]
+          },
+          "exposure_rmse_delta": {
+            "estimate": -17.593888453596758,
+            "ci95": [
+              -23.95260545336289,
+              -9.753859781096912
+            ]
+          },
+          "coverage80": 0.9605633802816902,
+          "high_loss_pass": false,
+          "high_loss_underestimate_delta": 18.947393348271486
+        }
+      },
+      "late": {
+        "tenpai": {
+          "pass": false,
+          "supported": true,
+          "metrics": {
+            "n": 2615,
+            "positives": 542,
+            "brier": 0.11368480853208442,
+            "log_loss": 0.4072932925713756,
+            "auprc_ap": 0.6785244949596988
+          },
+          "logloss_delta": {
+            "estimate": 0,
+            "ci95": [
+              0,
+              0
+            ]
+          },
+          "brier_delta": {
+            "estimate": 0,
+            "ci95": [
+              0,
+              0
+            ]
+          },
+          "max_supported_gap": 0.06696445545754086,
+          "baseline": {
+            "n": 2615,
+            "positives": 542,
+            "brier": 0.11368480853208442,
+            "log_loss": 0.4072932925713756,
+            "auprc_ap": 0.6785244949596988
+          }
+        },
+        "ron": {
+          "pass": true,
+          "supported": true,
+          "metrics": {
+            "n": 27587,
+            "positives": 1226,
+            "brier": 0.03924262506247657,
+            "log_loss": 0.14763706905879487,
+            "auprc_ap": 0.1655577478528288
+          },
+          "logloss_delta": {
+            "estimate": -0.0017267441530421888,
+            "ci95": [
+              -0.002942496739622853,
+              -0.0006167312353860497
+            ]
+          },
+          "brier_delta": {
+            "estimate": -0.00017615232935694596,
+            "ci95": [
+              -0.0003773772144457314,
+              0.000002835671401219007
+            ]
+          },
+          "max_supported_gap": 0.024476924814888695,
+          "baseline": {
+            "n": 27587,
+            "positives": 1226,
+            "brier": 0.03941588137392356,
+            "log_loss": 0.14936353575393332,
+            "auprc_ap": 0.1570248834815257
+          }
+        },
+        "ranking": {
+          "pass": false,
+          "supported": true,
+          "candidate": {
+            "mixed_sets": 1005,
+            "all_sets": 3723,
+            "macro_auc": 0.6379718471136382
+          },
+          "baseline": {
+            "mixed_sets": 1005,
+            "all_sets": 3723,
+            "macro_auc": 0.638043727969101
+          }
+        },
+        "payment": {
+          "pass": false,
+          "supported": true,
+          "mae_delta": {
+            "estimate": 166.81374884792774,
+            "ci95": [
+              -70.34098228528507,
+              410.7612820506991
+            ]
+          },
+          "rmse_delta": {
+            "estimate": -62.8676016129416,
+            "ci95": [
+              -232.21296850054952,
+              99.24995577672964
+            ]
+          },
+          "exposure_rmse_delta": {
+            "estimate": -40.57708764354186,
+            "ci95": [
+              -51.25149392524494,
+              -29.224829613384475
+            ]
+          },
+          "coverage80": 0.8376835236541599,
+          "high_loss_pass": true,
+          "high_loss_underestimate_delta": -102.34399225021093
+        }
+      }
+    }
+  },
+  "aggregate": {
+    "status": "P1_visible_outer_not_full_pass",
+    "primary_pass": true,
+    "all_family_gate": false,
+    "high_risk_gate": {
+      "riichi": false,
+      "multi_meld": false,
+      "late": false
+    },
+    "aggregate_divergence_suppressed": 1212,
+    "aggregate_rows": 191180,
+    "limitations": "Visible no-ura legal opportunity only. Unsupported strata or bins not certified; diagnostic aggregate not actual settlement. No production release by this result.",
+    "matches": 160,
+    "manifest_sha256": "1b78bcab0b3a496d0c6571f6f3e08b7dc35dd8275fde60c3dc449b6f1055c342",
+    "coverage": {
+      "tenpai_rows": 52491,
+      "ron_rows": 573540,
+      "aggregate_candidates": 191180,
+      "deterministic_riichi": 4369,
+      "deterministic_safe": 56820
+    },
+    "aggregate": {
+      "all": {
+        "n": 191180,
+        "matches": 160,
+        "direct_rmse": 958.7493677803252,
+        "decomp_rmse": 935.6935760981399,
+        "settlement_rmse": 975.3788109336268,
+        "divergence_quantiles": [
+          48.579414133159524,
+          256.5555980296871,
+          391.7562188096351,
+          855.6713569625182
+        ]
+      },
+      "s42": {
+        "n": 50298,
+        "matches": 40,
+        "direct_rmse": 999.9013117429234,
+        "decomp_rmse": 970.7503540649166,
+        "settlement_rmse": 1024.535870063409,
+        "divergence_quantiles": [
+          48.477385100144815,
+          225.32643587819632,
+          326.25194934181815,
+          719.4082773122168
+        ]
+      },
+      "basic": {
+        "n": 45419,
+        "matches": 40,
+        "direct_rmse": 918.0943169308738,
+        "decomp_rmse": 893.4744815086335,
+        "settlement_rmse": 933.7576703774384,
+        "divergence_quantiles": [
+          48.396056799761745,
+          263.1431502014888,
+          417.0589446734878,
+          854.6790947694858
+        ]
+      },
+      "self": {
+        "n": 48500,
+        "matches": 40,
+        "direct_rmse": 1110.5374172171087,
+        "decomp_rmse": 1085.8113751056178,
+        "settlement_rmse": 1122.6691376668691,
+        "divergence_quantiles": [
+          48.72876632557223,
+          267.26616390240423,
+          433.5891133034398,
+          963.1023208020159
+        ]
+      },
+      "efficiency": {
+        "n": 46963,
+        "matches": 40,
+        "direct_rmse": 763.0833390100545,
+        "decomp_rmse": 751.8203637030778,
+        "settlement_rmse": 777.0359018298496,
+        "divergence_quantiles": [
+          48.74857828818716,
+          273.3804190442243,
+          409.2369711431042,
+          892.2765686955818
+        ]
+      }
+    },
+    "scope": "formal fixed 160-match outer; no tuning, visible-only legal opportunity; historical raw wall hashes incomplete; no release"
+  }
+}
