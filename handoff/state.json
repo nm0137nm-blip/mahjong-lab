@@ -9,9 +9,9 @@
   },
   "active_task": {
     "phase": "P1",
-    "status": "P1_candidate_freeze_retry_and_live_hidden_boundary_running",
+    "status": "P1_candidate_frozen_live_hidden_boundary_running",
     "r1_decision": "Archive pure augmentation candidate, no R2 formal trial: extension 0pt, combined 1.40625pt, both below 15pt predeclared engineering gate. Research paused on this candidate only, not proof no future improvement. 128 games and summary calculations succeeded, upload path mismatch caused run failure; preserve exact CI JSON and independently regenerate from artifacts.",
-    "next": "Check freeze retry and live hidden boundary jobs, fix if needed. R1 reaggregation passed twice; no new R1 games. Review outer proposal; finalize exact model identity, independent unseen progression/family policy, seed exclusions, evaluator and support/gate tests before acquiring any untouched outer data. No main/release changes.",
+    "next": "Check PR51; fix any issues. Freeze outer family/progression implementation and evaluation before acquisition. Candidate training/interval calibration fixed and public RPC smoke passed; no final evaluation or release. R1 closed current candidate.",
     "run_id": 44712159043,
     "branch": "feat/coach-p1-candidate-freeze-v1",
     "commit": "a4f472e023857d9d59446e6cc7a0daf90163b734",
@@ -27,6 +27,11 @@
       "commit": "5db86c67007ba6df38976cfc298c242ce1bb51db",
       "pr": 51,
       "scope": "Two reused development seeds, actual public capture/recompute under hidden-field read poisoning, exact predictor equality, no progress while poisoned, exact frozen artifact dependency."
+    },
+    "freeze_result": "archive/results/p1-frozen-candidate-20261120.json",
+    "artifact": {
+      "id": 14616369981,
+      "sha256": "05f7ebd026ffe73af605be0b1a94b2904402af24435b288027f60ce384fd08fe"
     }
   },
   "previous_runs": [
