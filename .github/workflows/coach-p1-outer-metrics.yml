@@ -1,0 +1,16 @@
+name: P1 outer metric gate unit tests (no evaluation data)
+on:
+  pull_request:
+    branches: [feat/coach-p1-outer-runner-qa-v1]
+permissions:
+  contents: read
+jobs:
+  unit:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - run: python -m pip install numpy==2.3.5
+      - run: cd tests/next && python -m unittest -v test_p1_outer_metrics
