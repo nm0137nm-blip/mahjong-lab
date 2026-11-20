@@ -88,6 +88,26 @@ def audit(e,stats,errors):
  board=ev['board'];own=board['ownSeat'];h=ev['own']['hand'];ms=ev['own']['melds'];ds=list(map(dora,ev['own']['doraIndicators']))
  visible=dict(zip(T,counts(h+ev['own']['doraIndicators']+sum(([d['tile'] for d in ev['seat-'+str(i)]['discards'] if not d['called']]+sum(map(meld,ev['seat-'+str(i)]['melds']),[]) for i in range(4)),[]))))
  check('visible',ev['visible']['counts'],visible);check('dora',ev['dora']['actualDora'],ds)
+ ranks=ev['rank-scenarios'];base=[z['points'] for z in board['scores']]
+ def rank(p):
+  order=sorted(range(4),key=lambda i:(-p[i],board['initialOrder'].index(i)))
+  return [order.index(i)+1 for i in range(4)]
+ if board['pendingReach']:check('rank_withheld',ranks,{'status':'withheld_pending_riichi'})
+ else:
+  check('current_ranks',ranks['currentRanks'],rank(base))
+  check('rank_ron_count',len(ranks['ron']),15);check('rank_tsumo_count',len(ranks['tsumo']),12)
+  for z in ranks['ron']:
+   for iswin,k in [(True,'win'),(False,'loss')]:
+    p=base.copy();winner,loser=(own,z['other']) if iswin else (z['other'],own)
+    pay=z[k+'Base']+300*board['honba'];p[loser]-=pay;p[winner]+=pay+1000*board['kyotaku']
+    check('rank_transfer',z[k+'Points'],p);check('rank_order',z[k+'Ranks'],rank(p))
+  for z in ranks['tsumo']:
+   p=base.copy();winner=z['winner']
+   for i in range(4):
+    if i==winner:continue
+    pay=(z['parentPay'] if i==0 else z['childPay'])+100*board['honba']
+    p[i]-=pay;p[winner]+=pay
+   p[winner]+=1000*board['kyotaku'];check('rank_transfer',z['points'],p);check('rank_order',z['ranks'],rank(p))
  for i in range(4):
   if i==own:continue
   r=ev['seat-'+str(i)];v=ev['public-value-'+str(i)]
