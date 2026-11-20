@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-21T05:40:33+09:00",
+  "checkpoint": "2026-11-21T05:50:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -9,11 +9,11 @@
   },
   "active_task": {
     "phase": "P2a-pilot",
-    "status": "frozen_30_pilot_ready_reference_check_running",
+    "status": "answer_audit_adversarial_control_running",
     "branch": "feat/coach-v14-pilot-boundary-v1",
-    "commit": "97abb98b61f96c7cef71a43088702a4e7878222b",
+    "commit": "41d13c8ded49d216805b22cb09d92131feaf0c6d",
     "pr": 61,
-    "run_id": 44813459829,
+    "run_id": 44814792884,
     "prior_runs": [
       {
         "run_id": 44754324733,
@@ -140,10 +140,31 @@
         "rankTransfer": 1260,
         "rankOrder": 1260,
         "failures": 0
+      },
+      {
+        "run_id": 44813459829,
+        "status": "paired_mortal_reference_anchor_pass",
+        "artifact": 14667861897,
+        "anchors": 4,
+        "topChanged": 2,
+        "topUnchanged": 2,
+        "maxQDifference": 0.0000019073486328125,
+        "limitations": "group reference only, no robust rollout labels"
+      },
+      {
+        "run_id": 44814694938,
+        "status": "same30_weak_controls_and_answer_intake_success",
+        "controls": 3,
+        "lockedEach": 30,
+        "exactOrTieEach": 12,
+        "opponentLinkEach": 0,
+        "measurableClaimShapeEach": 30,
+        "referenceChangePairsMissedEach": 2,
+        "robustRolloutLabels": 0
       }
     ],
-    "decision": "Four paired opponent reach/no-reach contexts physically validated; 24 runs (96 single continuations) complete but too few samples and inconsistent deltas to label. Late eight-case 512-sample diagnostic: mixture improves mean shanten but worsens readiness Brier vs unweighted proposal; both biased, no calibrated posterior. Freeze 30 development cases with four contrast pairs, 26 matches and independent fact audit passed; separate stage1 and verifier artifacts. Actual coach inference 0. Pinned corrected WASM+ONNX counterfactual Mortal evaluation of four pairs from original focal-observable prefix scheduled 44813459829; requires original Q reproduction <=0.001 and top agreement, no hidden opponents/future sent to encoder. No B3/B4 definitive labels, no formal evaluation, no main changes.",
-    "next": "Check 44813459829 job136555651208, fix exact errors. Preserve original-vs-counterfactual anchor and reference separate from stage1. Then implement real answer ingestion/lock, same-30 weak controls (own+points and boilerplate variants, substantive rubric, no fake B3/B4 labels), handle uncertainty/rollout claims without strong directions unsupported; no user request until package and grading ready. Frozen stage1 artifact 14666619455 contains 6 batches of 5, verifier artifact 14666269429 separate. No paid API assumed; actual independent GPT inference may require user fresh chat after autonomous work, not this developer chat. Need assess sampler and sufficient replications, phase gate not passed. No formal B/13222/Lite/P3/R/main/distribution.",
+    "decision": "All four paired original anchors reproduce archived S42 group Q within 1.91e-6. Two change best group when opponent riichi removed; two maintain. Implement actual answer intake, exact fact/path check, request/answer hash, frozen refs joined, missing/invalid denominators retained. Three weak controls 30/30 formal schema, 12/30 group top each, fail both reference-change pairs and opponent-link proxy, yet pass measurable claim shape 30/30: no semantic or B3/B4 pass. Added adversarial boilerplate with actual citations to expose structural check vulnerability; also post-complete-lock comparison request generator (not executed on real answers). Latest CI running. Real independent inference 0; no robust rollout labels.",
+    "next": "Check 44814792884 job136560210218; if fails fix. Compare cited boilerplate structural pass vs real tactical evidence; record limitation. Before requesting user actual independent GPT fresh chats, deliver stage1-only six 5-case files, each paired variants in different batches, no verifier/keys; verify exact input hashes and retain originals. Actual model/effort and elapsed metadata as available, no paid API. Need actual answers for pilot diagnostic; grading not semantic certification. If no independent execution tool, request user to run fresh chats with personalization disabled (may begin one batch) after other runnable tasks exhausted. B3/B4 robust labels and sampler unresolved, no promotion/formal evaluation. Keep main unchanged.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026
   },
