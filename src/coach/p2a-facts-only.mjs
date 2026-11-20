@@ -33,7 +33,7 @@ function publicEvent(e){
 }
 export function factsOnly(caseData){
  const s=caseData?.scene,phase=caseData?.phase;
- if(!s||s.snapshotVersion!==2||!['turn','reaction'].includes(phase)||!seat(s.ownSeat)||!seat(s.activeSeat)||typeof s.round!=='string'||!/^[東南西北][1-4]$/.test(s.round)||!list(s.hand,tile)||!list(s.selfMelds,meld)||!list(s.dora,tile)||!int(s.remaining)||s.remaining<0||s.remaining>70||!int(s.honba)||s.honba<0||!int(s.kyotaku)||s.kyotaku<0||!bool(s.pendingReach)||!list(s.initialOrder,seat)||s.initialOrder.length!==4||new Set(s.initialOrder).size!==4||!list(s.scores,x=>int(x?.points))||s.scores.length!==4||!Array.isArray(s.rivers)||s.rivers.length!==4||!Array.isArray(s.publicEvents)||!Array.isArray(caseData.actions)||!caseData.actions.length)fail();
+ if(typeof caseData?.id!=='string'||!/^(?:d-[1-9][0-9]*|case-[1-9][0-9]*)$/.test(caseData.id)||!s||s.snapshotVersion!==2||!['turn','reaction'].includes(phase)||!seat(s.ownSeat)||!seat(s.activeSeat)||typeof s.round!=='string'||!/^[東南西北][1-4]$/.test(s.round)||!list(s.hand,tile)||!list(s.selfMelds,meld)||!list(s.dora,tile)||!int(s.remaining)||s.remaining<0||s.remaining>70||!int(s.honba)||s.honba<0||!int(s.kyotaku)||s.kyotaku<0||!bool(s.pendingReach)||!list(s.initialOrder,seat)||s.initialOrder.length!==4||new Set(s.initialOrder).size!==4||!list(s.scores,x=>int(x?.points))||s.scores.length!==4||!Array.isArray(s.rivers)||s.rivers.length!==4||!Array.isArray(s.publicEvents)||!Array.isArray(caseData.actions)||!caseData.actions.length)fail();
  if(s.drawn!=null&&!tile(s.drawn))fail();
  const rivers=s.rivers.map((r,i)=>{
   if(!bool(r?.riichi)||!list(r.melds,meld)||!list(r.discards,d=>tile(d?.tile)&&bool(d.tsumogiri)&&bool(d.riichi)&&bool(d.called)))fail();
@@ -48,14 +48,14 @@ export function factsOnly(caseData){
  const safety=actions.filter(a=>a.id<37).map(a=>({action:a.id,ownRiverSameTypeSeats:rivers.filter(r=>r.seat!==s.ownSeat&&r.discards.some(d=>norm(d.tile)===norm(idTile(a.id)))).map(r=>r.seat)}));
  const scores=s.scores.map((v,i)=>({seat:i,points:v.points}));
  const rank=s.pendingReach?null:1+scores.filter(v=>v.seat!==s.ownSeat&&(v.points>scores[s.ownSeat].points||v.points===scores[s.ownSeat].points&&s.initialOrder.indexOf(v.seat)<s.initialOrder.indexOf(s.ownSeat))).length;
- return {version:VERSION,phase,publicFacts:{round:s.round,honba:s.honba,kyotaku:s.kyotaku,pendingReach:s.pendingReach,ownSeat:s.ownSeat,activeSeat:s.activeSeat,hand:s.hand.slice(),drawn:s.drawn??null,ownMelds:s.selfMelds.slice(),doraIndicators:s.dora.slice(),remaining:s.remaining,scores,rank,rivers,events:s.publicEvents.map(publicEvent),reaction:reaction?{from:reaction.from,tile:reaction.tile}:null,legalActions:actions,ownRiverGenbutsu:safety},externalEstimate:{status:'suppressed_unvalidated_P1'},hypothesis:{status:'not_established',note:'相手の聴牌・待ち・打点・危険度・期待損失・推奨理由は確定しない。現物は当該他家へのロンについてのみ。'},release:'research_preparation_only'};
+ return {version:VERSION,decisionId:caseData.id,phase,publicFacts:{round:s.round,honba:s.honba,kyotaku:s.kyotaku,pendingReach:s.pendingReach,ownSeat:s.ownSeat,activeSeat:s.activeSeat,hand:s.hand.slice(),drawn:s.drawn??null,ownMelds:s.selfMelds.slice(),doraIndicators:s.dora.slice(),remaining:s.remaining,scores,rank,rivers,events:s.publicEvents.map(publicEvent),reaction:reaction?{from:reaction.from,tile:reaction.tile}:null,legalActions:actions,ownRiverGenbutsu:safety},externalEstimate:{status:'suppressed_unvalidated_P1'},hypothesis:{status:'not_established',note:'相手の聴牌・待ち・打点・危険度・期待損失・推奨理由は確定しない。現物は当該他家へのロンについてのみ。'},release:'research_preparation_only'};
 }
 // An optional matched model result is a separate external reference, NOT a
 // reason, physical quantity or safety verdict. No new policy selection here.
 export function attachMortalReference(facts,key,expectedDecisionId){
  const out={...facts};
  const q=key?.q;
- const validKey=typeof expectedDecisionId==='string'&&expectedDecisionId.length>0&&key?.id===expectedDecisionId&&key.phase===facts.phase&&key.model_sha256==='30381bf21389e2d25d3edf48fed11bf772336ef3daeee67d1bdae7fb9dd30cb4'&&Array.isArray(q)&&q.length===46&&q.every(x=>x===null||typeof x==='number'&&Number.isFinite(x));
+ const validKey=typeof expectedDecisionId==='string'&&expectedDecisionId.length>0&&facts.decisionId===expectedDecisionId&&key?.id===expectedDecisionId&&key.phase===facts.phase&&key.model_sha256==='30381bf21389e2d25d3edf48fed11bf772336ef3daeee67d1bdae7fb9dd30cb4'&&Array.isArray(q)&&q.length===46&&q.every(x=>x===null||typeof x==='number'&&Number.isFinite(x));
  if(!validKey)return {...out,mortalReference:{status:'unavailable'}};
  const legal=facts.publicFacts.legalActions.map(a=>a.id).sort((a,b)=>a-b);
  const model=q.flatMap((v,i)=>v===null?[]:[i]);
