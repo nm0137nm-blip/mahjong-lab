@@ -1,0 +1,208 @@
+{
+  "status": "phase0_controlled_internal_complete",
+  "source_rebuild_run": 44677641101,
+  "margin_run": 44680960295,
+  "corrected_comparator_commit": "43c99fb1df4e140b35f06f16d4b77247fdc71045",
+  "margin_gate": {
+    "status": "group_audit_complete_detail_not_assumed",
+    "sampled_matches": 2,
+    "seat_hands": 70,
+    "counts": {
+      "sampled": 445,
+      "raw_group_match": 445,
+      "detail_match": 445,
+      "grouped_adapter": 10,
+      "reach": 18,
+      "reach_second_stage_checked": 18,
+      "native_extra_kan_head": 4
+    },
+    "group_coverage": {
+      "29": 17,
+      "28": 16,
+      "14": 1,
+      "45": 172,
+      "17": 11,
+      "18": 11,
+      "16": 6,
+      "19": 7,
+      "37": 18,
+      "43": 16,
+      "33": 8,
+      "30": 23,
+      "26": 12,
+      "41": 14,
+      "0": 4,
+      "32": 11,
+      "1": 4,
+      "8": 9,
+      "39": 3,
+      "9": 14,
+      "25": 4,
+      "42": 4,
+      "44": 1,
+      "20": 2,
+      "23": 3,
+      "15": 3,
+      "24": 4,
+      "27": 10,
+      "7": 6,
+      "12": 1,
+      "31": 8,
+      "40": 5,
+      "21": 3,
+      "38": 3,
+      "4": 1,
+      "5": 2,
+      "2": 2,
+      "6": 1,
+      "10": 1,
+      "3": 2,
+      "34": 1,
+      "13": 1
+    },
+    "max_q_error": 6.245922851810803e-06,
+    "differences": [],
+    "scope": "original MJAI Bot on sampled actual CPU states, guard off/on; not native full-game engine parity; unsampled categories remain unverified",
+    "margin_calibration": {
+      "status": "margin_frozen_calibration_only",
+      "calibration_decisions": 100,
+      "legal_q_values": 1376,
+      "executions_per_state": 13,
+      "max_pairwise_drift": 5.7220458984375e-06,
+      "p50_drift": 1.430511474609375e-06,
+      "p95_drift": 2.86102294921875e-06,
+      "p99_drift": 3.814697265625e-06,
+      "margin_threshold": 5.7220458984375e-05,
+      "factor": 10,
+      "startup_attempts": [
+        {
+          "engine": "chromium",
+          "replicate": 1,
+          "attempts": 1,
+          "startup_failures": 0
+        },
+        {
+          "engine": "chromium",
+          "replicate": 2,
+          "attempts": 1,
+          "startup_failures": 0
+        },
+        {
+          "engine": "chromium",
+          "replicate": 3,
+          "attempts": 1,
+          "startup_failures": 0
+        },
+        {
+          "engine": "webkit",
+          "replicate": 1,
+          "attempts": 1,
+          "startup_failures": 0
+        },
+        {
+          "engine": "webkit",
+          "replicate": 2,
+          "attempts": 1,
+          "startup_failures": 0
+        },
+        {
+          "engine": "webkit",
+          "replicate": 3,
+          "attempts": 1,
+          "startup_failures": 0
+        }
+      ],
+      "startup_failures": 0,
+      "reference_runtime_max_abs_difference": {
+        "chromium": 4.76837158203125e-06,
+        "webkit": 4.76837158203125e-06,
+        "onnx-cpu-1-0": 4.76837158203125e-06,
+        "onnx-cpu-1-1": 4.76837158203125e-06,
+        "onnx-cpu-1-2": 4.76837158203125e-06,
+        "onnx-cpu-2-0": 5.7220458984375e-06,
+        "onnx-cpu-2-1": 5.7220458984375e-06,
+        "onnx-cpu-2-2": 5.7220458984375e-06
+      },
+      "scope": "native reference CPU, repeated ONNX CPU 1/2 threads, repeated Chromium/WebKit WASM CPU; GPU is not enabled or supported by this test"
+    },
+    "margin_strata": {
+      "high": {
+        "n": 445,
+        "action_match": 445,
+        "group_match": 445
+      },
+      "near": {
+        "n": 0,
+        "action_match": 0,
+        "group_match": 0
+      },
+      "forced": {
+        "n": 0,
+        "action_match": 0,
+        "group_match": 0
+      }
+    },
+    "margin_definition": "gap of first-stage native legal Q top two; concrete second-stage action is tested exactly but its own margin is not separately measured; already-seen fresh trajectories, separate from synthetic calibration, not a new prospective skill holdout"
+  },
+  "artifact_manifest": {
+    "synthetic-reference": {
+      "id": 14599480112,
+      "sha256": "5a5aaee14dfbd43d0b76dd304f665956a5085a6b8116c0005085994115175ea6"
+    },
+    "corrected-live-1": {
+      "id": 14601221248,
+      "sha256": "9d459ae2fdd6f520d1647877b786cb06095b4c9d2618837f83475787ea8dd2a7"
+    },
+    "corrected-live-2": {
+      "id": 14601685274,
+      "sha256": "17ce27bac8068502cd52ffe117902e5221c565331e47ddc594a42e29d85360a6"
+    },
+    "original-live-1": {
+      "id": 14599768000,
+      "sha256": "b1bd7729843a7826f80541b2fc79b07ff6f877c3e0aada0976968376d9480924"
+    },
+    "original-live-2": {
+      "id": 14600087223,
+      "sha256": "053cc696c06b8b7cfcd6339ad647e8401515821960219ad99d751ddbe13492bd"
+    },
+    "phase0-margin-final": {
+      "id": 14603514896,
+      "sha256": "35ae895c4c230d3d2cccaa1f4fc409240e0b6d623150940407de15955dad309c"
+    },
+    "margin-frozen-threshold": {
+      "id": 14605025055,
+      "sha256": "4e6507a485f27754cb2c37848e9ab1489d05e1ec78e74bd040f78b7ea2c433e3"
+    },
+    "margin-cpu-calibration": {
+      "id": 14604835096,
+      "sha256": "c768863b3f65a7b10481ceeedad420fe8cfb256c42d11822840ef88245664310"
+    },
+    "margin-browser-chromium-1-calibration": {
+      "id": 14604206945,
+      "sha256": "3fa990bafcc1130a9143f95ba1fb362f6383f8c9ae6e3f6212ecc155f4f657e3"
+    },
+    "margin-browser-chromium-2-calibration": {
+      "id": 14603564383,
+      "sha256": "ddfeba5e68e124f85b2d46b1e4e403317e84ecb92ea4a5de28f0492f1c794fa0"
+    },
+    "margin-browser-chromium-3-calibration": {
+      "id": 14603579437,
+      "sha256": "cac553874dcdca19363d2ecddda76ed74dccc5d2c81621854b8b0d4293501eda"
+    },
+    "margin-browser-webkit-1-calibration": {
+      "id": 14603809312,
+      "sha256": "98991fbec07ab10c85f2aea8d1876db3fc63dab3a9ccf9c646d1ad4b6f514830"
+    },
+    "margin-browser-webkit-2-calibration": {
+      "id": 14604127291,
+      "sha256": "ecdcce92a22a7c7d7fafcd74c58948c3ebaf8bc0a7dba8818859b6b5378262b2"
+    },
+    "margin-browser-webkit-3-calibration": {
+      "id": 14603919529,
+      "sha256": "02bfc4e424be980c7524a6fa731325e3c9335cdd2ebcc69ebe73e51f9aa54afd"
+    }
+  },
+  "scope": "local/controlled internal research and development; public release blocked; no native full engine identity or GPU parity claim; only observed action coverage",
+  "formal_blocks": 160,
+  "formal_matches": 1280
+}

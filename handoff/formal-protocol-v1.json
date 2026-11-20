@@ -1,6 +1,6 @@
 {
   "version": "phase0-formal-v1.0",
-  "status": "corrected comparator and locked source reconstruction passed; margin calibration and stratified detail gate pending; public release blocked",
+  "status": "Phase0 controlled internal complete; public release gate remains blocked",
   "prior_protocol": "docs/phase0/protocol-v1.json",
   "pilot": {
     "run": 44668737514,
@@ -44,5 +44,28 @@
     "sd": 25.59033131513115,
     "upper_sd_95": 39.680460360563224,
     "approx_blocks": 55
+  },
+  "margin_gate": {
+    "run": 44680960295,
+    "max_drift": 5.7220458984375e-06,
+    "threshold": 5.7220458984375e-05,
+    "strata": {
+      "high": {
+        "n": 445,
+        "action_match": 445,
+        "group_match": 445
+      },
+      "near": {
+        "n": 0,
+        "action_match": 0,
+        "group_match": 0
+      },
+      "forced": {
+        "n": 0,
+        "action_match": 0,
+        "group_match": 0
+      }
+    },
+    "scope": "gap of first-stage native legal Q top two; concrete second-stage action is tested exactly but its own margin is not separately measured; already-seen fresh trajectories, separate from synthetic calibration, not a new prospective skill holdout"
   }
 }

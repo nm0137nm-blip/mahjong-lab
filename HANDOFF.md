@@ -72,3 +72,7 @@ locked source rebuild 44677641101 13:57:46成功、JS/WASM SHA完全一致、sou
 14:10 Margin gate first run failed at container default sh/pipefail before browser test; CPU passed. Explicit bash shell only corrected. Retry run 44679264357, commit d89528c52ba5767b97796b60ec756e0a32978acd. Inputs/threshold/gates unchanged.
 
 14:25 Margin run 44679264357 failed on WebKit ORT init memory error after all 3 Chromium repeats passed, CPU passed. Corrected WASM raw fixture bit-identical 100/100. Run 44680960295: independent six browser containers, known startup OOM only max3 attempts with archived logs; no numerical tolerance changes, no dropped replicate. Public browser availability remains a release blocker. Automatic finalize references new run, archives all six replicas.
+
+## Phase 0 内部開発・研究ゲート完了（2026-11-20）
+Run 44677641101: Rust固定ソースからJS/WASMのSHA完全一致。Run 44680960295: 合成100局面、13実行参照（既存native CPU参照+6 browser+6 native ONNX CPU）でQ値drift最大 5.722045898e-06、閾値 5.722045898e-05、高マージン 445/445、僅差 0/0、単一候補 0/0。別の既存445実戦判断で再集計、独立skill holdoutではない。旧317判断・新規445判断・20 duplicate・96 variance全て合格。正式160ブロック1280半荘維持。利用条件の判断記録を保存し、内部のローカル/管理研究のみ進める。一般公開・再配布は依存ライセンス・NOTICE・旧実行物の対応ソース等の確認完了まで保留。native全ルール同一性・未観測行動・GPUは保証外。WebKit初期化障害の既往あり、今回6反復の起動失敗回数 0。数値一致は起動可用性の証明ではなく、公開時の別途課題。本番main変更なし。完全な公開適合性を主張しない。
+結果: archive/results/phase0-final-20261120.json。次工程P1とR1。

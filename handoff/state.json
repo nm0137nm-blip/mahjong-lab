@@ -8,24 +8,12 @@
     "coach_candidate_promoted": false
   },
   "active_task": {
+    "status": "phase0_controlled_internal_complete",
     "phase": "0",
-    "status": "phase0_margin_gate_running",
-    "run_id": 44680960295,
-    "branch": "feat/coach-phase0-margin-gate-v1",
-    "commit": "68e4b50f2cc2876a14d4f35ccc0663b3dd082f07",
-    "pr": 35,
-    "scope": "p14 user plan: 100 synthetic calibration states, 12 repeated CPU/browser runs, threshold 10x max drift, separately tabulate 445 archived concrete actions. Source rebuild passed. Automatic final archive if successful. No new candidate training, no public release.. Browser initialization availability tracked separately; cannot claim release reliability from successful retry.",
-    "next": "On margin gate success verify all evidence and mark controlled internal Phase 0 complete; release remains blocked. Review concise text report for previous external reviewers. On failure fix without waiting for user instructions.",
-    "failed_runs": [
-      {
-        "id": 44679059648,
-        "reason": "Container default sh rejected bash pipefail; no browser calibration performed; CPU job passed; unchanged protocol and inputs, explicit bash shell only."
-      },
-      {
-        "id": 44679264357,
-        "reason": "Three Chromium numeric replicates passed, corrected WASM 100/100 raw observations identical, WebKit initialization ORT out of bounds memory access; threshold never computed. New run uses six isolated jobs, retries only known startup OOM at most three, records attempts; full numeric gate unchanged."
-      }
-    ]
+    "result_path": "archive/results/phase0-final-20261120.json",
+    "next": "Product P1 and research R1 after Phase0 report. Freeze specific data manifests and candidate protocol before new evaluation; public release remains blocked. User requested phase-boundary status and copy/paste or manually typable short external reviewer report.",
+    "margin_run": 44680960295,
+    "source_archive_run": 44677641101
   },
   "previous_runs": [
     {
@@ -258,12 +246,12 @@
           "legal_q_values": 1376,
           "max_obs_error": 0,
           "non_bit_exact_observations": 0,
-          "max_q_error": 0.0000057220458984375
+          "max_q_error": 5.7220458984375e-06
         },
         "webkit": {
           "decisions": 100,
           "legal_q_values": 1376,
-          "max_q_error": 0.00000476837158203125
+          "max_q_error": 4.76837158203125e-06
         },
         "duplicate": {
           "n_matches": 20,
@@ -329,7 +317,7 @@
           "legal_q_values": 1943,
           "max_obs_error": 0,
           "non_bit_exact_observations": 0,
-          "max_q_error": 0.00000476837158203125
+          "max_q_error": 4.76837158203125e-06
         },
         "variance": {
           "status": "variance_pilot_complete",
@@ -431,7 +419,7 @@
           "43": 10,
           "45": 121
         },
-        "max_q_error": 0.000004272216797218675,
+        "max_q_error": 4.272216797218675e-06,
         "scope": "original MJAI Bot on sampled actual CPU states, guard off/on; not native full-game engine parity; unsampled categories remain unverified"
       },
       "summary_artifact": 14599877599,
@@ -525,7 +513,7 @@
             "43": 10,
             "45": 121
           },
-          "max_q_error": 0.000004272216797218675,
+          "max_q_error": 4.272216797218675e-06,
           "differences": [],
           "scope": "original MJAI Bot on sampled actual CPU states, guard off/on; not native full-game engine parity; unsampled categories remain unverified"
         },
@@ -586,7 +574,7 @@
             "44": 1,
             "45": 172
           },
-          "max_q_error": 0.000006054687499812417,
+          "max_q_error": 6.054687499812417e-06,
           "differences": [],
           "scope": "original MJAI Bot on sampled actual CPU states, guard off/on; not native full-game engine parity; unsampled categories remain unverified"
         },
@@ -692,6 +680,27 @@
       "corrected_source_ref": "43c99fb1df4e140b35f06f16d4b77247fdc71045",
       "source_archive_run": 44677641101,
       "source_archive_commit": "c3b2e31133a4b2e2f97c88f7616967d19bd75dc6"
+    },
+    {
+      "phase": "0",
+      "status": "phase0_controlled_internal_complete",
+      "run_id": 44680960295,
+      "branch": "feat/coach-phase0-margin-gate-v1",
+      "commit": "68e4b50f2cc2876a14d4f35ccc0663b3dd082f07",
+      "pr": 35,
+      "scope": "p14 user plan: 100 synthetic calibration states, 12 repeated CPU/browser runs, threshold 10x max drift, separately tabulate 445 archived concrete actions. Source rebuild passed. Automatic final archive if successful. No new candidate training, no public release.. Browser initialization availability tracked separately; cannot claim release reliability from successful retry.",
+      "next": "On margin gate success verify all evidence and mark controlled internal Phase 0 complete; release remains blocked. Review concise text report for previous external reviewers. On failure fix without waiting for user instructions.",
+      "failed_runs": [
+        {
+          "id": 44679059648,
+          "reason": "Container default sh rejected bash pipefail; no browser calibration performed; CPU job passed; unchanged protocol and inputs, explicit bash shell only."
+        },
+        {
+          "id": 44679264357,
+          "reason": "Three Chromium numeric replicates passed, corrected WASM 100/100 raw observations identical, WebKit initialization ORT out of bounds memory access; threshold never computed. New run uses six isolated jobs, retries only known startup OOM at most three, records attempts; full numeric gate unchanged."
+        }
+      ],
+      "results_path": "archive/results/phase0-final-20261120.json"
     }
   ],
   "roadmap": {
