@@ -131,3 +131,5 @@ PR57 run44726204303 attempt2: 全96半荘artifact揃い、snapshot監査は30693
 
 ## 2026-11-20 21:31 P1 v2限定サイクル終了・P2a事実準備
 PR59 run44733467016 21:13成功。96半荘、30693他家状態/333723 Ron/2886得点label、10231時系列turn、独立両監査差0。v2 screen: T再学習Platt pooled gap .064681、複数鳴き .078745、標準CPU logloss差+.001254で基準未達。R blend pooled logloss差-.000460873 CI[-.000675834,-.000257798]、全3family proper score・順位点推定改善、危険層gap<=.05、条件得点MAE/RMSE差-324.70/-472.41点。開発データのみ、P1 full候補なし、v2正式outerなし、追加の調整は行わない。結果archive/results/p1-v2-screen-20261120.json。PR60 run44736460105、commit e12ce3156facc42770d6a3453cc5640d6b782011、P2a事実のみ準備。公開情報のallowlist、Mortal行動グループ順位を別枠に隔離、P1未認証数値抑止、仮説未確定。unit＋96半荘のpublic/referenceのみ検証、oracle/旧outerを読まない。実製品全局面ID・provenance・定量事実追加・統合と評価は未了、本番変更・利用者試験・公開なし。R1現候補凍結、R2未使用。P1/P2a全合格ではない。
+
+21:33 PR60初回unit合格も全13222局面拒否（実データの局名は東1局、反応牌に_/*符号）。実artifactのpublicのみ確認しschema修正、run44736644609 commit56f8e47e1c7832b2841a1232098640868d612eb0。全件再検証、除外/閾値緩和なし。
