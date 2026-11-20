@@ -1,5 +1,6 @@
 // Development-only transport boundary. Not an inference engine or tactical certificate.
 import {createHash} from 'node:crypto';
+import {enrichPublic} from './v14-public-calculations.mjs';
 import {factsOnly,attachMortalReference} from './p2a-facts-only.mjs';
 export const VERSION='v14-pilot-boundary-1';
 const fail=(x)=>{throw Error(x)};
@@ -10,7 +11,7 @@ const norm=p=>p[0]+(p[1]==='0'?'5':p[1]);
 const types=[...'mps'].flatMap(s=>Array.from({length:9},(_,i)=>s+(i+1))).concat(Array.from({length:7},(_,i)=>'z'+(i+1)));
 const meldTiles=m=>[...m.slice(1)].filter(x=>/\d/.test(x)).map(x=>m[0]+x);
 const ID=/^pilot-[0-9]{2}$/;
-export function makeIndependent(raw,id){
+export function makeIndependent(raw,id,engine=null){
  if(!ID.test(id))fail('bad pilot id');
  const f=factsOnly(raw).publicFacts;
  const visible=Object.fromEntries(types.map(t=>[t,0]));
@@ -30,12 +31,13 @@ export function makeIndependent(raw,id){
   ...actions.map(a=>({id:a.key,kind:'legal_choice_record',value:{...a,ownRiverGenbutsuSeats:a.group<37?f.ownRiverGenbutsu.find(x=>x.action===a.group).ownRiverSameTypeSeats:[]}}))
  ];
  // This projection uses no raw facts, candidate shortlist, user choice, private payload or reference.
- return {version:VERSION,id,phase:raw.phase,actions,evidence};
+ const input={version:engine?'v14-pilot-calculated-1':VERSION,id,phase:raw.phase,actions,evidence};
+ return engine?enrichPublic(input,{...f,phase:raw.phase},engine):input;
 }
 export const independentInstruction='四人麻雀の開発診断。公開記録のみで判断。全合法候補を公平に比較し、他家3人と自手の速度・打点・将来押す牌・局目的を具体的に比較する。確定情報以外は仮説として根拠ID・候補・方向・適用条件・反証条件を明記し、未計算の確率や打点を捏造しない。推奨はactionsのkey。JSONのみ、指定形に厳密に従う。根拠にない事実は不明。';
 export const responseShape={recommendation:'a0-0',confidence:'low|medium|high',claims:[{type:'fact|hypothesis',seat:0,action:'a0-0',against:'a1-0',evidenceIds:['board'],metric:'speed|value|defense|rank|progress|deal_in|win|round_net|rank_utility',direction:'higher|lower|same|unknown',condition:'適用条件',falsifier:'反証条件',statement:'根拠に沿った主張'}],sections:{objective:'局目的',relative:'相対価値',comparison:'候補比較',tradeoff:'利益・代償',reversal:'変更条件',lesson:'教訓'}};
-export function independentRequest(raw,id){
- const input=makeIndependent(raw,id);
+export function independentRequest(raw,id,engine=null){
+ const input=makeIndependent(raw,id,engine);
  const request={stage:'independent',system:independentInstruction,responseShape,input};
  return {request,requestHash:hash(request)};
 }
@@ -55,9 +57,9 @@ export function lockIndependent(envelope,answer,meta){
  const record={requestHash:envelope.requestHash,answer:structuredClone(answer),meta:structuredClone(meta)};
  return {record,recordHash:hash(record)};
 }
-export function comparisonRequest(envelope,locked,reference,raw,userAction=null){
+export function comparisonRequest(envelope,locked,reference,raw,userAction=null,engine=null){
  if(hash(envelope.request)!==envelope.requestHash||hash(locked.record)!==locked.recordHash||locked.record.requestHash!==envelope.requestHash)fail('independent record integrity');
- const reconstructed=independentRequest(raw,envelope.request.input.id);
+ const reconstructed=independentRequest(raw,envelope.request.input.id,engine);
  if(reconstructed.requestHash!==envelope.requestHash)fail('case mismatch');
  if(!exact(reference,['pilotId','requestHash','key'])||reference.pilotId!==envelope.request.input.id||reference.requestHash!==envelope.requestHash)fail('reference scope');
  const f=factsOnly(raw),r=attachMortalReference(f,reference.key,raw.id).mortalReference;
