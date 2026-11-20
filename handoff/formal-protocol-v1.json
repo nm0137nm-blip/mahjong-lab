@@ -1,6 +1,6 @@
 {
   "version": "phase0-formal-v1.0",
-  "status": "registered; corrected comparator technical tests passed; source archive/rebuild verification pending; controlled research only, public release blocked",
+  "status": "corrected comparator and locked source reconstruction passed; margin calibration and stratified detail gate pending; public release blocked",
   "prior_protocol": "docs/phase0/protocol-v1.json",
   "pilot": {
     "run": 44668737514,

@@ -65,3 +65,6 @@ PR #31 run 44671922598、P1評価仕様/メトリクス単体試験と不一致7
 
 ## 2026-11-20 13:54 修正版技術検証全件成功
 13:19:41旧317判断、13:34:51後続試験全件成功。旧317/317、新規445/445具体行動一致（不一致0）、20半荘duplicate、96半荘variance。修正版SD25.590、保守上限39.680、必要55 blocks概算、既定160 blocksを維持。source archive/rebuild検証を別workflowで起動。本番公開保留。資料: archive/results/phase0-corrected-20261120.json, handoff/phase0-corrected-decision.md。
+
+## 2026-11-20 14:09 最終マージンゲート
+locked source rebuild 44677641101 13:57:46成功、JS/WASM SHA完全一致、source archive長期保存済み。確定版p14の高マージン閾値/僅差別集計を再確認し、PR35 run 44679059648（100合成局面12反復+native参照、10倍max drift閾値固定後に445実戦判断を別集計）を開始。自動finalizeで成功時のみ証拠を保存して内部Phase0を閉じる。公開条件留保は維持。本番main変更なし。

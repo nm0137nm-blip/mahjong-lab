@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-20T13:54:20+09:00",
+  "checkpoint": "2026-11-20T14:08:53+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -8,16 +8,14 @@
     "coach_candidate_promoted": false
   },
   "active_task": {
-    "status": "phase0_technical_pass_source_freeze_rebuild_pending",
     "phase": "0",
-    "next": "Verify corrected encoder archive and locked rebuild using new handoff workflow. Formal plan retained 160 blocks. Internal research gate can close when source verification completes; release blocked separately. No production changes. Report concise roadmap to reviewers when phase0 closed.",
-    "results_path": "archive/results/phase0-corrected-20261120.json",
-    "runs": [
-      44673093075,
-      44673238225
-    ],
-    "corrected_source_ref": "43c99fb1df4e140b35f06f16d4b77247fdc71045",
-    "source_archive_run": "pending_trigger"
+    "status": "phase0_margin_gate_running",
+    "run_id": 44679059648,
+    "branch": "feat/coach-phase0-margin-gate-v1",
+    "commit": "721073cbf66d82409ac338aaf2a8cf9b104d7ef5",
+    "pr": 35,
+    "scope": "p14 user plan: 100 synthetic calibration states, 12 repeated CPU/browser runs, threshold 10x max drift, separately tabulate 445 archived concrete actions. Source rebuild passed. Automatic final archive if successful. No new candidate training, no public release.",
+    "next": "On margin gate success verify all evidence and mark controlled internal Phase 0 complete; release remains blocked. Review concise text report for previous external reviewers. On failure fix without waiting for user instructions."
   },
   "previous_runs": [
     {
@@ -671,6 +669,19 @@
         },
         "scope": "guard-off corrected adapter, sampled action parity; not full native engine/rules equivalence. No deployment."
       }
+    },
+    {
+      "status": "exact_locked_source_rebuild_pass",
+      "phase": "0",
+      "next": "Verify corrected encoder archive and locked rebuild using new handoff workflow. Formal plan retained 160 blocks. Internal research gate can close when source verification completes; release blocked separately. No production changes. Report concise roadmap to reviewers when phase0 closed.",
+      "results_path": "archive/results/phase0-corrected-20261120.json",
+      "runs": [
+        44673093075,
+        44673238225
+      ],
+      "corrected_source_ref": "43c99fb1df4e140b35f06f16d4b77247fdc71045",
+      "source_archive_run": 44677641101,
+      "source_archive_commit": "c3b2e31133a4b2e2f97c88f7616967d19bd75dc6"
     }
   ],
   "roadmap": {
