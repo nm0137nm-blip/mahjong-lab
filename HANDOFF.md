@@ -93,3 +93,6 @@ run44693828778 初回モデル準備timeout 1件、同一条件で失敗job再�
 16:55 PR42初回 P1 screen実行成功、R1はscikit-learn依存未導入によりfit前に停止。依存pinのみ修正し run44698566009で同条件再試験。P1非確定行Ron logloss frozen .03820047、clamp .03820037、他候補悪化。clampは矛盾54→0だが改善は極小。条件得点RMSE3781 vs 4170、MAE2884 vs 3228、80%区間実測.741、未採用。R1再試験待ち、第三family・未見評価・正式候補固定は未了。
 
 16:58 PR42再試験44698566009両job成功。R1 反応746件行動変更0、特殊204件3変更（2改善1悪化）で相対Q損失.05933→.06104、採用なし。PR43 run44698837755 原200半荘training＋24新規on-policyを6fold、3head別、固定4倍weightで再学習し改善可能性を検証開始。P1/R1未完、正式試験未開始、公開留保。
+
+## 2026-11-20 17:26 R1候補の開発対局とP1第3family
+Run44698837755全成功。pure 2497件、教師相対Q損失 .040427→.037189（S42 .040811→.038617、標準 .040065→.035843）、Top1 .73088→.73969、126変更74改善52悪化。reaction raw損失悪化、special両family悪化、両head未採用。PR44 run44701775478 pureのみ新candidate freeze合格（2回fit byte一致 cce48c5e…、他head hash不変）、8 blocks×4席×2arms=64開発対局vs S42×3起動。正式試験ではない。旧run44701720906はRPC import/glob不具合のため不使用。PR45 run44702128580 24新規開発半荘 frozen learned×3、独立seat Board＋4 RPC、snapshot/時系列監査付き。初回44701967759非同期の合法性監査失敗、合法和了はfrozen hard override通り同期処理、builder事前loadで修正。同一seed、旧結果不使用。PR46 run44702508030 PR45成功条件で120旧+72新開発半荘の6fold nested probability再学習を自動開始、校正/評価fold別、public chronology特徴追加。旧教師labelは新独立監査未了。P1/R1未完、正式seed未使用、本番main変更なし、公開留保。

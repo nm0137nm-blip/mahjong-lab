@@ -1,0 +1,197 @@
+{
+  "run": 44698837755,
+  "results": [
+    {
+      "status": "R1_augmented_development_diagnostic",
+      "category": "special",
+      "historical_decisions": 2185,
+      "recent_onpolicy_decisions": 204,
+      "all": {
+        "n": 204,
+        "matches": 24,
+        "raw_Q_loss_base": 0.523930003756986,
+        "raw_Q_loss_augmented": 0.5728479494505069,
+        "relative_Q_loss_base": 0.05932725884946719,
+        "relative_Q_loss_augmented": 0.06551386508489097,
+        "top1_base": 0.7009803921568627,
+        "top1_augmented": 0.6862745098039216,
+        "changed": 13,
+        "improved": 5,
+        "worsened": 8
+      },
+      "family": {
+        "s42": {
+          "n": 100,
+          "matches": 12,
+          "raw_Q_loss_base": 0.5923113930225372,
+          "raw_Q_loss_augmented": 0.6305906438827514,
+          "relative_Q_loss_base": 0.06654703399744548,
+          "relative_Q_loss_augmented": 0.0712220245752832,
+          "top1_base": 0.68,
+          "top1_augmented": 0.66,
+          "changed": 5,
+          "improved": 2,
+          "worsened": 3
+        },
+        "basic": {
+          "n": 104,
+          "matches": 12,
+          "raw_Q_loss_base": 0.4581786679247251,
+          "raw_Q_loss_augmented": 0.5173261278810409,
+          "relative_Q_loss_base": 0.05238516736102653,
+          "relative_Q_loss_augmented": 0.060025250190283055,
+          "top1_base": 0.7211538461538461,
+          "top1_augmented": 0.7115384615384616,
+          "changed": 8,
+          "improved": 3,
+          "worsened": 5
+        }
+      },
+      "margin": {
+        "numerically_close": null,
+        "high": {
+          "n": 204,
+          "matches": 24,
+          "raw_Q_loss_base": 0.523930003756986,
+          "raw_Q_loss_augmented": 0.5728479494505069,
+          "relative_Q_loss_base": 0.05932725884946719,
+          "relative_Q_loss_augmented": 0.06551386508489097,
+          "top1_base": 0.7009803921568627,
+          "top1_augmented": 0.6862745098039216,
+          "changed": 13,
+          "improved": 5,
+          "worsened": 8
+        }
+      },
+      "scope": "Historical 200-game public Q-label training plus recent 24 learned-focal games, six grouped folds. Old adapter teacher group labels retained; actual grouped action details not evaluated. Raw/relative Q not physical payoff, no claim of +15pt; no held-out formal game or candidate promotion."
+    },
+    {
+      "status": "R1_augmented_development_diagnostic",
+      "category": "pure",
+      "historical_decisions": 20090,
+      "recent_onpolicy_decisions": 2497,
+      "all": {
+        "n": 2497,
+        "matches": 24,
+        "raw_Q_loss_base": 0.34462189935461063,
+        "raw_Q_loss_augmented": 0.3179872838029109,
+        "relative_Q_loss_base": 0.040427176644127295,
+        "relative_Q_loss_augmented": 0.037189167887408954,
+        "top1_base": 0.7308770524629555,
+        "top1_augmented": 0.7396876251501802,
+        "changed": 126,
+        "improved": 74,
+        "worsened": 52
+      },
+      "family": {
+        "s42": {
+          "n": 1212,
+          "matches": 12,
+          "raw_Q_loss_base": 0.3516922004262705,
+          "raw_Q_loss_augmented": 0.33394066066090816,
+          "relative_Q_loss_base": 0.04081070837551837,
+          "relative_Q_loss_augmented": 0.03861650222222906,
+          "top1_base": 0.721947194719472,
+          "top1_augmented": 0.7260726072607261,
+          "changed": 59,
+          "improved": 32,
+          "worsened": 27
+        },
+        "basic": {
+          "n": 1285,
+          "matches": 12,
+          "raw_Q_loss_base": 0.33795325740997895,
+          "raw_Q_loss_augmented": 0.30294020773139907,
+          "relative_Q_loss_base": 0.040065433096698515,
+          "relative_Q_loss_augmented": 0.035842919471998864,
+          "top1_base": 0.7392996108949417,
+          "top1_augmented": 0.7525291828793774,
+          "changed": 67,
+          "improved": 42,
+          "worsened": 25
+        }
+      },
+      "margin": {
+        "numerically_close": null,
+        "high": {
+          "n": 2497,
+          "matches": 24,
+          "raw_Q_loss_base": 0.34462189935461063,
+          "raw_Q_loss_augmented": 0.3179872838029109,
+          "relative_Q_loss_base": 0.040427176644127295,
+          "relative_Q_loss_augmented": 0.037189167887408954,
+          "top1_base": 0.7308770524629555,
+          "top1_augmented": 0.7396876251501802,
+          "changed": 126,
+          "improved": 74,
+          "worsened": 52
+        }
+      },
+      "scope": "Historical 200-game public Q-label training plus recent 24 learned-focal games, six grouped folds. Old adapter teacher group labels retained; actual grouped action details not evaluated. Raw/relative Q not physical payoff, no claim of +15pt; no held-out formal game or candidate promotion."
+    },
+    {
+      "status": "R1_augmented_development_diagnostic",
+      "category": "reaction",
+      "historical_decisions": 6386,
+      "recent_onpolicy_decisions": 746,
+      "all": {
+        "n": 746,
+        "matches": 24,
+        "raw_Q_loss_base": 0.059049888126971574,
+        "raw_Q_loss_augmented": 0.06336090380161122,
+        "relative_Q_loss_base": 0.04742533144256703,
+        "relative_Q_loss_augmented": 0.04608484886884049,
+        "top1_base": 0.9490616621983914,
+        "top1_augmented": 0.9504021447721179,
+        "changed": 5,
+        "improved": 3,
+        "worsened": 2
+      },
+      "family": {
+        "s42": {
+          "n": 369,
+          "matches": 12,
+          "raw_Q_loss_base": 0.09597570297679281,
+          "raw_Q_loss_augmented": 0.10032988826272288,
+          "relative_Q_loss_base": 0.0709226490731181,
+          "relative_Q_loss_augmented": 0.06550259487257609,
+          "top1_base": 0.926829268292683,
+          "top1_augmented": 0.9322493224932249,
+          "changed": 4,
+          "improved": 3,
+          "worsened": 1
+        },
+        "basic": {
+          "n": 377,
+          "matches": 12,
+          "raw_Q_loss_base": 0.022907644945051056,
+          "raw_Q_loss_augmented": 0.027176407074422357,
+          "relative_Q_loss_base": 0.0244266306317624,
+          "relative_Q_loss_augmented": 0.027079150525661604,
+          "top1_base": 0.9708222811671088,
+          "top1_augmented": 0.9681697612732095,
+          "changed": 1,
+          "improved": 0,
+          "worsened": 1
+        }
+      },
+      "margin": {
+        "numerically_close": null,
+        "high": {
+          "n": 746,
+          "matches": 24,
+          "raw_Q_loss_base": 0.059049888126971574,
+          "raw_Q_loss_augmented": 0.06336090380161122,
+          "relative_Q_loss_base": 0.04742533144256703,
+          "relative_Q_loss_augmented": 0.04608484886884049,
+          "top1_base": 0.9490616621983914,
+          "top1_augmented": 0.9504021447721179,
+          "changed": 5,
+          "improved": 3,
+          "worsened": 2
+        }
+      },
+      "scope": "Historical 200-game public Q-label training plus recent 24 learned-focal games, six grouped folds. Old adapter teacher group labels retained; actual grouped action details not evaluated. Raw/relative Q not physical payoff, no claim of +15pt; no held-out formal game or candidate promotion."
+    }
+  ]
+}

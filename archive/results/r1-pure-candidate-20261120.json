@@ -1,0 +1,64 @@
+{
+  "run": 44701775478,
+  "job": 136171618384,
+  "artifacts": [
+    {
+      "name": "r1-dev-augmented-model",
+      "id": 14613640863,
+      "digest": "sha256:143aaa95abe8123aacfe9a62701ee58bb81be8d2dcc22ab1bc6c9898327cd20c",
+      "expired": false
+    },
+    {
+      "name": "r1-dev-rollout-seeds",
+      "id": 14613561093,
+      "digest": "sha256:ca24d983631607ef2d28aede1bf2f35fc244c89e87e8d5059c21fb70f92802dd",
+      "expired": false
+    }
+  ],
+  "status": "frozen_development_candidate_not_formal",
+  "candidate": "pure_augmented_200_plus_24_v1",
+  "training_seeds": [
+    32812839,
+    242684135,
+    375122698,
+    423777650,
+    722870828,
+    829202163,
+    856874257,
+    860520696,
+    1082872228,
+    1144254674,
+    1176002225,
+    1790423793,
+    1945548782,
+    2158353375,
+    2388998453,
+    2575018506,
+    2883861521,
+    2981428919,
+    3033773480,
+    3090638942,
+    3948482166,
+    4246806761,
+    4258810869,
+    4283322091
+  ],
+  "training_old_decisions": 20090,
+  "training_new_decisions": 2497,
+  "training_matrix_sha256": "944607a860657d49bc90087f80f158ffc212601f80a75722891a29585d2b34b3",
+  "training_labels_sha256": "2b2b7ab8201cab8f40c41518df14a9ecd900524766cb895cee633c756d48b822",
+  "training_groups_sha256": "505c52feded285da6f98124e6975ed704c735349e83cbd549c739046c3a217b4",
+  "new_row_weight": 4,
+  "repeat_model_sha256": "cce48c5e8a5b9260c8fc58e5b3dc602cf65dcbe3d61279a9c53fc19a150c0cdf",
+  "files": {
+    "pure": "cce48c5e8a5b9260c8fc58e5b3dc602cf65dcbe3d61279a9c53fc19a150c0cdf",
+    "reaction": "11d5699e20319f23040a9e7584e25179615ca8228089de0dce38c527dd7aa42f",
+    "special": "0617e41120d1918d69302bf564d294659692e4c35d2a8015c162d003b94a2ff5"
+  },
+  "baseline_files": {
+    "pure": "b4ff0a420061b1202e0d7717c7cdea4d6ef7ac0971fff45e0e70f1a49da8edd8",
+    "reaction": "11d5699e20319f23040a9e7584e25179615ca8228089de0dce38c527dd7aa42f",
+    "special": "0617e41120d1918d69302bf564d294659692e4c35d2a8015c162d003b94a2ff5"
+  },
+  "code_sha": "a064bec52bb8aab7cda2ae5105baf79aeedc474f"
+}
