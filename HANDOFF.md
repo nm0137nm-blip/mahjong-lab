@@ -52,3 +52,6 @@ PR #29, run 44668737514, commit 8c1459d79939d3e95fac0aa91f5cdaaf407400eb。96半
 
 ## 2026-11-20 12:54 Phase 0 追加検証成功
 Run 44668737514 attempt 1、12:49:48 JST 完了、16ジョブ成功。実戦生成2半荘の63 seat-hand traces、189判断・1,943合法Q、観測完全一致、native/ONNX最大Q差4.768e-6。96半荘・12 paired 4-seat blocks、SD40.087、正規近似片側95%上限SD62.159、MME15・両側5%・80%検出力の計画値135 blocks=1,080半荘（上限400 blocks）。候補別の分散・ゲートは別途事前確定。Phase0残：独立エージェントの具体的payload/guard/ルール整合、公開条件、正式試験仕様。結果: archive/results/phase0-live-variance-20261120.json。現時点でPhase0全体合格とはしない。
+
+## 2026-11-20 12:59 Phase 0 残余ゲート
+PR #30、run 44671374727、commit e7fb41f4e91e02805f93db3a214652952474b828。上流source監査で立直2段階・追加kan head・赤牌選択・guardの相違を確認。従来の成績はS42-adapter基準に限定。native Botとの実payload比較2半荘を起動（結果未確認）。試験計画v1.0登録: 初期計画160 seed blocks × 4席 ×2方式=1,280半荘/サイクル、MME+15pt、95%CI下限>0かつ点推定>=15を昇格条件、上限<15で候補futility、最大2サイクル。利用条件は研究継続可・新規リリース保留のdecision record、既存公開の対応ソース/NOTICE等の適合未確認。Phase0完了ではない。ユーザーは残工程完了後、前回相談相手へコピペ/手打ち可能な簡潔な進捗・ロードマップ報告文を希望。仕様: handoff/formal-protocol-v1.json, handoff/action-contract-20261120.md, handoff/license-decision-v1-20261120.md。
