@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-20T18:55:00+09:00",
+  "checkpoint": "2026-11-20T19:12:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -9,29 +9,25 @@
   },
   "active_task": {
     "phase": "P1",
-    "status": "outer_runner_QA_retry_and_metric_unit_tests_running",
-    "r1_decision": "Current R1 candidate closed; no R2 budget consumed. Further research requires genuinely new improvement hypothesis, not another extension.",
+    "status": "independent_outer_campaign_preflight_running",
+    "run_id": 44717123756,
+    "branch": "feat/coach-p1-outer-evaluation-v1",
+    "commit": "709c1be4da0c9e88a7c7a686167550d86a5c63ff",
+    "pr": 55,
+    "scope": "Frozen candidate, 160 disjoint matches, four opponent families × two progressions × four seats × five repeats. Preflight locks source/runtime and seed manifest; collection requires exact parent integration QA (44716885967 success). Independent snapshot and temporal audits before metrics. No tuning, no new formal R2 games, no product release.",
     "candidate": {
       "run": 44712159043,
       "artifact": 14616369981,
       "sha256": "05f7ebd026ffe73af605be0b1a94b2904402af24435b288027f60ce384fd08fe"
     },
-    "runner_qa": {
-      "run": 44714465352,
-      "branch": "feat/coach-p1-outer-runner-qa-v1",
-      "commit": "5bd6af53ebdc7180891afde43e4f98f7c058f54c",
-      "pr": 52,
-      "failed_run": 44713525288,
-      "reason": "SyntaxError in quoted injected player constructor before any match. Corrected quoting, both outer script and injected code parsed; reused eight QA seeds only."
+    "qa": {
+      "runner": 44714465352,
+      "metrics": 44714628933,
+      "integration": 44716885967,
+      "all": "success"
     },
-    "metric_qa": {
-      "run": 44714628933,
-      "branch": "feat/coach-p1-outer-metrics-v1",
-      "commit": "159f4e403d4fe0d0948e3f77a66aa68b8da72aef",
-      "pr": 53,
-      "scope": "Unit test of draft proper-score, calibrated bin, whole-match family bootstrap, support, payment, high risk and divergence gates. No outer data."
-    },
-    "next": "Check both QA runs, fix failures. Implement exact manifest verification, full joined predictor/baseline/evaluation from public inputs and audited labels, aggregate and focal-progression diagnostics. Freeze complete code/runtime/rule/candidate/seed manifest before 160 fresh matches. Do not acquire outer until QA passes; no model selection or threshold changes on outer; unsupported strata cannot pass. General release held, main unchanged."
+    "protocol": "handoff/p1-outer-protocol-v1.json",
+    "next": "Check run44717123756 preflight and all collection jobs; if startup-only failure, retry identical seeds and code. Any correctness mismatch investigate, no result exclusions or threshold changes. If audit and metrics complete, archive full independent evaluation and adjudicate P1; nonpass does not imply general predictive value absent, suppress unsupported scope, do not retune on same holdout. R1 current candidate archived, general release blocked. Historical full wall/trajectory hashes not available; independent scope limited to verified seed and available exact public-hash audit."
   },
   "previous_runs": [
     {
@@ -960,6 +956,33 @@
         "sha256": "05f7ebd026ffe73af605be0b1a94b2904402af24435b288027f60ce384fd08fe"
       },
       "hidden_result": "archive/results/p1-hidden-boundary-20261120.json"
+    },
+    {
+      "phase": "P1",
+      "status": "outer_runner_and_metric_and_integration_QA_success",
+      "r1_decision": "Current R1 candidate closed; no R2 budget consumed. Further research requires genuinely new improvement hypothesis, not another extension.",
+      "candidate": {
+        "run": 44712159043,
+        "artifact": 14616369981,
+        "sha256": "05f7ebd026ffe73af605be0b1a94b2904402af24435b288027f60ce384fd08fe"
+      },
+      "runner_qa": {
+        "run": 44714465352,
+        "branch": "feat/coach-p1-outer-runner-qa-v1",
+        "commit": "5bd6af53ebdc7180891afde43e4f98f7c058f54c",
+        "pr": 52,
+        "failed_run": 44713525288,
+        "reason": "SyntaxError in quoted injected player constructor before any match. Corrected quoting, both outer script and injected code parsed; reused eight QA seeds only."
+      },
+      "metric_qa": {
+        "run": 44714628933,
+        "branch": "feat/coach-p1-outer-metrics-v1",
+        "commit": "159f4e403d4fe0d0948e3f77a66aa68b8da72aef",
+        "pr": 53,
+        "scope": "Unit test of draft proper-score, calibrated bin, whole-match family bootstrap, support, payment, high risk and divergence gates. No outer data."
+      },
+      "next": "Check both QA runs, fix failures. Implement exact manifest verification, full joined predictor/baseline/evaluation from public inputs and audited labels, aggregate and focal-progression diagnostics. Freeze complete code/runtime/rule/candidate/seed manifest before 160 fresh matches. Do not acquire outer until QA passes; no model selection or threshold changes on outer; unsupported strata cannot pass. General release held, main unchanged.",
+      "integration_run": 44716885967
     }
   ],
   "roadmap": {

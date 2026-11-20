@@ -113,3 +113,6 @@ PR50再実行44712159043 全件成功。120旧+60新 training、12新 calibratio
 
 ## 18:55 P1 outer準備
 PR51 run44712422825 全成功、再利用2半荘199turnで他家手牌・山順序・裏ドラ・ロン資格read poison下で公開抽出/推論完全一致。PR52初回44713525288は引用符構文エラーで対局前停止。修正後run44714465352、4family×2progressionの再利用8seed QA。PR53 run44714628933、親gate維持の集計/判定unit、40半荘/family support、primary equal-family match bootstrap、危険層、80%区間の下限75%、8000点以上過小推定とdirect/decomp乖離の保守的追加基準案。outer未取得、正式合否未判定。R1現候補終了・R2予算未使用。main変更なし。
+
+## 19:12 P1独立評価実行開始
+PR52 run44714465352 8半荘と独立監査成功、PR53 run44714628933 単体全成功、PR54 run44716885967 既存8半荘の予測先行/教師結合通し試験成功（support不足を正しく不合格判定）。PR55 run44717123756 起動。候補固定・旧seed排除、160新seed・4family×2progression×4seat×5、親gate維持、source/runtime/manifest固定後のみ収集。全snapshot/時系列独立監査後に最終metrics。正式結果未取得。追加閾値は事前engineering基準、歴史全山hash未保有の限界記録。R1現候補終了、main未変更、公開留保。
