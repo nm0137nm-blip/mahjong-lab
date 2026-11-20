@@ -1,0 +1,41 @@
+{
+  "version": "phase0-formal-v1.0",
+  "status": "registered_before_new_candidate_comparison; activation blocked pending action contract and release gates",
+  "prior_protocol": "docs/phase0/protocol-v1.json",
+  "pilot": {
+    "run": 44668737514,
+    "n": 12,
+    "sd": 40.08690842747451,
+    "upper_sd_95": 62.158905300823314,
+    "approx_blocks": 135
+  },
+  "research": {
+    "primary": "candidate minus same frozen predecessor, mean custom rank utility across four initial seat rotations per seed block, vs three frozen S42-adapter opponents",
+    "utility": [
+      90,
+      45,
+      0,
+      -135
+    ],
+    "mme": 15,
+    "max_cycles": 2,
+    "per_cycle_generation_cap_hanchan": 2000,
+    "per_cycle_formal_cap_blocks": 400,
+    "max_total_generation_hanchan": 4000,
+    "max_total_formal_hanchan": 6400,
+    "formal_seed_blocks_rule": "Before first target candidate training/evaluation freeze 160 new blocks (1280 hanchan) per cycle, using 135-block conservative approx planning estimate rounded up to 160. If separate pre-candidate variance pilot requires larger N, preregister exact N and rationale before candidate is evaluated; maximum 400. No midrun resampling or sample-size adjustment from candidate outcomes.",
+    "power_interpretation": "80% approximate power for rejecting zero effect at true +15 with two-sided 5%; cannot claim 80% power to establish effect >=15; additional promotion point-estimate requirement",
+    "gate": "promote research only if lower 95% paired seed-block bootstrap CI >0 AND point estimate >=15, no severe regressions/correctness issues; if upper CI <15 then futility for that candidate; otherwise inconclusive; at budget cap freeze regardless; maximum 2 cycles, no optional stopping",
+    "ci": "paired whole 4-seat seed-block percentile bootstrap 20,000 replicates fixed RNG seed 261120; point effect and CI; primary single endpoint; secondary by opponent and action category descriptive",
+    "holdouts": "session/seed lineage/campaign/opponent family/version group; freeze train/dev/test manifests and seeds; no pilot pooling; existing 30-match dev and 700 games all development/reference, not fresh confirmation; prevent duplicate seed/hash/near-clones; no future/hidden labels in inference; keep exact model hashes, code SHA, rule hash, seed list, replay hashes; failures retry same seed/model, persistent failure invalidates full run not drop",
+    "baseline": "Explicit S42-adapter (46 actions, legal deterministic detail resolver, guard off; distinct from native original), frozen exact code / weight / rule hash before trial. Native action audit open; if correction changes comparator, rerun symmetry and pilot, refreeze prior to any candidate trial."
+  },
+  "product": {
+    "p1": "OOF calibration split by match and campaign; calibrated legal-Ron probability not actual ron choice; p(ron legal) x conditional payment under declared counterfactual rule; use explicit actual loss definition conditioned on accepted ron policy if calling actual loss; no joint probability independence assumptions; no Q-derived physical EV",
+    "p1_gate": "Before training/outer evaluation, freeze calibration/ranking/conditional-loss criteria and stratum support; no unverified point values in UI, uncertainty/small n suppress, no recommendation override; P1 metrics Brier/log loss/reliability/AUPRC, within-decision ranking, conditional point error and risk-loss consistency; dedicated untouched family holdout",
+    "p2": "Mortal unchanged, factual and estimated explanations separately, no causal inference of internal reasoning",
+    "p2b": "small prospective learner transfer pilot, factual accuracy plus independent metrics, not generalizable",
+    "p3": "counterfactual behavior consistency; not claim of internal causality"
+  },
+  "release_gate": "No expanded distribution pending corresponding-source and notice verification; no blanket legal compliance claim; no automatic merge."
+}
