@@ -128,3 +128,6 @@ PR56初回44723934431 cross-run artifact downloadがfirst pageのみで99/160。
 
 ## 2026-11-20 21:10 新チャット復旧・P1 v2教師ラベル修正
 PR57 run44726204303 attempt2: 全96半荘artifact揃い、snapshot監査は30693他家状態・333723合法ロンlabel・2886得点label確認、差3（seed3794127802/shard93、d-51/53/54のseat2、p345s456z4444,z555-）。自分の4枚所持牌の5枚目を必要とする形でembedded向聴0/聴牌true、独立向聴1、双方待ちなし・合法ロンなし。時系列監査未実行。PR58 run44730779024 は親監査不合格で学習前停止。PR59 run44733467016、commit119bdda9b30e45a2cfe2920e04051f0de208eb43 を起動：原artifact不変、全96件ソースhash検証、独立向聴と仮想5枚目による面子分解で厳密に3件だけ物理聴牌labelの訂正、元/派生oracle hash記録、従来snapshot・時系列監査を変更せず全件再実施後、既存screenそのまま実行。再対局・評価閾値変更・V1 outer教師参照なし。将来outer前に教師生成と物理聴牌定義を固定、旧120教師の再監査未了を記録。P1合格・R2・main変更・公開なし。
+
+## 2026-11-20 21:31 P1 v2限定サイクル終了・P2a事実準備
+PR59 run44733467016 21:13成功。96半荘、30693他家状態/333723 Ron/2886得点label、10231時系列turn、独立両監査差0。v2 screen: T再学習Platt pooled gap .064681、複数鳴き .078745、標準CPU logloss差+.001254で基準未達。R blend pooled logloss差-.000460873 CI[-.000675834,-.000257798]、全3family proper score・順位点推定改善、危険層gap<=.05、条件得点MAE/RMSE差-324.70/-472.41点。開発データのみ、P1 full候補なし、v2正式outerなし、追加の調整は行わない。結果archive/results/p1-v2-screen-20261120.json。PR60 run44736460105、commit e12ce3156facc42770d6a3453cc5640d6b782011、P2a事実のみ準備。公開情報のallowlist、Mortal行動グループ順位を別枠に隔離、P1未認証数値抑止、仮説未確定。unit＋96半荘のpublic/referenceのみ検証、oracle/旧outerを読まない。実製品全局面ID・provenance・定量事実追加・統合と評価は未了、本番変更・利用者試験・公開なし。R1現候補凍結、R2未使用。P1/P2a全合格ではない。
