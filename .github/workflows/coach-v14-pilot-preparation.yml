@@ -7,6 +7,7 @@ permissions:
   actions: read
 jobs:
   prepare:
+    if: false # completed in 44758253864; avoid repeating until packet changes
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
@@ -38,7 +39,7 @@ jobs:
           retention-days: 30
 
   sampler:
-    if: true # bounded contrast diagnostic; do not repeat original standard-only probe
+    if: false # contrast run 44758253864 already dispatched
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
@@ -70,5 +71,35 @@ jobs:
             /tmp/v14-contrast-probe.json
             /tmp/v14-contrast-public.json
             /tmp/v14-contrast-control.json
+          if-no-files-found: warn
+          retention-days: 30
+
+  bias-verifier:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - run: python -m pip install mahjong==1.4.0
+      - uses: actions/download-artifact@v4
+        with:
+          name: v14-sampler-feasibility
+          run-id: 44755542405
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/frozen-sampler
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: p1-v2-dev-data-*
+          run-id: 44726204303
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/v14-dev
+      - run: python tests/next/v14-sampler-bias-audit.py /tmp/v14-dev /tmp/frozen-sampler/v14-sampler-feasibility.json /tmp/v14-sampler-bias.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v14-sampler-bias-aggregate
+          path: /tmp/v14-sampler-bias.json
           if-no-files-found: warn
           retention-days: 30
