@@ -1,0 +1,116 @@
+{
+  "version": "formal-v1.1",
+  "status": "locked design before candidate / seed execution; activation blocked until R1 and exact candidate identity / historical seed audit",
+  "prior_protocol": "docs/phase0/protocol-v1.json",
+  "pilot": {
+    "run": 44668737514,
+    "n": 12,
+    "sd": 40.08690842747451,
+    "upper_sd_95": 62.158905300823314,
+    "approx_blocks": 135
+  },
+  "research": {
+    "primary": "candidate minus frozen predecessor, paired 4-seat block mean rank utility vs three identical corrected S42-adapter opponents; sole confirmatory endpoint",
+    "utility": [
+      90,
+      45,
+      0,
+      -135
+    ],
+    "mme": 15,
+    "max_cycles": 2,
+    "per_cycle_generation_cap_hanchan": 2000,
+    "per_cycle_formal_cap_blocks": 400,
+    "max_total_generation_hanchan": 4000,
+    "max_total_formal_hanchan": 6400,
+    "formal_seed_blocks_rule": "160 new blocks at first interim; only futility (95% CI upper <15) or continue same frozen candidate. If continue: second 160 fresh blocks; final single promotion analysis on combined 320. No first-stage promotion. Changed candidate cannot pool old blocks; development selection then at most one independent final confirmation, within preallocated reserves and budget, with protocol before evaluation.",
+    "power_interpretation": "At true +15, point estimate >=15 occurs about half the time; this is threshold design, not lack of power. +20 is design expectation; conservative pilot SD=39.68, n=160 or 320 yields SE≈3.14 or 2.22. Normal approximation only.",
+    "gate": "interim upper 95% CI <15: freeze candidate; otherwise continue unchanged. Final cumulative mean >=15 and lower 95% CI >0: research promotion only (product approval separate); upper CI <15: freeze; otherwise inconclusive/freeze at budget cap. Any correctness failure blocks promotion.",
+    "ci": "paired whole 4-seat seed-block percentile bootstrap 20,000 replicates fixed RNG seed 261120; point effect and CI; primary single endpoint; secondary by opponent and action category descriptive",
+    "holdouts": "session/seed lineage/campaign/opponent family/version group; freeze train/dev/test manifests and seeds; no pilot pooling; existing 30-match dev and 700 games all development/reference, not fresh confirmation; prevent duplicate seed/hash/near-clones; no future/hidden labels in inference; keep exact model hashes, code SHA, rule hash, seed list, replay hashes; failures retry same seed/model, persistent failure invalidates full run not drop",
+    "baseline": "Corrected S42 adapter, guard off, greedy, native second-stage reach and kan heads, tsumogiri and red-consumption detail selection. Source commit 43c99fb1df4e140b35f06f16d4b77247fdc71045 and encoder artifact/hash identified in archive/results/phase0-corrected-20261120.json. Local hanchan rules not original native engine or official Tenhou. Earlier 700 games frozen as legacy adapter reference, not new comparator trials.",
+    "minimum_practical_effect": 15,
+    "design_alternative": 20,
+    "identity": [
+      "model_weights_hash",
+      "feature_contract_hash",
+      "preprocess_hash",
+      "hyperparameters_hash",
+      "inference_code_hash",
+      "decision_threshold_hash",
+      "runtime_hash",
+      "baseline_hash",
+      "opponent_hash",
+      "rule_hash"
+    ],
+    "multiplicity": "one formal candidate and one primary condition per development selection; no picking best of test candidates or secondary opponents. If changed candidate is selected after interim, exclude old formal blocks and use independent confirmation only; not a second chance at promotion for same hypothesis.",
+    "allocation": {
+      "primary_interim_blocks": 160,
+      "primary_second_blocks": 160,
+      "secondary_standard_cpu_blocks": 160,
+      "confirmation_reserve_blocks": 160,
+      "unused_reserved_blocks": 160,
+      "total_blocks": 800,
+      "arm_count": 2,
+      "seats": 4,
+      "max_total_matches": 6400,
+      "note": "Five disjoint 160-block units. Last reserved unit not activated without preregistered purpose; no promotion using secondary or arbitrary reserve. Generation cap unchanged 4000. 2 research development cycles max."
+    },
+    "runtime": "Freeze validated Chromium/CPU/WASM runtime and exact binaries; no GPU/unvalidated WebKit result pooling."
+  },
+  "product": {
+    "p1": "OOF calibration split by match and campaign; calibrated legal-Ron probability not actual ron choice; p(ron legal) x conditional payment under declared counterfactual rule; use explicit actual loss definition conditioned on accepted ron policy if calling actual loss; no joint probability independence assumptions; no Q-derived physical EV",
+    "p1_gate": "Before training/outer evaluation, freeze calibration/ranking/conditional-loss criteria and stratum support; no unverified point values in UI, uncertainty/small n suppress, no recommendation override; P1 metrics Brier/log loss/reliability/AUPRC, within-decision ranking, conditional point error and risk-loss consistency; dedicated untouched family holdout",
+    "p2": "Mortal unchanged, factual and estimated explanations separately, no causal inference of internal reasoning",
+    "p2b": "Small transfer pilot only after P3-min; Mortal agreement is not itself educational value.",
+    "p3": "counterfactual behavior consistency; not claim of internal causality",
+    "sequence": [
+      "P1",
+      "P2a",
+      "P3-min",
+      "P2b",
+      "P3-full"
+    ],
+    "p2a": "External comparison and reasons as supporting/opposing factors, never assert Mortal internal cause; deterministic facts separate from uncertain estimated risk; no Q as points/probability; separate tactical equivalence threshold from numerical drift.",
+    "p3_min": "Critical factual errors zero on preregistered sample; legal matched counterfactual and predicted direction of candidate margin agree with observed direction before P2b.",
+    "p3_full": "Expand situations and factor families; maintain truth/estimate and causal disclaimers."
+  },
+  "release_gate": "No expanded distribution pending corresponding-source and notice verification; no blanket legal compliance claim; no automatic merge.",
+  "pilot_corrected": {
+    "run": 44673238225,
+    "n": 12,
+    "sd": 25.59033131513115,
+    "upper_sd_95": 39.680460360563224,
+    "approx_blocks": 55
+  },
+  "margin_gate": {
+    "run": 44680960295,
+    "max_drift": 0.0000057220458984375,
+    "threshold": 0.000057220458984375,
+    "strata": {
+      "high": {
+        "n": 445,
+        "action_match": 445,
+        "group_match": 445
+      },
+      "near": {
+        "n": 0,
+        "action_match": 0,
+        "group_match": 0
+      },
+      "forced": {
+        "n": 0,
+        "action_match": 0,
+        "group_match": 0
+      }
+    },
+    "scope": "gap of first-stage native legal Q top two; concrete second-stage action is tested exactly but its own margin is not separately measured; already-seen fresh trajectories, separate from synthetic calibration, not a new prospective skill holdout"
+  },
+  "source": "2026-11-20 Phase 0進捗レビュー 統合提言 pp.6–12",
+  "phase0_followup": {
+    "status": "limited pass remains; not a blocker for P1/R1",
+    "regression": 317,
+    "new_validation": 445,
+    "coverage": "Track unseen/rare actions and states in new real simulated logs; report Top1–Top2 gap quantiles, low-margin Top-k and concrete actions separately; numerical threshold 5.72e-5 valid only for checked runtime, remeasure when environment changes; tactical equivalence separate."
+  }
+}
