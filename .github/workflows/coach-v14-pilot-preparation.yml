@@ -201,6 +201,7 @@ jobs:
           retention-days: 30
 
   contrast-mortal:
+    if: false # completed 44813459829
     runs-on: ubuntu-24.04
     timeout-minutes: 12
     steps:
@@ -246,4 +247,53 @@ jobs:
           name: v14-contrast-mortal-verifier-only
           path: /tmp/contrast-mortal-result.json
           if-no-files-found: warn
+          retention-days: 30
+
+  pilot-answer-audit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.23.4'
+      - run: node --test tests/next/v14-pilot-boundary.test.mjs
+      - uses: actions/download-artifact@v4
+        with:
+          name: v14-frozen-stage1-only
+          run-id: 44813180639
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/stage1
+      - run: node tests/next/v14-pilot-answer-audit.mjs controls /tmp/stage1/independent-requests.json /tmp/control-locks
+      - uses: actions/download-artifact@v4
+        with:
+          name: v14-frozen-verifier-only
+          run-id: 44813180639
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/verifier
+      - uses: actions/download-artifact@v4
+        with:
+          name: v14-contrast-mortal-verifier-only
+          run-id: 44813459829
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/contrast-ref
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: p1-v2-dev-data-*
+          run-id: 44726204303
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/v14-dev
+      - run: node tests/next/v14-pilot-answer-audit.mjs refs /tmp/stage1/independent-requests.json /tmp/verifier/lineage.json /tmp/contrast-ref/contrast-mortal-result.json /tmp/v14-dev /tmp/verifier/references.json
+      - run: |
+          for name in efficiency_own_only own_points boilerplate; do
+            node tests/next/v14-pilot-answer-audit.mjs grade /tmp/stage1/independent-requests.json /tmp/control-locks/$name.json /tmp/verifier/references.json /tmp/verifier/$name-grade.json
+          done
+          node -e 'for(const k of ["efficiency_own_only","own_points","boilerplate"]){const r=require("/tmp/verifier/"+k+"-grade.json");console.log(k,JSON.stringify({...r,rows:undefined}));}'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v14-pilot-answer-audit-verifier-only
+          path: |
+            /tmp/control-locks
+            /tmp/verifier/references.json
+            /tmp/verifier/*-grade.json
           retention-days: 30
