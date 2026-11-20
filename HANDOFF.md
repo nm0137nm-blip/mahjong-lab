@@ -43,3 +43,6 @@
 - Phase 0 開始。PR #28、run 44667625456、commit 0aa5535795cbe86e7e5acdce65bb0ee8b472f479。独立native/PyTorch対WebKitの合成局面比較と4席ローテーション運用pilot20半荘。現時点は起動のみ、成功未確認。
 - 詳細: handoff/roadmap-20261120.md, handoff/license-decision-20261120.md, handoff/phase0-protocol-v1.json。ライセンスの本番配布条件、完全対局整合、対比較の分散推定は未完。正式試験数は独立pilot後に固定。
 - 今後の研究上限：最大2 DAggerサイクル・生成4,000半荘・正式比較6,400半荘・MME +15pt/サイクル。製品P1→P2→P2b→P3、研究R1→R2→R3。初期製品でMortal推奨を上書きしない。本番main変更なし。
+
+## 2026-11-20 12:31 Phase 0 初回監査成功
+Run 44667625456 全7ジョブ成功（12:29:45 JST）。合成100局面、合法Q 1,376個、観測特徴量完全一致、native Q最大差5.722e-6、WebKit最大差4.768e-6。4ブロック20半荘の運用試験、同席再現4/4、4席各順位1回ずつ。全S42同士のブロック効用分散0は候補との対比較分散ではない。Phase 0全体は未完（独立runtimeの実対局、配布条件、候補比較分散と試験数の確定）。結果: archive/results/phase0-operational-20261120.json。

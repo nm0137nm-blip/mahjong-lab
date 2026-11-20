@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-20T12:25:28+09:00",
+  "checkpoint": "2026-11-20T12:31:34+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -8,14 +8,74 @@
     "coach_candidate_promoted": false
   },
   "active_task": {
-    "status": "phase0_operational_audit_queued",
+    "status": "phase0_operational_audit_pass_remaining_gates",
     "branch": "feat/coach-phase0-audit-v1",
     "commit": "0aa5535795cbe86e7e5acdce65bb0ee8b472f479",
     "pr": 28,
     "run_id": 44667625456,
     "protocol": "docs/phase0/protocol-v1.json",
     "next": "Check native PyTorch/WebKit parity and duplicate results; fix failures; complete live runtime/group resolution audit, license decision and paired variance pilot before P1 and R1; do not merge production",
-    "scope": "synthetic fixtures, 20 operational hanchan, not formal skill trial"
+    "scope": "synthetic fixtures, 20 operational hanchan, not formal skill trial",
+    "result_path": "archive/results/phase0-operational-20261120.json",
+    "results": {
+      "run_id": 44667625456,
+      "attempt": 1,
+      "completed_at": "2026-11-20T03:29:45Z",
+      "status": "success",
+      "native": {
+        "scenes": 100,
+        "decisions": 100,
+        "legal_q_values": 1376,
+        "max_obs_error": 0,
+        "non_bit_exact_observations": 0,
+        "max_q_error": 0.0000057220458984375
+      },
+      "webkit": {
+        "decisions": 100,
+        "legal_q_values": 1376,
+        "max_q_error": 0.00000476837158203125
+      },
+      "duplicate": {
+        "n_matches": 20,
+        "blocks": 4,
+        "rank_by_dealer": [
+          [
+            3,
+            4,
+            1,
+            2
+          ],
+          [
+            3,
+            4,
+            2,
+            1
+          ],
+          [
+            4,
+            2,
+            1,
+            3
+          ],
+          [
+            1,
+            3,
+            2,
+            4
+          ]
+        ],
+        "repeat_exact_all": true,
+        "mean_focal_utility": 0,
+        "sd_all_s42_block_utility": 0,
+        "limitation": "same-policy operational check only; candidate-vs-baseline paired variance still needs a separate pilot"
+      },
+      "remaining": [
+        "live independent runtime trajectory and grouped action equivalence",
+        "license distribution review",
+        "candidate-vs-baseline paired variance pilot and formal trial sample-size freeze",
+        "detailed acceptance thresholds"
+      ]
+    }
   },
   "previous_runs": [
     {
