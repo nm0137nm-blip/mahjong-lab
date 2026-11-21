@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-21T06:01:08+09:00",
+  "checkpoint": "2026-11-21T10:42:13+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -8,8 +8,8 @@
     "coach_candidate_promoted": false
   },
   "active_task": {
-    "phase": "P2a-pilot",
-    "status": "awaiting_independent_real_coach_answers_user_assistance",
+    "phase": "P2a-pilot-review",
+    "status": "stage1_actual_30_pilot_closed_no_go_third_party_review_required",
     "branch": "feat/coach-v14-pilot-boundary-v1",
     "commit": "41d13c8ded49d216805b22cb09d92131feaf0c6d",
     "pr": 61,
@@ -174,11 +174,29 @@
         "robustRolloutLabels": 0
       }
     ],
-    "decision": "Cited boilerplate passed all structural links 30/30, measurable shape 30/30 yet missed both changed reference pairs. Cannot claim semantic relative quality or B3/B4. User explicitly requires third-party review at every phase end, including failure/partial closure; no automatic progression. Manual stage1 verified 30 request hashes, packet/lineage hashes, exact six payloads, paired cases split, key scan. No independent inference endpoint available. Need fresh chat actual outputs; separate diagnostic from pass.",
-    "next": "User to submit actual stage1 answers (six batches, first batch may be returned first), same displayed model/effort fresh standalone chats; no verifier material, no retries selected for score. Protocol handoff/v14-manual-pilot-execution-20261121.md. Continue remaining independent simulator/semantic diagnostics when feasible; preserve gate, review any closure outcome.",
+    "decision": "Actual independent LLM answers received (six files/30) and checked against frozen public cases. Basic schema/fact citations all pass; Mortal group best 21/30, mismatches9, compared with weak baselines12/30. Substantive relative explanation not proved (three-opponent directional evidence proxy0/30, 121/182 unknown, stock text 90 times); 4 contrast pairs all changed although only 2 Mortal reference best changed. Citation-heavy weak boilerplate passes link proxy 30/30. B4 no robust labels and sampler biased. Early stage1 pilot complete but NOT qualified for next formal B/P3-min; third-party review mandatory for unsuccessful phase closures. No automatic pass or criteria relaxation.",
+    "next": "Get external Claude and Copilot third-party review of exact recorded actual pilot results, including failed/partial status. Then assess revisions to tactical explanation, negative control design, calibrated sampler, choice of independent model and inference provenance; do not use these 30 to claim formal performance, or promote to formal B/large P3/main. Raw user-generated answers kept as local attachment only, not public GitHub.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
-    "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md"
+    "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
+    "report": "handoff/p2a-v14-30-dev-pilot-first-stage-review-20261121.md",
+    "answer_artifact_provenance": {
+      "user_zip_sha256": "a9c6ab395adb3c98e935eb98e9770f6cec0d33ed7b3ba7cf778a3a26403290fb",
+      "frozen_input_hash": "e79e07a23e2ed149d00fbeda403ae96b1409016cf33551cce86dba6e6301777b",
+      "actual_answers": 30,
+      "structural_valid": 30,
+      "fact_citations": 914,
+      "mortal_top_groups": 21,
+      "weak_top_groups": 12,
+      "opponent_direction_claims": 9,
+      "unknown_claims": 121,
+      "total_claims": 182,
+      "boilerplate_3_seat_repeats": 90,
+      "contrast_both_optimal_pairs": 1,
+      "contrast_pairs": 4,
+      "robust_rollout_labels": 0,
+      "metadata": "provider/effort not independently recorded"
+    }
   },
   "previous_runs": [
     {
