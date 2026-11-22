@@ -297,3 +297,130 @@ jobs:
             /tmp/verifier/references.json
             /tmp/verifier/*-grade.json
           retention-days: 30
+
+  gemini-review-snapshot:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - name: Prepare verified cross-branch reviewer packs (no private trial data)
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin refs/heads/project-handoff:refs/remotes/origin/project-handoff
+          git fetch origin refs/heads/main:refs/remotes/origin/main
+          python - <<'PY'
+          import pathlib,subprocess,json,hashlib,zipfile,datetime
+          root=pathlib.Path('/tmp/mahjong-gemini-snapshot')
+          def rev(ref):return subprocess.check_output(['git','rev-parse',ref],text=True).strip()
+          docsha=rev('refs/remotes/origin/project-handoff')
+          codesha=rev('HEAD')
+          mainsha=rev('refs/remotes/origin/main')
+          docs='''HANDOFF.md
+          handoff/state.json
+          handoff/roadmap-v1.4-pilot-go-20261120.md
+          handoff/p2a-v14-30-dev-pilot-first-stage-review-20261121.md
+          handoff/p2a-v14-claude-opus-review-stat-followup-20261123.md
+          handoff/coach-relative-quality-20261120.md
+          handoff/roadmap-v1.4-review-amendment-20261120.md
+          handoff/license-decision-20261120.md
+          handoff/v14-manual-pilot-execution-20261121.md'''.splitlines()
+          codes='''src/coach/v14-pilot-boundary.mjs
+          src/coach/v14-public-calculations.mjs
+          src/coach/p2a-facts-only.mjs
+          src/coach/phoenix-coach.mjs
+          src/coach/s42-benchmark.mjs
+          src/mortal/mjai-bridge.mjs
+          src/mortal/mortal-worker.mjs
+          src/mortal/mortal-cpu.mjs
+          src/mortal/mortal-client.mjs
+          src/mortal/s42-analytics.mjs
+          tests/next/v14-pilot-boundary.test.mjs
+          tests/next/v14-negative-controls.mjs
+          tests/next/v14-pilot-answer-audit.mjs
+          tests/next/v14-contrast-mortal-encode.mjs
+          tests/next/v14-contrast-mortal-grade.py
+          tests/next/v14-sampler-feasibility.py
+          tests/next/v14-engine-rollout-probe.mjs
+          tests/next/v14-contrast-probe.mjs
+          tests/next/v14-freeze-pilot-set.mjs
+          tests/next/v14-late-proposal-probe.py
+          tests/next/v14-late-proposal-verifier.py
+          tests/next/audit-v14-public-calculations.py
+          .github/workflows/coach-v14-pilot-preparation.yml
+          index.html'''.splitlines()
+          for p in docs:
+              data=subprocess.check_output(['git','show',f'{docsha}:{p}'])
+              f=root/'docs'/p
+              f.parent.mkdir(parents=True,exist_ok=True);f.write_bytes(data)
+          for p in codes:
+              f=root/'code'/p
+              f.parent.mkdir(parents=True,exist_ok=True)
+              f.write_bytes(pathlib.Path(p).read_bytes())
+          readme='''# 麻雀LAB: Gemini / Claude 向けオフライン引き継ぎ
+          このZIPはリポジトリの2ブランチをコミット固定してコピーしたものです。GitHubへ直接アクセスできない場合も、添付ファイルとして実際の記録を読めます。
+          ## 読む順番
+          1. docs/handoff/state.json （最新作業状態・レビュー担当）
+          2. docs/HANDOFF.md （時系列。必ず末尾まで）
+          3. docs/handoff/roadmap-v1.4-pilot-go-20261120.md
+          4. docs/handoff/p2a-v14-30-dev-pilot-first-stage-review-20261121.md
+          5. docs/handoff/p2a-v14-claude-opus-review-stat-followup-20261123.md
+          6. 必要に応じ code/src/coach/, code/src/mortal/, code/tests/next/, code/index.html
+          7. CI/RUNS.md、MANIFEST.jsonでブランチ・コミット・検証状況を確認
+          ## 現状の重要な留保
+          初回P2a 30問pilotは「コーチ戦術解説は未実証／評価器は不合格」。正式試験への移行はNO-GO。P1-Liteは未認証、ロールアウトB4は未合格。
+          第三者レビュアーは今後ClaudeとGeminiの2者。Copilotの過去コメントは履歴として残す。
+          文書は project-handoff、ソースコードは feat/coach-v14-pilot-boundary-v1。双方が同一ブランチにあるわけではなく、アプリmainの本番実装とも限らない。
+          ユーザーの個別チャットで生成した実回答、他家の隠し手・oracle、学習モデルの重み、過去の全CI生ログは同梱しない。
+          GitHubへアクセスしたと偽らず「添付されたGitHubスナップショットを読んだ」と明記すること。最新のGitHub状態は本スナップショット取得後に変わり得る。
+          '''
+          (root/'START_HERE.md').write_text(readme,encoding='utf-8')
+          logs='''# 主要CI Run IDの索引（生ログを収録したものではありません）
+          - 44726204303: 96半荘の開発データ収集・初回監査
+          - 44758253864: 弱対照、立直あり／なし4組の試験
+          - 44812741900: 隠し手牌サンプラーの偏り・感度
+          - 44813180639: 実30問固定、公開計算値の独立監査
+          - 44813459829: pinned Mortalで4対照組の比較
+          - 44814792884: 引用付き定型解説が形式検査に通る問題を検出
+          CI URL: https://github.com/nm0137nm-blip/mahjong-lab/actions
+          各検証の数値・合否はdocs/HANDOFF.mdおよび関連資料を優先して確認。
+          '''
+          (root/'CI').mkdir(exist_ok=True)
+          (root/'CI/RUNS.md').write_text(logs,encoding='utf-8')
+          for name,ref in [('CODE_LAST10_COMMITS.txt','HEAD'),('HANDOFF_LAST10_COMMITS.txt','refs/remotes/origin/project-handoff')]:
+              log=subprocess.check_output(['git','log','-n','10','--date=iso-strict','--pretty=format:%H %ad %s',ref],text=True)
+              (root/'CI'/name).write_text(log+'\n',encoding='utf-8')
+          files=[]
+          for f in sorted(root.rglob('*')):
+              if f.is_file():
+                  rel=f.relative_to(root).as_posix()
+                  files.append({'path':rel,'size':f.stat().st_size,'sha256':hashlib.sha256(f.read_bytes()).hexdigest(),
+                      'source_branch':'project-handoff' if rel.startswith('docs/') else 'feat/coach-v14-pilot-boundary-v1' if rel.startswith('code/') else 'generated'})
+          manifest={'repo':'nm0137nm-blip/mahjong-lab','commits':{'project-handoff':docsha,'feat/coach-v14-pilot-boundary-v1':codesha,'main':mainsha},
+                    'created_at_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),
+                    'note':'Frozen Git contents. No private pilot answers, hidden hands, or model weights.',
+                    'files':files}
+          (root/'MANIFEST.json').write_text(json.dumps(manifest,indent=2,ensure_ascii=False)+'\n',encoding='utf-8')
+          for name,include in [
+            ('/tmp/mahjong_lab_gemini_full_review.zip',lambda rel:True),
+            ('/tmp/mahjong_lab_gemini_essentials.zip',lambda rel:rel.startswith('docs/') or rel in ('START_HERE.md','MANIFEST.json'))
+          ]:
+              with zipfile.ZipFile(name,'w',compression=zipfile.ZIP_DEFLATED,compresslevel=9) as z:
+                  for f in sorted(root.rglob('*')):
+                      if f.is_file() and include(f.relative_to(root).as_posix()):
+                          z.write(f,f.relative_to(root))
+              with zipfile.ZipFile(name) as z:assert z.testzip() is None
+              print(name,pathlib.Path(name).stat().st_size)
+          print('docsha',docsha,'codesha',codesha,'files',len(files))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mahjong-gemini-review-two-zips
+          path: |
+            /tmp/mahjong_lab_gemini_full_review.zip
+            /tmp/mahjong_lab_gemini_essentials.zip
+          if-no-files-found: error
+          retention-days: 30
