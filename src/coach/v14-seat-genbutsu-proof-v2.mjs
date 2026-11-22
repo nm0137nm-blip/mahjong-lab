@@ -21,7 +21,14 @@ function derive(envelope,a,b,seat){
   if(!c||!Array.isArray(c.safety))fail('candidate safety absent');
   const matches=c.safety.filter(x=>x.seat===seat);
   if(matches.length!==1||typeof matches[0].ownRiverGenbutsu!=='boolean')fail('target seat safety not known');
-  return matches[0].ownRiverGenbutsu;
+  const match=typeof act.detail==='string'?act.detail.match(/[mps][0-9]|z[1-7]/):null;
+  if(!match)fail('no concrete discarded tile in action detail');
+  const norm=t=>t[0]+(t[1]==='0'?'5':t[1]);
+  const river=i.evidence.find(x=>x.id==='seat-'+seat)?.value?.discards;
+  if(!Array.isArray(river))fail('missing public opponent river');
+  const observed=river.some(d=>typeof d.tile==='string'&&norm(d.tile)===norm(match[0]));
+  if(matches[0].ownRiverGenbutsu!==observed)fail('calculated genbutsu conflicts with actual public river');
+  return observed;
  };
  const left=get(a),right=get(b);
  return {version:'p2a-v2-genbutsu-certificate-1',requestHash:envelope.requestHash,
