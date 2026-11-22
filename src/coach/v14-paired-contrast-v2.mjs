@@ -89,7 +89,7 @@ function top(p,i){
 }
 export function verifyPairedPackages(es,lineage,mortal){
  const by=order(es,lineage);
- if(mortal?.status!=='pass'||!Array.isArray(mortal.rows)||mortal.rows.length!==4||
+ if(mortal?.status!=='paired_reference_diagnostic_not_gold_label'||!Array.isArray(mortal.rows)||mortal.rows.length!==4||
     mortal.modelSHA256!=='30381bf21389e2d25d3edf48fed11bf772336ef3daeee67d1bdae7fb9dd30cb4')fail('pinned reference record unavailable');
  const rows=[];
  for(let n=1;n<=4;n++){
