@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-23T07:45:00+09:00",
+  "checkpoint": "2026-11-23T08:30:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -9,11 +9,11 @@
   },
   "active_task": {
     "phase": "P2a-v2-dev-repair",
-    "status": "claude_gemini_review_closed_development_only_GO",
+    "status": "v2_first_evidence_and_inference_qa_success_semantic_gate_unverified",
     "branch": "feat/coach-v14-pilot-boundary-v1",
-    "commit": "cfff272c04ea3f67b7685761f6c22c947a63f5f0",
+    "commit": "391f5599dfad21e9205163b9ec5b1e5d02f6cd28",
     "pr": 61,
-    "run_id": 44814792884,
+    "run_id": 45083251832,
     "prior_runs": [
       {
         "run_id": 44754324733,
@@ -172,10 +172,24 @@
         "citedBoilerplateOpponentLinks": 30,
         "measurableClaimShapeEach": 30,
         "robustRolloutLabels": 0
+      },
+      {
+        "run_id": 45083251832,
+        "status": "v2_dev_fact_proof_model_log_conditional_450_pilot_30_schema_qa_success_not_semantic",
+        "commit": "391f5599dfad21e9205163b9ec5b1e5d02f6cd28",
+        "tests": 19,
+        "passed": 19,
+        "failed": 0,
+        "existingFrozenInputs": 30,
+        "syntheticPositiveProofs": 30,
+        "hypotheticalRonRows": 450,
+        "realModelCalls": 0,
+        "semanticCertified": 0,
+        "formalCertified": 0
       }
     ],
-    "decision": "Unanimous coach explanation unverified, evaluator failed, formal B/P1-Lite160/P3-min/main/public NO-GO. Bounded development GO for evaluation v2, product/diagnostic responsibilities, inference logging, conditional facts, legal perturbations, stage2 adversarial review. No retroactive alteration of failed v1.4 pilot gate. B4 long-term calibrated rollout frozen as separate R&D and not used in P2a-v2 minimum, without claiming previous B4 certification.",
-    "next": "Begin implementation with decision record and deterministic evaluator v2 negative and positive test design. In parallel identify actual inference method with logged model/version/hash and iPhone feasibility; do not assume paid API available. After evaluator and conditional facts, generate new non-overlapping 30–40 development scenes and legal sensitivity+specificity pairs, stage2 fake-reference isolated tests; pre-register gate before tests. Do not start formal exams and publish. Every phase closure Claude+Gemini review.",
+    "decision": "Claude+Gemini bounded P2a-v2 development: 19 unit/QA tests passed for public arithmetic proof, one-case provenance, 450 hypothetical ron settlement scenarios and selective-opponent schema over frozen 30 dev cases. No independent model calls; no ability to grade strategic causality. Cited boilerplate with correct facts is still potentially capable of filling typed fields, so existing evaluator Blocker not resolved. The v1.4 pilot remains failed; formal B/P1-Lite160/P3/main/public remain NO-GO; B4 research frozen.",
+    "next": "Build true semantic discriminator against copied math and cited boilerplate (positive controls plus negative paraphrase/reseat/reshuffle), then lawful public factor perturbations with sensitivity/specificity, isolated Stage2 false-reference evaluation; obtain actual model execution with reliable one-case session logs before next unseen development pilot. Never claim skill from 19 tests. Keep 30 old cases regression only; preregister new gates and do not access formal seeds.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -213,7 +227,8 @@
         ".github/workflows/coach-v14-pilot-preparation.yml"
       ],
       "code_or_evaluator_behavior_changes": false
-    }
+    },
+    "v2_checkpoint": "handoff/p2a-v2-initial-engineering-checkpoint-20261123.md"
   },
   "previous_runs": [
     {
