@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-23T08:31:00+09:00",
+  "checkpoint": "2026-11-23T08:43:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -9,11 +9,11 @@
   },
   "active_task": {
     "phase": "P2a-v2-dev-repair",
-    "status": "v2_first_evidence_and_inference_qa_success_semantic_gate_unverified",
+    "status": "checkpoint2_matched_riichi_and_genbutsu_and_stage2_transport_qa_success_semantic_gate_unresolved",
     "branch": "feat/coach-v14-pilot-boundary-v1",
-    "commit": "912d3febc2b6a956d7e51ea28dcb5725db6b1dfa",
+    "commit": "5aaa7c7baec48876c34066dc31914d8e128ddd04",
     "pr": 61,
-    "run_id": 45083471257,
+    "run_id": 45084694862,
     "prior_runs": [
       {
         "run_id": 44754324733,
@@ -198,10 +198,30 @@
         "genericFactPaddedArithmeticPass": 30,
         "tacticalCertified": 0,
         "modelCalls": 0
+      },
+      {
+        "run_id": 45084694862,
+        "status": "v2_mechanical_gate2_success_not_semantic",
+        "commit": "5aaa7c7baec48876c34066dc31914d8e128ddd04",
+        "tests": 32,
+        "passed": 32,
+        "failed": 0,
+        "pairedReferencePackages": 4,
+        "pinnedChange": 2,
+        "pinnedMaintain": 2,
+        "linkedRonTsumoHypotheticalsPerCase": 27,
+        "seatGenbutsuExamples": 59,
+        "distinctDevCasesWithGenbutsu": 22,
+        "seatContrasts": 1254,
+        "stage2SyntheticPackets": 8,
+        "realIndependentInference": 0,
+        "realStage2Inference": 0,
+        "modelReasonCertified": 0,
+        "formalGatePassed": false
       }
     ],
-    "decision": "Claude+Gemini bounded P2a-v2 development: 20 unit/QA tests passed for public arithmetic proof, one-case provenance, 450 hypothetical ron settlement scenarios and selective-opponent schema over frozen 30 dev cases. No independent model calls; no ability to grade strategic causality. Cited boilerplate with correct facts is still potentially capable of filling typed fields, so existing evaluator Blocker not resolved. The v1.4 pilot remains failed; formal B/P1-Lite160/P3/main/public remain NO-GO; B4 research frozen. Added 30-case test showing generic prose with correct calculations may pass deterministic proof but receives 0 tactical certificates; semantic evaluation remains unsolved.",
-    "next": "Work next on nontrivial semantic/causal negative controls with positive preservation, legal public-factor paired perturbation (change and maintain), isolated Stage2 counterfeit-reference test and inference execution options. Do not use cached 30 to certify expertise; never run formal tests without new registered criteria.",
+    "decision": "Gate2 development-only mechanical QA 32/32 passed: 4 coupled reach declaration+1000pt deposit (2 reference change,2 maintain), 59 opponent-seat genbutsu contrasts /1254 combinations with independent river cross-check, 8 synthetic pinned Stage2 packet integrity tests including counterfeit reference rejection. All strategic explanations, real LLM Stage2, sensitivity of real new model, official B/B4 certification remain unverified. v2 semantic discriminator is not solved; do not promote P2a or product.",
+    "next": "Continue on meaning-sensitive evaluator beyond typed fact evidence, preserving positive controls and rejecting quoted/generic/reshuffled/seat-swapped negatives. Predefine standards and a new nonoverlapping development sample before any new independent model evaluation. Establish actual 1-case inference method, Stage2 fake-reference behavioral tests, legal multi-factor paired controls. B4 research frozen. No formal B, P1-Lite160, P3-min, main or public release.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -240,7 +260,8 @@
       ],
       "code_or_evaluator_behavior_changes": false
     },
-    "v2_checkpoint": "handoff/p2a-v2-initial-engineering-checkpoint-20261123.md"
+    "v2_checkpoint": "handoff/p2a-v2-initial-engineering-checkpoint-20261123.md",
+    "gate2_report": "handoff/p2a-v2-mechanical-evaluation-gate2-20261123.md"
   },
   "previous_runs": [
     {
