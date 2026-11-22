@@ -58,3 +58,20 @@ test('tampered source hashes and fake archived model data are rejected before an
  b.request.input.reference={q:[12,34]};
  assert.throws(()=>verifyV2IndependentDevelopmentAnswer(b,response),/tampered request/);
 });
+
+test('30 perfectly grounded but generic answers may pass facts; not one is certified for tactical depth',()=>{
+ if(!all.length)return;
+ let syntacticallyGood=0,certified=0;
+ for(const old of all){
+  const e=createV2IndependentDevelopmentRequest(old),a=sample(e);
+  a.educational.reason='麻雀では状況に応じて、手牌効率と打点のバランスを取ることが大切です。';
+  a.educational.opponentTradeoff='すべての他家の速度と得点を意識し、慎重に押し引きすることが重要です。';
+  a.educational.boundary='状況が変わったときには、同じ打牌が最善ではなくなることがあります。';
+  a.educational.lesson='目先の受け入れだけでなく、常に場況全体を総合判断しましょう。';
+  const q=verifyV2IndependentDevelopmentAnswer(e,a);
+  if(q.calculationProof.deterministicGate==='pass')syntacticallyGood++;
+  if(q.explanationQuality==='certified')certified++;
+ }
+ assert.equal(syntacticallyGood,30);
+ assert.equal(certified,0); // Deterministic facts cannot validate generic causal narratives.
+});
