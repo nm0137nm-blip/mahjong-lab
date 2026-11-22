@@ -39,8 +39,50 @@ function diffRiichiEvent(a,b,seat){
  }
  if(changed!==1)fail('expected one declaration event difference');
 }
+// Independently recompute all public hypothetical settlements from the board,
+// instead of permitting arbitrary derived rank-scenarios to change together
+// with a deposit toggle. These are counterfactual ledgers, NOT risk/EV labels.
+function checkHypotheticalRankEvidence(input){
+ const b=evidence(input,'board'),r=evidence(input,'rank-scenarios');
+ if(!b||!r||r.status!=='hypothetical_settlements_only'||b.pendingReach)fail('unsupported rank settlement evidence');
+ const scores=b.scores.map(x=>x.points),order=b.initialOrder,own=b.ownSeat;
+ if(scores.length!==4||order.length!==4||new Set(order).size!==4)fail('invalid score/rank metadata');
+ const rank=pts=>pts.map((p,s)=>1+pts.filter((q,t)=>t!==s&&(q>p||q===p&&order.indexOf(t)<order.indexOf(s))).length);
+ cmp(r.initialOrder,order,'rank original seat order');
+ cmp(r.currentRanks,rank(scores),'current public ranks');
+ if(r.ron.length!==15||r.tsumo.length!==12)fail('invalid hypothetical row count');
+ const tiers=[[1000,1500],[2000,2900],[3900,5800],[7700,11600],[8000,12000]];
+ let k=0;
+ for(const other of [0,1,2,3].filter(s=>s!==own)){
+  for(const [child,parent] of tiers){
+   const w=scores.slice(),l=scores.slice();
+   const gain=(own===0?parent:child)+300*b.honba;
+   const loss=(other===0?parent:child)+300*b.honba;
+   w[own]+=gain+1000*b.kyotaku;w[other]-=gain;
+   l[own]-=loss;l[other]+=loss+1000*b.kyotaku;
+   const expected={other,winBase:own===0?parent:child,winPoints:w,winRanks:rank(w),
+    lossBase:other===0?parent:child,lossPoints:l,lossRanks:rank(l)};
+   cmp(r.ron[k++],expected,'invalid ron hypothetical settlement');
+  }
+ }
+ k=0;
+ for(const winner of [0,1,2,3]){
+  for(const unit of [500,1000,2000]){
+   const out=scores.slice();
+   for(let seat=0;seat<4;seat++)if(seat!==winner){
+    const payment=(winner===0||seat===0?2*unit:unit)+100*b.honba;
+    out[seat]-=payment;out[winner]+=payment;
+   }
+   out[winner]+=1000*b.kyotaku;
+   cmp(r.tsumo[k++],{winner,childPay:winner===0?2*unit:unit,
+    parentPay:winner===0?null:2*unit,points:out,ranks:rank(out)},'invalid tsumo hypothetical settlement');
+  }
+ }
+}
+
 function checkPackage(a,b){
  const x=a.request.input,y=b.request.input;
+ checkHypotheticalRankEvidence(x);checkHypotheticalRankEvidence(y);
  if(x.phase!==y.phase||x.version!==y.version)fail('unmatched phase/version');
  cmp(x.actions,y.actions,'different legal choice mask');
  if(x.evidence.length!==y.evidence.length||x.evidence.some((e,i)=>e.id!==y.evidence[i].id||e.kind!==y.evidence[i].kind))fail('mismatched evidence projection');
