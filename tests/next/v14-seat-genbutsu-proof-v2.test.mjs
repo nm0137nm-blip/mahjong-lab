@@ -53,7 +53,7 @@ test('public reference is hash bound; future/private injection or illegal action
  const e=es.find(x=>x.request.input.id==='pilot-01');
  const certificate=deriveGenbutsuContrast(e,'a4-0','a3-0',0);
  const bad=clone(e);bad.request.input.evidence.push({id:'future',value:{winningTile:'s1'}});
- assert.throws(()=>verifyGenbutsuContrast(bad,certificate),/tampered frozen input/);
+ assert.throws(()=>verifyGenbutsuContrast(bad,certificate),/bad frozen public input/);
  assert.throws(()=>deriveGenbutsuContrast(e,'a4-0','a4-0',0),/illegal or same candidates/);
  assert.throws(()=>deriveGenbutsuContrast(e,'a4-0','a99-0',0),/illegal or same candidates/);
  assert.throws(()=>deriveGenbutsuContrast(e,'a4-0','a3-0',1),/own seat is not a defender/);
