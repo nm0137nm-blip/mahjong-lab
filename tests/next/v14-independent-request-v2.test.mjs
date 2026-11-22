@@ -36,11 +36,14 @@ test('importance partition accepts no falsely forced opponent and rejects unsupp
  const e=createV2IndependentDevelopmentRequest(all[0]),a=sample(e),seat=a.uncertainSeats[0].seat;
  const b=clone(a);b.uncertainSeats=[];b.importantSeats=[{seat,whyMatters:'この席が立直した場合には候補の価値を再検討する必要がある。',
    changeCondition:'相手のリーチ宣言がなく、牌河の変化がなければ判断を変えない仮説。'}];
+ b.evidenceProof.opponentObservations[0].assessment='potentially_relevant';
  const r=verifyV2IndependentDevelopmentAnswer(e,b);
  assert.equal(r.naturalLanguageImpact,'not_certified');
  for(const f of [
   x=>x.importantSeats=[{seat:9,whyMatters:'重要であることの証明があるはずだ。',changeCondition:'条件が変われば別候補が有利かもしれない。'}],
   x=>x.importantSeats=[{seat,whyMatters:'重要であると断定するが根拠はない。',changeCondition:'条件が変わると変化するかもしれない。'}],
+  x=>x.importantSeats=[{seat,whyMatters:'この席の立直は相手の圧力を変えるかもしれない。',changeCondition:'手出しと点棒が変化すれば比較が逆転する場合もある。'}],
+  x=>x.uncertainSeats=[],
   x=>x.requestHash='wrong',
   x=>x.evidenceProof.comparisons[0].alternative+=1,
   x=>x.educational.reason='一般論',
@@ -50,6 +53,22 @@ test('importance partition accepts no falsely forced opponent and rejects unsupp
   assert.throws(()=>verifyV2IndependentDevelopmentAnswer(e,mutated),/independent-v2|v2-proof/);
  }
 });
+test('candidate explanations must match typed importance assessments, including reverse mismatch',()=>{
+ if(!all.length)return;
+ const e=createV2IndependentDevelopmentRequest(all[0]),a=sample(e),seat=a.uncertainSeats[0].seat;
+ const b=clone(a);
+ b.evidenceProof.opponentObservations[0].assessment='potentially_relevant';
+ assert.throws(()=>verifyV2IndependentDevelopmentAnswer(e,b),/unproven seat assignment/);
+ const c=clone(a);
+ c.uncertainSeats=[];
+ assert.throws(()=>verifyV2IndependentDevelopmentAnswer(e,c),/unassigned opponent observation/);
+ const d=clone(a);
+ d.uncertainSeats=[];
+ d.importantSeats=[{seat,whyMatters:'この相手への公開現物に違いがあるかを確認する。',
+    changeCondition:'当該相手が追加で捨てた牌の種類が変われば評価も変わりうる。'}];
+ assert.throws(()=>verifyV2IndependentDevelopmentAnswer(e,d),/unproven seat assignment/);
+});
+
 test('tampered source hashes and fake archived model data are rejected before answer evaluation',()=>{
  if(!all.length)return;
  const a=clone(all[0]);a.request.input.oracle={privateHand:['s1']};
