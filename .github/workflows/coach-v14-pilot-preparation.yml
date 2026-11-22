@@ -374,7 +374,7 @@ jobs:
           8. CI/RUNS.md、MANIFEST.jsonでブランチ・コミット・検証状況を確認
           ## 現状の重要な留保
           初回P2a 30問pilotは「コーチ戦術解説は未実証／評価器は不合格」。正式試験への移行はNO-GO。P1-Liteは未認証、ロールアウトB4は未合格。
-          第三者レビュアーは今後ClaudeとGeminiの2者。Copilotの過去コメントは履歴として残す。重大な完成阻害要因のみ原則3件以内、最大2往復で次工程を決める。詳細は docs/handoff/third-party-review-protocol-20261123.md。
+          第三者レビュアーは今後ClaudeとGeminiの2者。Copilotの過去コメントは履歴として残す。独立した重大な完成阻害要因は件数上限なく漏れなく報告。軽微な論点は省略し、最大2往復で次工程を決める。詳細は docs/handoff/third-party-review-protocol-20261123.md。
           文書は project-handoff、ソースコードは feat/coach-v14-pilot-boundary-v1。双方が同一ブランチにあるわけではなく、アプリmainの本番実装とも限らない。
           ユーザーの個別チャットで生成した実回答、他家の隠し手・oracle、学習モデルの重み、過去の全CI生ログは同梱しない。
           GitHubへアクセスしたと偽らず「添付されたGitHubスナップショットを読んだ」と明記すること。最新のGitHub状態は本スナップショット取得後に変わり得る。
