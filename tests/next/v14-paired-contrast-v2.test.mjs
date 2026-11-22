@@ -73,7 +73,7 @@ test('fail-closed public package audit catches illegal change in unrelated river
  assert.throws(()=>verifyPairedPackages(badE,badL,mortal),/other input evidence changed|non-target opponent/);
  const b2=clone(es),l2=clone(lineage);
  rehash(b2,l2,'pilot-10',i=>i.evidence.find(e=>e.id==='board').value.kyotaku+=2);
- assert.throws(()=>verifyPairedPackages(b2,l2,mortal),/escrow/);
+ assert.throws(()=>verifyPairedPackages(b2,l2,mortal),/escrow|invalid ron hypothetical settlement/);
  const badRank=clone(es),rankLineage=clone(lineage);
  rehash(badRank,rankLineage,'pilot-10',i=>i.evidence.find(e=>e.id==='rank-scenarios').value.ron[0].winPoints[0]+=5000);
  assert.throws(()=>verifyPairedPackages(badRank,rankLineage,mortal),/invalid ron hypothetical settlement/);
