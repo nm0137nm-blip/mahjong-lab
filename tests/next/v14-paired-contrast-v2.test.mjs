@@ -64,7 +64,7 @@ test('missing cases contribute to denominator; illegal group or duplicate respon
  assert.equal(short.groupExactPair,3);
  assert.throws(()=>evaluatePairResponses(es,p,[predictions[0],predictions[0]]),/duplicate/);
  assert.throws(()=>evaluatePairResponses(es,p,[{id:predictions[0].id,group:999}]),/illegal/);
- assert.throws(()=>evaluatePairResponses(es,p,[{id:'pilot-99',group:1}]),/duplicate or unknown/);
+ assert.throws(()=>evaluatePairResponses(es,p,[{id:'pilot-99',group:1}]),/bad or duplicate/);
 });
 test('fail-closed public package audit catches illegal change in unrelated river and fake 1000 point deposit',()=>{
  if(!hasData)return;
