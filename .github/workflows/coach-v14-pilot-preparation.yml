@@ -453,3 +453,40 @@ jobs:
           node --test tests/next/v14-conditional-table-v2.test.mjs
           node --test tests/next/v14-independent-request-v2.test.mjs
           node --test tests/next/v14-pilot-boundary.test.mjs
+
+  v2-paired-contrast:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.23.4'
+      - uses: actions/download-artifact@v4
+        with:
+          name: v14-frozen-stage1-only
+          run-id: 44813180639
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/v14-frozen-stage1
+      - uses: actions/download-artifact@v4
+        with:
+          name: v14-frozen-verifier-only
+          run-id: 44813180639
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/v14-verifier-only
+      - uses: actions/download-artifact@v4
+        with:
+          name: v14-contrast-mortal-verifier-only
+          run-id: 44813459829
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/v14-contrast-verifier
+      - name: Matched 4 reach-plus-deposit packages with blinded Stage1 and separate pinned Mortal oracle
+        env:
+          V14_STAGE1: /tmp/v14-frozen-stage1/independent-requests.json
+          V14_LINEAGE: /tmp/v14-verifier-only/lineage.json
+          V14_PINNED_CONTRAST: /tmp/v14-contrast-verifier/contrast-mortal-result.json
+        run: |
+          test -s "$V14_STAGE1"
+          test -s "$V14_LINEAGE"
+          test -s "$V14_PINNED_CONTRAST"
+          node --test tests/next/v14-paired-contrast-v2.test.mjs
