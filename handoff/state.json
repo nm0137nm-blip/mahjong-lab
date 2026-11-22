@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-21T10:42:13+09:00",
+  "checkpoint": "2026-11-23T07:20:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -174,8 +174,8 @@
         "robustRolloutLabels": 0
       }
     ],
-    "decision": "Actual independent LLM answers received (six files/30) and checked against frozen public cases. Basic schema/fact citations all pass; Mortal group best 21/30, mismatches9, compared with weak baselines12/30. Substantive relative explanation not proved (three-opponent directional evidence proxy0/30, 121/182 unknown, stock text 90 times); 4 contrast pairs all changed although only 2 Mortal reference best changed. Citation-heavy weak boilerplate passes link proxy 30/30. B4 no robust labels and sampler biased. Early stage1 pilot complete but NOT qualified for next formal B/P3-min; third-party review mandatory for unsuccessful phase closures. No automatic pass or criteria relaxation.",
-    "next": "Get external Claude and Copilot third-party review of exact recorded actual pilot results, including failed/partial status. Then assess revisions to tactical explanation, negative control design, calibrated sampler, choice of independent model and inference provenance; do not use these 30 to claim formal performance, or promote to formal B/large P3/main. Raw user-generated answers kept as local attachment only, not public GitHub.",
+    "decision": "P2a first stage pilot closure NO-GO remains. Distinguish coach tactical explanation UNVERIFIED from evaluator FAIL: adversarial cited boilerplate passed formal proxies. Claude review recommends validator repair before coach tuning, but product-level decisions pending Copilot integration. Exact paired McNemar two-sided p vs own-shape .07835388, own+score .04904175, boilerplate .07835388, cited boilerplate .07835388; post hoc four-comparison minimum Holm p .196; 26 source clusters for 30 scenes. Q gap mean .738, median0, max9.248, 4 gaps >1.2 post hoc (not threshold). Uncertified P1-Lite must not be cited as certified, conditional scoring/utility must not be sold as known probabilities. Formal B4 rollout remains frozen; deterministic legal perturbation cannot certify long-term counterfactual EV.",
+    "next": "Await Copilot review of closed P2a pilot for integrated roadmap update; do not auto-approve formal tests. Safe audit and mechanical work may continue: evaluator perturbation design, reproducibility script for paired metrics, conditional fact table verification (no use of unvalidated P1-Lite). Retain actual 30 as dev regression only; any new future evaluation independent. Third-party review on any phase closure.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -196,7 +196,9 @@
       "contrast_pairs": 4,
       "robust_rollout_labels": 0,
       "metadata": "provider/effort not independently recorded"
-    }
+    },
+    "review_status": "Claude Opus 5.5 review received and independently checked; Copilot review not yet supplied in this phase; final GO/NO-GO and next schema not yet changed",
+    "review_first": "handoff/p2a-v14-claude-opus-review-stat-followup-20261123.md"
   },
   "previous_runs": [
     {
