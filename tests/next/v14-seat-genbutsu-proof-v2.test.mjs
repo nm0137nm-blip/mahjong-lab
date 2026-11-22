@@ -42,6 +42,10 @@ test('real seat-sensitive contrast rejects coherent action reversal and re-label
  assert.throws(()=>verifyGenbutsuContrast(e,swap),/false genbutsu statement/);
  const fake=clone(r);fake.relation='action_stronger_EV';
  assert.throws(()=>verifyGenbutsuContrast(e,fake),/false genbutsu statement/);
+ const corruptedInput=clone(e);
+ corruptedInput.request.input.evidence.find(x=>x.id==='calc-a4-0').value.safety.find(x=>x.seat===0).ownRiverGenbutsu=false;
+ corruptedInput.requestHash=hash(corruptedInput.request);
+ assert.throws(()=>deriveGenbutsuContrast(corruptedInput,'a4-0','a3-0',0),/conflicts with actual public river/);
  const fakeProbability=clone(r);fakeProbability.dealInProbability=.05;
  assert.throws(()=>verifyGenbutsuContrast(e,fakeProbability),/unknown certificate field/);
  const good=deriveGenbutsuContrast(e,'a3-0','a4-0',0);
