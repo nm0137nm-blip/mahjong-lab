@@ -327,7 +327,8 @@ jobs:
           handoff/coach-relative-quality-20261120.md
           handoff/roadmap-v1.4-review-amendment-20261120.md
           handoff/license-decision-20261120.md
-          handoff/v14-manual-pilot-execution-20261121.md'''.splitlines()
+          handoff/v14-manual-pilot-execution-20261121.md
+          handoff/third-party-review-protocol-20261123.md'''.splitlines()
           codes='''src/coach/v14-pilot-boundary.mjs
           src/coach/v14-public-calculations.mjs
           src/coach/p2a-facts-only.mjs
@@ -365,14 +366,15 @@ jobs:
           ## 読む順番
           1. docs/handoff/state.json （最新作業状態・レビュー担当）
           2. docs/HANDOFF.md （時系列。必ず末尾まで）
-          3. docs/handoff/roadmap-v1.4-pilot-go-20261120.md
-          4. docs/handoff/p2a-v14-30-dev-pilot-first-stage-review-20261121.md
-          5. docs/handoff/p2a-v14-claude-opus-review-stat-followup-20261123.md
-          6. 必要に応じ code/src/coach/, code/src/mortal/, code/tests/next/, code/index.html
-          7. CI/RUNS.md、MANIFEST.jsonでブランチ・コミット・検証状況を確認
+          3. docs/handoff/third-party-review-protocol-20261123.md （レビュワーの指摘範囲・最大2往復）
+          4. docs/handoff/roadmap-v1.4-pilot-go-20261120.md
+          5. docs/handoff/p2a-v14-30-dev-pilot-first-stage-review-20261121.md
+          6. docs/handoff/p2a-v14-claude-opus-review-stat-followup-20261123.md
+          7. 必要に応じ code/src/coach/, code/src/mortal/, code/tests/next/, code/index.html
+          8. CI/RUNS.md、MANIFEST.jsonでブランチ・コミット・検証状況を確認
           ## 現状の重要な留保
           初回P2a 30問pilotは「コーチ戦術解説は未実証／評価器は不合格」。正式試験への移行はNO-GO。P1-Liteは未認証、ロールアウトB4は未合格。
-          第三者レビュアーは今後ClaudeとGeminiの2者。Copilotの過去コメントは履歴として残す。
+          第三者レビュアーは今後ClaudeとGeminiの2者。Copilotの過去コメントは履歴として残す。重大な完成阻害要因のみ原則3件以内、最大2往復で次工程を決める。詳細は docs/handoff/third-party-review-protocol-20261123.md。
           文書は project-handoff、ソースコードは feat/coach-v14-pilot-boundary-v1。双方が同一ブランチにあるわけではなく、アプリmainの本番実装とも限らない。
           ユーザーの個別チャットで生成した実回答、他家の隠し手・oracle、学習モデルの重み、過去の全CI生ログは同梱しない。
           GitHubへアクセスしたと偽らず「添付されたGitHubスナップショットを読んだ」と明記すること。最新のGitHub状態は本スナップショット取得後に変わり得る。
