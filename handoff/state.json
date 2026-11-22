@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-23T07:25:00+09:00",
+  "checkpoint": "2026-11-23T07:30:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -1357,7 +1357,7 @@
       "scope": "mechanical tactical consistency and personal learning case study; not proof of human expert coaching or general educational effect"
     }
   },
-  "workflow_preference": "待機：実行可能作業がすべて終了し外部待機の場合のみ、再開目安必須。問題発生：自力解決不能のみ。対応依頼：ユーザー判断・作業不可欠のみ。Phase終了（旧Phase完了報告の拡張）：合格・不合格・部分合格・中止を区別し、いずれも終了時に第三者レビューを受け、次工程GO/NO-GOを決める。合格は全基準達成の場合のみ。中間不具合は自力修正、正式評価後の基準緩和禁止。",
+  "workflow_preference": "待機：実行可能な作業をすべて終え外部待ちとなった場合のみ再開目安を報告。問題発生：自力解決不能のみ。対応依頼：ユーザー判断・作業不可欠のみ。Phase終了：合格・不合格・部分合格・中止の別と未達基準を明示し、Claude＋Geminiの独立レビュー。レビューは完成を妨げる重大な設計/評価上の誤りだけに限定し、原則2往復以内で実装/試験の次工程を確定。軽微な指摘は往復増加の理由としない。",
   "third_party_reviewers": {
     "effective_from": "2026-11-23",
     "reviewers": [
@@ -1365,6 +1365,12 @@
       "Gemini"
     ],
     "replaces": "Copilot",
-    "rule": "Phase終了ごとに合否を問わずClaudeとGeminiに第三者レビューを依頼。GitHubへアクセスできない環境には同一commitのファイルスナップショットを共有する。レビューで未確認のソースを確認済みと扱わない。"
+    "rule": "Phase終了ごとに合否を問わずClaudeとGeminiに第三者レビューを依頼。GitHubへアクセスできない環境には同一commitのファイルスナップショットを共有する。レビューで未確認のソースを確認済みと扱わない。",
+    "protocol": "handoff/third-party-review-protocol-20261123.md",
+    "review_scope": "Only Blocker/Major architecture, evaluation validity, strategic foundation or showstopping feasibility. No low-impact nitpicks or speculative expansions.",
+    "max_review_round_trips": 2,
+    "max_major_findings_normally": 3,
+    "review_output": "GO/conditional GO/NO-GO with specific objective gates and at most three next work steps",
+    "close_when": "Initial independent reviews plus at most one consolidated follow-up; unresolved blockers become NO-GO or explicit gate, not more review loops"
   }
 }
