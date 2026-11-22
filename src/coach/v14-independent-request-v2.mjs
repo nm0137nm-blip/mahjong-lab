@@ -55,15 +55,17 @@ export function verifyV2IndependentDevelopmentAnswer(envelope,answer){
  const own=envelope.request.input.evidence.find(x=>x.id==='board').value.ownSeat;
  if(!Array.isArray(answer.importantSeats)||!Array.isArray(answer.uncertainSeats)||
     answer.importantSeats.length>3||answer.uncertainSeats.length>3)fail('invalid relevance partition');
- const observed=new Set(answer.evidenceProof.opponentObservations.map(x=>x.seat)),seen=new Set();
+ const labels=new Map(answer.evidenceProof.opponentObservations.map(x=>[x.seat,x.assessment])),seen=new Set();
  for(const [kind,rows] of [['important',answer.importantSeats],['uncertain',answer.uncertainSeats]]){
   for(const r of rows){
    if(!exact(r,kind==='important'?['seat','whyMatters','changeCondition']:['seat','reason'])||
-      !Number.isInteger(r.seat)||r.seat<0||r.seat>3||r.seat===own||seen.has(r.seat)||!observed.has(r.seat)||
+      !Number.isInteger(r.seat)||r.seat<0||r.seat>3||r.seat===own||seen.has(r.seat)||!labels.has(r.seat)||
+      labels.get(r.seat)!==(kind==='important'?'potentially_relevant':'not_established')||
       !(kind==='important'?narrative(r.whyMatters)&&narrative(r.changeCondition):narrative(r.reason)))fail('unproven seat assignment');
    seen.add(r.seat);
   }
  }
+ if(seen.size!==labels.size)fail('unassigned opponent observation: relevance partition incomplete');
  if(!exact(answer.educational,['reason','opponentTradeoff','boundary','lesson'])||
     !Object.values(answer.educational).every(narrative))fail('invalid teaching explanation');
  return {requestHash:envelope.requestHash,calculationProof:verified,
