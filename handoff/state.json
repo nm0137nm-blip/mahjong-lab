@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-23T07:20:00+09:00",
+  "checkpoint": "2026-11-23T07:25:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -175,7 +175,7 @@
       }
     ],
     "decision": "P2a first stage pilot closure NO-GO remains. Distinguish coach tactical explanation UNVERIFIED from evaluator FAIL: adversarial cited boilerplate passed formal proxies. Claude review recommends validator repair before coach tuning, but product-level decisions pending Copilot integration. Exact paired McNemar two-sided p vs own-shape .07835388, own+score .04904175, boilerplate .07835388, cited boilerplate .07835388; post hoc four-comparison minimum Holm p .196; 26 source clusters for 30 scenes. Q gap mean .738, median0, max9.248, 4 gaps >1.2 post hoc (not threshold). Uncertified P1-Lite must not be cited as certified, conditional scoring/utility must not be sold as known probabilities. Formal B4 rollout remains frozen; deterministic legal perturbation cannot certify long-term counterfactual EV.",
-    "next": "Await Copilot review of closed P2a pilot for integrated roadmap update; do not auto-approve formal tests. Safe audit and mechanical work may continue: evaluator perturbation design, reproducibility script for paired metrics, conditional fact table verification (no use of unvalidated P1-Lite). Retain actual 30 as dev regression only; any new future evaluation independent. Third-party review on any phase closure.",
+    "next": "GeminiへGitHub snapshotのHANDOFF.md/state.json/roadmap/pilot review/Claude統計結果と必要な実装/CI根拠を提供して第二レビューを取得。その後Claude・Geminiで差分を整理し新しいGO/NO-GOを判断。既存NO-GOや正式ゲートを変更しない。",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -197,7 +197,7 @@
       "robust_rollout_labels": 0,
       "metadata": "provider/effort not independently recorded"
     },
-    "review_status": "Claude Opus 5.5 review received and independently checked; Copilot review not yet supplied in this phase; final GO/NO-GO and next schema not yet changed",
+    "review_status": "Claude Opus 5.5の第一レビュー受領、Geminiレビュー待ち。GitHub直接参照不可のため同一版のレビュー資料を添付する方針。Copilotは以後の第三者レビュー担当から除外。",
     "review_first": "handoff/p2a-v14-claude-opus-review-stat-followup-20261123.md"
   },
   "previous_runs": [
@@ -1357,5 +1357,14 @@
       "scope": "mechanical tactical consistency and personal learning case study; not proof of human expert coaching or general educational effect"
     }
   },
-  "workflow_preference": "待機：実行可能作業がすべて終了し外部待機の場合のみ、再開目安必須。問題発生：自力解決不能のみ。対応依頼：ユーザー判断・作業不可欠のみ。Phase終了（旧Phase完了報告の拡張）：合格・不合格・部分合格・中止を区別し、いずれも終了時に第三者レビューを受け、次工程GO/NO-GOを決める。合格は全基準達成の場合のみ。中間不具合は自力修正、正式評価後の基準緩和禁止。"
+  "workflow_preference": "待機：実行可能作業がすべて終了し外部待機の場合のみ、再開目安必須。問題発生：自力解決不能のみ。対応依頼：ユーザー判断・作業不可欠のみ。Phase終了（旧Phase完了報告の拡張）：合格・不合格・部分合格・中止を区別し、いずれも終了時に第三者レビューを受け、次工程GO/NO-GOを決める。合格は全基準達成の場合のみ。中間不具合は自力修正、正式評価後の基準緩和禁止。",
+  "third_party_reviewers": {
+    "effective_from": "2026-11-23",
+    "reviewers": [
+      "Claude（Opus）",
+      "Gemini"
+    ],
+    "replaces": "Copilot",
+    "rule": "Phase終了ごとに合否を問わずClaudeとGeminiに第三者レビューを依頼。GitHubへアクセスできない環境には同一commitのファイルスナップショットを共有する。レビューで未確認のソースを確認済みと扱わない。"
+  }
 }
