@@ -16,7 +16,7 @@ function derive(envelope,a,b,seat){
  if(a===b||!action.has(a)||!action.has(b))fail('illegal or same candidates');
  const get=key=>{
   const act=action.get(key);
-  if(act.group>=37)fail('only a concrete discard group with safety evidence');
+  if(act.group>37)fail('only a concrete discard or concrete riichi-discard with safety evidence');
   const c=i.evidence.find(e=>e.id==='calc-'+key)?.value;
   if(!c||!Array.isArray(c.safety))fail('candidate safety absent');
   const matches=c.safety.filter(x=>x.seat===seat);
@@ -46,7 +46,7 @@ export function verifyGenbutsuContrast(envelope,certificate){
 export function scanGenbutsuContrastExamples(envelope){
  if(!exact(envelope,['request','requestHash'])||hash(envelope.request)!==envelope.requestHash)fail('tampered frozen input');
  const i=envelope.request.input,own=i.evidence.find(e=>e.id==='board')?.value.ownSeat;
- const actions=i.actions.filter(x=>x.group<37);
+ const actions=i.actions.filter(x=>x.group<=37);
  const out=[];
  for(let seat=0;seat<4;seat++){
   if(seat===own)continue;
