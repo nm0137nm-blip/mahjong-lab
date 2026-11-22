@@ -450,4 +450,5 @@ jobs:
           test -s "$V14_STAGE1"
           node --test tests/next/v14-evidence-proof-v2.test.mjs
           node --test tests/next/v14-inference-record-v2.test.mjs
+          node --test tests/next/v14-conditional-table-v2.test.mjs
           node --test tests/next/v14-pilot-boundary.test.mjs
