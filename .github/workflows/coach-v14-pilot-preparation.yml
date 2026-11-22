@@ -492,3 +492,4 @@ jobs:
           test -s "$V14_PINNED_CONTRAST"
           node --test tests/next/v14-paired-contrast-v2.test.mjs
           node --test tests/next/v14-stage2-boundary-v2.test.mjs
+          node --test tests/next/v14-stage2-counterfeit-isolated-v2.test.mjs
