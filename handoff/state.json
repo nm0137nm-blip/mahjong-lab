@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-23T08:30:00+09:00",
+  "checkpoint": "2026-11-23T08:31:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -11,9 +11,9 @@
     "phase": "P2a-v2-dev-repair",
     "status": "v2_first_evidence_and_inference_qa_success_semantic_gate_unverified",
     "branch": "feat/coach-v14-pilot-boundary-v1",
-    "commit": "391f5599dfad21e9205163b9ec5b1e5d02f6cd28",
+    "commit": "912d3febc2b6a956d7e51ea28dcb5725db6b1dfa",
     "pr": 61,
-    "run_id": 45083251832,
+    "run_id": 45083471257,
     "prior_runs": [
       {
         "run_id": 44754324733,
@@ -186,10 +186,22 @@
         "realModelCalls": 0,
         "semanticCertified": 0,
         "formalCertified": 0
+      },
+      {
+        "run_id": 45083471257,
+        "status": "v2_generic_fact_padded_negative_qacertification_refusal_success",
+        "commit": "912d3febc2b6a956d7e51ea28dcb5725db6b1dfa",
+        "tests": 20,
+        "passed": 20,
+        "failed": 0,
+        "frozenCases": 30,
+        "genericFactPaddedArithmeticPass": 30,
+        "tacticalCertified": 0,
+        "modelCalls": 0
       }
     ],
-    "decision": "Claude+Gemini bounded P2a-v2 development: 19 unit/QA tests passed for public arithmetic proof, one-case provenance, 450 hypothetical ron settlement scenarios and selective-opponent schema over frozen 30 dev cases. No independent model calls; no ability to grade strategic causality. Cited boilerplate with correct facts is still potentially capable of filling typed fields, so existing evaluator Blocker not resolved. The v1.4 pilot remains failed; formal B/P1-Lite160/P3/main/public remain NO-GO; B4 research frozen.",
-    "next": "Build true semantic discriminator against copied math and cited boilerplate (positive controls plus negative paraphrase/reseat/reshuffle), then lawful public factor perturbations with sensitivity/specificity, isolated Stage2 false-reference evaluation; obtain actual model execution with reliable one-case session logs before next unseen development pilot. Never claim skill from 19 tests. Keep 30 old cases regression only; preregister new gates and do not access formal seeds.",
+    "decision": "Claude+Gemini bounded P2a-v2 development: 20 unit/QA tests passed for public arithmetic proof, one-case provenance, 450 hypothetical ron settlement scenarios and selective-opponent schema over frozen 30 dev cases. No independent model calls; no ability to grade strategic causality. Cited boilerplate with correct facts is still potentially capable of filling typed fields, so existing evaluator Blocker not resolved. The v1.4 pilot remains failed; formal B/P1-Lite160/P3/main/public remain NO-GO; B4 research frozen. Added 30-case test showing generic prose with correct calculations may pass deterministic proof but receives 0 tactical certificates; semantic evaluation remains unsolved.",
+    "next": "Work next on nontrivial semantic/causal negative controls with positive preservation, legal public-factor paired perturbation (change and maintain), isolated Stage2 counterfeit-reference test and inference execution options. Do not use cached 30 to certify expertise; never run formal tests without new registered criteria.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
