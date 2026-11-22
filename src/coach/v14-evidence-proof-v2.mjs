@@ -33,7 +33,7 @@ function expectedMetric(input,key,afterDiscard,metric){
 }
 export function verifyConditionalProof(envelope,proof){
  if(!sameKeys(envelope,['request','requestHash'])||
-    envelope.request?.stage!=='independent'||
+    !['independent','independent-v2-dev'].includes(envelope.request?.stage)||
     sha(envelope.request)!==envelope.requestHash)error('tampered frozen input');
  const i=envelope.request.input;
  if(!sameKeys(proof,['version','requestHash','recommendation','alternative','comparisons','opponentObservations','reversal','explanation'])||
