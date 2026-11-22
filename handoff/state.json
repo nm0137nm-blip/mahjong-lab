@@ -1399,7 +1399,7 @@
       "scope": "mechanical tactical consistency and personal learning case study; not proof of human expert coaching or general educational effect"
     }
   },
-  "workflow_preference": "待機：実行可能な作業をすべて終え外部待ちとなった場合のみ再開目安を報告。問題発生：自力解決不能のみ。対応依頼：ユーザー判断・作業不可欠のみ。Phase終了：合格・不合格・部分合格・中止の別と未達基準を明示し、Claude＋Geminiの独立レビュー。レビューは完成を妨げる重大な設計/評価上の誤りだけに限定し、重大な指摘の件数上限なし（重要度で絞り、独立した問題は漏らさない）。原則2往復以内で実装/試験の次工程を確定。軽微な指摘は往復増加の理由としない。",
+  "workflow_preference": "報告区分は以下の4パターンに限定する。①待機：実行可能な作業はすべて完了。再開可能時刻の目安を必ず報告。②問題発生：自力で解決できない問題のみ報告。③対応依頼：ユーザーの判断・作業が必要な場合のみ依頼。④Phase完了報告：開発ゲートのチェックポイントに達した段階で成果、達成基準、未達項目、次工程へのGO/NO-GOを報告。単なる小さなテスト成功や作業途中の進捗は独立報告として出さない。Phaseの終了時は合否を問わずClaude・Geminiによる重大論点のみの第三者レビューを最大2往復で行う。重大指摘の件数上限なし。",
   "third_party_reviewers": {
     "effective_from": "2026-11-23",
     "reviewers": [
@@ -1414,5 +1414,18 @@
     "review_output": "GO/conditional GO/NO-GO with objective gates and as many essential next work steps as needed, prioritized",
     "close_when": "Initial independent reviews plus at most one consolidated follow-up; unresolved blockers become NO-GO or explicit gate, not more review loops",
     "critical_findings_limit": "none; all independently justified Blocker/Major must be reported; avoid Minor and duplicate points"
+  },
+  "reporting_policy": {
+    "allowed_categories": [
+      "待機",
+      "問題発生",
+      "対応依頼",
+      "Phase完了報告"
+    ],
+    "checkpoint_reporting": "Phase完了報告は開発ゲートのチェックポイント到達時に行う。成功・部分達成・失敗を明示し、単なるCI成功や中間作業では報告しない。",
+    "wait": "実行可能作業がすべて完了している場合のみ。再開可能時刻の目安を必ず記載。",
+    "problem": "自力で解決できない問題だけ。",
+    "action_request": "ユーザーの判断・作業が必要な場合のみ。",
+    "review": "Phase終了時は合否によらずClaudeとGemini、重大な問題に限定、最大2往復、件数制限なし。"
   }
 }
