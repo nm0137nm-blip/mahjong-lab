@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-23T07:30:00+09:00",
+  "checkpoint": "2026-11-23T07:45:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -8,10 +8,10 @@
     "coach_candidate_promoted": false
   },
   "active_task": {
-    "phase": "P2a-pilot-review",
-    "status": "stage1_actual_30_pilot_closed_no_go_third_party_review_required",
+    "phase": "P2a-v2-dev-repair",
+    "status": "claude_gemini_review_closed_development_only_GO",
     "branch": "feat/coach-v14-pilot-boundary-v1",
-    "commit": "41d13c8ded49d216805b22cb09d92131feaf0c6d",
+    "commit": "cfff272c04ea3f67b7685761f6c22c947a63f5f0",
     "pr": 61,
     "run_id": 44814792884,
     "prior_runs": [
@@ -174,8 +174,8 @@
         "robustRolloutLabels": 0
       }
     ],
-    "decision": "P2a first stage pilot closure NO-GO remains. Distinguish coach tactical explanation UNVERIFIED from evaluator FAIL: adversarial cited boilerplate passed formal proxies. Claude review recommends validator repair before coach tuning, but product-level decisions pending Copilot integration. Exact paired McNemar two-sided p vs own-shape .07835388, own+score .04904175, boilerplate .07835388, cited boilerplate .07835388; post hoc four-comparison minimum Holm p .196; 26 source clusters for 30 scenes. Q gap mean .738, median0, max9.248, 4 gaps >1.2 post hoc (not threshold). Uncertified P1-Lite must not be cited as certified, conditional scoring/utility must not be sold as known probabilities. Formal B4 rollout remains frozen; deterministic legal perturbation cannot certify long-term counterfactual EV.",
-    "next": "GeminiへGitHub snapshotのHANDOFF.md/state.json/roadmap/pilot review/Claude統計結果と必要な実装/CI根拠を提供して第二レビューを取得。その後Claude・Geminiで差分を整理し新しいGO/NO-GOを判断。既存NO-GOや正式ゲートを変更しない。",
+    "decision": "Unanimous coach explanation unverified, evaluator failed, formal B/P1-Lite160/P3-min/main/public NO-GO. Bounded development GO for evaluation v2, product/diagnostic responsibilities, inference logging, conditional facts, legal perturbations, stage2 adversarial review. No retroactive alteration of failed v1.4 pilot gate. B4 long-term calibrated rollout frozen as separate R&D and not used in P2a-v2 minimum, without claiming previous B4 certification.",
+    "next": "Begin implementation with decision record and deterministic evaluator v2 negative and positive test design. In parallel identify actual inference method with logged model/version/hash and iPhone feasibility; do not assume paid API available. After evaluator and conditional facts, generate new non-overlapping 30–40 development scenes and legal sensitivity+specificity pairs, stage2 fake-reference isolated tests; pre-register gate before tests. Do not start formal exams and publish. Every phase closure Claude+Gemini review.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -197,8 +197,23 @@
       "robust_rollout_labels": 0,
       "metadata": "provider/effort not independently recorded"
     },
-    "review_status": "Claude Opus 5.5の第一レビュー受領、Geminiレビュー待ち。GitHub直接参照不可のため同一版のレビュー資料を添付する方針。Copilotは以後の第三者レビュー担当から除外。",
-    "review_first": "handoff/p2a-v14-claude-opus-review-stat-followup-20261123.md"
+    "review_status": "Claude Opus 5.5 and Gemini both reported. First reviewer round complete; second round unnecessary. Closed under blocker-only max-two-exchanges protocol.",
+    "review_first": "handoff/p2a-v14-claude-opus-review-stat-followup-20261123.md",
+    "review_final": "handoff/p2a-v14-claude-gemini-review-integrated-20261123.md",
+    "reviewers_completed": [
+      "Claude Opus 5.5",
+      "Gemini"
+    ],
+    "review_rounds_used": 1,
+    "git_diff_checked": {
+      "base": "41d13c8ded49d216805b22cb09d92131feaf0c6d",
+      "head": "cfff272c04ea3f67b7685761f6c22c947a63f5f0",
+      "commits_ahead": 3,
+      "affected_files": [
+        ".github/workflows/coach-v14-pilot-preparation.yml"
+      ],
+      "code_or_evaluator_behavior_changes": false
+    }
   },
   "previous_runs": [
     {
