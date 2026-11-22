@@ -74,6 +74,12 @@ test('fail-closed public package audit catches illegal change in unrelated river
  const b2=clone(es),l2=clone(lineage);
  rehash(b2,l2,'pilot-10',i=>i.evidence.find(e=>e.id==='board').value.kyotaku+=2);
  assert.throws(()=>verifyPairedPackages(b2,l2,mortal),/escrow/);
+ const badRank=clone(es),rankLineage=clone(lineage);
+ rehash(badRank,rankLineage,'pilot-10',i=>i.evidence.find(e=>e.id==='rank-scenarios').value.ron[0].winPoints[0]+=5000);
+ assert.throws(()=>verifyPairedPackages(badRank,rankLineage,mortal),/invalid ron hypothetical settlement/);
+ const badTsumo=clone(es),tsumoLineage=clone(lineage);
+ rehash(badTsumo,tsumoLineage,'pilot-05',i=>i.evidence.find(e=>e.id==='rank-scenarios').value.tsumo[0].ranks[0]=4);
+ assert.throws(()=>verifyPairedPackages(badTsumo,tsumoLineage,mortal),/invalid tsumo hypothetical settlement/);
  const b3=clone(es),l3=clone(lineage);
  rehash(b3,l3,'pilot-10',i=>i.evidence.find(e=>e.id==='history').value.push({種類:'打牌',席:0,牌:'m1',ツモ切り:false,立直宣言:false}));
  assert.throws(()=>verifyPairedPackages(b3,l3,mortal),/history size/);
