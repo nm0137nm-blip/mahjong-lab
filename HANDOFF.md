@@ -536,3 +536,10 @@ ChatGPTが実際に独立して解いた回答を得る前に、採点・中止�
 - 4回とも1回US$0.05以下。通常単価推定合計 **US$0.141978**、30分キャッシュ書込単価込み保守的再計算 **US$0.150974**（実請求額未確認）。出力上限は最大3200、再試行0回。
 - 実行後の有料トリガーを無効化（`845e70f7e5fe6cced621de7b9207c73354bf9e0b`）。**追加API POSTの承認なし**。正式なChatGPT一時チャットStage1は0/8、Stability/Stage2/L3.5/L4は未評価、フェーズ全GOなし、本番main不変。
 - 詳細報告：`handoff/p2a-v44-seven-5cent-first-fatal-no-go-20261124.md`、`handoff/state.json`。個別の回答原本JSONは公開GitHubに置かない。
+
+
+## 2026-11-24 01:59 JST：別版P2a-v4.5日本語活用形判定の無課金着手
+- v4.4は`pilot-53`で元検証器契約FAILのため**NO-GO終了**、再採点・旧合格基準緩和禁止。v4.4の有料APIは再実行禁止。残り3問`pilot69,65,74`は未回答として保持。
+- 新たに**別枝**`feat/coach-p2a-v45-japanese-reversal-lexemes`、**Draft PR#70**を作成（baseは研究v4.4枝、main統合なし）。`src/coach/v14-japanese-condition-v45.mjs`で「選びやすくする／選びにくくなる／選び直す」等の日本語条件付き選択変化の活用形を狭いルールで認識。旧`v14-japanese-condition-v43.mjs`を改変しない。合成例だけの`tests/next/v14-v45-japanese-condition.test.mjs`を追加。
+- GitHub Actions **run 45222359529 SUCCESS**。APIモデル実呼出0、追加費用0。v4.5は現段階で**日本語判定器の技術的下準備だけ**であり、別版の出題セット/事前登録、v45 public proof contract、モデル実回答、反復・真假・L3.5・本人/Claude/Gemini匿名L4はすべて未着手。v4.5をGOと呼ばない。
+- 次工程：過去回答済み局面を完全除外した別版v4.5未見データの出題・採点基準・予算・盲検を**新規API試行前に固定**。認可済みの「8問/1回5セント」はv4.4の停止規定で終了したため、次の有料API呼び出しには別承認が必要。
