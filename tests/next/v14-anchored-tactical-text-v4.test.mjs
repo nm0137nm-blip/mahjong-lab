@@ -153,3 +153,18 @@ test('call m222- after m4 uses only that concrete post-call conditional score su
  assert.match(facts['candidate:a41-0:afterCallRonSummary'],/p2の仮ロンは3,900点/);
  assert.equal(Object.hasOwn(facts,'candidate:a41-0:m5:afterCallRonSummary'),false);
 });
+
+
+test('v4 phase-exit known false positive: Japanese 一致 and 一方 are rejected as raw numeric kanji even when no point figures are supplied',()=>{
+ const f=fixture();if(!f)return;
+ const control=verifyAndRenderV4AnchoredTactics(f.input,f.answer);
+ assert.equal(control.freeNumericTextBlocked,true);
+ for(const word of ['一致','一方']){
+  const x=fixture();
+  x.answer.tactics.comparison+=' 公開資料に従って'+word+'を吟味する。';
+  assert.throws(()=>verifyAndRenderV4AnchoredTactics(x.input,x.answer),
+   /comparison contains unanchored numerical\/kanji-number text/);
+ }
+ // Only a future preregistered, differently-versioned verifier may distinguish
+ // numeral usage from ordinary words. No post-answer v4 score amendment.
+});
