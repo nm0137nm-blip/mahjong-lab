@@ -29,3 +29,39 @@ jobs:
           set -euo pipefail
           test -s "$V14_FOLLOWUP_PUBLIC"
           node --test tests/next/v14-evidence-proof-v3.test.mjs
+
+  v3-stage2-unified:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.23.4'
+      - uses: actions/download-artifact@v4
+        with:
+          name: v14-frozen-stage1-only
+          run-id: 44813180639
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/v3-old30
+      - uses: actions/download-artifact@v4
+        with:
+          name: v14-frozen-verifier-only
+          run-id: 44813180639
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/v3-verifier
+      - uses: actions/download-artifact@v4
+        with:
+          name: v14-contrast-mortal-verifier-only
+          run-id: 44813459829
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/v3-model-verifier
+      - name: Test identical Stage2 genuine and isolated fake answer contract; never call any LLM
+        env:
+          V14_STAGE1: /tmp/v3-old30/independent-requests.json
+          V14_LINEAGE: /tmp/v3-verifier/lineage.json
+          V14_PINNED_CONTRAST: /tmp/v3-model-verifier/contrast-mortal-result.json
+        run: |
+          set -euo pipefail
+          test -s "$V14_PINNED_CONTRAST"
+          node --test tests/next/v14-stage2-unified-v3.test.mjs
