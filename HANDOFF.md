@@ -13,6 +13,8 @@
 
 **決定原文を反映した引き継ぎ正本：`handoff/p2a-v3-user-decisions-no-blanket-spend-private-offline-l4-20261123.md`、`handoff/state.json` の `user_decisions_20261123`。以下の古い提案・計画と衝突した場合はこのユーザー確定事項が優先。**
 
+**2026-11-23追加確定：麻雀LABの解説担当はChatGPT。実際の解説品質もChatGPTを対象に検査する。Geminiは独立別モデルとしてブラインド評価とPhase終了レビューに使い、Geminiの成績をChatGPTの実力として数えない。** ChatGPTを使うという希望は有料APIの承認ではない。まず既存ChatGPTで無料追加費用の1問1独立試験の可能性を確認する。連携方法・版・課金の要否は未確定。正本 `handoff/p2a-v3-user-decisions-no-blanket-spend-private-offline-l4-20261123.md`。
+
 ## 現在の作業（2026-11-19 JST）
 - 旧200半荘学習 LightGBM：対S42 100シード×3モデル比較完了。結果は run 44518315545。自作2.84位、標準CPU2.65位、S42 2.36位。自作の優位性は未証明。
 - 120半荘学習の打牌AB：他家推定なし／あり。5分割の半荘単位OOFで聴牌・ロン可能性を特徴量に追加。副露・特殊判断は両群共通の200半荘モデル。
