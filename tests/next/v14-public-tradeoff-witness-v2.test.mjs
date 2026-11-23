@@ -52,7 +52,7 @@ test('rejects claims that non-genbutsu is safe, that safety has no cost, or that
  const x=clone(e);
  x.request.input.evidence.find(r=>r.id==='calc-a4-0').value.safety.find(r=>r.seat===0).ownRiverGenbutsu=false;
  x.requestHash=sha(x.request);
- assert.throws(()=>buildTradeoffWitness(x,'a4-0','a3-0',0,'ukeireUpperBound'),/not a meaningful opponent-scoped/);
+ assert.throws(()=>buildTradeoffWitness(x,'a4-0','a3-0',0,'ukeireUpperBound'),/not a meaningful opponent-scoped|calculated genbutsu conflicts with actual public river/);
 });
 test('known-good numerical tradeoff still cannot certify generic prose as high-quality tactical coaching',()=>{
  if(!es.length)return;
