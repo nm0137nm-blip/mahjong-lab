@@ -1,12 +1,12 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {generateKeyPairSync,privateDecrypt,createDecipheriv,constants} from 'node:crypto';
-import {assertEnv,makeEncryptedArchive,sanitizeApiFailure} from './v14-v44-pilot46-single-live-actions.mjs';
+import {assertEnv,assertFreshMarker,makeEncryptedArchive,sanitizeApiFailure} from './v14-v44-pilot46-single-live-actions.mjs';
 test('one-shot guard rejects missing token, unexpected branch and rerun before network',()=>{
  const proper={GITHUB_ACTIONS:'true',GITHUB_EVENT_NAME:'push',
   GITHUB_REF:'refs/heads/feat/coach-p2a-v44-api-transport-dryrun',
   GITHUB_RUN_ATTEMPT:'1',
-  ONE_SHOT_APPROVAL:'$0.30_PILOT46_ONLY_2026-11-23',
+  ONE_SHOT_APPROVAL:'$0.30_PILOT46_RETRY_2026-11-24',
   OPENAI_API_KEY:'only_mock_never_sent'};
  assert.doesNotThrow(()=>assertEnv(proper));
  assert.throws(()=>assertEnv({...proper,OPENAI_API_KEY:''}),/missing API secret/);
@@ -41,4 +41,13 @@ test('429 diagnostics disclose only safe error type and code',()=>{
  const unsafe=sanitizeApiFailure({error:{code:'leaky key sk-example',type:'BAD DATA'}},429);
  assert.equal(unsafe.errorCode,null);
  assert.equal(unsafe.errorType,null);
+});
+
+test('only first committed added marker passes; modified/removed/re-run denied',()=>{
+ const marker='research/approvals/pilot46-retry-20261124.run';
+ const env={GITHUB_SHA:'SHA_EXACT_TEST'};
+ const evt={head_commit:{id:'SHA_EXACT_TEST',added:[marker],modified:[],removed:[]}};
+ assert.doesNotThrow(()=>assertFreshMarker(evt,env));
+ assert.throws(()=>assertFreshMarker({...evt,head_commit:{...evt.head_commit,added:[],modified:[marker]}},env),/marker/);
+ assert.throws(()=>assertFreshMarker(evt,{GITHUB_SHA:'WRONG'}),/marker/);
 });
