@@ -1,0 +1,31 @@
+name: 麻雀LAB P2a-v3 dev proof (public source, no paid model)
+on:
+  push:
+    branches:
+      - feat/coach-p2a-v3-contract-repair
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  v3-public-proof:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.23.4'
+      - uses: actions/download-artifact@v4
+        with:
+          name: p2a-v2-36-public-development-only
+          run-id: 45089922993
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/v3-new36
+      - name: Test distinct versioned Stage1 candidate contrast without running any model
+        env:
+          V14_FOLLOWUP_PUBLIC: /tmp/v3-new36/independent-requests.json
+        run: |
+          set -euo pipefail
+          test -s "$V14_FOLLOWUP_PUBLIC"
+          node --test tests/next/v14-evidence-proof-v3.test.mjs
