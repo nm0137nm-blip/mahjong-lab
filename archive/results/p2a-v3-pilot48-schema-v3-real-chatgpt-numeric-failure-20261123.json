@@ -1,0 +1,108 @@
+{
+  "version": "p2a-v3-pilot48-manual-response-qa-1",
+  "caseId": "pilot-48",
+  "sourceArtifact": {
+    "run": 45108629360,
+    "artifactId": 14788033190,
+    "name": "p2a-v3-chatgpt-8x3-manual-readable-schema-v3",
+    "requestHash": "60dcbaf1b07be102477fbfdeea0849024c68e438d21d37852b826d46ea722383"
+  },
+  "receivedAs": "user_pasted_JSON_text_into_development_chat",
+  "modelProvenance": {
+    "providerClaim": "ChatGPT manual independent temporary chat user reported",
+    "providerAuthenticated": false,
+    "modelId": null,
+    "modelVersion": null,
+    "startedAt": null,
+    "endedAt": null
+  },
+  "rawOutputRetention": "original literal JSON text remains in user conversation; not reuploaded to public GitHub",
+  "choice": {
+    "recommendation": {
+      "key": "a37-1",
+      "action": "riichi p5"
+    },
+    "alternative": {
+      "key": "a13-0",
+      "action": "discard p5"
+    },
+    "allLegal": true
+  },
+  "sourceFactsAudit": {
+    "requestHashMatches": true,
+    "proofRequestHashMatches": true,
+    "evidenceProofVersionMatches": true,
+    "comparisons": 4,
+    "comparisonsMatchingSource": 4,
+    "opponentObservations": 7,
+    "perSeatObservationCounts": {
+      "0": 3,
+      "1": 2,
+      "3": 2
+    },
+    "observationsMatchingSource": 7,
+    "observationLimit": 9,
+    "seatAssessmentsConsistent": true,
+    "allOpponentsAccountedFor": true,
+    "seat1Hypothetical3900Correct": true,
+    "seat3Hypothetical7700Correct": true,
+    "candidateConditionalRon": "m6 riichi5200 vs dama2600; m9 riichi5200 vs dama not scored",
+    "structuralStatus": "visually_conformant_to_declared_JSON_contract_without_direct_raw-byte_validator"
+  },
+  "decisiveNarrativeFailure": {
+    "kind": "fabricated_or_mislabelled_hypothetical_discard_score_and_rank",
+    "field": "importantSeats[0].whyMatters",
+    "modelClaim": "仮の3900点放銃なら席0が27200点、自分が27000点となり順位が逆転する",
+    "observedInitialScores": {
+      "seat0": 21400,
+      "ownSeat2": 32800,
+      "seat1": 25200,
+      "seat3": 20600
+    },
+    "actualIf3900DealerSeat0DealIn": {
+      "seat0": 25300,
+      "ownSeat2": 28900,
+      "ownRank": 1
+    },
+    "correctIf5800DealerSeat0DealIn": {
+      "seat0": 27200,
+      "ownSeat2": 27000,
+      "ownRank": 2
+    },
+    "exactInputReference": {
+      "evidenceId": "rank-scenarios",
+      "subfield": "ron",
+      "index": 2,
+      "other": 0,
+      "winBase": 3900,
+      "lossBase": 5800,
+      "lossPoints": [
+        27200,
+        25200,
+        27000,
+        20600
+      ],
+      "lossRanks": [
+        1,
+        3,
+        2,
+        4
+      ]
+    },
+    "causeHypothesis": "model appears to confuse winBase 3900 with lossBase 5800 when explaining dealer seat0 ron settlement; not an engine scoring defect",
+    "impact": "implies loss of first place at 3900 when actual 3900 would retain first; high-salience tactical rank mistake",
+    "severity": "major_deterministic_fact_error"
+  },
+  "evaluation": {
+    "schemaFactsSurface": "no confirmed structured field violations in this 7-observation reply",
+    "semanticNumeric": "FAIL",
+    "tacticalExplanation": "FAIL_major_numeric_critical",
+    "independentBlindHumanClaudeGeminiGrade": "NOT_RUN",
+    "formalSkillCertified": false,
+    "stage2ModelCalls": 0,
+    "decision": "STOP_EXPANSION_AT_FIRST_V3_PILOT_DUE_PREREGISTERED_MAJOR_PUBLIC_MATH_ERROR"
+  },
+  "preregSource": "handoff/p2a-v3-chatgpt-36-blind-scoring-prereg-20261123.md",
+  "preRegisteredPolicy": "One serious known numeric falsification, misquoted value, illegal action or hidden info claim in first 8 pauses expansion; do not recode failure as prompt success after seeing response.",
+  "next": "Record original failure; diagnose rank scenarios winBase vs lossBase and add independent narrative-vs-source numeric checks as a new development iteration, without altering scoring retroactively. Do not ask for more manual model runs until a separately versioned revised protocol has been prepared and explicitly identified as post-failure."
+}
