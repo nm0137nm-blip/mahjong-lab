@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-24T00:55:00+09:00",
+  "checkpoint": "2026-11-24T01:21:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -1853,7 +1853,28 @@
         "credentials": "Never paste key in chat or commit to repository",
         "previousTest": "GET /v1/models/gpt-6-sol was HTTP200; Responses POST returned billing_not_active; cannot definitively attribute to org mismatch yet",
         "billablePostAuthorization": "None remaining; require new separate single-purpose approval before further POST"
-      }
+      },
+      "newProjectKeyUserConfirmation": {
+        "reportedAt": "2026-11-24 01:18 JST",
+        "summary": "User reports replacing Github Actions OPENAI_API_KEY with freshly created key from billed Default project",
+        "keyValueNeverSeen": true,
+        "secretKeyNotLogged": true
+      },
+      "newKeyMetadataRead": {
+        "run_id": 45215200082,
+        "job_id": 137834352301,
+        "conclusion": "success",
+        "status": 200,
+        "endpoint": "GET /v1/models/gpt-6-sol",
+        "readableModel": true,
+        "modelGenerationPosts": 0,
+        "additionalTokenCost": 0,
+        "limits": "GET 200 only confirms authentication/model metadata, cannot establish billing active for POST",
+        "report": "No fresh POST authorization",
+        "workflow": "p2a-v44-newkey-readonly-model-check.yml"
+      },
+      "currentStage": "WAITING_SEPARATE_POST_APPROVAL_IF_USER_WANTS_RETEST; original 429 billing_not_active remains untested after key replacement",
+      "manualStage1Count": 0
     }
   },
   "previous_runs": [
@@ -3578,6 +3599,18 @@
       "originalV44Stage1Unchanged": "0 of 8",
       "workflowDisarmed": true,
       "remediation": "Inspect API Platform payment method/active subscription and organization-project alignment; contact OpenAI Support if active $5 credit but API still billing_not_active; no additional charge without explicit approval."
+    },
+    {
+      "phase": "P2a-v4.4 new-key read-only authentication",
+      "status": "NEW_KEY_MODEL_METADATA_GET_HTTP200_NO_GENERATION",
+      "run_id": 45215200082,
+      "job_id": 137834352301,
+      "apiPostAttempts": 0,
+      "costUSD": 0,
+      "modelResponseCount": 0,
+      "mainChanged": false,
+      "manualStage1Count": 0,
+      "notes": "new secret valid for model metadata; billing active for response generation not proven"
     }
   ],
   "roadmap": {
