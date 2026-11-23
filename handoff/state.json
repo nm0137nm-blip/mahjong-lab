@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-23T23:43:00+09:00",
+  "checkpoint": "2026-11-23T23:48:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -1730,7 +1730,8 @@
       "manualStage1ResponsesRemain": 0,
       "confidentiality": "public GitHub Actions live disabled; raw API answer local private file only",
       "report": "handoff/p2a-v44-api-automation-dryrun-20261123.md",
-      "planCorrection": "USER_HAS_PLUS_NOT_PRO; Pro subscription API grant unavailable under Plus; live remains prohibited without individual explicit consent"
+      "planCorrection": "USER_HAS_PLUS_NOT_PRO; Pro subscription API grant unavailable under Plus; live remains prohibited without individual explicit consent",
+      "billingUpdate": "User says $5 credit added, unverified balance. Still no specific paid API use approved or executed."
     }
   },
   "previous_runs": [
@@ -3544,6 +3545,15 @@
       "freeAPIGrantAtUserOrg": "NOT_VERIFIED",
       "newPaidApiAuthorization": 0,
       "action": "do not trigger billable API; use dry run and manual ChatGPT plus deterministic verifier until an approved route exists"
+    },
+    "api_prepaid_credit_user_report": {
+      "reportedAmountUSD": 5,
+      "reportedDate": "2026-11-23",
+      "scope": "OpenAI API context; user reports credit added",
+      "balanceVerifiedByConnector": false,
+      "authorizationForSpecificPaidModelCall": false,
+      "previousPaidAPIApprovals": 0,
+      "next": "safe API key setup plus separate pilot46 one-time spend approval; no automatic charges"
     }
   }
 }
