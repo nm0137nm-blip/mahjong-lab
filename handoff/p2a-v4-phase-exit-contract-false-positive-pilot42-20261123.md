@@ -16,7 +16,7 @@ P2a-v4の技術準備は成功したが、事前登録した**初回8問の1問�
   `if(numberLike(raw))fail(label+' contains unanchored numerical/kanji-number text');`
   このため、`[[candidate:...]]`という数値事実を確定差込用のアンカーとして正しく書いていても、本文の語彙「一致」／「一方」に含まれる`一`で`comparison contains unanchored numerical/kanji-number text`例外が起こる。この英語メッセージは**モデルが架空の点数を主張したという事実認定ではない**。
 - 実行コードパス：`verifyAndRenderV4CompactModelResponse` → `createV4DeterministicSourceComparison`（公開元から証明生成） → `verifyAndRenderV4AnchoredTactics` → `anchors(t.comparison,...)`。前段の凍結ハッシュ・合法候補は整合、コード側の文字クラスにより後段で不合格。**元回答全文をGitHubへ公開コミットしておらず、会話の原文を保全**。このターンでは生のモデル回答全文をGitHub Actionsにアップロードして検証したわけではないため、再現できる限界は上記の実装上の字句検査と公開JSON事実照合である。
-- 開発研究ブランチに追加した回帰：`tests/next/v14-anchored-tactical-text-v4.test.mjs`に、一般語彙「一致」「一方」が旧固定v4で拒否される**既知欠陥**を固定するテストのみ追加。検証器を緩めたり旧版の点数を再採点していない。CI run **45128674839 success**（改修後もv4原仕様を保全）。文脈依存の数字検出と牌名・役名の許容は**別バージョンの契約と事前登録**が必要。
+- 開発研究ブランチに追加した回帰：`tests/next/v14-anchored-tactical-text-v4.test.mjs`に、一般語彙「一致」「一方」が旧固定v4で拒否される**既知欠陥**を固定するテストのみ追加。検証器を緩めたり旧版の点数を再採点していない。CI run **45128674839 success、Node 72/72、独立Python清算4,608件不一致0**（改修後もv4原仕様を保全）。文脈依存の数字検出と牌名・役名の許容は**別バージョンの契約と事前登録**が必要。
 
 ## 事前停止規則と保全する分母
 
