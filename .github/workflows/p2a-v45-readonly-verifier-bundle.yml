@@ -22,7 +22,7 @@ jobs:
           test -f src/coach/v14-v45-stage1-receipt.mjs
           test -f src/coach/v14-v45-evaluation-plan.mjs
           mkdir -p /tmp/v45-verifier-offline
-          tar -czf /tmp/v45-verifier-offline/coach-src.tar.gz src/coach package.json
+          tar -czf /tmp/v45-verifier-offline/coach-src.tar.gz src/coach
           sha256sum /tmp/v45-verifier-offline/coach-src.tar.gz
       - uses: actions/upload-artifact@v4
         with:
