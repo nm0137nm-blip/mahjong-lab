@@ -46,6 +46,27 @@ export function buildOneShotRequest(packet,model='gpt-6-sol'){
   input:[{role:'system',content:packet.request.system},{role:'user',content:text}],
   text:{format:{type:'json_schema',name:'mahjong_v44_one_case',strict:true,schema}}};
 }
+// Conservative credit preflight for this one specifically authorized pilot-46 experiment.
+// Charges are based on actual tokens and can vary; this is an intentionally
+// overcounting bound, not a substitute for the Platform's billing controls.
+const APPROVED_MAX_USD=0.30;
+const INPUT_RATE_PER_M=2.00;
+const OUTPUT_RATE_PER_M=10.00;
+export function costCeilingUSD(payload){
+ if(payload.model!=='gpt-6-sol')fail('unapproved model');
+ const outputCap=payload.max_output_tokens;
+ if(!Number.isInteger(outputCap)||outputCap<1||outputCap>12000)
+   fail('unapproved output token cap');
+ // UTF-8 byte count overestimates visible input tokens; 5,000 tokens
+ // conservatively allow for formatting/schema/request overhead.
+ const inputTokenBound=Buffer.byteLength(JSON.stringify(payload),'utf8')+5000;
+ const upper=inputTokenBound*INPUT_RATE_PER_M/1e6+
+   outputCap*OUTPUT_RATE_PER_M/1e6;
+ if(upper>APPROVED_MAX_USD)fail('predicted maximum token cost exceeds one-call $0.30 approval');
+ return {inputTokenBound,outputCap,upperUSD:Number(upper.toFixed(6)),
+  budgetUSD:APPROVED_MAX_USD,billableTools:0,noAutoRetries:true};
+}
+
 export function extractRawOutput(response){
  if(response.status!=='completed')fail('model status is not completed; preserve failure, never auto-retry');
  const chunks=[];
@@ -77,14 +98,16 @@ export async function run(argv,env=process.env){
  if(!recreated||JSON.stringify(recreated.packet)!==JSON.stringify(packet))
   fail('packet does not exactly match original frozen source');
  const payload=buildOneShotRequest(packet,args.model??'gpt-6-sol');
+ const costPreflight=costCeilingUSD(payload);
  if(mode==='dry-run'){
   return {mode:'DRY_RUN_NO_EXTERNAL_API',networkRequests:0,charge:0,
-   ...checked,model:payload.model,hasFrozenSource:true,
+   ...checked,model:payload.model,costPreflight,hasFrozenSource:true,
    instructionsBytes:Buffer.byteLength(payload.input[0].content),
    userInputBytes:Buffer.byteLength(payload.input[1].content),
    authenticVerifier:'assessV44FirstRealStage1',notCountedAsModelResponse:true};
  }
  if(env.GITHUB_ACTIONS)fail('live API disabled in public GitHub Actions: answer privacy');
+ if(caseId!=='pilot-46')fail('approval is for pilot-46 only');
  if(args.ack!=='I_APPROVE_ONE_API_REQUEST')fail('missing one-call consent confirmation');
  if(!env.OPENAI_API_KEY)fail('OPENAI_API_KEY absent');
  if(!args.outdir)fail('private local outdir required');
@@ -106,7 +129,7 @@ export async function run(argv,env=process.env){
  // Separate experiment: API != original ChatGPT temporary-chat transport.
  const report={mode:'API_EXPLORATORY_DO_NOT_MERGE_WITH_MANUAL_STAGE1',
   ...checked,model:response.model??payload.model,responseId:response.id??null,
-  rawSha256:sha(raw),usage:response.usage??null,
+  rawSha256:sha(raw),usage:response.usage??null,costPreflight,
   verdict:receipt.verdict,failure:receipt.failure??null,
   apiCalls:1,independentStatelessRequest:true,officialV44ManualDenominatorUnchanged:true};
  await fs.writeFile(path.join(args.outdir,caseId+'-api-exploratory-receipt.json'),
