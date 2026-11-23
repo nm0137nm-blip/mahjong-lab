@@ -1,0 +1,66 @@
+name: P2a-v4.4 immutable candidate-shape public proof and new source-only eight
+on:
+  push:
+    branches:
+      - feat/coach-p2a-v44-complete-public-shape-proof
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  source-and-first-trial-freeze:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.23.4'
+      - uses: actions/download-artifact@v4
+        with:
+          name: p2a-v2-36-public-development-only
+          run-id: 45089922993
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/p2a-v44-frozen36
+      - name: Run public source and natural Japanese regression tests before any new model response
+        env:
+          V14_FOLLOWUP_PUBLIC: /tmp/p2a-v44-frozen36/independent-requests.json
+        run: |
+          set -euo pipefail
+          test -s "$V14_FOLLOWUP_PUBLIC"
+          node --test \
+            tests/next/v14-v43-japanese-conditional-and-tradeoff.test.mjs \
+            tests/next/v14-v43-stage1-freeze.test.mjs \
+            tests/next/v14-v44-source-shape-and-regression.test.mjs \
+            tests/next/v14-v44-stage1-freeze.test.mjs \
+            tests/next/v14-v44-preregistered-plan.test.mjs \
+            tests/next/v14-v44-stage1-receipt.test.mjs \
+            tests/next/v14-v44-all-eight-contract-expressibility.test.mjs \
+            tests/next/v14-v43-preregistered-plan.test.mjs \
+            tests/next/v14-v43-stage1-receipt.test.mjs \
+            tests/next/v14-v43-all-eight-contract-expressibility.test.mjs \
+            tests/next/v14-anchored-tactical-text-v4.test.mjs \
+            tests/next/v14-anchored-tactical-text-v41.test.mjs \
+            tests/next/v14-v41-stage1-freeze.test.mjs \
+            tests/next/v14-v42-numeric-and-transport.test.mjs \
+            tests/next/v14-v42-stage1-freeze.test.mjs \
+            tests/next/v14-source-comparison-proof-v4.test.mjs
+      - name: Freeze 8 source-only questions and 8 pre-model weak controls in separate compartments
+        env:
+          V14_FOLLOWUP_PUBLIC: /tmp/p2a-v44-frozen36/independent-requests.json
+        run: |
+          set -euo pipefail
+          node tests/next/v14-v44-stage1-freeze.mjs "$V14_FOLLOWUP_PUBLIC" /tmp/p2a-v44-pack
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p2a-v44-public-frozen-8-unseen-GPT6-JSON-FILES
+          path: /tmp/p2a-v44-pack/public
+          retention-days: 30
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p2a-v44-sealed-pre-answer-L4-controls-verifier-only
+          path: /tmp/p2a-v44-pack/verifier
+          retention-days: 30
+          if-no-files-found: error
+      - run: echo "NO real GPT-6 v4.4 answers. Older failures not regraded. No paid API, no main branch changes."
