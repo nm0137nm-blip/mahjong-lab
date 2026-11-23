@@ -38,6 +38,7 @@ const instruction=[
  '候補の数字が同じでも無理に違いを作らない。終端のロンには未来の向聴・受け入れ数を捏造しない。現物でない牌が危険とは確定できない。',
  'responseShapeは項目名の型見本であり、<...>の例示値・候補・席・点数をコピーしない。候補の数字・相手席・和了点は実際の公開入力と一致させる。必須は確認できるactionKind比較1つ以上。確認できない比較typeは出力しない。',
  '立直と同一牌ダマのロン点数はconditionalRonByChoiceで比較し、立直候補にはrecommendedMode/alternativeModeの該当側にhypotheticalRiichiRon、ダマ側にはronを指定する。sourceModeやstatus:suppliedは書かない。条件付き和了の値はsourceのbasePoints・yakuをそのまま引用し、status:conditionally_scoredかstatus:no_scored_win_under_assumptionsまたはstatus:not_suppliedだけを使う。',
+ 'opponentObservationsは合計1〜9件のみ許される。相手3人を各1席ずつ必ず含め、各席の観測事実は最大3件までに絞る。記録上限を超える場合は重要度判断に最も役立つ公開事実だけを優先する。',
  '相手3人には1席につき1つの重要度potentially_relevantまたはnot_establishedを割り当てる。同じ相手の複数事実はopponentObservationsへseat+fieldで別々に出せるが、同じ席の重要度を変えない。同じseat+fieldは重複禁止。assessment:observedという値は使わない。importantSeats/uncertainSeatsは重要度を揃え、相手席ごと1行ずつ。',
  '比較証明欄のtype/数字/具体候補/相手席は実際の公開入力と一致させる。候補の異なる現物・仮の和了基本点・点棒移動の違いを見て、自手・他家・着順の観点で説明する。',
  '仮の和了点数は見込み勝率・確定打点ではない。仮の順位変動は特定の和了/放銃が起きた場合のみ。未校正の聴牌確率・放銃率・期待収支は計算済みとして記述しない。',
