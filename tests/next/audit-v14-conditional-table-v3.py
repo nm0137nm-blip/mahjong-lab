@@ -55,8 +55,8 @@ def candidate_audit(inp,board,opp,candidate):
     if candidate['tsumoWinningForms']['rankSimulation']!='not_derived_no_payer_distribution':fail('invented tsumo rank')
     return len(expected)
 def run(src_path,table_path,output):
-    source=json.loads(Path(src_path).read_text()),tables=json.loads(Path(table_path).read_text())
-    cases,tables=source
+    cases=json.loads(Path(src_path).read_text())
+    tables=json.loads(Path(table_path).read_text())
     if len(cases)!=36 or len(tables)!=36:fail('not all 36 input cases')
     stats=collections.Counter()
     for packet,t in zip(cases,tables):
