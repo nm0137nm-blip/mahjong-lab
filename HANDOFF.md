@@ -274,3 +274,11 @@ ChatGPTが実際に独立して解いた回答を得る前に、採点・中止�
 - 凍結新36開発局面から旧8原型と回答済pilot-48を除く、結果を見る前のSHA順により**追加24原型×50対照**。固定S42モデルSHA `30381bf21389e2d25d3edf48fed11bf772336ef3daeee67d1bdae7fb9dd30cb4`。自家可視手牌+公開イベントのみを入力、他家伏せ手・未来不入力、元対局のS42アンカー全件照合。追加**推奨変化3/50、維持47/50、事前Qマージン境界で曖昧0**。同一原型の複数点棒対照は独立ではない。原型別に変化あり3/24、維持あり22/24（重複あり）。
 - 元8（変化1・維持7）と追加50を合わせ探索的総計**58対照・32原型、変化4・維持54**。ただし追加を元8の結果を見た後で企画したため本番未見試験ではなく、物理完全合法性/単一因子因果/人間専門判断/ChatGPTの追随は未検証。**L3.5正式合格には昇格しない**。
 - 長期集計正本：`archive/results/p2a-v3-s42-source-disjoint-exploratory-20261123.json`、詳細`handoff/p2a-v3-exploratory-expanded-s42-gate-20261123.md`。Actions検証専用artifact ID`14787261808`（2026-12-23失効）。P2a-v3全Phase継続、旧P2a-v2不合格継続、実ChatGPT新形式Stage1/Stage2回答・3回反復・本人/Claude/Geminiブラインド採点まだ0。Claude/Gemini設計レビューはPhase終了時のみ。追加有料API承認0、`main`未変更、正式B/P1-Lite/B4/P3-min/配布NO-GO。次に実データとして必要なのは本人が無料追加費用の一時ChatGPT新形式独立回答を提供すること（8×3の人間用パックはrun45102049118のartifact ID14785867588）。
+
+
+## 2026-11-23 13:03 JST：初のschema-v2実ChatGPT手動回答・不合格を確認、schema-v3を別版で生成
+- ユーザーから新版schema-v2 `pilot-48-response.json` を受領。元の出題`requestHash=1e2d745af93726d1a68b6b3761ec916c0a55b004266130e9e170d860d460cc00`、回答ファイルの元バイトSHA256 `4dda6ae5163680b874c0e5946fc08428c612d70f4aaf21b568d0721afcf9c9a3`。生回答は元会話の添付に保持し、GitHub現行ファイルツリーでは生原文を公開しない（追加→削除した旧コミット履歴には残り得る）。独立ChatGPTの出所はユーザー申告、プロバイダ認証なし、正確なモデル版不明。
+- リーチ5筒 vs ダマ5筒、m6/m9の条件付きロン点・役、13件の相手seat-field-value、seat1へ3900点放銃した仮順位は公開入力と一致。原回答の4つの候補比較も照合できた。しかし検証器の`opponentObservations` **最大9件に対してモデル回答13件**。旧schema-v2の**契約FAIL、原回答PASS 0/1**。数値の捏造や違法候補と混同しない。強い麻雀能力の証明でもない。
+- 原因は旧`request.system`に9件上限が未明記だったこと。**モデルの最初の回答を見た後の変更**と明記して、出題指示に総数1～9・3席各1～3、付属READMEにも同条件を記載。出題側のリリースを`p2a-v3-chatgpt-8x3-manual-readable-schema-v3`に改版。選択8ケースと機械採点条件は不変。開発commit `a2c5b6fb...`（出題）、`88b3903...`（パック）、`8cc32660...`（artifact名）、`659bbbfa...`（実測事象回帰）。前半3変更までのGitHub Actions run `45108629360`は成功、新artifact `14788033190`にv3問題8件、`pilot-48`の新requestHash `60dcbaf1b07be102477fbfdeea0849024c68e438d21d37852b826d46ea722383`を確認。最後の回帰コミット単独のCI成否は別途確認対象。
+- **必ず旧生回答FAILを保全してから新しい問題を別のChatGPT一時チャットに渡すこと。** あと7問は改訂版pilot-48の有効性確認後。旧schema-v2回答は新schema-v3での独立回答として流用しない。Phase P2a-v3未完、Stage2・匿名3者採点0、追加有料API実行なし、mainは未変更。
+- 詳細：`handoff/p2a-v3-first-real-pilot48-20261123.md`、非遡及の改訂`handoff/p2a-v3-chatgpt-prereg-amendment-v2-20261123.md`、状態台帳`handoff/state.json`。
