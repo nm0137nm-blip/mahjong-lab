@@ -58,7 +58,7 @@ test('v43 typed public facts: real pilot59-shaped synthetic model response passe
  assert.equal(v.output.experimentalModelChoice.isProductionRecommendation,false);
  assert.equal(v.output.opponents.length,3);
  assert.deepEqual(v.output.opponents.map(x=>x.seat),[1,2,3]);
- assert(v.output.sourceBasedPublicProof.opponentObservations.length===6);
+ assert.equal(Object.values(v.output.sourceBasedPublicProof.observationsBySeat).reduce((a,b)=>a+b,0),6);
 });
 test('pilot59 historical answer defect remains FAIL: seat2 tradeoff has no opponent seat2 FactID',()=>{
  const f=fixture();if(!f)return;
