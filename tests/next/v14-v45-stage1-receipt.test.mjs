@@ -47,3 +47,40 @@ test('manual Stage1 contract does not count API attempts or claim skill from num
  assert.equal(P2A_V45_RESEARCH_PLAN.l35.maintainedMin,4);
  assert(P2A_V45_RESEARCH_PLAN.overall.cost.includes('no paid model API'));
 });
+
+test('first pilot41 positive synthetic full three-seat contract and negative tampering',()=>{
+ if(!source)return;
+ const rows=[0,1,3],rec='a37-0',alt='a1-0';
+ const example={
+  version:'p2a-v45-compact-stage1-response-1',
+  requestHash:P2A_V45_PACKET_HASHES[0],
+  recommendation:{key:rec,afterCallDiscard:null},
+  alternative:{key:alt,afterCallDiscard:null},
+  tactics:{
+   comparison:'[[candidate:a37-0:kind]]と[[candidate:a1-0:kind]]を比較し、[[candidate:a37-0:shanten]]と[[candidate:a1-0:shanten]]の公開差を考慮する。',
+   opponents:rows.map(seat=>({
+    seat,importance:'potentially_relevant',
+    analysis:'[[opponent:seat'+seat+':pointGapFromOwn]]と[[opponent:seat'+seat+':meldCount]]から公開状況だけを把握する。',
+    tradeoff:'[[candidate:a37-0:kind]]を選ぶ代償を[[opponent:seat'+seat+':riichi]]と照合して考える。',
+    changeCondition:'もし[[opponent:seat'+seat+':riichi]]が先制なら、対案を選びやすくする。'
+   })),
+   bottomLine:'[[candidate:a37-0:kind]]を候補として採用する。',
+   reversal:'もし[[opponent:seat0:riichi]]が先制なら、別案を選びやすくする。',
+   lesson:'手組みと公開された進行を区別し、相手別の危険を比較する。'
+  }
+ };
+ const meta={provider:'synthetic offline fixture',modelDisplay:'NO MODEL',
+  independentTemporaryChat:false,replySubmittedAsJsonFile:false};
+ const ok=assessV45FirstRealStage1(source,'pilot-41',JSON.stringify(example),meta);
+ assert.equal(ok.verdict,'CONTRACT_AND_PUBLIC_FACT_GATE_PASS',ok.failure);
+ assert.equal(ok.semanticGrade,'NOT_ASSESSED_BY_MACHINE');
+ let bad=structuredClone(example);
+ bad.tactics.lesson+=' 3900点と未確認数値をつける。';
+ const invented=assessV45FirstRealStage1(source,'pilot-41',JSON.stringify(bad),meta);
+ assert.equal(invented.verdict,'STAGE1_NO_GO_INVALID_PUBLIC_CONTRACT');
+ bad=structuredClone(example);
+ bad.tactics.opponents[1].tradeoff='[[candidate:a37-0:kind]]だけを述べる。';
+ const noSeat=assessV45FirstRealStage1(source,'pilot-41',JSON.stringify(bad),meta);
+ assert.equal(noSeat.verdict,'STAGE1_NO_GO_INVALID_PUBLIC_CONTRACT');
+ assert.match(noSeat.failure,/opponent tradeoff needs both/);
+});
