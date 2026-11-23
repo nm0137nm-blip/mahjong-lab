@@ -19,6 +19,9 @@ const wasm=initSync({module:fs.readFileSync('assets/mortal/encoder_bg.wasm')});
 fs.mkdirSync(outDir,{recursive:true});
 const comparable=m=>{
  if(m.zimo)return {種類:'自摸',席:m.zimo.l};
+ if(m.gangzimo)return {種類:'嶺上自摸',席:m.gangzimo.l};
+ if(m.gang)return {種類:'槓',席:m.gang.l,面子:m.gang.m};
+ if(m.kaigang)return {種類:'ドラ表示追加',牌:m.kaigang.baopai};
  if(m.fulou)return {種類:'副露',席:m.fulou.l,面子:m.fulou.m};
  if(m.dapai)return {種類:'打牌',席:m.dapai.l,牌:m.dapai.p.slice(0,2),
   ツモ切り:m.dapai.p.includes('_'),立直宣言:m.dapai.p.includes('*')};
@@ -27,6 +30,9 @@ const comparable=m=>{
 const redact=(msg,own)=>{
  if(msg.qipai)return {qipai:{...msg.qipai,shoupai:msg.qipai.shoupai.map((h,i)=>i===own?h:'')}};
  if(msg.zimo)return {zimo:{l:msg.zimo.l,p:msg.zimo.l===own?msg.zimo.p:''}};
+ if(msg.gangzimo)return {gangzimo:{l:msg.gangzimo.l,p:msg.gangzimo.l===own?msg.gangzimo.p:''}};
+ if(msg.gang)return {gang:{l:msg.gang.l,m:msg.gang.m}};
+ if(msg.kaigang)return {kaigang:{baopai:msg.kaigang.baopai}};
  if(msg.fulou)return {fulou:{l:msg.fulou.l,m:msg.fulou.m}};
  if(msg.dapai)return {dapai:{...msg.dapai}};
  throw Error('unsupported original public prefix event, no attempt to encode');
