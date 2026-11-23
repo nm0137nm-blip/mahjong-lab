@@ -5,7 +5,7 @@ import {createV3IndependentDevelopmentRequest} from '../../src/coach/v14-indepen
 import {createV3PublicContrastFixture} from '../../src/coach/v14-evidence-proof-v3.mjs';
 import {buildV4RonSettlement} from '../../src/coach/v14-settlement-events-v4.mjs';
 import {buildV4CandidateSettlementCatalog} from '../../src/coach/v14-candidate-settlement-v4.mjs';
-import {createV4PublicFactRegistry,verifyAndRenderV4AnchoredTactics,V4_TACTIC_VERSION}
+import {createV4PublicFactRegistry,createV4SourceBoundFactRegistry,verifyAndRenderV4AnchoredTactics,V4_TACTIC_VERSION}
  from '../../src/coach/v14-anchored-tactical-text-v4.mjs';
 const cases=process.env.V14_FOLLOWUP_PUBLIC?
  JSON.parse(fs.readFileSync(process.env.V14_FOLLOWUP_PUBLIC,'utf8')):[];
@@ -119,4 +119,37 @@ test('candidate action labels without nontrivial comparison evidence do not sati
  const f=fixture();if(!f)return;
  f.answer.tactics.comparison='[[candidate:a37-1:kind]]と[[candidate:a13-0:kind]]だけを並べても、選択の比較にはならない。';
  assert.throws(()=>verifyAndRenderV4AnchoredTactics(f.input,f.answer),/comparison only names actions/);
+});
+
+
+test('short ronSummary anchors preserve conditional own riichi versus silent legal role, and no actual probability claims',()=>{
+ const f=fixture();if(!f)return;
+ const facts=createV4PublicFactRegistry(f.input);
+ assert.match(facts['candidate:a37-1:ronSummary'],/m6の仮ロンは5,200点/);
+ assert.match(facts['candidate:a37-1:ronSummary'],/m9の仮ロンは5,200点/);
+ assert.match(facts['candidate:a13-0:ronSummary'],/m6の仮ロンは2,600点/);
+ assert.match(facts['candidate:a13-0:ronSummary'],/m9は指定条件で役なしロン点なし/);
+ f.answer.tactics.comparison+=' [[candidate:a37-1:ronSummary]]と[[candidate:a13-0:ronSummary]]を対照する。';
+ const output=verifyAndRenderV4AnchoredTactics(f.input,f.answer);
+ assert.match(output.comparison,/5,200点/);
+ assert.match(output.comparison,/2,600点/);
+ assert.match(output.comparison,/役なしロン点なし/);
+ assert.equal(output.freeNumericTextBlocked,true);
+});
+test('call m222- after m4 uses only that concrete post-call conditional score summary and cannot cite another discarded tile',()=>{
+ const v=cases.find(x=>x.request.input.id==='pilot-59');if(!v)return;
+ const e=createV3IndependentDevelopmentRequest(v);
+ const rec={key:'a41-0',afterCallDiscard:'m4'},alt={key:'a45-0',afterCallDiscard:null};
+ const proof=createV3PublicContrastFixture(e,rec,alt);
+ const own=e.request.input.evidence.find(x=>x.id==='board').value.ownSeat;
+ for(const seat of [0,1,2,3].filter(s=>s!==own)){
+  if(proof.opponentObservations.some(x=>x.seat===seat))continue;
+  const value=e.request.input.evidence.find(x=>x.id==='public-value-'+seat).value.points;
+  proof.opponentObservations.push({seat,field:'points',value,assessment:'not_established'});
+ }
+ const facts=createV4SourceBoundFactRegistry(e,proof);
+ assert.match(facts['candidate:a41-0:afterCallDiscard'],/m4を切る/);
+ assert.match(facts['candidate:a41-0:afterCallRonSummary'],/p0の仮ロンは7,700点/);
+ assert.match(facts['candidate:a41-0:afterCallRonSummary'],/p2の仮ロンは3,900点/);
+ assert.equal(Object.hasOwn(facts,'candidate:a41-0:m5:afterCallRonSummary'),false);
 });
