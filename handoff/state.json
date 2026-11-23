@@ -1893,14 +1893,13 @@
         "rawReplySha256": "dd23be5770f7d29087792ed284f9e7d5f25886172640cf5bf069e6132eee737e",
         "artifactId": 14839755422,
         "originalJsonDecryptedAndHashVerified": true,
-        "recommendedKey": "a30-0",
-        "alternativeKey": "a1-0",
         "separateFromManualStage1": true,
         "manualStage1ResponsesStill": 0,
         "mortalSkillCertified": false,
         "semanticCertified": false,
         "workflowDisarmedCommit": "1fd16098252722afb5a8a6ad83311617ba29f2ca",
-        "newPaidApprovalAvailable": false
+        "newPaidApprovalAvailable": false,
+        "privateOutputPolicy": "Raw response and direct model choices withheld from public GitHub; SHA and mechanical verdict only."
       }
     }
   },
