@@ -374,3 +374,11 @@ ChatGPTが実際に独立して解いた回答を得る前に、採点・中止�
 - 実測Stage1の合格進捗**2/8**（pilot52・pilot47とも厳密契約PASS）、未実行6、段階2・反復・L3.5実モデル回答・L4採点は未実施。**ユーザーはすべての回答モデルがGPT-6だと明示**したのでGPT-6（ユーザー報告）として記録。実際のモデルUI証跡やThinking設定まで認証済みとは言わない。
 - **運用変更（ユーザー明示要望）**：今後の独立試験ChatGPTに対しては、**平文でJSONを貼るのではなく、UTF-8の`mahjong_P2a_v42_stage1_<caseId>_response.json`ファイルを作成・添付して、チャット本文はファイルリンクだけ**にするよう、別途納品指示を付ける。凍結済み出題ファイル`request.system`・`responseShape`・`requestHash`には手を加えない。モデルの戦術判断を誘導する指示は追加しない。
 - **次の対応依頼**：固定第3問`pilot-59.json`（requestHash`47170cba8287f79dd00045a15ca0d2890e6101445634e962f34f558cb31402e4`）を新規ChatGPT一時チャットへ添付し、**`mahjong_P2a_v42_stage1_pilot-59_response.json`をファイルとして生成**させ、原ファイルを開発チャットに返す。詳細`handoff/p2a-v42-pilot47-second-independent-model-receipt-file-delivery-20261123.md`、正本`handoff/state.json`。
+
+
+## 2026-11-23 19:23 JST：P2a-v4.2 Phase終了 NO-GO：pilot59 第3問で契約FAIL
+- ユーザーは`pilot-59`をJSONファイルで2回添付したが、原文SHA256は両方同じ `80613386f2bfff5cb6053fa058bb74df48b4c9081414ef88731684e339861a3f`。**1独立実回答としてのみ計測**。requestHash `47170cba8287f79dd00045a15ca0d2890e6101445634e962f34f558cb31402e4`固定と一致、合法候補`a41-0`（鳴いてm4切り）・対案`a45-0`（鳴かない）。厳密JSONパース・転記修復なし。
+- 固定v4.2 JS検証器をユーザーの生JSONへ実行し`STAGE1_NO_GO_INVALID_PUBLIC_CONTRACT`。第一障害は「現物で**なければ**」「高打点が明確に**なれば**」を日本語条件と認識しない正規表現。**さらに独立の回答契約不足**：席2の`tactics.opponents[].tradeoff`に相手席2の`[[opponent:seat2:...]]`出典FactIDがなく、候補だけを引用。席2の河にm4があることは公開事実として正しいが、**必須の相手FactID引用条件には不適合**。どちらも戦術期待値／S42最適性の不合格と同義ではない。
+- 正式Stage1：**回答3、契約合格2、契約不合格1、未実施5**。事前登録の初回重大契約FAIL停止規則により`P2a-v4.2`を**NO-GOでPhase終了**。過去のpilot52・47の2つのPASSも保持。重複2ファイルを別試行に数えない。ChatGPT新規反復・Stage2・L3.5実モデル回答・3者匿名L4はいずれも未実施。
+- 原モデル回答ファイルはGitHub公開リポジトリに書き出さず、GitHubには原因とSHAのみ記録。詳細`handoff/p2a-v42-phase-exit-pilot59-conditional-and-seat2-source-anchor-20261123.md`。初回修正版v4.3ブランチ`feat/coach-p2a-v43-japanese-conditional-gate`を作成済みだが、**答えを閲覧したpilot59の後付けPASSに使わず、条件文と相手席別出典の正例・負例テストを強化するまでは新しいユーザー実測を求めない**。既に回答済みpilot48,42,50,52,47,59は次の新未見出題から除く。
+- ユーザーに追加レビューを求めない指示を維持。研究Draft PR#65の旧v42はmain非統合、本番公開NO-GO、無断有料APIなし。**現時点はユーザー対応依頼なし**。
