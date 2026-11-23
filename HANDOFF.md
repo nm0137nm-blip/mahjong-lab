@@ -261,3 +261,9 @@ ChatGPTが実際に独立して解いた回答を得る前に、採点・中止�
 開発ブランチ`feat/coach-p2a-v3-contract-repair` Draft PR #62。GitHub Actions run`45102049118`、**6ジョブ成功、21/21単体テスト合格**。S42の基準モデルの実際の再判定を、**新規に事前選定した8組**（公開相手立直＋供託4、過去点棒別仮定4）で行い、**Mortal推奨変化1組・維持7組**、未解決の内部Q接近0（事前境界0.001）。元対局のモデルとの照合に合格し、**エンコーダには他家の伏せ手と未来イベントを渡していない**。ただし完全な元ゲーム履歴との物理合法性、ChatGPTの変化判断、実戦的な正しさ、期待値推定、L3.5の変化群4組到達は**未認証**。このS42結果は検証専用でモデル可視Stage1入力に混入しない。
 最新の改訂版8×3試験パックはrun`45102049118`のGitHub Actions artifact`p2a-v3-chatgpt-8x3-manual-readable-schema-v2` id `14785867588`。verifier-only S42計算は同run artifact`p2a-v3-8-public-counterfactual-s42-verifier-only` id`14786046476`。Mortal実測ジョブは結果確定後に再実行停止（commit`c066e07f9d3cd176923de47b5247d529bf243a1c`）。
 **P2a-v3 Phase全体は未完了**。実際のChatGPTの独立したStage1/Stage2、再実行、Claude/Gemini/ユーザーの匿名採点、L3.5の十分な変化群・法的行動再現はまだ不足。正式B/P1-Lite160/B4/P3-min/main/一般公開は従来どおりNO-GO。追加料金0、ユーザーのChatGPT以外へのモデル切替なし。詳細`handoff/p2a-v3-continued-repair-s42-eight-pairs-20261123.md`、事前採点ルール`handoff/p2a-v3-chatgpt-36-blind-scoring-prereg-20261123.md`、状態正本`handoff/state.json`。
+
+## 2026-11-23 P2a-v3新チャット引継ぎ・未使用開発局面へのS42探索的拡張（実行中）
+- 引継ぎ起点 `HANDOFF.md` と `handoff/state.json` を読取り、GitHubの枝・PR #62・実行履歴を再照合。mainと既存P2a-v2のNO-GOおよび旧8対照（run45102049118：変化1・維持7）を変更していない。
+- 開発ブランチ `feat/coach-p2a-v3-contract-repair` commit `8ae2fd179f7cf6c939b642aa08a55f8f9e49c9b0`。新36開発局面のうち旧8の原型と回答済pilot-48を除き、結果を見る前のハッシュ順で未使用原型から追加比較を選ぶ拡張器・単体試験・独立したS42評価ジョブを実装。追加比較は同じ原型の相手3席向け点棒移動も含むため、各対を独立の半荘や因果試験として数えない。追加の選択は旧8の結果を見た後なので、正式未見テストでもない。
+- GitHub Actions run `45104195743` はS42モデルの外部ダウンロードにおけるcurl HTTP/2 CANCELで中断（牌やモデル出力の不一致ではない）。SHA256を固定したまま通信再試行を改善し、run `45104501069` が進行中。公開資料の再検査および追加比較選択に関するCIテストは通過。**追加S42推奨変化数・維持数は未確定。** 実モデルの新Stage1/Stage2回答0、追加課金の承認0。
+- 復旧時はrun `45104501069` の結論・失敗ジョブログ・追加検証専用artifactを最初に調べ、成功後に実測数と独立した原型クラスター数を記録して追記。モデルの外部取得が原因の失敗をL3.5不合格や新たな戦術結論と誤認しない。相手伏せ手・未来をエンコーダへ入力しない。現状は正式B/P1-Lite/B4/P3-min/main/配布がNO-GO、P2a-v3継続、Claude/GeminiのPhase終了レビューはまだ実施しない。無料の作業は自律継続、本人の一時ChatGPT新形式実回答には別途ユーザー操作が必要。
