@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-23T16:51:00+09:00",
+  "checkpoint": "2026-11-23T18:15:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -8,8 +8,8 @@
     "coach_candidate_promoted": false
   },
   "active_task": {
-    "phase": "P2a-v4.2 Stage1 empirical first response PASS; next untouched pilot-47 in independent Temporary Chat",
-    "status": "P2a_v42_STAGE1_FIRST_REAL_PILOT52_CONTRACT_PUBLIC_FACT_GATE_PASS_1_OF_8",
+    "phase": "P2a-v4.2 Stage1 first 2 of 8 genuine user-uploaded JSON answers pass original source public contract",
+    "status": "P2a_v42_STAGE1_PILOT52_AND_PILOT47_CONTRACT_PUBLIC_FACT_PASS_2_OF_8",
     "branch": "feat/coach-p2a-v42-typed-seat-transport",
     "commit": "05b0f5e74954170828686d0565ac93214f269c24",
     "pr": 65,
@@ -354,8 +354,8 @@
         "phaseCompleted": false
       }
     ],
-    "decision": "Fixed v42 first real pilot52 user-provided JSON passed exact local Node original v42 source gate. 1/8 model responses; 7 not attempted, independent strategic L4 and Mortal policy not certified; UI model display metadata missing.",
-    "next": "対応依頼: fixed second independent Stage1 question pilot-47.json in a FRESH ChatGPT Temporary Chat, preserve raw JSON reply, optionally report actual UI model display; do not reveal S42 labels or previous answers.",
+    "decision": "P2a-v4.2 frozen first two responses have source-bound contract PASS. 6 Stage1 never answered; neither tactical best move nor Mortal S42 agreement certified. User confirms all models GPT-6 and asks all future responses to be JSON files rather than pasted prose; change delivery instructions only, not frozen model request hash.",
+    "next": "対応依頼: submit exact fixed pilot-59.json in a NEW ChatGPT Temporary Chat with separate delivery-only instruction to GENERATE/ATTACH mahjong_P2a_v42_stage1_pilot-59_response.json, not paste JSON text; return unmodified file. Model name GPT-6 user-reported.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -1075,7 +1075,7 @@
       "report": "handoff/p2a-v41-first-pilot50-schema-receipt-stop-20261123.md"
     },
     "v42_development": {
-      "status": "STAGE1_FIRST_REAL_1_OF_8_PUBLIC_CONTRACT_PASS_NOT_PHASE_GO",
+      "status": "STAGE1_FIRST_2_REAL_OF_8_PUBLIC_CONTRACT_PASS_NEXT_UNSEEN_PILOT59",
       "previousPhases": [
         {
           "phase": "v4",
@@ -1137,20 +1137,20 @@
         "sealedVerifierArtifactId": 14799405652,
         "modelNeverReceivesSealed": true
       },
-      "newIndependentModelResponses": 1,
+      "newIndependentModelResponses": 2,
       "modelEvaluationStatus": "NOT_STARTED",
       "noPaidInference": true,
       "PhaseComplete": false,
       "l35SourceDisjointControlsFromPriorResearch": "4 S42 changed + 4 maintained ready, no new actual ChatGPT paired results",
       "finalL4Status": "NOT_RUN",
-      "report": "handoff/p2a-v42-pilot52-first-independent-model-receipt-20261123.md",
-      "next": "対応依頼: fixed second independent Stage1 question pilot-47.json in a FRESH ChatGPT Temporary Chat, preserve raw JSON reply, optionally report actual UI model display; do not reveal S42 labels or previous answers.",
+      "report": "handoff/p2a-v42-pilot47-second-independent-model-receipt-file-delivery-20261123.md",
+      "next": "対応依頼: submit exact fixed pilot-59.json in a NEW ChatGPT Temporary Chat with separate delivery-only instruction to GENERATE/ATTACH mahjong_P2a_v42_stage1_pilot-59_response.json, not paste JSON text; return unmodified file. Model name GPT-6 user-reported.",
       "actualStage1": {
         "planned": 8,
-        "received": 1,
-        "contractPublicFactPass": 1,
+        "received": 2,
+        "contractPublicFactPass": 2,
         "contractFail": 0,
-        "remaining": 7,
+        "remaining": 6,
         "firstCaseId": "pilot-52",
         "requestHash": "2a6aab21bc3d914183b7a91082f0939d68c5f619f8785ce19fb66f1639bde6b5",
         "originalReplySha256": "9c3ad9e070bc089bdb31c8686f0248b9ecd31527e1f2b84ac0a54bb9c6912e36",
@@ -1180,7 +1180,53 @@
         },
         "tacticalSemanticScore": "NOT_RATED_QUALITATIVE_L4_PENDING",
         "actualMortalPolicyMatch": "UNKNOWN_NOT_TESTED",
-        "phaseGo": false
+        "phaseGo": false,
+        "attempts": [
+          {
+            "caseId": "pilot-52",
+            "requestHash": "2a6aab21bc3d914183b7a91082f0939d68c5f619f8785ce19fb66f1639bde6b5",
+            "originalReplySha256": "9c3ad9e070bc089bdb31c8686f0248b9ecd31527e1f2b84ac0a54bb9c6912e36",
+            "modelUserReported": "GPT-6",
+            "verdict": "CONTRACT_AND_PUBLIC_FACT_GATE_PASS",
+            "comparisons": 10,
+            "opponentFacts": 6,
+            "distinct": 3,
+            "rawUploadedUserFileOnly": true
+          },
+          {
+            "caseId": "pilot-47",
+            "requestHash": "e655cd7bf0346c19dce8776fd3082d296de2c9102973de9b4cf8d417ceff70f1",
+            "originalReplySha256": "e4d0b95a68748edc8f9d1e2d4e4bd4986db465248c604d11bcedccc05bb71d26",
+            "modelUserReported": "GPT-6",
+            "verdict": "CONTRACT_AND_PUBLIC_FACT_GATE_PASS",
+            "recommendation": "a6-0",
+            "alternative": "a37-0",
+            "actionActual": "m7 (7萬) dama vs riichi",
+            "comparisons": 9,
+            "opponentFacts": 6,
+            "distinct": 2,
+            "transportMode": "strict_json",
+            "transportCorrections": 0,
+            "rawUploadedUserFileOnly": true
+          }
+        ],
+        "currentVerdict": "INCOMPLETE_STAGE1_NOT_GO",
+        "canExpand": false,
+        "modelIdentityVerifiedByProvider": false,
+        "semanticSkill": "NOT_ASSESSED",
+        "S42PolicyMatch": "UNKNOWN"
+      },
+      "modelDisplayUserReport": "GPT-6 for all model answers (user-reported; original UI screenshot, effort, provider provenance not independently verified)",
+      "deliveryProtocol": {
+        "version": "separate_v42_delivery_instructions_only_not_part_of_model_question",
+        "rule": "every future model result must be generated as a UTF-8 .json attachment, not pasted in chat text; send only file link in answering ChatGPT response",
+        "filenamePattern": "mahjong_P2a_v42_stage1_<caseId>_response.json",
+        "currentFile": "mahjong_P2a_v42_stage1_pilot-59_response.json",
+        "instructionsLocallyPrepared": "/mnt/data/mahjong_P2a_v42_JSONファイル回答依頼.txt",
+        "archivedPublicRequestHashesUnchanged": true,
+        "modelPromptDetailsUnchanged": true,
+        "purpose": "avoid transport quote/bracket corruption; no tactical hint or format relaxation",
+        "userSpecified": true
       }
     }
   },
@@ -2579,6 +2625,26 @@
       "overallPhasePass": false,
       "tacticalSkill": "UNVERIFIED",
       "report": "handoff/p2a-v42-pilot52-first-independent-model-receipt-20261123.md"
+    },
+    {
+      "status": "P2a_v42_STAGE1_SECOND_REAL_PILOT47_CONTRACT_AND_PUBLIC_FACT_GATE_PASS",
+      "phase": "P2a-v4.2",
+      "caseId": "pilot-47",
+      "requestHash": "e655cd7bf0346c19dce8776fd3082d296de2c9102973de9b4cf8d417ceff70f1",
+      "replyRawSha256": "e4d0b95a68748edc8f9d1e2d4e4bd4986db465248c604d11bcedccc05bb71d26",
+      "sourceJSVerifierExecutedLocally": true,
+      "contract": "PASS",
+      "comparisonsVerified": 9,
+      "opponentFacts": 6,
+      "distinctPublicFacts": 2,
+      "currentStage1": "2_OF_8_PASS",
+      "model": "GPT-6_USER_REPORTED",
+      "nextCaseId": "pilot-59",
+      "nextCaseRequestHash": "47170cba8287f79dd00045a15ca0d2890e6101445634e962f34f558cb31402e4",
+      "futureAnswersAsFileAttachments": true,
+      "originalQuestionUnchanged": true,
+      "caution": "not S42/L4 skill validation",
+      "report": "handoff/p2a-v42-pilot47-second-independent-model-receipt-file-delivery-20261123.md"
     }
   ],
   "roadmap": {
