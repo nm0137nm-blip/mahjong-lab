@@ -8,7 +8,10 @@ timing, yaku validity or all Mahjong rule subtleties.
 import collections,json,re,sys
 from pathlib import Path
 from mahjong.shanten import Shanten
-SH=Shanten()
+from mahjong.hand_calculating.hand import HandCalculator
+from mahjong.hand_calculating.hand_config import HandConfig, OptionalRules
+from mahjong.meld import Meld
+SH=Shanten(); HC=HandCalculator()
 TYPES=[s+str(n) for s in "mps" for n in range(1,10)]+["z"+str(n) for n in range(1,8)]
 TI={s:i for i,s in enumerate(TYPES)}
 def norm(t):
@@ -85,9 +88,74 @@ def one(ev):
         elif g==45:
             if phase!="reaction":raise ValueError("pass on turn")
             stats["reaction_pass_option"]+=1
+        elif g==42 and phase=="turn":
+            # Independently check four concealed tiles and no illegal state
+            # but keep the post-riichi same-wait rule explicitly unverified.
+            raw=tiles(detail)
+            if len(raw)!=4 or len({norm(t) for t in raw})!=1:
+                raise ValueError("turn kan cannot be anything but four same-type tiles")
+            t=norm(raw[0])
+            if hand[t]!=4:raise ValueError("closed-kan material absent")
+            if any(norm(u)!=t for u in raw):raise ValueError("kan tile mismatch")
+            if ownriver["riichi"]:
+                unverified.append({"caseId":inp["id"],"group":g,"detail":detail,
+                  "phase":phase,"reason":"riichi same-wait-kan legality independently unproven"})
+                stats["not_independently_reconstructed_legal_option"]+=1
+            else:
+                stats["closed_kan_public_material_feasible"]+=1
+        elif g==43 and phase=="reaction":
+            # Independent scoring and structural completion. Full ron
+            # legality also depends on temporary furiten not available here.
+            t=reaction_tile
+            if t in {norm(d["tile"]) for d in ownriver["discards"]}:
+                raise ValueError("own river would impose structural furiten")
+            raw=hand.copy();raw[t]+=1
+            if raw[t]>4:raise ValueError("ron target makes fifth identical tile")
+            if SH.calculate_shanten([raw[k] for k in TYPES],use_chiitoitsu=not bool(melds),
+                                    use_kokushi=not bool(melds))!=-1:
+                raise ValueError("ron would not complete structural winning hand")
+            alltiles=own["hand"].copy()+[reaction["tile"][:2]]
+            used=set()
+            def allocate(tile):
+                t=norm(tile);base=TI[t]*4
+                alternatives=([base] if tile[1]=="0" else
+                    list(range(base+1,base+4)) if t[0] in "mps" and t[1]=="5" else
+                    list(range(base,base+4)))
+                n=next((v for v in alternatives if v not in used),None)
+                if n is None:raise ValueError("invalid allocation for physical winning tiles")
+                used.add(n);return n
+            concealed=[allocate(x) for x in alltiles]
+            meldobjects=[]
+            for m in melds:
+                mt=tiles(m);ids=[allocate(x) for x in mt]
+                concealed+=ids
+                kind=Meld.KAN if len(mt)==4 else Meld.PON if len({norm(x) for x in mt})==1 else Meld.CHI
+                meldobjects.append(Meld(meld_type=kind,tiles=ids,opened=any(c in "+=-" for c in m)))
+            win=concealed[len(own["hand"])]
+            # Indicator allocation belongs to dora calculation and cannot
+            # share used ids with concealed hand; rely on calculator's own
+            # indicator interpretation only where physically available.
+            indicators=[]
+            for dt in own["doraIndicators"]:
+                tnorm=norm(dt)
+                base=TI[tnorm]*4
+                z=next((v for v in range(base,base+4) if v not in used),None)
+                if z is None:raise ValueError("dora indicator collides with complete physical hand")
+                used.add(z);indicators.append(z)
+            conf=HandConfig(is_tsumo=False,is_riichi=bool(ownriver["riichi"]),
+              player_wind=27+seat,round_wind=27+"東南西北".index(board["round"][0]),
+              options=OptionalRules(has_open_tanyao=True,has_aka_dora=True,
+                 has_double_yakuman=True,kiriage=False))
+            res=HC.estimate_hand_value(concealed,win,melds=meldobjects,
+                                      dora_indicators=indicators,config=conf)
+            if res.error or not res.cost or res.cost["main"]<=0:
+                raise ValueError("ron has no independently recognized yaku: "+str(res.error))
+            stats["ron_physical_completed_yaku_feasible"]+=1
+            stats["ron_temporary_furiten_not_independently_verified"]+=1
         else:
             stats["not_independently_reconstructed_legal_option"]+=1
-            unverified.append({"caseId":inp["id"],"group":g,"detail":detail,"phase":phase})
+            unverified.append({"caseId":inp["id"],"group":g,"detail":detail,
+                 "phase":phase,"reason":"not physically reconstructed"})
     stats["cases"]+=1
     if phase=="turn":stats["turn_cases"]+=1
     else:stats["reaction_cases"]+=1
@@ -109,7 +177,8 @@ def main(source,output):
        "certified":["public own hand material 14/13 and 4-tile multiplicity",
                     "present discard/riichi options correspond to own tiles",
                     "basic physically valid chi/pon/open-kan material and source side where checked",
-                    "pass action exists in reactions"],
+                    "pass action exists in reactions",
+                    "closed-kan material when not riichi and physical ron completion with independent yaku when present"],
        "notCertified":["full set of legal options is complete",
          "full all-cases riichi/kan/ron/yaku/timing/furiten validation",
          "source engine's legal-option correctness beyond above subset",
