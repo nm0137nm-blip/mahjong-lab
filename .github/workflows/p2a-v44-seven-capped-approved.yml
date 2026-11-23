@@ -1,10 +1,8 @@
 name: P2a-v4.4 Seven GPT-6 Sol API <=USD0.05 per call, strict stop
+# Approval exhausted by run 45220219174; first fatal pilot-53 stops all further calls.
+# No automatic push trigger remains; dispatch is also blocked by one-time guard.
 on:
-  push:
-    branches:
-      - feat/coach-p2a-v44-api-seven-capped
-    paths:
-      - research/approvals/p2a-v44-api-seven-only-20261124.run
+  workflow_dispatch:
 permissions:
   contents: read
   actions: read
@@ -19,7 +17,7 @@ jobs:
       V14_FOLLOWUP_PUBLIC: /tmp/v44-seven-original36/independent-requests.json
       V14_V44_QUESTIONS_DIR: /tmp/v44-seven-questions/questions
       V44_SEVEN_ENCRYPTED_DIR: /tmp/v44-seven-encrypted
-      V44_SEVEN_APPROVAL: SEVEN_AT_MOST_005_20261124
+      V44_SEVEN_APPROVAL: EXPIRED_AFTER_FIRST_FATAL_PILOT53
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
     steps:
       - uses: actions/checkout@v4
