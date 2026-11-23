@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-23T10:50:00+09:00",
+  "checkpoint": "2026-11-23T11:18:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -9,11 +9,11 @@
   },
   "active_task": {
     "phase": "P2a-v3",
-    "status": "development_gate1_contract_repair_9_of_9_pass_real_model_execution_method_user_choice_required",
+    "status": "stage1_manual_chatgpt_first_real_response_user_action_required_prereg_pack_ready",
     "branch": "feat/coach-p2a-v3-contract-repair",
-    "commit": "ee6654155efa87fb71e72286778e6691de46d6a3",
+    "commit": "d56c7430e4b4eb23694db0ab8b12b2172bc6271f",
     "pr": 62,
-    "run_id": 45096251574,
+    "run_id": 45099107005,
     "prior_runs": [
       {
         "run_id": 44754324733,
@@ -320,10 +320,26 @@
         "billedCalls": 0,
         "semanticCertified": false,
         "formalGatePassed": false
+      },
+      {
+        "run_id": 45099107005,
+        "status": "v3_preregistered_public_case_smoke_and_candidate_values_independent_QA",
+        "commit": "d56c7430e4b4eb23694db0ab8b12b2172bc6271f",
+        "passed": 15,
+        "failed": 0,
+        "new36PublicCases": 36,
+        "candidateScoreRows": 72,
+        "conditionalRonScored": 30,
+        "lossRankScenarios": 144,
+        "manual8x3CasesPrepared": 8,
+        "plannedIndependentSessions": 24,
+        "actualChatGPTResponses": 0,
+        "paidCalls": 0,
+        "noPhaseSuccessClaim": true
       }
     ],
-    "decision": "P2a-v3 free dev gate1 pass 9/9: versioned public-only comparison accepts all 12 frozen same-tile riichi/dama, all 12 reaction scenarios incl one ron/pass, 12 discard, same-shape seat genbutsu and conditional score/rank facts without invented future shapes; invalid source facts rejected. Genuine and isolated fake Stage2 both use common answer schema and public fact checker, concrete userAction optional, true S42 pinned source only authenticates at separate genuine store, Q gap is explicitly unavailable. Onecase v3 receipts validate structure but no real model calls. User personal-only offline-first, NO blanket paid authorization and explicit per-purpose consent. Actual LLM route remains undecided and truly blocks meaningful next trial. Prior P2a-v2 CLOSED NO-GO. User additionally fixed ChatGPT as target coaching model; Gemini independent blind evaluator, not replacement coach. ChatGPT API use not approved. Any model version and transport remains to be chosen, no genuine LLM trial yet. User further approved adding Claude Opus alongside Gemini in blind per-case explanation QA (plus user), distinct from both-model phase-end reviews. Independent blind scoring, disagreements recorded; no billing authorized.",
-    "next": "Prepare genuine ChatGPT onecase smoke tests using existing access and/or user-assisted separate temporary sessions. Confirm run settings and no memory contamination, avoid model/provider conflation. Gemini remains independent evaluator. No paid API without exact prior consent.",
+    "decision": "P2a-v3 mechanical fixes for v2 comparison and Stage2 contract are on draft PR #62; free QA 15/15 after v3 inference receipt stage validation fix. Scoring/stopping thresholds were frozen before any ChatGPT replies at project-handoff commit a16e0b3... . Actual ChatGPT human-manual prompt artifact for 8 preregistered cases x3 new chats produced (artifact 14784815054), no responses yet. Candidate-specific public score/visible-opponent-han/rank table independently audited 36 cases, 72 candidate choices, 30 scored conditional ron forms, 144 illustrative opponent-loss ranks, discrepancies 0. No L3.5 legal new paired 8 refs, blind user/Claude/Gemini evaluation, or genuine real Stage1/2. User input now required to start isolated ChatGPT; cannot autonomously open new temporary ChatGPT sessions. No API fees approved. v3 Phase not complete, no interim Claude/Gemini phase review.",
+    "next": "User needs only begin 1 isolated ChatGPT temporary chat with first public question pilot-48.json from 8x3 frozen pack and bring back JSON answer. Check actual syntactic/public factual intake and privacy/cost, then run remaining 7 first-trial cases when valid. Do not send phase-end Claude/Gemini review until all meaningful v3 actual evidence gathered or Phase explicitly fails; no model calls have been executed. Meanwhile design legality-first L3.5, but no fabricated S42 counterfactual reference.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -437,6 +453,50 @@
       "uncertainty": "semantic_and_skill_not_certified",
       "billedCalls": 0,
       "mainMerged": false
+    },
+    "v3_gate2_report": "handoff/p2a-v3-preregistered-chatgpt-smoke-prepared-20261123.md",
+    "v3_evaluation_prereg": "handoff/p2a-v3-chatgpt-36-blind-scoring-prereg-20261123.md",
+    "v3_manual_package": {
+      "run": 45098651310,
+      "artifactId": 14784815054,
+      "name": "p2a-v3-chatgpt-8x3-preregistered-public-manual-questions",
+      "cases": [
+        "pilot-48",
+        "pilot-52",
+        "pilot-49",
+        "pilot-54",
+        "pilot-60",
+        "pilot-63",
+        "pilot-66",
+        "pilot-69"
+      ],
+      "independentSessionsPlanned": 24,
+      "actualFirstStageAnswers": 0,
+      "actualSecondStageAnswers": 0,
+      "paidCalls": 0,
+      "immediateNext": "User separately start temporary ChatGPT case pilot-48 and return one JSON answer, then stage 1 smoke eight cases before expanding"
+    },
+    "v3_public_values": {
+      "sourceCases": 36,
+      "concreteCandidates": 72,
+      "scoredRonForms": 30,
+      "illustrativeLossRankScenarios": 144,
+      "pythonIndependentDiscrepancies": 0,
+      "probabilityEstimate": "not_calibrated",
+      "actualModelCalls": 0,
+      "source": "GitHub Actions 45098910277"
+    },
+    "v3_testing": {
+      "run": 45099107005,
+      "passed": 15,
+      "failed": 0,
+      "jobs": 4,
+      "experimentalStage1Actual": 0,
+      "experimentalStage2Actual": 0,
+      "repetitionActual": 0,
+      "blindHumanClaudeGeminiActual": 0,
+      "legalNewL35PairedActual": 0,
+      "phaseComplete": false
     }
   },
   "previous_runs": [
