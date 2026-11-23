@@ -131,6 +131,9 @@ export function verifyAndRenderV4AnchoredTactics(envelope,response,settlementEve
  if(!comparison.factIds.includes('candidate:'+response.proof.recommendation.key+':kind')||
     !comparison.factIds.includes('candidate:'+response.proof.alternative.key+':kind'))
   fail('comparison must cite both legal candidate kinds');
+ if(!comparison.factIds.some(id=>id.startsWith('candidate:')&&!id.endsWith(':kind')&&
+    !id.endsWith(':afterCallDiscard')))
+  fail('comparison only names actions; must cite a concrete public shape, scoring or risk difference');
  for(const concrete of [response.proof.recommendation,response.proof.alternative]){
   if(concrete.afterCallDiscard!==null&&
      !comparison.factIds.includes('candidate:'+concrete.key+':afterCallDiscard'))
@@ -143,16 +146,33 @@ export function verifyAndRenderV4AnchoredTactics(envelope,response,settlementEve
     fail('invalid or duplicate opponent rationale');
   seen.add(o.seat);
   const analysis=anchors(o.analysis,facts,'seat'+o.seat+'.analysis');
-  if(!analysis.factIds.some(k=>k.startsWith('opponent:seat'+o.seat+':')))
-    fail('opponent analysis must cite own seat facts');
-  const tradeoff=anchors(o.tradeoff,facts,'seat'+o.seat+'.tradeoff', {needAnchor:false});
-  const changeCondition=anchors(o.changeCondition,facts,'seat'+o.seat+'.changeCondition', {needAnchor:false});
+  const seatRef='opponent:seat'+o.seat+':';
+  const seatFacts=analysis.factIds.filter(k=>k.startsWith(seatRef));
+  if(!seatFacts.some(k=>k===seatRef+'pointGapFromOwn'||k===seatRef+'points')||
+     !seatFacts.some(k=>['riichi','meldCount','exposedYakuhaiHan','discardCount']
+      .some(field=>k===seatRef+field)))
+    fail('opponent analysis requires own seat-specific rank gap plus public progress evidence');
+  const tradeoff=anchors(o.tradeoff,facts,'seat'+o.seat+'.tradeoff');
+  if(!tradeoff.factIds.some(k=>k.startsWith(seatRef))||
+     !tradeoff.factIds.some(k=>k.startsWith('candidate:')))
+    fail('opponent tradeoff needs both concrete candidate and opponent evidence');
+  const changeCondition=anchors(o.changeCondition,facts,'seat'+o.seat+'.changeCondition');
+  if(!changeCondition.factIds.some(k=>k.startsWith(seatRef))||
+     !/(なら|場合|とき|時|あれば|と仮定)/.test(o.changeCondition))
+    fail('opponent change condition needs a cited public seat and explicit conditional reversal');
   return {seat:o.seat,analysis:analysis.text,tradeoff:tradeoff.text,
-   changeCondition:changeCondition.text,publicFactRefs:analysis.factIds};
+   changeCondition:changeCondition.text,
+   publicFactRefs:seatFacts,tradeoffFactRefs:tradeoff.factIds,
+   reversalFactRefs:changeCondition.factIds};
  });
  if(others.some(x=>!seen.has(x)))fail('not all three opponent seats covered');
- const bottomLine=anchors(t.bottomLine,facts,'bottomLine',{needAnchor:false});
- const reversal=anchors(t.reversal,facts,'reversal',{needAnchor:false});
+ const bottomLine=anchors(t.bottomLine,facts,'bottomLine');
+ if(!bottomLine.factIds.some(id=>id.startsWith('candidate:')))
+  fail('bottomLine must cite selected action facts');
+ const reversal=anchors(t.reversal,facts,'reversal');
+ if(!reversal.factIds.some(id=>id.startsWith('opponent:seat'))||
+    !/(なら|場合|とき|時|あれば|と仮定)/.test(t.reversal))
+  fail('reversal needs a specific public opponent and conditional trigger');
  const lesson=anchors(t.lesson,facts,'lesson',{needAnchor:false});
  return {
   caseId:envelope.request.input.id,version:V4_TACTIC_VERSION,
@@ -169,6 +189,8 @@ export function verifyAndRenderV4AnchoredTactics(envelope,response,settlementEve
   comparison:comparison.text,opponents:opponentSummaries,
   bottomLine:bottomLine.text,reversal:reversal.text,lesson:lesson.text,
   numericFactsRenderedByCode:true,freeNumericTextBlocked:true,
+  structureRequiresSeatSpecificRankGapAndProgressEvidence:true,
+  structureRequiresChoiceDependentTradeoff:true,
   policy:'NOT_PRODUCTION_NO_TACTICAL_SKILL_CERTIFICATION'
  };
 }
