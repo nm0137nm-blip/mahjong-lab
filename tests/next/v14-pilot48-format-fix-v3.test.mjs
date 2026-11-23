@@ -88,7 +88,7 @@ test('human display includes own hand, score, public rivers, viable actions but 
  if(!cases.length)return;
  const {p}=check42(),text=renderV3PublicScene(p);
  assert(text.includes('東3局'));
- assert(text.includes('32800点'));
+ assert(text.includes('32,800点'));
  assert(text.includes('赤5筒'));
  assert(text.includes('a37-1'));
  assert(text.includes('a13-0'));
