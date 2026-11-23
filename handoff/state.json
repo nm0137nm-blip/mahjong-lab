@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-23T11:18:00+09:00",
+  "checkpoint": "2026-11-23T12:11:33+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -11,9 +11,9 @@
     "phase": "P2a-v3",
     "status": "P2a_v3_in_progress_schema_v2_fixed_21_tests_pass_real_S42_counterfactual_8_changed1_maintained7_real_ChatGPT_still_old_invalid1",
     "branch": "feat/coach-p2a-v3-contract-repair",
-    "commit": "c066e07f9d3cd176923de47b5247d529bf243a1c",
+    "commit": "8ae2fd179f7cf6c939b642aa08a55f8f9e49c9b0",
     "pr": 62,
-    "run_id": 45102049118,
+    "run_id": 45104501069,
     "prior_runs": [
       {
         "run_id": 44754324733,
@@ -355,7 +355,7 @@
       }
     ],
     "decision": "User explicitly says do not stop after each tiny task; keep autonomous development to next true blocker, no reviewer request until P2a-v3 overall Phase exit. After old pilot48 ChatGPT reply (correct UTF8/JSON but invalid typed proof), versioned revised prompt/proof independently tested and includes readable 1,200-character human scene companion. STRICT factual validation remains; old ChatGPT answer not retroactively accepted. CI run 45102049118 21/21 QA, zero mismatches public candidate score/rank. Actual pinned Mortal S42 ran on 8 selected paired public contexts, accepted original archive anchor with opponent hidden hands and future events removed from encoder input: changed 1, maintained 7, no ambiguous within predeclared 0.001 internal ranking margin; insufficient changed contrasts for L3.5 gate. No actual ChatGPT answer for revised schema, no Stage2, no blind user+Claude+Gemini ratings. No paid API/other billed action authorized. main and formal gates remain NO-GO.",
-    "next": "Continue only no-charge actions independently. New schema-2 human-readable eight-case question artifact is ready. True independent ChatGPT temporary chats cannot be created by GitHub action here; a batched user-assisted run is needed for real Stage1 and repeat; avoid asking every single question. Need enough additional actually S42 changed conditions before L3.5 sensitivity approval, plus legality and authentic response provenance. Do not claim ChatGPT model strength or ask Claude/Gemini phase reviews before Phase exit; pay-per-action individual prior approval is mandatory.",
+    "next": "Check GitHub Actions run 45104501069 for expanded exploratory S42 evaluation. Never elevate it to formal L3.5 until independent legal/physical replay and true ChatGPT paired responses. New ChatGPT schema-2 Stage1 manual answers remain uncollected. No paid API calls, main or formal gate changes.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -557,6 +557,28 @@
       "internalQGapPredeclared": 0.001,
       "doesNotProve": "full legal physical history, expert tactical explanation, actual ChatGPT reaction, calibrated EV",
       "jobDisabledAfterSuccess": true
+    },
+    "v3_s42_expansion": {
+      "phase": "P2a-v3_continuation_exploratory_only",
+      "codeBranch": "feat/coach-p2a-v3-contract-repair",
+      "commit": "8ae2fd179f7cf6c939b642aa08a55f8f9e49c9b0",
+      "originalEightFrozenRun": 45102049118,
+      "originalEightChanged": 1,
+      "originalEightMaintained": 7,
+      "sourceSelection": "Frozen 36 public development scenes; do not reuse first 8 source cases or answered pilot-48; choose all remaining eligible reach, then at most 24 score scenes with up to three different opponent transfers per source; source-cluster not independent pairs",
+      "testRun": 45104501069,
+      "status": "RUNNING_WITH_EXTERNAL_PINNED_MODEL_DOWNLOAD_RETRIES",
+      "preliminary": "New prelabel selection and regression tests passed; genuine new S42 extension labels not yet obtained",
+      "firstFailedRun": 45104195743,
+      "firstFailure": "Transient pinned model fetch HTTP2 CANCEL curl 92, before any source pairs graded",
+      "integrity": "Pinned original S42 SHA256 required, no code path accepting substitute model; no concealed opponent hands passed to encoder",
+      "pending": [
+        "Inspect run 45104501069 and reproducible verifier-only artifact",
+        "If failure, fix external download or implementation without changing thresholds",
+        "Preserve original 8 and group new results by source clusters"
+      ],
+      "paidAPICalls": 0,
+      "userActionNeededForThisRun": false
     }
   },
   "previous_runs": [
