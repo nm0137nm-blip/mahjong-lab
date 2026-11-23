@@ -29,6 +29,15 @@ jobs:
           set -euo pipefail
           test -s "$V14_FOLLOWUP_PUBLIC"
           node --test tests/next/v14-settlement-events-v4.test.mjs tests/next/v14-public-proof-gate-v4.test.mjs tests/next/v14-anchored-tactical-text-v4.test.mjs tests/next/v14-public-brief-v4.test.mjs tests/next/v14-v4-smoke-selection.test.mjs
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - name: Cross-check 2304 typed ron/own-deal-in events with independent Python arithmetic
+        run: |
+          set -euo pipefail
+          node tests/next/v14-v4-settlement-vectors.mjs /tmp/v4-settlement-vectors.json
+          python tests/next/audit-v14-settlement-events-v4.py /tmp/v4-settlement-vectors.json
+          rm -f /tmp/v4-settlement-vectors.json
       - name: Assert no genuine ChatGPT or paid inference ever called by development test workflow
         run: |
           echo 'P2a-v4 CI is deterministic source/public-calculation test only; ChatGPT model calls 0; model skill not graded.'
