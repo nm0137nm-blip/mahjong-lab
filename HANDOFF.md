@@ -510,3 +510,11 @@ ChatGPTが実際に独立して解いた回答を得る前に、採点・中止�
 - 認証とモデルメタデータGETは前にHTTP200、本人のスクリーンショットではAPI残高US$5、auto-reload OFF、Organization Spend US$0/100、Default project `No spend limit set`、Standard allowed、gpt-6-solモデル枠あり。従って残高追加購入・rate limit変更を無根拠に求めない。**課金状態未有効（APIの`billing_not_active`）原因の完全な内訳は不明**。本人にはPlatformのPayment methods / Billing history / プロジェクト・組織対応を確認してもらい、すべて正常ならOpenAI SupportにエラーコードとAPI応答時刻を添えて問い合わせる。
 - 本承認の**1回は送信済み**。既存のretry及びretry2ワークフローのpush triggerと承認トークンを無効化（commits `489197dd07d8e1bed23ab68dfbbde2bd7e9e751d`, `c68eaa31d69b75ab991d616dffd55c4baf1755bb`）。**この段階で追加POSTはしない**。再試行には原因の解決と新規個別承認が必要。従来P2a-v4.3 NO-GO不変、新v4.4独立ChatGPT手動本試験は0/8のまま、製品GOなし。
 - 最新 `handoff/state.json` とrunログを正本として扱い、ユーザーに過去の出題やキーを再提出させない。
+
+
+## 2026-11-24 01:21 JST：課金済Default projectで新キー作成・GitHub Secret更新後の無料認証確認
+- ユーザーは5ドル入金したDefault projectのAPI keys画面から新しいAPIキーを作り、GitHub Secrets `OPENAI_API_KEY` を更新したと報告。キー文字列をチャット・GitHubコード・ログに出していない。
+- 新しい**GET専用・回答生成なし**のGitHub Actions run **45215200082**（job **137834352301**）SUCCESS。新キーによる `GET /v1/models/gpt-6-sol` **HTTP 200**、`readableModel:true`、モデル回答生成0、追加トークン料金0。新設ワークフロー `.github/workflows/p2a-v44-newkey-readonly-model-check.yml`、一度だけのmarker `research/approvals/read-only-model-get-newkey-20261124.run`。
+- ただし**旧キーでも同じGET HTTP200**だった。今回のGET 200は新しいキーの有効性とモデルメタデータへのアクセスを確認しただけで、以前のPOST `billing_not_active` が解消したとは保証しない。
+- 以前のpilot46 POSTの「1回限り上限US$0.30」の2件の承認はいずれも実POSTで消費済み。以後**新規の明示的個別承認なしにAPI Responses POSTを実施しない**。全ての従来の有料APIワークフローは無効化されたまま。v4.4の正式手動Stage1 0/8、全Phase NO-GO・main非変更。
+- OpenAI公式Helpの無料照会 `GET /v1/me` は利用者の関連組織情報を返すが、利用者が複数組織に属する場合、それ単体がキーで課金される組織の確定証拠になるとは限らない。機微な個人/組織IDを公開ログに出さず、今は追加照会しない。
