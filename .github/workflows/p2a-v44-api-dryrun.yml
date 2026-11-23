@@ -39,7 +39,7 @@ jobs:
           set -euo pipefail
           test -s "$V14_FOLLOWUP_PUBLIC"
           test -s "$V14_V44_QUESTIONS_DIR/pilot-46.json"
-          node --test tests/next/v14-v44-api-onecase.test.mjs
+          node --test tests/next/v14-v44-api-onecase.test.mjs tests/next/v14-v44-pilot46-single-live-actions.test.mjs
           node tests/next/v14-v44-api-onecase.mjs \
             --mode=dry-run \
             --case=pilot-46 \
