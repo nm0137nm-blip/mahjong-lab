@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-23T23:53:00+09:00",
+  "checkpoint": "2026-11-24T00:07:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -1741,7 +1741,9 @@
       "outputTokenCap": 12000,
       "chargesEstimatedNotBilled": true,
       "noRetries": true,
-      "blocker": "API secret not available in authorized runtime; container has no DNS route to api.openai.com; key setup UI opened but cannot assume completed."
+      "blocker": "API secret not available in authorized runtime; container has no DNS route to api.openai.com; key setup UI opened but cannot assume completed.",
+      "keySetupUserReport": "User reports clicking Create and Download for the API key setup on 2026-11-24 00:06 JST. Key contents NOT received and NOT connected to GitHub Actions/runner; no API call made.",
+      "pendingUserAction": "Safely register downloaded key string as OPENAI_API_KEY in GitHub repository Actions secret; never paste in chat or commit"
     }
   },
   "previous_runs": [
