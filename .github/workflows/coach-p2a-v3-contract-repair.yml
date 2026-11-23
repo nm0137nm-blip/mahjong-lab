@@ -65,3 +65,33 @@ jobs:
           set -euo pipefail
           test -s "$V14_PINNED_CONTRAST"
           node --test tests/next/v14-stage2-unified-v3.test.mjs
+
+  v3-chatgpt-manual-freeze:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.23.4'
+      - uses: actions/download-artifact@v4
+        with:
+          name: p2a-v2-36-public-development-only
+          run-id: 45089922993
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/v3-new36
+      - name: Validate pre-registered frozen eight public prompts and old-version request rejection
+        env:
+          V14_FOLLOWUP_PUBLIC: /tmp/v3-new36/independent-requests.json
+        run: |
+          set -euo pipefail
+          test -s "$V14_FOLLOWUP_PUBLIC"
+          node --test tests/next/v14-freeze-v3-manual-smoke.test.mjs
+          node tests/next/v14-freeze-v3-manual-smoke.mjs "$V14_FOLLOWUP_PUBLIC" /tmp/v3-chatgpt-manual-smoke
+      - name: Freeze human-use files without model answers or teacher reference
+        uses: actions/upload-artifact@v4
+        with:
+          name: p2a-v3-chatgpt-8x3-preregistered-public-manual-questions
+          path: /tmp/v3-chatgpt-manual-smoke/
+          if-no-files-found: error
+          retention-days: 30
