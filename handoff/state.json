@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-24T00:23:00+09:00",
+  "checkpoint": "2026-11-24T00:30:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -1760,7 +1760,32 @@
       "workflowDisarmedCommit": "037ddcf04aee285e3c9d1a84c5a318fe7008ec35",
       "originalManualStage1Count": 0,
       "originalV44PassStatus": "not progressed",
-      "canAutoRetry": false
+      "canAutoRetry": false,
+      "screenshotsUserConfirmed": {
+        "reportedAt": "2026-11-24T00:29+09:00",
+        "apiCreditBalanceUSD": 5,
+        "autoReload": false,
+        "organizationSpendDisplayUSD": 0,
+        "organizationSpendLimitDisplayUSD": 100,
+        "organizationSpendLimitEnforced": false,
+        "tier": "Build",
+        "model": "gpt-6-sol",
+        "modelRateLimitDisplayed": {
+          "tokensPerMinute": 1000000,
+          "requestsPerMinute": 5000
+        },
+        "limitsAreOrganizationLevelNotProjectSpecific": true,
+        "remainingPotentialCauses": [
+          "project spend/permissions",
+          "API-key organization or project mismatch with billing",
+          "new-credit activation propagation",
+          "other 429 rate or quota cause"
+        ],
+        "primaryUnknown": "Actual 429 error.code or error.type was not captured in original run",
+        "safety": "no retry or spend without new explicit approval"
+      },
+      "nextNoCostInvestigation": "Compare API key project to billed organization/project and inspect project Limits; 429 API error code needs another API response so do NOT fetch it via another billable POST on old approval.",
+      "sanitizedDiagnosticSourceCommit": "5476ece4d1e8459aea268f86c0f410cf4838f004"
     }
   },
   "previous_runs": [
