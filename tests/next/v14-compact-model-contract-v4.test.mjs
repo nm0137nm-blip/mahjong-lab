@@ -22,7 +22,8 @@ function sample(id='pilot-48',recommendation={key:'a37-1',afterCallDiscard:null}
   tradeoff:'[[opponent:seat'+seat+':riichi]]の公開情報と[[candidate:'+recommendation.key+':kind]]を合わせて、この相手への押し引き代償を検討する。',
   changeCondition:'もし[[opponent:seat'+seat+':meldCount]]から分かる攻撃の状況が変わる場合、守備価値を再評価する。'
  }));
- let comparison='[[candidate:'+recommendation.key+':kind]]と[[candidate:'+alternative.key+':kind]]を比べ、[[candidate:'+recommendation.key+':shanten]]を起点に攻撃価値と守備余地を比較する。';
+ const metric= recommendation.afterCallDiscard!==null?'afterCallRonSummary':'shanten';
+ let comparison='[[candidate:'+recommendation.key+':kind]]と[[candidate:'+alternative.key+':kind]]を比べ、[[candidate:'+recommendation.key+':'+metric+']]を起点に攻撃価値と守備余地を比較する。';
  if(recommendation.afterCallDiscard!==null)
   comparison+=' [[candidate:'+recommendation.key+':afterCallDiscard]]で鳴き後の打牌を特定する。';
  if(alternative.afterCallDiscard!==null)
