@@ -316,3 +316,10 @@ ChatGPTが実際に独立して解いた回答を得る前に、採点・中止�
 - 新v4独立8問の候補選定は実モデル0回答の段階で欠陥を発見して改訂。単純SHA順では本場あり0/8だったため、公開値だけで立直/鳴き/打牌各群に本場ありを1件以上確保した層別選定へ。候補：**pilot-42,47,59,62,63,71,70,67**。回答済pilot48は回帰のみ。これはまだ正式事前登録前の候補案。
 - 開発研究`feat/coach-p2a-v4-fact-anchored-explanations`、Draft PR **#63**、SHA`376b7b34c597e606613454471312860ac652c91a`。GitHub Actions **run45121344528成功、Node44件全合格／Python独立点棒監査4,608件不一致0**。初回旧CIに赤い履歴があるのはコード改善時のテスト不一致を後の更新で修正したためで、最後のrunの成功と区別。**これは開発・公開算術QAだけ。実ChatGPT 0、Stage2 0、L3.5/L4本採点0、main不変、追加課金0。**
 - 新レポート`handoff/p2a-v4-source-provenance-and-scenario-binding-20261123.md`、状態正本`handoff/state.json`。次はcompact briefと出典FactIDのmodel回答を結ぶv4完結契約・試験パック/事前登録、独立L3.5の合法対照を用意。**未完成のままユーザーに試験依頼を出さない。フェーズ未完・本番NO-GO維持。**
+
+
+## 2026-11-23 15:12 JST：P2a-v4の独立Stage1短縮契約・公開8問DRAFT準備、実モデルはまだ未実行
+- 試験のJSON複雑さでモデルの戦術能力を測れなくなる問題を減らすため、**ChatGPTは推薦合法手・対案・全3席別の理由／代償／反転条件のみ**を返し、確定点数・役・元公開事実の照合証明はサーバー側が元の公開ソースから生成する`src/coach/v14-compact-model-contract-v4.mjs`を開発。モデルが作っていない数値証明をモデルの技能に見せかけない。`v14-anchored-tactical-text-v4.mjs`の参照には、立直p5とダマp5の`ronSummary`、ポン後の合法な具体打牌と`afterCallRonSummary`を追加。LLM自由文の生数字・漢数字・無効FactIDを拒否し、構造化された相手別比較を必須化。
+- 選定済み8問：**pilot-42,47,59,62,63,71,70,67**。回答済pilot48を除外、本場あり3、供託あり5。これは公開データだけの事前層別＋SHA順、S42推奨・ChatGPTの前回答で最適手を選んでいない。開発スクリプト`tests/next/v14-v4-compact-pack.mjs`から個別8JSONを生成。GitHub Actions artifact `p2a-v4-public-8-compact-draft-not-preregistered` ID **14793752848**、run **45122127872**。アーカイブを実際に取得し、manifestに記録したSHA256と8問全ファイルの整合を検算した。**DRAFT、事前登録前、実モデルに渡してはいけない**と明記。
+- 開発CI SHA `dcdd250ba00d5ad5219ce04fd270ae61afa0565b`、**run45122127872成功**、Node**52/52**回帰合格、Python独立点棒清算**4,608件不一致0**。36公開局面／元rank清算1,080ロン方向別事象も照合済み。実モデルChatGPT 0、L3.5本採点0、L4匿名採点0、S42の製品UI統合なし。**機械QAの合格を高段者級の説明能力と混同しない**。
+- 最新レポート`handoff/p2a-v4-compact-independent-stage1-devpack-20261123.md`、前段`handoff/p2a-v4-source-provenance-and-scenario-binding-20261123.md`、正本`handoff/state.json`。次に正式v4の停止・匿名L4評価プロトコルと、新たな合法L3.5の変化群／維持群の参照素材を凍結してから**必要最小限の独立ChatGPT一時チャット試験をユーザーへ対応依頼**する。現時点ではユーザーに追加作業なし、有料API利用なし、Phase継続・main/公開NO-GO。
