@@ -5,7 +5,7 @@
 import {hasV43ConditionalReversal} from './v14-japanese-condition-v43.mjs';
 export const V45_CONDITION_VERSION='p2a-v45-japanese-choice-inflection-1';
 const conditional=/(?:なければ|なれば|なら(?:ば)?|であれば|でなければ|(?:すれ|あれ|けれ)ば|れば|たら|とき(?:には|は)?|場合(?:には|は|に)?|際(?:には|は)?|限り|と仮定(?:すれば|したら)?|に応じて|につれて|次第で)/u;
-const choiceShift=/(?:選びやす|選びにく|選びづら|選び直|選び替|選びた|選び方を変え|選び方が変わ)/u;
+const choiceShift=/(?:選びやすく(?:なる|する)|選びにくく(?:なる|する)|選びづらく(?:なる|する)|選び直す|選び替える|選びたい|選び方を変える|選び方が変わる)/u;
 export function hasV45ConditionalReversal(text){
  if(typeof text!=='string'||text.length<12||text.length>1900)return false;
  // Preserve every v4.3 PASS; only add a narrow inflection family in v4.5.
