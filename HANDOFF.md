@@ -424,3 +424,10 @@ ChatGPTが実際に独立して解いた回答を得る前に、採点・中止�
 - 推奨`a45-0`（鳴かない）、対案`a41-0`（s1をポン、合法な後打牌m1＝1萬）。東4局・自席2の17,700点、相手席0/1/3。固定公開比較4件、相手観測6件、実質差3件の資料に根拠IDがあることを機械確認。戦術最適性・Mortal S42との一致・3者匿名L4は**未評価**。GPT-6はユーザー申告、元モデル回答ファイルをGitHubに転載しない。
 - Stage1実回答**4／公開事実契約PASS4／FAIL0／未回答4**。旧P2a-v4.2のPhase NO-GOは遡及変更なし。反復・Stage2・L3.5新実モデル回答・L4採点は0。修正レビュー追加なし、有料API0、mainと製品NO-GO。
 - **次の固定第5問はpilot-63**。requestHash`76c65de8b477025a3330710db50870800529f3dea7194fc2a10cd2e0268cbdef`、元公開出題ZIPの個別JSONを**バイト不変で**`/mnt/data/mahjong_P2a_v43_stage1_pilot-63.json`へ抽出（19,834バイト、SHA256 `2c319021efcfb71a0c2116b86326ad02bb0473a8f34a6f13e00af3fe35ec4071`、manifest一致）。新しいGPT-6一時チャットで元問題を解き、`mahjong_P2a_v43_stage1_pilot-63_response.json`というUTF-8**JSONファイル**を添付させ、原本を開発チャットへ返す。詳細`handoff/p2a-v43-stage1-pilot62-fourth-gpt6-public-contract-receipt-20261123.md`、最新state.json。
+
+
+## 2026-11-23 21:08 JST：P2a-v4.3 Stage1：pilot63第5問GPT-6 JSON PASS 5/8
+- ユーザーの`mahjong_P2a_v43_stage1_pilot-63_response.json`（6,331バイト、SHA256 `dc249348a0f16231c2f807e7262301c663eed801ab61af8b8f0ad1b476c2b644`）を、固定v4.3の**GitHub原版Node JS検証器**で第1～5問のオリジナル答案とともに厳格検証。出題ハッシュ`76c65de8b477025a3330710db50870800529f3dea7194fc2a10cd2e0268cbdef`一致、`CONTRACT_AND_PUBLIC_FACT_GATE_PASS`、strict JSON、転記補正0、比較事実4、他家観測6、実質差4。原答案全文はGitHubに転載していない。
+- モデル推奨`a43-0`（**ロン和了**）、対案`a45-0`（見送り／スルー）は合法。東3局・自席2の18,000点（ラス）、他席0 19,100、席1 37,900、席3 25,000、残34。スルー後の形は0向聴、受入上限3、ドラ0。**公開ゲートの合格はMortal S42との一致／最善の戦術選択／匿名L4を認証しない**。モデル名はユーザー申告のGPT-6。
+- 正式Stage1 **5/8実回答・公開契約PASS5・FAIL0・未実測3**、Phase GOではなく次問への進行許可。過去P2a-v4.2のNO-GO履歴は不変。反復・Stage2・L3.5新実モデル回答・3者匿名L4は未実行。
+- **次の固定第6問はpilot-71**。事前凍結requestHash `e25b40a3797ab7bd5243dcbe441d3ee99332b740495f8f40e1a8448f93023e59`、元公開ZIPの個別質問`questions/pilot-71.json`をバイト無変更で`/mnt/data/mahjong_P2a_v43_stage1_pilot-71.json`に抽出（25,660バイト、SHA256 `780d773cb6c3b64796a4bc0978cab1603d85685d6e7251f4614d0fcc6dd11de1`、manifest一致）。別の新規GPT-6一時チャットで回答し、**`mahjong_P2a_v43_stage1_pilot-71_response.json`をUTF-8 JSONファイル添付**、本文はファイルリンクのみで提出すること。詳細`handoff/p2a-v43-stage1-pilot63-fifth-gpt6-public-contract-receipt-20261123.md`、正本state.json。
