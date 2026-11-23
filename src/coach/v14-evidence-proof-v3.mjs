@@ -3,7 +3,7 @@
 // call/pass and opponent-scoped genbutsu can be contrasted without fabricating
 // shanten/ukeire differences. It does NOT prove the recommended choice.
 import {createHash} from 'node:crypto';
-export const PROOF_VERSION_V3='p2a-v3-public-contrast-proof-1';
+export const PROOF_VERSION_V3='p2a-v3-public-contrast-proof-2';
 const sha=v=>createHash('sha256').update(JSON.stringify(v)).digest('hex');
 const fail=s=>{throw Error('v3-proof: '+s);};
 const exact=(v,k)=>v&&typeof v==='object'&&!Array.isArray(v)&&Object.keys(v).sort().join('|')===k.slice().sort().join('|');
@@ -87,9 +87,26 @@ function publicClaim(i,left,right,c){
   if(!exact(c,['type','tile','mode','recommended','alternative','relation'])||
      typeof c.tile!=='string'||!/^[mps][0-9]$|^z[1-7]$/.test(c.tile)||!winModes.has(c.mode))
    fail('conditional point claim keys');
+  if((left.a.group===37||right.a.group===37)&&c.mode!=='tsumo')
+   fail('riichi/dama must use action-specific conditionalRonByChoice, not same-mode ron');
   const a=conditionalPoint(left,c.tile,c.mode),b=conditionalPoint(right,c.tile,c.mode);
   if(sha(c.recommended)!==sha(a)||sha(c.alternative)!==sha(b)||
      c.relation!==comparable(sha(a),sha(b)))fail('false conditional score or yaku claim');
+  return sha(a)!==sha(b);
+ }
+ if(c.type==='conditionalRonByChoice'){
+  if(!exact(c,['type','tile','recommendedMode','alternativeMode','recommended','alternative','relation'])||
+     typeof c.tile!=='string'||!/^(?:[mps][0-9]|z[1-7])$/.test(c.tile))fail('conditional by-action ron claim keys');
+  // Riichi on this discard and dama on this discard score under DIFFERENT yaku assumptions.
+  // No cheating by using a riichi-scored figure for a silent action.
+  const modeA=left.a.group===37?'hypotheticalRiichiRon':'ron';
+  const modeB=right.a.group===37?'hypotheticalRiichiRon':'ron';
+  if(c.recommendedMode!==modeA||c.alternativeMode!==modeB)
+    fail('wrong action-specific scoring mode; no hypothetical riichi on dama');
+  const a=conditionalPoint(left,c.tile,modeA),b=conditionalPoint(right,c.tile,modeB);
+  if(sha(c.recommended)!==sha(a)||sha(c.alternative)!==sha(b)||
+     c.relation!==comparable(sha(a),sha(b)))
+    fail('falsified action-specific conditional ron score/yaku or relation');
   return sha(a)!==sha(b);
  }
  if(c.type==='rankScenario'){
@@ -125,20 +142,23 @@ export function verifyV3PublicContrast(envelope,proof){
   const key=c.type==='seatGenbutsu'?c.type+':'+c.seat:
     c.type==='shape'?c.type+':'+c.metric:
     c.type==='conditionalPoints'?c.type+':'+c.mode+':'+c.tile:
+    c.type==='conditionalRonByChoice'?c.type+':'+c.tile:
     c.type==='rankScenario'?c.type+':'+c.ronIndex:c.type;
   if(kinds.has(key))fail('repeated fact citation');kinds.add(key);
   if(publicClaim(i,left,right,c))distinct++;
   if(c.type==='rankScenario')settlements++;
  }
  if(!Array.isArray(proof.opponentObservations)||proof.opponentObservations.length<1||
-    proof.opponentObservations.length>3)fail('missing opponent observations');
- const seen=new Set(),own=get(i,'board')?.ownSeat;
+    proof.opponentObservations.length>9)fail('missing opponent observations');
+ const seen=new Set(),seatAssessments=new Map(),own=get(i,'board')?.ownSeat;
  for(const o of proof.opponentObservations){
   if(!exact(o,['seat','field','value','assessment'])||!Number.isInteger(o.seat)||
-     o.seat<0||o.seat>3||o.seat===own||seen.has(o.seat)||
+     o.seat<0||o.seat>3||o.seat===own||seen.has(o.seat+':'+o.field)||
      !seatFields.has(o.field)||!['potentially_relevant','not_established'].includes(o.assessment))
    fail('invalid opponent observation');
-  seen.add(o.seat);
+  if(seatAssessments.has(o.seat)&&seatAssessments.get(o.seat)!==o.assessment)
+   fail('opponent seat importance must remain consistent across observed fields');
+  seen.add(o.seat+':'+o.field);seatAssessments.set(o.seat,o.assessment);
   const actual=get(i,'public-value-'+o.seat);
   if(!actual||!Object.hasOwn(actual,o.field)||sha(o.value)!==sha(actual[o.field]))
    fail('mismatched public opponent fact');
@@ -150,7 +170,7 @@ export function verifyV3PublicContrast(envelope,proof){
     !boundText(proof.reversal.ifThen)||!boundText(proof.explanation))
    fail('invalid uncertainty disclosure');
  return {requestHash:envelope.requestHash,candidateFactsVerified:proof.comparisons.length,
-  opponentFactsVerified:seen.size,meaningfullyDistinctPublicFacts:distinct,
+  opponentFactsVerified:seen.size,opponentsObserved:seatAssessments.size,meaningfullyDistinctPublicFacts:distinct,
   publicSettlementContextFacts:settlements,
   factualGate:'pass',contrastStatus:distinct?'public_difference_verified':'no_distinguishing_public_fact_established',
   tacticChoice:'not_certified',textualCausality:'not_certified',probability:'not_calibrated',
