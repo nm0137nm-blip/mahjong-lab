@@ -1,0 +1,95 @@
+name: P2a-v4 L3.5 sealed S42 original-shard replay (verifier only no model API)
+on:
+  push:
+    branches:
+      - feat/coach-p2a-v4-fact-anchored-explanations
+    paths:
+      - 'tests/next/v14-v4-l35-paired-encode.mjs'
+      - 'tests/next/v14-v4-l35-paired-grade.py'
+      - '.github/workflows/p2a-v4-new-l35-pinned-s42.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  new-original-shards-pinned-s42:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.23.4'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.10'
+      - run: python -m pip install --disable-pip-version-check onnxruntime==1.22.1 numpy==2.2.6
+      - uses: actions/download-artifact@v4
+        with:
+          name: corrected-encoder
+          run-id: 44673093075
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/p2a-v4-corrected-encoder
+      - name: Install and SHA-validate existing corrected S42 encoder
+        run: |
+          set -euo pipefail
+          cp /tmp/p2a-v4-corrected-encoder/encoder-pkg/encoder* assets/mortal/
+          echo '886cb7abb09034dcdf348039d651d63a83cd7edb87d3337a452722c960b9d97a  assets/mortal/encoder.js' | sha256sum -c -
+          echo '0e9dcc57545afb5769d42f372bbd82be5c26941d1e352245b225d62ce0c611bf  assets/mortal/encoder_bg.wasm' | sha256sum -c -
+      - uses: actions/download-artifact@v4
+        with:
+          name: p2a-v4-l35-unused-original-shards-prelabel-verifier-only
+          run-id: 45126193433
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/p2a-v4-new-l35-prelabel
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: p1-v2-dev-data-*
+          run-id: 44726204303
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/p2a-v4-source-archive
+      - name: Reconstruct archived original public prefixes, redact opponent private info, encode both cases
+        run: |
+          set -euo pipefail
+          node tests/next/v14-v4-l35-paired-encode.mjs \
+            /tmp/p2a-v4-new-l35-prelabel \
+            /tmp/p2a-v4-source-archive \
+            /tmp/p2a-v4-encoded-obs
+      - name: Download no-fee publicly hosted pinned S42 ONNX and verify exact hash
+        run: |
+          set -euo pipefail
+          if ! curl --fail --location --http1.1 --retry-all-errors --retry 2 --retry-delay 3 --silent --show-error --max-time 140 \
+            'https://huggingface.co/xzhe121/Mortal-S42-onnx/resolve/main/model.onnx' -o /tmp/p2a-v4-mortal.onnx; then
+            rm -f /tmp/p2a-v4-mortal.onnx
+            curl --fail --location --http1.1 --retry-all-errors --retry 2 --retry-delay 5 --silent --show-error --max-time 160 \
+              'https://hf-mirror.com/xzhe121/Mortal-S42-onnx/resolve/main/model.onnx' -o /tmp/p2a-v4-mortal.onnx
+          fi
+          echo '30381bf21389e2d25d3edf48fed11bf772336ef3daeee67d1bdae7fb9dd30cb4  /tmp/p2a-v4-mortal.onnx' | sha256sum -c -
+      - name: Obtain sealed source-disjoint S42 paired rankings with a PREDECLARED four-change/four-maintain selection rule
+        run: |
+          set -euo pipefail
+          python tests/next/v14-v4-l35-paired-grade.py \
+            /tmp/p2a-v4-encoded-obs /tmp/p2a-v4-mortal.onnx /tmp/p2a-v4-l35-sealed-s42.json
+          python - <<'PY'
+          import json
+          r=json.load(open('/tmp/p2a-v4-l35-sealed-s42.json'))
+          s=r['predeclaredClassBalancedSelection']
+          print('L35 V4 SOURCE DISJOINT',json.dumps({
+            'newOriginalSourceClusters':r['sourceClusterCount'],
+            'encodedPairs':r['n'],'clearChanged':r['clearChanged'],
+            'clearMaintained':r['clearMaintained'],
+            'balancedFourEach':s['strictEligible'],
+            'policy':'UNMET CLASS QUOTAS ARE NOT PATCHED AFTER S42 LABELS'
+          }))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p2a-v4-l35-sealed-first-unseen-shard-s42-verifier-only
+          path: /tmp/p2a-v4-l35-sealed-s42.json
+          retention-days: 30
+          if-no-files-found: error
+      - name: Prohibit original hidden sources and Q tensors in public answer packs
+        if: always()
+        run: |
+          rm -rf /tmp/p2a-v4-source-archive /tmp/p2a-v4-encoded-obs /tmp/p2a-v4-mortal.onnx /tmp/p2a-v4-corrected-encoder /tmp/p2a-v4-new-l35-prelabel
+          echo 'No ChatGPT model inference, no paid external API, no Stage1 answer files touched.'

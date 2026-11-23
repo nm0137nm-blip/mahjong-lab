@@ -1,0 +1,73 @@
+name: P2a-v4 typed fact and anchored explanation prototype (development only)
+on:
+  push:
+    branches:
+      - feat/coach-p2a-v4-fact-anchored-explanations
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  typed-source-facts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.23.4'
+      - uses: actions/download-artifact@v4
+        with:
+          name: p2a-v2-36-public-development-only
+          run-id: 45089922993
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/p2a-v4-frozen-public36
+      - name: Verify public frozen input exists and pass separate v4 source arithmetic and tactical anchor tests
+        env:
+          V14_FOLLOWUP_PUBLIC: /tmp/p2a-v4-frozen-public36/independent-requests.json
+        run: |
+          set -euo pipefail
+          test -s "$V14_FOLLOWUP_PUBLIC"
+          node --test tests/next/v14-settlement-events-v4.test.mjs tests/next/v14-public-proof-gate-v4.test.mjs tests/next/v14-anchored-tactical-text-v4.test.mjs tests/next/v14-public-brief-v4.test.mjs tests/next/v14-v4-smoke-selection.test.mjs tests/next/v14-dealer-provenance-v4.test.mjs tests/next/v14-candidate-settlement-v4.test.mjs tests/next/v14-compact-model-contract-v4.test.mjs tests/next/v14-v4-compact-pack.test.mjs tests/next/v14-source-comparison-proof-v4.test.mjs tests/next/v14-l4-blind-controls-v4.test.mjs tests/next/v14-l4-blind-score-v4.test.mjs tests/next/v14-v4-evaluation-plan.test.mjs tests/next/v14-v4-freeze-protocol.test.mjs tests/next/v14-v4-stage1-receipt.test.mjs
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - name: Cross-check 4608 typed ron/own-deal-in events with independent Python arithmetic
+        run: |
+          set -euo pipefail
+          node tests/next/v14-v4-settlement-vectors.mjs /tmp/v4-settlement-vectors.json
+          python tests/next/audit-v14-settlement-events-v4.py /tmp/v4-settlement-vectors.json
+          rm -f /tmp/v4-settlement-vectors.json
+      - name: Export eight source-only public compact questions as NOT-READY preregistration draft
+        env:
+          V14_FOLLOWUP_PUBLIC: /tmp/p2a-v4-frozen-public36/independent-requests.json
+        run: |
+          set -euo pipefail
+          node tests/next/v14-v4-compact-pack.mjs "$V14_FOLLOWUP_PUBLIC" /tmp/p2a-v4-compact-draft
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p2a-v4-public-8-compact-draft-not-preregistered
+          path: /tmp/p2a-v4-compact-draft
+          retention-days: 21
+          if-no-files-found: error
+      - name: Freeze independent Stage1 public inputs and sealed pre-answer adversarial L4 control manifest
+        env:
+          V14_FOLLOWUP_PUBLIC: /tmp/p2a-v4-frozen-public36/independent-requests.json
+        run: |
+          set -euo pipefail
+          node tests/next/v14-v4-freeze-protocol.mjs "$V14_FOLLOWUP_PUBLIC" /tmp/p2a-v4-preregistered-stage1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p2a-v4-frozen-stage1-8-public-only-no-model-answers
+          path: /tmp/p2a-v4-preregistered-stage1/public/
+          retention-days: 30
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p2a-v4-sealed-weak-controls-and-eval-protocol-verifier-only
+          path: /tmp/p2a-v4-preregistered-stage1/verifier/
+          retention-days: 30
+          if-no-files-found: error
+      - name: Assert no genuine ChatGPT or paid inference ever called by development test workflow
+        run: |
+          echo 'P2a-v4 CI is deterministic source/public-calculation test only; ChatGPT model calls 0; model skill not graded.'
