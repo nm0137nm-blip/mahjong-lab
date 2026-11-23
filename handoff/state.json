@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-23T15:55:00+09:00",
+  "checkpoint": "2026-11-23T16:10:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -8,12 +8,12 @@
     "coach_candidate_promoted": false
   },
   "active_task": {
-    "phase": "P2a-v4 (Stage1 independent model run now requires user manual temporary chat; full phase NOT complete)",
-    "status": "P2a_v4_stage1_preregistered_READY_for_independent_manual_response_0_actual_model_answers",
+    "phase": "P2a-v4 CLOSED NO-GO after first genuine user-submitted pilot42 response (verifier false positive, not tactical grade)",
+    "status": "P2a_v4_PHASE_EXIT_NO_GO_pilot42_first_actual_model_response_frozen_kanji_numeral_regex_false_positive",
     "branch": "feat/coach-p2a-v4-fact-anchored-explanations",
-    "commit": "9b20f66a24cbc34c2d34e3769a89d513d80b1151",
+    "commit": "bffd83e23ceaabad6463c8af4bbfb01082047842",
     "pr": 63,
-    "run_id": 45127192276,
+    "run_id": 45128674839,
     "prior_runs": [
       {
         "run_id": 44754324733,
@@ -354,8 +354,8 @@
         "phaseCompleted": false
       }
     ],
-    "decision": "Stage1 manual model evaluation ready under frozen research preregistration. Real model trials 0. Phase GO/NO-GO not determined; product NO-GO.",
-    "next": "対応依頼: Ask user to run pilot-42 exact frozen JSON in a NEW ChatGPT temporary chat and return unedited JSON reply + displayed model/date. Preserve first fatal predeclared NO-GO if any. After first pass proceed through remaining seven distinct temporary chats and conditional blinded tests. Never infer actual independent answers by current development self-conversation.",
+    "decision": "CLOSED_NO_GO_BY_PREREGISTERED_FIRST_FATAL_CONTRACT_GATE; cause v4 numeric regex rejects ordinary Japanese 一致/一方, not arithmetic or strategy skill failure; no post hoc regrade",
+    "next": "New separately versioned v5 design and independent third party review of v4 exit; prohibit reusing answered pilot42 in fresh independent test. No more v4 model questions or repeated answer requests.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -806,7 +806,7 @@
       "reviewSynthesis": "handoff/p2a-v3-claude-gemini-phase-exit-review-integrated-20261123.md"
     },
     "v4_development": {
-      "status": "STAGE1_PUBLIC_PACK_FROZEN_L35_HELDOUT_PAIRS_READY_EXTERNAL_MODEL_RESPONSES_REQUIRED",
+      "status": "PHASE_CLOSED_NO_GO_NOT_MODEL_SKILL_REJECTION",
       "reviewConsensus": {
         "gemini": "support_v3_NO_GO_v4_conditional_development_GO",
         "claudeOpus": "support_v3_NO_GO_v4_conditional_development_GO",
@@ -817,11 +817,11 @@
       "branch": "feat/coach-p2a-v4-fact-anchored-explanations",
       "pr": 63,
       "draft": true,
-      "commit": "9b20f66a24cbc34c2d34e3769a89d513d80b1151",
-      "latestRun": 45127192276,
+      "commit": "bffd83e23ceaabad6463c8af4bbfb01082047842",
+      "latestRun": 45128674839,
       "ci": {
         "status": "success",
-        "nodeTests": 71,
+        "nodeTests": 72,
         "nodeFailed": 0,
         "independentPythonSettlementVectors": 4608,
         "pythonMismatches": 0,
@@ -833,7 +833,8 @@
         "l35PinnedS42MaintainedPairs": 93,
         "l35SelectedChanged": 4,
         "l35SelectedMaintained": 4,
-        "l35PublicPackets": 16
+        "l35PublicPackets": 16,
+        "regressionFrozenOldV4TextFalsePositiveTest": true
       },
       "components": [
         "src/coach/v14-settlement-events-v4.mjs",
@@ -946,22 +947,48 @@
           "chatgptResponses": 0,
           "caveat": "point shifts model alternative previous-round score distributions; not observed historical results or expert tactical labels"
         },
-        "latestProgressReport": "handoff/p2a-v4-stage1-preflight-and-l35-ready-20261123.md"
+        "latestProgressReport": "handoff/p2a-v4-stage1-preflight-and-l35-ready-20261123.md",
+        "v4FirstUserModelResponseReceived": 1,
+        "v4OriginalReplyImmutableConversationOnly": true,
+        "v4FirstAnswerFrozenRegexFatal": true,
+        "v4PhaseResult": "CLOSED_NO_GO",
+        "v4RootCause": "Unanchored numeral guard wrongly treats one-kanji 一 in ordinary Japanese words 一致 / 一方 as forbidden numeric figure"
       },
       "blockers": [
-        "external user's independent ChatGPT Temporary Chat Stage1 eight real responses not executed: need the first pilot-42 JSON reply and provider UI metadata, no paid API",
-        "after Stage1 8/8 success, repeat four cases twice and Stage2 true/fake reference eight separate manual model sessions remain",
-        "L3.5 selected 4 changed +4 maintained (16 opaque public question files) still have 0 real GPT independent results",
-        "L4 actual three-rater masked evaluation and independent Claude/Gemini phase-exit reviews still 0",
-        "full product Mortal S42 policy UI and independent game scoring/legality end-to-end gates separate; main and public release NO-GO",
-        "no unapproved paid model APIs"
+        "v4 CLOSED NO-GO: cannot rescue or regrade already viewed pilot42 answer as blind v4 pass",
+        "new separately versioned Japanese-aware unanchored numeric guard with legitimate ordinary expressions and numerals/tiles/yaku syntax split; freeze and test before new unseen reply",
+        "new independent source-disjoint first smoke not pilot42, pilot48 or prior personally reviewed scenes",
+        "third-party Claude/Gemini review of v4 phase exit and v5 process if requested; no actual L4 or Stage2 grade yet",
+        "no unauthorized model API spending; production S42/main/release remain NO-GO"
       ],
-      "independentModelResponses": 0,
+      "independentModelResponses": 1,
       "notTrustedModelTacticalGrade": true,
       "sourceS42Exploratory58": "historical_only_never_promote_to_new_l35",
-      "gate": "STAGE1_MANUAL_INDEPENDENT_DIAGNOSTIC_INPUT_READY; OVERALL_PHASE_GO_NOT_YET_DETERMINED; NO_PRODUCTION_RELEASE",
-      "next": "対応依頼: Ask user to run pilot-42 exact frozen JSON in a NEW ChatGPT temporary chat and return unedited JSON reply + displayed model/date. Preserve first fatal predeclared NO-GO if any. After first pass proceed through remaining seven distinct temporary chats and conditional blinded tests. Never infer actual independent answers by current development self-conversation.",
-      "latestProgressReport": "handoff/p2a-v4-compact-independent-stage1-devpack-20261123.md"
+      "gate": "V4_CLOSED_FIRST_ACTUAL_INDEPENDENT_PUBLIC_JAPANESE_TEXT_FALSE_POSITIVE_CONTRACT; v4 MAY NOT EXPAND",
+      "next": "New separately versioned v5 design and independent third party review of v4 exit; prohibit reusing answered pilot42 in fresh independent test. No more v4 model questions or repeated answer requests.",
+      "latestProgressReport": "handoff/p2a-v4-phase-exit-contract-false-positive-pilot42-20261123.md",
+      "actualStage1": {
+        "caseId": "pilot-42",
+        "receivedDateLocal": "2026-11-23T16:03:30+09:00",
+        "replyVersion": "p2a-v4-compact-stage1-response-1",
+        "requestHash": "4d1769cdf5b777278cc9496cb463405a5b9ab7c45614d0170913556ae4101df5",
+        "recommendation": "a16-0",
+        "alternative": "a37-0",
+        "submitter": "user-pasted model reply in ChatGPT conversation; provider UI and independent session settings unverified",
+        "sourceRaw": "conversation only; no exact byte SHA or raw JSON copied to GitHub",
+        "verifiedPublicFacts": "both concrete legal p8 discard/dama/riichi; ownSeat3, opponent2 riichi; both 0-shanten p1/p4 4 upper bound, silent ron1600 vs riichi3200 conditional; no claim of Mortal policy agreement",
+        "fatalGate": "v4-anchored tactics comparison regex /[0-9０-９〇零一二三四五六七八九十百千万]/ matches ordinary word 一致 and 一方 after fact anchor elision",
+        "outcome": "CONTRACT_FAIL_INSTRUMENT_FALSE_POSITIVE_NOT_GROUNDED_TACTICAL_ERROR",
+        "attempted": 1,
+        "passed": 0,
+        "remainingNotAttempted": 7,
+        "stage1": "STOP_WITH_NO_GO",
+        "stabilityRealModelCount": 0,
+        "stage2RealModelCount": 0,
+        "l35RealModelCount": 0,
+        "thirdPartyL4RealScoreCount": 0,
+        "phaseExitReview": "NOT_YET_SUBMITTED"
+      }
     }
   },
   "previous_runs": [
@@ -2243,6 +2270,30 @@
       "formalPhaseResult": "PENDING",
       "report": "handoff/p2a-v4-stage1-preflight-and-l35-ready-20261123.md",
       "next": "First user-origin independent pilot-42 JSON required; no background / no paid API"
+    },
+    {
+      "status": "P2a_v4_phase_exit_NO_GO_first_real_user_submitted_answer_contract_regex_false_positive",
+      "phase": "P2a-v4",
+      "pr": 63,
+      "branch": "feat/coach-p2a-v4-fact-anchored-explanations",
+      "commit": "bffd83e23ceaabad6463c8af4bbfb01082047842",
+      "run_id": 45128674839,
+      "firstCaseId": "pilot-42",
+      "frozenPublicRequestHash": "4d1769cdf5b777278cc9496cb463405a5b9ab7c45614d0170913556ae4101df5",
+      "firstAnswerOutcome": "CONTRACT_FAIL_REGEX_FALSE_POSITIVE_IN_ORDINARY_JAPANESE",
+      "verifiedArithmeticMaterialErrorFound": false,
+      "empiricalStage1Attempts": 1,
+      "validStage1": 0,
+      "remainingUnattempted": 7,
+      "realStage2": 0,
+      "realL35": 0,
+      "realL4Ratings": 0,
+      "nodeTests72": 72,
+      "pythonSettlementVectors": 4608,
+      "pythonMismatches": 0,
+      "sourceS42L35SelectedDifferentOriginalClusters": 8,
+      "report": "handoff/p2a-v4-phase-exit-contract-false-positive-pilot42-20261123.md",
+      "next": "v5 only new prereg after separate contract repair; never retroactive v4 scoring"
     }
   ],
   "roadmap": {
