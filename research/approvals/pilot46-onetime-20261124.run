@@ -1,0 +1,9 @@
+P2a-v4.4 API one-shot authorization execution marker
+Approval: User explicitly approved 2026-11-23 23:49 JST
+Scope: pilot-46 only, GPT-6 Sol, maximum USD 0.30, one request, zero retries.
+Prerequisite no-cost CI: run 45203496425 SUCCESS.
+Frozen packet requestHash: 3fd5108e628468c8f9b9b3e1719e3a42e5ae7432141d73af7594d15c80d577d5
+Plaintext model answer: forbidden in public repository, workflow logs, and artifacts.
+Original response preservation: RSA4096/AES256GCM encrypted Actions artifact only.
+Separate experimental API track; not retroactive manual Stage1 inclusion.
+This file must not be modified, re-committed, or reused as an API trigger.

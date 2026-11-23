@@ -1,0 +1,10 @@
+Mahjong LAB API pilot46 single authorized retry marker.
+Date: 2026-11-24 JST.
+User approval: one additional GPT-6 Sol Responses POST, pilot-46, up to USD 0.30, no retries.
+Prior HTTP 429 attempt: 45203665432; prior approval consumed.
+Preflight passed: CI 45209357069, conservatively budget USD 0.171246.
+Use existing immutable original source36 and 8 frozen packets; do not add source data or Mortal reference to model input.
+On failure record only allowlisted HTTP error type/code, never credentials/messages/raw prompt.
+On success encrypt full original and verification receipt using RSA-4096/AES-256-GCM with private key held outside GitHub.
+API exploratory track separate from original independent ChatGPT manual 8-question denominator.
+This file must not be modified or added again as a retry trigger.

@@ -1,0 +1,1 @@
+User reported GitHub Actions secret OPENAI_API_KEY replaced with new key issued in paid Default project. Confirm via one GET /v1/models/gpt-6-sol only. No Responses POST, no tokens, no billable model generation, no secret logging. Do not reuse marker to trigger again.
