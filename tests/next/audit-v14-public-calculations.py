@@ -138,13 +138,13 @@ def audit(e,stats,errors):
    metric(k,v,hh,mm)
   else:check(k+'/terminal',v,{'status':'terminal_action_no_future_shape'})
  stats['cases']+=1
-def main(src,out):
+def main(src,out,cases_expected=30):
  es=json.loads(src.read_text());stats=collections.Counter();errors=[]
  for e in es:
   try:audit(e,stats,errors)
   except Exception as err:errors.append({'id':e['request']['input']['id'],'exception':repr(err)})
- result={'status':'dev_candidate_shape_audit_only','cases_expected':30,'counts':dict(stats),'failures':errors,'limitations':['candidate score amounts independently checked; yaku names not individually aligned yet','legal availability checked by source engine, not fully independent','no tactical validation']}
+ result={'status':'dev_candidate_shape_audit_only','cases_expected':cases_expected,'counts':dict(stats),'failures':errors,'limitations':['candidate score amounts independently checked; yaku names not individually aligned yet','legal availability checked by source engine, not fully independent','no tactical validation']}
  out.write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n')
  print(json.dumps({**result,'counts':{k:v for k,v in stats.items() if '/' not in k},'failures':errors[:15]},ensure_ascii=False))
- assert stats['cases']==30 and not errors
-if __name__=='__main__':main(Path(sys.argv[1]),Path(sys.argv[2]))
+ assert stats['cases']==cases_expected and not errors
+if __name__=='__main__':main(Path(sys.argv[1]),Path(sys.argv[2]),int(sys.argv[3]) if len(sys.argv)>3 else 30)
