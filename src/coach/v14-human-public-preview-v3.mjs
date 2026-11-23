@@ -41,7 +41,7 @@ export function renderV3PublicScene(envelope){
   let suffix='';
   if(c&&Number.isInteger(c.shanten))suffix='／向聴'+c.shanten+'／受入上限'+printed(c.ukeireUpperBound)+'枚／保持ドラ'+printed(c.retainedDoraHan)+'翻';
   if(c?.afterCallDiscards)suffix='／鳴いた後の合法な打牌：'+c.afterCallDiscards.map(x=>tile(x.discard)).join('、');
-  lines.push('- '+a.key+'：'+group+' '+a.detail+suffix);
+  lines.push('- '+a.key+'：'+(a.group===37?a.detail:group+' '+a.detail)+suffix);
  }
  lines.push('', '## この問題で比較したいこと',
   '選択候補それぞれの速さ・打点・現物・守備の自由度と、席ごとの公開状況、順位が変わり得る条件を比較してください。',
