@@ -75,7 +75,7 @@ test('prompt tampering, old version, injected numeric hallucination and nonexist
  noisy.tactics.opponents[0].analysis+=' 親に3900点放銃したら順位が変わる。';
  assert.throws(()=>verifyAndRenderV4CompactModelResponse(f.e,f.packet,noisy),/unanchored numerical/);
  const invented=structuredClone(f.answer);invented.recommendation.key='not-legal';
- assert.throws(()=>verifyAndRenderV4CompactModelResponse(f.e,f.packet,invented),/v3-proof/);
+ assert.throws(()=>verifyAndRenderV4CompactModelResponse(f.e,f.packet,invented),/v4-proof: unknown action/);
 });
 test('model cannot override code-computed public points through an extra numeric proof object',()=>{
  const f=sample();if(!f)return;
