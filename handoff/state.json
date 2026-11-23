@@ -322,8 +322,8 @@
         "formalGatePassed": false
       }
     ],
-    "decision": "P2a-v3 free dev gate1 pass 9/9: versioned public-only comparison accepts all 12 frozen same-tile riichi/dama, all 12 reaction scenarios incl one ron/pass, 12 discard, same-shape seat genbutsu and conditional score/rank facts without invented future shapes; invalid source facts rejected. Genuine and isolated fake Stage2 both use common answer schema and public fact checker, concrete userAction optional, true S42 pinned source only authenticates at separate genuine store, Q gap is explicitly unavailable. Onecase v3 receipts validate structure but no real model calls. User personal-only offline-first, NO blanket paid authorization and explicit per-purpose consent. Actual LLM route remains undecided and truly blocks meaningful next trial. Prior P2a-v2 CLOSED NO-GO.",
-    "next": "USER CHOICE REQUIRED for first genuine model demonstration: free manual isolated ChatGPT 5–8 cases (user must move requests/results), or free Gemini API via Google AI Studio with account/key safely configured by user and consideration that free prompts may be used for Google product improvement (confirm actual eligibility), or separately approved per-purpose paid API. Without this, no meaningful real Stage1/Stage2/L4 skill inference. Do not initiate any cost or private account setup. Once selected, test 5–8 real cases and validate source records, then continue phase. Keep v3 draft PR #62, main untouched, avoid fake semantic claims.",
+    "decision": "P2a-v3 free dev gate1 pass 9/9: versioned public-only comparison accepts all 12 frozen same-tile riichi/dama, all 12 reaction scenarios incl one ron/pass, 12 discard, same-shape seat genbutsu and conditional score/rank facts without invented future shapes; invalid source facts rejected. Genuine and isolated fake Stage2 both use common answer schema and public fact checker, concrete userAction optional, true S42 pinned source only authenticates at separate genuine store, Q gap is explicitly unavailable. Onecase v3 receipts validate structure but no real model calls. User personal-only offline-first, NO blanket paid authorization and explicit per-purpose consent. Actual LLM route remains undecided and truly blocks meaningful next trial. Prior P2a-v2 CLOSED NO-GO. User additionally fixed ChatGPT as target coaching model; Gemini independent blind evaluator, not replacement coach. ChatGPT API use not approved. Any model version and transport remains to be chosen, no genuine LLM trial yet.",
+    "next": "Prepare genuine ChatGPT onecase smoke tests using existing access and/or user-assisted separate temporary sessions. Confirm run settings and no memory contamination, avoid model/provider conflation. Gemini remains independent evaluator. No paid API without exact prior consent.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -417,7 +417,7 @@
       "spending": "CONFIRMED: per-use prior consent with simple purpose, necessity, costs and free alternative review; no discretionary budget, nothing paid is currently approved",
       "distribution": "CONFIRMED: personal use only, offline-first; no plan to general-public launch",
       "L4": "CONFIRMED: blind assessment by user and separate independent model; limited learning usefulness only, no top-player certification",
-      "inference": "NOT YET SELECTED: investigate free/manual/local methods first; when and only when an actual paid operation becomes necessary seek specific approval"
+      "inference": "CHATGPT is preferred for actual coach and evaluation; start with no-extra-cost isolated ChatGPT manual trials, method and exact version not yet frozen; no billed API authorization"
     },
     "user_decisions_document": "handoff/p2a-v3-user-decisions-no-blanket-spend-private-offline-l4-20261123.md",
     "v3_gate1_report": "handoff/p2a-v3-development-gate1-contract-repair-20261123.md",
@@ -1660,6 +1660,15 @@
       "independent_model_extra_expense_requires_same_prior_approval": true,
       "scope": "limited_strategic_consistency_learning_utility_not_pro_level_certificate"
     },
-    "inference_execution_method": "NOT_YET_CHOSEN_FREE_FIRST_COSTS_REQUIRE_SPECIFIC_CONSENT"
+    "inference_execution_method": "CHATGPT_SELECTED_FREE_FIRST_TRANSPORT_PENDING",
+    "coach_model": {
+      "selected": "CHATGPT",
+      "role": "primary_mahjong_explanation_model",
+      "independent_evaluation": "Gemini as separate model for blinded evaluation; Claude Opus and Gemini for phase-end review",
+      "model_version_and_delivery": "NOT_YET_SELECTED",
+      "api_payment": "NOT_AUTHORIZED",
+      "intended_free_first_test": "Use existing ChatGPT access, isolated single-case temporary conversations when practical; preserve actual model run metadata and disclose what cannot be authenticated",
+      "boundary": "Gemini quality scores do not certify ChatGPT quality"
+    }
   }
 }
