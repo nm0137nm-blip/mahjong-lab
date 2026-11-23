@@ -495,3 +495,4 @@ jobs:
           node --test tests/next/v14-paired-contrast-v2.test.mjs
           node --test tests/next/v14-stage2-boundary-v2.test.mjs
           node --test tests/next/v14-stage2-counterfeit-isolated-v2.test.mjs
+          node --test tests/next/v14-paired-awareness-v2.test.mjs
