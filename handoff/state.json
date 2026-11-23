@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-23T12:23:30+09:00",
+  "checkpoint": "2026-11-23T13:03:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -9,11 +9,11 @@
   },
   "active_task": {
     "phase": "P2a-v3",
-    "status": "P2a_v3_in_progress_exploratory_S42_extended_50_pairs_success_machine_gate_only_ChatGPT_real_new_schema_zero",
+    "status": "P2a_v3_raw_new_schema_v2_pilot48_received_invalid_13_vs_9_fixed_schema_v3_manual_retest_pending",
     "branch": "feat/coach-p2a-v3-contract-repair",
-    "commit": "7020aad6458d621f294820cd4ff68ace1889cb4a",
+    "commit": "659bbbfa5dbb65d81d15042ec736c5ce524ae7a7",
     "pr": 62,
-    "run_id": 45105677751,
+    "run_id": 45108629360,
     "prior_runs": [
       {
         "run_id": 44754324733,
@@ -355,7 +355,7 @@
       }
     ],
     "decision": "User explicitly says do not stop after each tiny task; keep autonomous development to next true blocker, no reviewer request until P2a-v3 overall Phase exit. After old pilot48 ChatGPT reply (correct UTF8/JSON but invalid typed proof), versioned revised prompt/proof independently tested and includes readable 1,200-character human scene companion. STRICT factual validation remains; old ChatGPT answer not retroactively accepted. CI run 45102049118 21/21 QA, zero mismatches public candidate score/rank. Actual pinned Mortal S42 ran on 8 selected paired public contexts, accepted original archive anchor with opponent hidden hands and future events removed from encoder input: changed 1, maintained 7, no ambiguous within predeclared 0.001 internal ranking margin; insufficient changed contrasts for L3.5 gate. No actual ChatGPT answer for revised schema, no Stage2, no blind user+Claude+Gemini ratings. No paid API/other billed action authorized. main and formal gates remain NO-GO.",
-    "next": "Exploratory reference extension frozen: no more model selection on seen S42 labels. Independent revised-schema ChatGPT temporary-chat responses are now the next unavoidable real-data input; 8-case human-readable package from run 45102049118. Continue free validations if possible; request user only when genuinely required. Stage2 and user/Claude/Gemini blind assessment after genuine responses. Do not label as formal L3.5 or ask phase-end reviewers until phase exit.",
+    "next": "Request only independent ChatGPT temporary-chat schema-v3 pilot-48 one-case JSON after 9-observation prompt fix; check raw outcome before seven further smoke cases. Prior schema-v2 raw response contract FAIL preserved. Do not score as success, do not alter frozen case IDs, no paid API, Phase and release NO-GO.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -487,10 +487,11 @@
         "pilot-69"
       ],
       "independentSessionsPlanned": 24,
-      "actualFirstStageAnswers": 1,
+      "actualFirstStageAnswers": 2,
       "actualSecondStageAnswers": 0,
       "paidCalls": 0,
-      "immediateNext": "User separately start temporary ChatGPT case pilot-48 and return one JSON answer, then stage 1 smoke eight cases before expanding"
+      "immediateNext": "Schema-v3 independent new temporary-chat pilot-48 one case (new fixed prompt); old + schema-v2 FAILs remain in separate invalid logs",
+      "actualValidFirstStageAnswers": 0
     },
     "v3_public_values": {
       "sourceCases": 36,
@@ -509,7 +510,7 @@
       "jobsSucceeded": 6,
       "experimentalStage1Actual": 1,
       "firstResponseOldSchemaValid": false,
-      "newSchemaRealAnswers": 0,
+      "newSchemaRealAnswers": 1,
       "experimentalStage2Actual": 0,
       "repetitionActual": 0,
       "blindHumanClaudeGeminiActual": 0,
@@ -517,7 +518,10 @@
       "publicS42Changed": 1,
       "publicS42Maintained": 7,
       "fullLegalL35Certified": false,
-      "phaseComplete": false
+      "phaseComplete": false,
+      "newSchemaRealAnswersPassingContract": 0,
+      "newSchemaV3IndependentReplies": 0,
+      "oldSchemaPlusNewRawManuallySubmittedCount": 2
     },
     "v3_first_actual_response": {
       "caseId": "pilot-48",
@@ -533,7 +537,7 @@
       "review": "not_due_until_phase_exit",
       "note": "handoff/p2a-v3-first-real-chatgpt-pilot48-format-20261123.md"
     },
-    "v3_latest_report": "handoff/p2a-v3-exploratory-expanded-s42-gate-20261123.md",
+    "v3_latest_report": "handoff/p2a-v3-first-real-pilot48-20261123.md",
     "v3_v2_readable_model_artifact": {
       "run": 45102049118,
       "id": 14785867588,
@@ -541,7 +545,8 @@
       "version": "p2a-v3-chatgpt-8x3-manual-smoke-2",
       "questions": 8,
       "repetitionsPlanned": 3,
-      "realResponsesOnNewVersion": 0
+      "realResponsesOnNewVersion": 1,
+      "realResponsesPassingSchema": 0
     },
     "v3_s42_counterfactual": {
       "run": 45102049118,
@@ -629,6 +634,56 @@
       "formalGate": "NO-GO",
       "mainChanged": false,
       "automaticExtensionRerunDisabled": true
+    },
+    "v3_second_actual_response": {
+      "caseId": "pilot-48",
+      "originalArtifactRun": 45102049118,
+      "originalArtifactId": 14785867588,
+      "responseSource": "user_uploaded_ChatGPT_temporary_chat_claim_not_provider_authenticated",
+      "modelId": null,
+      "modelVersion": null,
+      "providerRequestId": null,
+      "sourceHash": "1e2d745af93726d1a68b6b3761ec916c0a55b004266130e9e170d860d460cc00",
+      "userUploadBytesSHA256": "4dda6ae5163680b874c0e5946fc08428c612d70f4aaf21b568d0721afcf9c9a3",
+      "rawResponseRetention": "conversation_upload_only_not_in_latest_public_repo_tree",
+      "responseJsonValid": true,
+      "legalRecommendedAction": true,
+      "chosenAction": "a37-1_riichi_p5",
+      "alternative": "a13-0_discard_p5",
+      "candidateFactsCompared": 4,
+      "verifiedOpponentObservations": 13,
+      "allowedMax": 9,
+      "validation": "FAIL",
+      "failType": "under_specified_output_length_contract_not_public_fact_hallucination",
+      "stage1Pass": false,
+      "stage2Run": false,
+      "report": "handoff/p2a-v3-first-real-pilot48-20261123.md"
+    },
+    "v3_schema_v3_manual_package": {
+      "version": "p2a-v3-chatgpt-8x3-manual-smoke-3",
+      "sourceFixCommit": "a2c5b6fb30fcd34cad528be02b00caaa6715db7f",
+      "finalCIWorkflowCommit": "8cc32660e24ba12b6eed944b0182a3b65f29af35",
+      "regressionCommit": "659bbbfa5dbb65d81d15042ec736c5ce524ae7a7",
+      "completedEarlierCIRun": 45108629360,
+      "completedEarlierCIStatus": "success",
+      "latestRegressionCommitRunNotYetConfirmed": true,
+      "artifactId": 14788033190,
+      "artifactName": "p2a-v3-chatgpt-8x3-manual-readable-schema-v3",
+      "questionPilot48RequestHash": "60dcbaf1b07be102477fbfdeea0849024c68e438d21d37852b826d46ea722383",
+      "newSchemaV3RealResponses": 0,
+      "stillFrozenCaseSelection": [
+        "pilot-48",
+        "pilot-52",
+        "pilot-49",
+        "pilot-54",
+        "pilot-60",
+        "pilot-63",
+        "pilot-66",
+        "pilot-69"
+      ],
+      "priorSchemaV2InvalidResponses": 1,
+      "schemaChangeDeclaredAfterFirstSchemaV2Response": true,
+      "preRegistrationAmendment": "handoff/p2a-v3-chatgpt-prereg-amendment-v2-20261123.md"
     }
   },
   "previous_runs": [
@@ -1755,6 +1810,22 @@
         "modelsRunExactSHA": true
       },
       "limits": "after seeing initial eight S42 results exploratory non-independent; counterfactual full physical legality and ChatGPT model response absent; no paid API; no production change"
+    },
+    {
+      "status": "p2a_v3_first_user_provided_schema_v2_real_chatgpt_response_received_one_under_specified_prompt_contract_failure_and_schema_v3_prompt_repair",
+      "branch": "feat/coach-p2a-v3-contract-repair",
+      "commit": "659bbbfa5dbb65d81d15042ec736c5ce524ae7a7",
+      "run_id": 45108629360,
+      "result_path": "handoff/p2a-v3-first-real-pilot48-20261123.md",
+      "answerSHA256": "4dda6ae5163680b874c0e5946fc08428c612d70f4aaf21b568d0721afcf9c9a3",
+      "scenario": "pilot-48",
+      "rawVersion": "schema-v2",
+      "publicFactsMatched": true,
+      "rawContractPass": false,
+      "excessObservations": "13 > max 9",
+      "newArtifact": "p2a-v3-chatgpt-8x3-manual-readable-schema-v3",
+      "newArtifactId": 14788033190,
+      "limitations": "manual provider not verified, blinded three-party quality not graded, new v3 response zero, user action needed"
     }
   ],
   "roadmap": {
