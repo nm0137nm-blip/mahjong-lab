@@ -4,7 +4,7 @@
 // or verifier-grade proof structure. No actual model calls here.
 import {createHash} from 'node:crypto';
 import {createV4PublicBrief} from './v14-public-brief-v4.mjs';
-import {createV3PublicContrastFixture} from './v14-evidence-proof-v3.mjs';
+import {createV4DeterministicSourceComparison} from './v14-source-comparison-proof-v4.mjs';
 import {createV4PublicFactRegistry,verifyAndRenderV4AnchoredTactics,
   V4_TACTIC_VERSION} from './v14-anchored-tactical-text-v4.mjs';
 const hash=x=>createHash('sha256').update(JSON.stringify(x)).digest('hex');
@@ -59,8 +59,11 @@ export function createV4CompactDevelopmentPacket(envelope){
  return packed;
 }
 function sourceGeneratedProof(envelope,response){
- const proof=createV3PublicContrastFixture(
+ const result=createV4DeterministicSourceComparison(
   envelope,response.recommendation,response.alternative);
+ if(result.publicDifferences<1)
+  fail('model supplied no meaningful public comparison; not a tactical proof');
+ const proof=result.proof;
  const o=own(envelope),opponents=[0,1,2,3].filter(x=>x!==o);
  if(!Array.isArray(response.tactics.opponents)||response.tactics.opponents.length!==3)
   fail('all 3 public seats required');
