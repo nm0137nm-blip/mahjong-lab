@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-23T20:03:00+09:00",
+  "checkpoint": "2026-11-23T20:15:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -8,8 +8,8 @@
     "coach_candidate_promoted": false
   },
   "active_task": {
-    "phase": "P2a-v4.3 development complete with 60 tests, newly frozen 8 GPT-6 JSON-file prompts; independent first reply needed",
-    "status": "P2a_v43_NEW_UNSEEN_EIGHT_STAGE1_FROZEN_60_NODE_TESTS_PASS_NEEDS_FIRST_PILOT43_GPT6_FILE_RESPONSE",
+    "phase": "P2a-v4.3 Stage1 first user-uploaded GPT-6 JSON pilot43 passes exact original public fact contract (1/8); next pilot49",
+    "status": "P2a_v43_STAGE1_PILOT43_ORIGINAL_GPT6_JSON_SOURCE_CONTRACT_PASS_1_OF_8_NEXT_PILOT49",
     "branch": "feat/coach-p2a-v43-japanese-conditional-gate",
     "commit": "f92239ad355d069d43ead0cbe6951ade9a07ae3a",
     "pr": 66,
@@ -354,8 +354,8 @@
         "phaseCompleted": false
       }
     ],
-    "decision": "Historical v42 closed NO-GO 2/3 kept unchanged. New v43 updated Japanese reversal detector and strict per-opponent tradeoff citation, bound public river and selected genbutsu, 8 unseen source cases fixed without S42 labels or prior GPT choices. Actual independent v43 ChatGPT responses 0; strategy/L4 untested.",
-    "next": "対応依頼: GPT-6 fresh Temporary Chat with exact pilot-43.json; output mahjong_P2a_v43_stage1_pilot-43_response.json as file attachment, raw unchanged; after result verify source-hash and strict first-fatal stop before any more trials",
+    "decision": "First actual user-uploaded original P2a-v4.3 GPT-6 pilot43 JSON passed exact versioned original JS verifier. First contract/public fact PASS only (1/8); tactical optimality, S42 policy match, semantic 3-rater L4 are not certified. The frozen v42 2/3 Phase NO-GO stays closed.",
+    "next": "対応依頼: submit frozen pilot-49.json into a fresh GPT-6 Temporary Chat; obtain UTF-8 mahjong_P2a_v43_stage1_pilot-49_response.json attachment with no pasted JSON body; return untouched file for original verifier. No previous GPT answer or Mortal Q provided.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -1282,7 +1282,7 @@
       }
     },
     "v43_development": {
-      "status": "STAGE1_NEW_MODEL_RESPONSE_READY_NOT_FULL_PHASE_GO",
+      "status": "STAGE1_FIRST_INDEPENDENT_USER_UPLOADED_JSON_CONTRACT_AND_PUBLIC_FACT_GATE_PASS_1_OF_8",
       "branch": "feat/coach-p2a-v43-japanese-conditional-gate",
       "commit": "f92239ad355d069d43ead0cbe6951ade9a07ae3a",
       "pr": 66,
@@ -1354,15 +1354,67 @@
         "name": "p2a-v43-sealed-pre-answer-L4-controls-verifier-only",
         "neverGiveToModel": true
       },
-      "realIndependentGPT6Responses": 0,
+      "realIndependentGPT6Responses": 1,
       "actualL35ModelResponses": 0,
       "actualL4Ratings": 0,
       "noPaidApiCalls": true,
       "patchReviewerRound": "NOT_REQUESTED_PER_USER",
       "phaseFinished": false,
       "gate": "GO_FOR_FIRST_INDEPENDENT_MANUAL_TRIAL_ONLY; NOT_RESEARCH_PHASE_GO_OR_PRODUCTION_GO",
-      "next": "対応依頼: GPT-6 fresh Temporary Chat with exact pilot-43.json; output mahjong_P2a_v43_stage1_pilot-43_response.json as file attachment, raw unchanged; after result verify source-hash and strict first-fatal stop before any more trials",
-      "report": "handoff/p2a-v43-japanese-conditional-repair-and-unseen-eight-20261123.md"
+      "next": "対応依頼: submit frozen pilot-49.json into a fresh GPT-6 Temporary Chat; obtain UTF-8 mahjong_P2a_v43_stage1_pilot-49_response.json attachment with no pasted JSON body; return untouched file for original verifier. No previous GPT answer or Mortal Q provided.",
+      "report": "handoff/p2a-v43-stage1-pilot43-first-real-gpt6-public-fact-receipt-20261123.md",
+      "stage1": {
+        "status": "INCOMPLETE_STAGE1_NOT_GO_NO_FATAL_1_OF_8_PASS",
+        "planned": 8,
+        "actualAttempts": 1,
+        "publicContractPass": 1,
+        "failed": 0,
+        "unattempted": 7,
+        "nextCaseId": "pilot-49",
+        "nextCasePacketHash": "877e4041137b537b10de3dbffe4305c6181484dbe6b97078652afb95b9321ee1",
+        "nextCaseQuestionFileSha256": "2dcceb319bdad186455c79216187f9e11d65d6db73c0737e74203d06e22fbd41",
+        "nextCaseFile": "/mnt/data/mahjong_P2a_v43_stage1_pilot-49.json",
+        "initialAnswer": {
+          "caseId": "pilot-43",
+          "rawResponseSha256": "8ced3c7a8596cae3140434d25eb5a2e1119af54e5be7481c0847cfc0fa723ff0",
+          "rawResponseBytes": 6900,
+          "version": "p2a-v43-compact-stage1-response-1",
+          "requestHash": "efb22fe99f96dd6c629f586cfcc1b88a4ac63ee601fc23116ee86f2607cabddf",
+          "recommended": {
+            "key": "a2-0",
+            "afterCallDiscard": null
+          },
+          "alternative": {
+            "key": "a37-1",
+            "afterCallDiscard": null
+          },
+          "actualAction": "m3 (3萬) dama compared to same m3 riichi",
+          "verdict": "CONTRACT_AND_PUBLIC_FACT_GATE_PASS",
+          "publicSourceFacts": 10,
+          "opponentPublicObservations": 6,
+          "distinctSourceFacts": 3,
+          "sourceSeatRefs": [
+            0,
+            2,
+            3
+          ],
+          "transport": "strict_json_no_corrections",
+          "actualScript": "assessV43FirstRealStage1; summarizeV43Stage1Receipts using original Github JS",
+          "sourceAuditBranch": "audit/p2a-v43-read-only-source-export-pilot43",
+          "sourceAuditCI": 45163055025,
+          "sourceOnlyArtifactId": 14812390194,
+          "originalGithubSourceBlobShasVerified": true,
+          "rawFilePublishedToGithub": false,
+          "model": "GPT-6_USER_REPORTED",
+          "trueProviderUiProof": "NOT_VERIFIED",
+          "temporaryChatIndependentProof": "NOT_VERIFIED",
+          "semanticL4": "NOT_SCORED",
+          "mortalPolicyMatch": "UNKNOWN",
+          "notProductionRecommendation": true
+        },
+        "rawReceiptForUser": "/mnt/data/mahjong_P2a_v43_stage1_pilot-43_receipt.json",
+        "report": "handoff/p2a-v43-stage1-pilot43-first-real-gpt6-public-fact-receipt-20261123.md"
+      }
     }
   },
   "previous_runs": [
@@ -2842,6 +2894,29 @@
       "paidModelAPI": 0,
       "overallPhaseResult": "PENDING",
       "report": "handoff/p2a-v43-japanese-conditional-repair-and-unseen-eight-20261123.md"
+    },
+    {
+      "status": "P2a_v43_STAGE1_FIRST_REAL_PILOT43_GPT6_ORIGINAL_JSON_CONTRACT_PUBLIC_FACT_PASS",
+      "phase": "P2a-v4.3",
+      "caseId": "pilot-43",
+      "rawSha256": "8ced3c7a8596cae3140434d25eb5a2e1119af54e5be7481c0847cfc0fa723ff0",
+      "responseBytes": 6900,
+      "version": "p2a-v43-compact-stage1-response-1",
+      "packetHash": "efb22fe99f96dd6c629f586cfcc1b88a4ac63ee601fc23116ee86f2607cabddf",
+      "verdict": "CONTRACT_AND_PUBLIC_FACT_GATE_PASS",
+      "sourceOnlyArtifactId": 14812390194,
+      "exactOriginalGitBlobShasVerified": true,
+      "publicFactsVerified": 10,
+      "opponentFactObservations": 6,
+      "distinctSourceDifferences": 3,
+      "currentStage1": "1/8 accepted (7 not submitted)",
+      "strategyCertified": false,
+      "nextCase": "pilot-49",
+      "nextHash": "877e4041137b537b10de3dbffe4305c6181484dbe6b97078652afb95b9321ee1",
+      "model": "GPT-6 user reported",
+      "review": "No patch-review per user, L4 remains unperformed",
+      "rawReplyGitHubPublished": false,
+      "report": "handoff/p2a-v43-stage1-pilot43-first-real-gpt6-public-fact-receipt-20261123.md"
     }
   ],
   "roadmap": {
