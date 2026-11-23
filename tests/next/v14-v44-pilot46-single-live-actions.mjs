@@ -11,7 +11,8 @@ import {checkFrozenPacket,buildOneShotRequest,costCeilingUSD,extractRawOutput}
 const fail=s=>{throw Error('p2a-v44-one-shot: '+s);};
 const hash=b=>createHash('sha256').update(b).digest('hex');
 const expectBranch='refs/heads/feat/coach-p2a-v44-api-transport-dryrun';
-const expectedApproval='$0.30_PILOT46_ONLY_2026-11-23';
+const expectedApproval='$0.30_PILOT46_RETRY_2026-11-24';
+const RETRY_MARKER='research/approvals/pilot46-retry-20261124.run';
 // Safe for public CI logs: never include raw response body, error.message,
  // request payload or credential.
 export function sanitizeApiFailure(body,httpStatus){
@@ -27,6 +28,14 @@ export function assertEnv(env){
    fail('approval scope, branch, event or run attempt mismatch (no request)');
  if(!env.OPENAI_API_KEY)fail('missing API secret (no request)');
 }
+export function assertFreshMarker(event,env){
+ if(event?.head_commit?.id!==env.GITHUB_SHA ||
+    !Array.isArray(event.head_commit.added) ||
+    !event.head_commit.added.includes(RETRY_MARKER) ||
+    (event.head_commit.modified??[]).includes(RETRY_MARKER) ||
+    (event.head_commit.removed??[]).includes(RETRY_MARKER))
+   fail('only original added approval marker commit may execute');
+}
 export function makeEncryptedArchive(clear,publicPem){
  const key=randomBytes(32),iv=randomBytes(12);
  const cipher=createCipheriv('aes-256-gcm',key,iv);
@@ -41,6 +50,8 @@ export function makeEncryptedArchive(clear,publicPem){
 }
 export async function main(env=process.env){
  assertEnv(env);
+ const pushEvent=JSON.parse(await fs.readFile(env.GITHUB_EVENT_PATH,'utf8'));
+ assertFreshMarker(pushEvent,env);
  const frozen=JSON.parse(await fs.readFile(env.V14_FOLLOWUP_PUBLIC,'utf8'));
  const packet=JSON.parse(await fs.readFile(path.join(env.V14_V44_QUESTIONS_DIR,'pilot-46.json'),'utf8'));
  checkFrozenPacket(packet,'pilot-46');
@@ -95,7 +106,7 @@ export async function main(env=process.env){
   model:response.model??'not-recorded',
   status:response.status??'not-recorded',
   verdict:receipt?.verdict??'NOT_VERIFIED_INCOMPLETE_OR_EXTRACTION_ERROR',
-  errorType:receipt?.failure?String(receipt.failure).slice(0,300):error?String(error).slice(0,300):null,
+  verifierErrorPresent:Boolean(receipt?.failure||error),
   inputPacketHash:packet.requestHash,rawReplySHA256:hash(raw),
   responseId:response.id??null,
   usage:{input_tokens:usage.input_tokens??null,output_tokens:usage.output_tokens??null,
