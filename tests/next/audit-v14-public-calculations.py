@@ -21,7 +21,7 @@ def dora(t):
  s=t[0];n=int(t[1]) or 5
  return s+str((n%4+1 if n<5 else (n-4)%3+5) if s=='z' else n%9+1)
 def han(ts,ds):return sum((t[1]=='0')+ds.count(norm(t)) for t in ts)
-def win_score(hand,ms,tile,indicators,own,wind,tsumo=False,riichi=False):
+def win_score(hand,ms,tile,indicators,own,wind,tsumo=False,riichi=False,include_yaku=False):
  used=set()
  def allocate(t):
   base=I[norm(t)]*4
@@ -37,7 +37,9 @@ def win_score(hand,ms,tile,indicators,own,wind,tsumo=False,riichi=False):
  cfg=HandConfig(is_tsumo=tsumo,is_riichi=riichi,player_wind=27+own,round_wind=27+wind,options=OptionalRules(has_open_tanyao=True,has_aka_dora=True,has_double_yakuman=True,kiriage=False,limit_to_sextuple_yakuman=False))
  res=HC.estimate_hand_value(ts,w,melds=mm,dora_indicators=ds,config=cfg)
  if res.error or not res.cost:return None
- return (res.cost['main']*3 if own==0 else res.cost['main']+2*res.cost['additional']) if tsumo else res.cost['main']
+ points=(res.cost['main']*3 if own==0 else res.cost['main']+2*res.cost['additional']) if tsumo else res.cost['main']
+ if include_yaku:return {'points':points,'yaku':sorted(y.name for y in res.yaku or [])}
+ return points
 def audit(e,stats,errors):
  inp=e['request']['input'];eid=inp['id'];ev={x['id']:x['value'] for x in inp['evidence']}
  def check(name,a,b):
