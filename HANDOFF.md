@@ -500,3 +500,13 @@ ChatGPTが実際に独立して解いた回答を得る前に、採点・中止�
 - 実APIキーをGitHub Secretsから読み取る**モデル情報のみGET `/v1/models/gpt-6-sol`** を課金対象の回答生成なしで1回実行。GitHub Actions run **45207998275**, job **137808852039** がSUCCESS。実レスポンス **HTTP 200**, `readableModel:true`、モデル生成POST=0、追加費用を伴う生成=0、キー/プロンプト/元回答公開なし。
 - これによりキー無効とモデルメタデータへのアクセス不可は否定的。ただし**モデルGET 200はResponses POSTの割当・請求利用可まで保証しない**。旧パイロットPOST run45203665432のHTTP 429のbody/error.codeは保存されておらず、具体的原因未確定。古いログから429の詳細を取り戻すことはできない。
 - 将来の診断コードはerror.type/error.codeのみ安全に出力するよう修正済み（非課金run45206316435成功）。旧1回限り最大0.30ドル承認はHTTP 429 POSTで使い切ったため、**新たな課金の可能性あるPOSTは必ず用途限定の新規事前承認**。ワークフローの旧トリガーは無効化済み。v4.4手動正式Stage1 0/8・本番採用NO-GOは変更なし。
+
+
+## 2026-11-24 00:55 JST：追加承認API pilot46、HTTP 429 `billing_not_active`確定（実モデル未実行）
+- ユーザーから**改めて** `pilot-46`・GPT-6 Sol・API生成POST1回・最大US$0.30を用途別個別承認（2026-11-24 00:45 JST）。旧2026-11-23承認とは別、次回への繰越なし。
+- 防御実装：固定8問元出題SHAと元公開36ソース、事前保守的上限US$0.171246、token上限12,000、再試行なし、秘密キーはGitHub Secretsからのみ取得。元回答成功時のRSA4096+AES256GCM暗号化に対応し、秘密鍵はGitHubへ置かない。研究Draft PR#68上で行い、本番main不変。
+- 第1ジョブ run **45209494043** は新設のGitHub push `head_commit.added`判定が不一致となり、**API POSTする前に停止**。承認はこの時点で未消費。正確な追加承認マーカーファイルのSHA256検証方式に修正、無料CI合格後に再起動。
+- 第2ジョブ run **45210322937**, job **137817072285** がAPI Responsesへ**POST1回**実行。結果は **HTTP 429**, 許可リスト化された診断値 **`error.type=billing_not_active` / `error.code=billing_not_active`**。モデル出力0、v4.4の公開契約採点0、元回答/暗号化artifact生成なし、API自動再送信なし。API実費はトークンusage未取得のため未確認（失敗による生成分の料金を勝手に0と断定しない）。
+- 認証とモデルメタデータGETは前にHTTP200、本人のスクリーンショットではAPI残高US$5、auto-reload OFF、Organization Spend US$0/100、Default project `No spend limit set`、Standard allowed、gpt-6-solモデル枠あり。従って残高追加購入・rate limit変更を無根拠に求めない。**課金状態未有効（APIの`billing_not_active`）原因の完全な内訳は不明**。本人にはPlatformのPayment methods / Billing history / プロジェクト・組織対応を確認してもらい、すべて正常ならOpenAI SupportにエラーコードとAPI応答時刻を添えて問い合わせる。
+- 本承認の**1回は送信済み**。既存のretry及びretry2ワークフローのpush triggerと承認トークンを無効化（commits `489197dd07d8e1bed23ab68dfbbde2bd7e9e751d`, `c68eaa31d69b75ab991d616dffd55c4baf1755bb`）。**この段階で追加POSTはしない**。再試行には原因の解決と新規個別承認が必要。従来P2a-v4.3 NO-GO不変、新v4.4独立ChatGPT手動本試験は0/8のまま、製品GOなし。
+- 最新 `handoff/state.json` とrunログを正本として扱い、ユーザーに過去の出題やキーを再提出させない。
