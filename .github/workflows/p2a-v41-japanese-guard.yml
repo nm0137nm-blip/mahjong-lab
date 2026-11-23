@@ -1,0 +1,51 @@
+name: P2a-v4.1 Japanese-context numeric guard and replaced independent Stage1
+on:
+  push:
+    branches:
+      - feat/coach-p2a-v41-japanese-numeric-guard
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  fixed-regression-and-new-frozen-eight:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.23.4'
+      - uses: actions/download-artifact@v4
+        with:
+          name: p2a-v2-36-public-development-only
+          run-id: 45089922993
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/p2a-v41-original36
+      - name: Assert original source-set SHA and run v4+v41 immutable regressions
+        env:
+          V14_FOLLOWUP_PUBLIC: /tmp/p2a-v41-original36/independent-requests.json
+        run: |
+          set -euo pipefail
+          test -s "$V14_FOLLOWUP_PUBLIC"
+          node --test tests/next/v14-anchored-tactical-text-v4.test.mjs tests/next/v14-anchored-tactical-text-v41.test.mjs tests/next/v14-v41-stage1-freeze.test.mjs tests/next/v14-compact-model-contract-v4.test.mjs tests/next/v14-source-comparison-proof-v4.test.mjs
+      - name: Make v4.1 first question plus complete eight-question frozen model package
+        env:
+          V14_FOLLOWUP_PUBLIC: /tmp/p2a-v41-original36/independent-requests.json
+        run: |
+          set -euo pipefail
+          node tests/next/v14-v41-stage1-freeze.mjs "$V14_FOLLOWUP_PUBLIC" /tmp/p2a-v41-frozen
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p2a-v41-public-frozen-eight-first-pilot50
+          path: /tmp/p2a-v41-frozen/public/
+          retention-days: 30
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p2a-v41-sealed-L4-controls-verifier-only
+          path: /tmp/p2a-v41-frozen/verifier/
+          retention-days: 30
+          if-no-files-found: error
+      - name: Ensure no inference provider or model evaluation was run
+        run: echo 'No real independent v4.1 ChatGPT replies. No paid API. Old v4 NO-GO remains historical.'
