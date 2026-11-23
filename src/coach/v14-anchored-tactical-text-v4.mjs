@@ -24,6 +24,21 @@ function labelValue(v){
  if(typeof v==='boolean')return v?'あり':'なし';
  return typeof v==='number'?v.toLocaleString('ja-JP'):String(v);
 }
+function sourceRonSummary(rows,mode){
+ if(!Array.isArray(rows))return null;
+ const parts=rows.map(w=>{
+  if(typeof w?.tile!=='string')fail('invalid source ron tile');
+  const p=w[mode];
+  if(p===null||p===undefined)return w.tile+'は指定条件で役なしロン点なし';
+  if(!Number.isSafeInteger(p.basePoints)||p.basePoints<=0||!Array.isArray(p.yaku))
+   fail('invalid source score in ron summary');
+  return w.tile+'の仮ロンは'+p.basePoints.toLocaleString('ja-JP')+'点（'+
+   p.yaku.join('・')+'）';
+ });
+ return '与えられた条件付き和了形：'+parts.join('、')+
+  '。自己河フリテンや実際の和了確率は別問題。';
+}
+
 function choiceKind(action){
  return action.group<=36?'打牌':action.group===37?'立直':
   action.group<=41?'副露':action.group===42?'槓':
@@ -57,6 +72,11 @@ export function createV4PublicFactRegistry(envelope,settlementEvents=[]){
   for(const field of allowedCandidateFields)
    if(Object.hasOwn(calc,field))
     add('candidate:'+act.key+':'+field,act.key+'の'+field+'：'+labelValue(calc[field]));
+  if(act.group<=37&&Array.isArray(calc.conditionalNormalWins)){
+   const mode=act.group===37?'hypotheticalRiichiRon':'ron';
+   add('candidate:'+act.key+':ronSummary',
+    '候補'+act.key+'の'+mode+'の'+sourceRonSummary(calc.conditionalNormalWins,mode));
+  }
  }
  if(!Array.isArray(settlementEvents)||settlementEvents.length)
   fail('caller-supplied arithmetic event is not source-bound; use derived candidate registry');
@@ -82,6 +102,11 @@ export function createV4SourceBoundFactRegistry(envelope,proof){
    const action=envelope.request.input.actions.find(a=>a.key===cat.choice.key);
    add('candidate:'+cat.choice.key+':afterCallDiscard',
     '具体的な鳴き：'+action.detail+'、鳴いた後に'+cat.choice.afterCallDiscard+'を切る');
+   const calc=source(envelope.request.input,'calc-'+cat.choice.key);
+   const concrete=calc.afterCallDiscards.find(v=>v.discard===cat.choice.afterCallDiscard);
+   const summary=sourceRonSummary(concrete.conditionalNormalWins,'ron');
+   if(summary!==null)add('candidate:'+cat.choice.key+':afterCallRonSummary',
+    '鳴き後に'+cat.choice.afterCallDiscard+'を切った手の'+summary);
   }
   for(const w of cat.scoredOwnRon){
    add(w.factId,'候補'+cat.choice.key+'の'+w.sourceTile+
