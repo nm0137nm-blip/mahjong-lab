@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-23T21:01:00+09:00",
+  "checkpoint": "2026-11-23T21:08:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -8,8 +8,8 @@
     "coach_candidate_promoted": false
   },
   "active_task": {
-    "phase": "P2a-v4.3 Stage1 4 of 8 actual GPT-6 JSON responses source-public contract PASS, next pilot63",
-    "status": "P2a_v43_STAGE1_PILOT43_PILOT49_PILOT57_PILOT62_PUBLIC_CONTRACT_PASS_4_OF_8_NEXT_PILOT63",
+    "phase": "P2a-v4.3 Stage1 first 5 of 8 genuine GPT-6 JSON responses pass original public contract; next pilot-71",
+    "status": "P2a_v43_STAGE1_PILOT43_49_57_62_63_CONTRACT_PASS_5_OF_8_NEXT_PILOT71",
     "branch": "feat/coach-p2a-v43-japanese-conditional-gate",
     "commit": "f92239ad355d069d43ead0cbe6951ade9a07ae3a",
     "pr": 66,
@@ -354,8 +354,8 @@
         "phaseCompleted": false
       }
     ],
-    "decision": "Fourth user-uploaded pilot62 strict GPT-6 JSON matched original frozen v43 request. Original Node source contract PASS: recommended legal no-call a45-0 against call a41-0 with concrete m1 discard. 4/8 source public passes, no failures, 4 remaining; not S42/semantic L4 certified. Older v42 NO-GO unchanged.",
-    "next": "対応依頼: fixed Stage1 fifth pilot-63 public JSON in fresh GPT-6 Temporary Chat; obtain untouched UTF-8 mahjong_P2a_v43_stage1_pilot-63_response.json file attachment only, no S42 labels or prior answers.",
+    "decision": "Fifth original GPT-6 user-uploaded pilot63 JSON passed unchanged v43 original Node source public-fact contract, legal ron vs pass. Five of eight contract passes, zero fail, 3 unattempted. S42/independent L4 tactics not tested. Historical v42 2/3 NO-GO unchanged.",
+    "next": "対応依頼: exact frozen pilot-71 (sixth unseen Stage1) in fresh GPT-6 Temporary Chat; obtain untouched UTF-8 mahjong_P2a_v43_stage1_pilot-71_response.json attachment only, no S42 labels or previous model answers.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -1282,7 +1282,7 @@
       }
     },
     "v43_development": {
-      "status": "STAGE1_4_REAL_GPT6_JSON_ANSWERS_OF_8_PUBLIC_CONTRACT_PASS",
+      "status": "STAGE1_5_REAL_GPT6_JSON_ANSWERS_OF_8_PUBLIC_CONTRACT_PASS",
       "branch": "feat/coach-p2a-v43-japanese-conditional-gate",
       "commit": "f92239ad355d069d43ead0cbe6951ade9a07ae3a",
       "pr": 66,
@@ -1354,26 +1354,26 @@
         "name": "p2a-v43-sealed-pre-answer-L4-controls-verifier-only",
         "neverGiveToModel": true
       },
-      "realIndependentGPT6Responses": 4,
+      "realIndependentGPT6Responses": 5,
       "actualL35ModelResponses": 0,
       "actualL4Ratings": 0,
       "noPaidApiCalls": true,
       "patchReviewerRound": "NOT_REQUESTED_PER_USER",
       "phaseFinished": false,
       "gate": "GO_FOR_FIRST_INDEPENDENT_MANUAL_TRIAL_ONLY; NOT_RESEARCH_PHASE_GO_OR_PRODUCTION_GO",
-      "next": "対応依頼: fixed Stage1 fifth pilot-63 public JSON in fresh GPT-6 Temporary Chat; obtain untouched UTF-8 mahjong_P2a_v43_stage1_pilot-63_response.json file attachment only, no S42 labels or prior answers.",
-      "report": "handoff/p2a-v43-stage1-pilot62-fourth-gpt6-public-contract-receipt-20261123.md",
+      "next": "対応依頼: exact frozen pilot-71 (sixth unseen Stage1) in fresh GPT-6 Temporary Chat; obtain untouched UTF-8 mahjong_P2a_v43_stage1_pilot-71_response.json attachment only, no S42 labels or previous model answers.",
+      "report": "handoff/p2a-v43-stage1-pilot63-fifth-gpt6-public-contract-receipt-20261123.md",
       "stage1": {
-        "status": "INCOMPLETE_STAGE1_NOT_GO_NO_FATAL_4_OF_8_PASS",
+        "status": "INCOMPLETE_STAGE1_NOT_GO_NO_FATAL_5_OF_8_PASS",
         "planned": 8,
-        "actualAttempts": 4,
-        "publicContractPass": 4,
+        "actualAttempts": 5,
+        "publicContractPass": 5,
         "failed": 0,
-        "unattempted": 4,
-        "nextCaseId": "pilot-63",
-        "nextCasePacketHash": "76c65de8b477025a3330710db50870800529f3dea7194fc2a10cd2e0268cbdef",
-        "nextCaseQuestionFileSha256": "2c319021efcfb71a0c2116b86326ad02bb0473a8f34a6f13e00af3fe35ec4071",
-        "nextCaseFile": "/mnt/data/mahjong_P2a_v43_stage1_pilot-63.json",
+        "unattempted": 3,
+        "nextCaseId": "pilot-71",
+        "nextCasePacketHash": "e25b40a3797ab7bd5243dcbe441d3ee99332b740495f8f40e1a8448f93023e59",
+        "nextCaseQuestionFileSha256": "780d773cb6c3b64796a4bc0978cab1603d85685d6e7251f4614d0fcc6dd11de1",
+        "nextCaseFile": "/mnt/data/mahjong_P2a_v43_stage1_pilot-71.json",
         "initialAnswer": {
           "caseId": "pilot-43",
           "rawResponseSha256": "8ced3c7a8596cae3140434d25eb5a2e1119af54e5be7481c0847cfc0fa723ff0",
@@ -1474,6 +1474,31 @@
             "publicFacts": 4,
             "opponentObservations": 6,
             "meaningfulDifferences": 3,
+            "strictJson": true,
+            "transportCorrections": 0,
+            "semanticGrade": "NOT_ASSESSED_BY_MACHINE",
+            "mortalPolicyMatch": "UNKNOWN_NOT_TESTED"
+          },
+          {
+            "caseId": "pilot-63",
+            "rawReplySha256": "dc249348a0f16231c2f807e7262301c663eed801ab61af8b8f0ad1b476c2b644",
+            "requestHash": "76c65de8b477025a3330710db50870800529f3dea7194fc2a10cd2e0268cbdef",
+            "verdict": "CONTRACT_AND_PUBLIC_FACT_GATE_PASS",
+            "origin": "GPT-6 user-reported original JSON file",
+            "modelProposal": {
+              "recommendation": {
+                "key": "a43-0",
+                "afterCallDiscard": null
+              },
+              "alternative": {
+                "key": "a45-0",
+                "afterCallDiscard": null
+              }
+            },
+            "originalBytes": 6331,
+            "publicFacts": 4,
+            "opponentObservations": 6,
+            "meaningfulDifferences": 4,
             "strictJson": true,
             "transportCorrections": 0,
             "semanticGrade": "NOT_ASSESSED_BY_MACHINE",
@@ -3055,6 +3080,29 @@
       "mortalMatch": "NOT_RUN",
       "rawModelReplyPublishedToGitHub": false,
       "report": "handoff/p2a-v43-stage1-pilot62-fourth-gpt6-public-contract-receipt-20261123.md"
+    },
+    {
+      "status": "P2a_v43_STAGE1_FIFTH_REAL_GPT6_USER_JSON_PILOT63_SOURCE_CONTRACT_PASS",
+      "phase": "P2a-v4.3",
+      "caseId": "pilot-63",
+      "rawSha256": "dc249348a0f16231c2f807e7262301c663eed801ab61af8b8f0ad1b476c2b644",
+      "packetHash": "76c65de8b477025a3330710db50870800529f3dea7194fc2a10cd2e0268cbdef",
+      "verdict": "CONTRACT_AND_PUBLIC_FACT_GATE_PASS",
+      "originalJSVerifierExecutedLocally": true,
+      "actualResponses": 5,
+      "publicContractPasses": 5,
+      "originalPlan": 8,
+      "sourceComparisons": 4,
+      "opponentFacts": 6,
+      "distinctPublicDifferences": 4,
+      "strictJson": true,
+      "transportCorrections": 0,
+      "nextCase": "pilot-71",
+      "nextHash": "e25b40a3797ab7bd5243dcbe441d3ee99332b740495f8f40e1a8448f93023e59",
+      "semanticL4": "NOT_RUN",
+      "mortalMatch": "NOT_RUN",
+      "rawModelReplyPublishedToGitHub": false,
+      "report": "handoff/p2a-v43-stage1-pilot63-fifth-gpt6-public-contract-receipt-20261123.md"
     }
   ],
   "roadmap": {
