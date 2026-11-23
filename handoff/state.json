@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-23T10:06:00+09:00",
+  "checkpoint": "2026-11-23T10:20:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -8,8 +8,8 @@
     "coach_candidate_promoted": false
   },
   "active_task": {
-    "phase": "P2a-v2",
-    "status": "developer_phase_exit_no_go_claude_gemini_v2_review_pending",
+    "phase": "P2a-v2-closed",
+    "status": "phase_closed_NO_GO_both_external_reviews_complete_next_v3_conditional_GO_pending_user_decisions",
     "branch": "feat/coach-v14-pilot-boundary-v1",
     "commit": "9f3ef9d575899db0569d1d6ec915439ea22650d9",
     "pr": 61,
@@ -310,8 +310,8 @@
         "formalPhase": "NO-GO"
       }
     ],
-    "decision": "P2a-v2 DEVELOPER PHASE-EXIT NO-GO. Code/CI mechanical check success, but no independent real LLM Stage1/Stage2 responses; 36 frozen new dev scenes zero model calls, provider/model logs absent, semantic evaluator cannot distinguish typed-evidence fact-padding from high-quality strategic causality, real counterfeit S42 susceptibility unmeasured, independent expert oracle absent, no new change/maintain pairs. Full legal mask and rare role timing unproven. Current code sha 9f3ef9d... main untouched. External Phase-end Claude Opus and Gemini V2 reviews are required and not yet received; do NOT report phase endorsed by third parties, nor promote official B/P1Lite/P3/main/public.",
-    "next": "Await exact P2a-v2 first-round Claude Opus and Gemini independent major-only reviews of frozen code+docs; then integrate within max two rounds and choose next development phase only with real model inference path approved. Do not request additional code check-ins and do not run paid API without explicit consent. P2a-v2 code/QA phase exit is NO-GO, not tactical certification.",
+    "decision": "Both Claude Opus 5.5 and Gemini P2a-v2 Phase-end first-round independent reviews received, BOTH support NO-GO closure. Both support P2a-v3 conditional GO ONLY after user selects real model inference route and core schema breaks are fixed; other third party round NOT required as major technical findings aligned. Gemini independently found numeric-only distinct candidate proof schema rejects fundamental same-tile riichi-vs-dama and terminal ron/pass; source confirmed. Reviewers both flag incompatible Stage2 genuine-vs-counterfeit output schema, zero real model calls, unreachable perfect tactical oracle framing, missing new legal change/maintain counterfactual pairs, product-route and rank/score gaps. Freezing v2 on prior code sha; no code changes to retroactively pass. Formal B, P1Lite, B4, P3, main, public remain NO-GO. Await user choices of inference mode, intended distribution, L4 expert review scope before beginning v3; do not incur costs.",
+    "next": "P2a-v2 is CLOSED NO-GO with both reviewer first-round results recorded. User decision on capped API vs manual (and bound), intended distribution and expert blind review level; then versioned P2a-v3 proof-contract and Stage2 schema fixes, real model smoke, legal counterfactual tests, blind challenger rubric. Do not open repeated reviewer round absent conflict; do not add mechanical-only tests for their own sake; no API costs without consent.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -377,9 +377,12 @@
     },
     "phase_exit_report": "handoff/p2a-v2-phase-exit-no-go-review-request-20261123.md",
     "product_contract": "handoff/p2a-v2-product-coach-contract-20261123.md",
-    "v2_review_status": "phase_exit_developer_no_go_awaiting_claude_and_gemini_first_round",
-    "v2_review_rounds_used": 0,
-    "v2_reviewers_completed": [],
+    "v2_review_status": "claude_opus_5_5_and_gemini_both_first_round_complete_no_second_needed",
+    "v2_review_rounds_used": 1,
+    "v2_reviewers_completed": [
+      "Gemini",
+      "Claude Opus 5.5"
+    ],
     "no_new_api_payment_authorized": true,
     "phase_gate": {
       "qa": "limited_public_fact_mechanics_pass",
@@ -389,10 +392,19 @@
       "new36ModelResponses": 0,
       "threeRepeatPerEightModelCalls": 0,
       "heldoutNewContrastPairs": 0,
-      "overall": "NO-GO",
-      "reviews": "pending",
+      "overall": "NO-GO_after_both_external_reviews",
+      "reviews": "both_complete_first_round",
       "main": "unchanged",
-      "productRelease": "NO-GO"
+      "productRelease": "NO-GO",
+      "nextPhase": "P2a-v3_conditional_GO_only_after_user_decision_and_schema_repair",
+      "codeContractIssue": "v14-evidence-proof-v2 numeric distinct comparison wrongly rejects same-tile riichi-dama, terminal ron/pass, and equal-shape other-seat safety",
+      "stage2ContractIssue": "genuine Stage2 text+diagnosis versus counterfeit Stage2 endorsedTopGroup booleans incompatible, no common responseShape"
+    },
+    "v2_review_final": "handoff/p2a-v2-claude-gemini-phase-exit-review-integrated-20261123.md",
+    "nextPhaseEntryDecisions": {
+      "inference": "user_choose_capped_API_or_scaled_manual",
+      "distribution": "user_choose_private_test_only_or_future_public_web",
+      "L4": "user_choose_real_blinded_expert_limited_evaluation_or_unaudited_L4_scope"
     }
   },
   "previous_runs": [
