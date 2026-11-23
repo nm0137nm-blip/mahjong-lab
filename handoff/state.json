@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-23T23:48:00+09:00",
+  "checkpoint": "2026-11-23T23:53:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -1713,7 +1713,7 @@
       "next": "対応依頼: New GPT-6 Temporary Chat with frozen pilot-46 public JSON; produce original untouched mahjong_P2a_v44_stage1_pilot-46_response.json UTF-8 JSON FILE attachment, not pasted. Return it for strict v44 original-source verifier. No old GPT answers or S42 labels supplied."
     },
     "api_transport_exploratory": {
-      "status": "DRY_RUN_EIGHT_OF_EIGHT_SOURCE_SHA_MATCH_API_CALLS_ZERO_CI_SUCCESS",
+      "status": "PREAPPROVED_PILOT46_ONLY_DR_RUN_BUDGET_TEST_SUCCESS_WAITING_SECURE_KEY_AND_RUNTIME",
       "branch": "feat/coach-p2a-v44-api-transport-dryrun",
       "draftPR": 68,
       "headCommit": "17b56f1819302d2ecee25941bd599e86c0aa4140",
@@ -1731,7 +1731,17 @@
       "confidentiality": "public GitHub Actions live disabled; raw API answer local private file only",
       "report": "handoff/p2a-v44-api-automation-dryrun-20261123.md",
       "planCorrection": "USER_HAS_PLUS_NOT_PRO; Pro subscription API grant unavailable under Plus; live remains prohibited without individual explicit consent",
-      "billingUpdate": "User says $5 credit added, unverified balance. Still no specific paid API use approved or executed."
+      "billingUpdate": "User says $5 credit added, unverified balance. Still no specific paid API use approved or executed.",
+      "approvalUSD": 0.3,
+      "scope": "pilot-46 one request only",
+      "guardCommit": "425834c63cdb1087bb5e8f77af223e18ad6d1010",
+      "guardRun": 45198887083,
+      "guardRunConclusion": "success",
+      "guardCostUpperUSD": 0.171246,
+      "outputTokenCap": 12000,
+      "chargesEstimatedNotBilled": true,
+      "noRetries": true,
+      "blocker": "API secret not available in authorized runtime; container has no DNS route to api.openai.com; key setup UI opened but cannot assume completed."
     }
   },
   "previous_runs": [
@@ -3554,6 +3564,16 @@
       "authorizationForSpecificPaidModelCall": false,
       "previousPaidAPIApprovals": 0,
       "next": "safe API key setup plus separate pilot46 one-time spend approval; no automatic charges"
+    },
+    "api_paid_call_approval_20261123": {
+      "scope": "one pilot-46 GPT-6 Sol Responses API generation-and-v44-verification experiment",
+      "approvedUSD": 0.3,
+      "maximumAPIRequestCount": 1,
+      "approvedByUser": true,
+      "approvalTimestamp": "2026-11-23T23:49:34+09:00",
+      "approvalNotGeneralizedToOtherQuestions": true,
+      "realAPICallsExecuted": 0,
+      "currentBlockedReason": "No connected API key in execution runtime; direct API network unavailable in runtime. Need safe credential and reachable execution route."
     }
   }
 }
