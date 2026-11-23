@@ -366,3 +366,11 @@ ChatGPTが実際に独立して解いた回答を得る前に、採点・中止�
 - Stage1の分母は**受信1／形式・公開事実ゲート合格1／未実施7**。重大契約エラーなしで**予定どおり2問目へ進行可**。まだPhase全体合格ではない。v3/v4/v4.1の旧失敗を遡及変更しない。
 - **現在の対応依頼**：v4.2固定順2問目`pilot-47.json`（requestHash`e655cd7bf0346c19dce8776fd3082d296de2c9102973de9b4cf8d417ceff70f1`、既存凍結8問ZIPから展開、ファイルSHA256 `def152c3f7556893b7cd6de45fd4147a35215f1f244fbcc2075008d893aa536d`）を新しいChatGPT一時チャットで解かせ、原JSONファイルを本開発チャットへ返す。可能ならUIで表示されるモデル名も添える。Stage2・L3.5実モデル回答・3者匿名L4採点はいずれも未実施、main・製品はNO-GO、有料APIなし、追加Patchレビュアー依頼なし。
 - 詳細：`handoff/p2a-v42-pilot52-first-independent-model-receipt-20261123.md`、最新`handoff/state.json`。
+
+
+## 2026-11-23 18:15 JST：P2a-v4.2 Stage1：pilot47第2問PASS／以後はJSONファイル出力指定
+- ユーザーが独立第2問`mahjong_P2a_v42_stage1_pilot-47_response.json`を添付。独立v4.2検証器を**オリジナルGitHubソースのローカルNode実行**で照合し、**`CONTRACT_AND_PUBLIC_FACT_GATE_PASS`**。完全な有効JSONのためトランスポート修正0、質問ハッシュ`e655cd7bf0346c19dce8776fd3082d296de2c9102973de9b4cf8d417ceff70f1`一致。原回答ファイルSHA256=`e4d0b95a68748edc8f9d1e2d4e4bd4986db465248c604d11bcedccc05bb71d26`、非公開のまま保全。
+- モデル推奨`a6-0`＝**m7（7萬）切りダマ**、対案`a37-0`＝m7切り立直。両者合法。公開比較証明9件、他家観測6件、実質相違点2件を確定ソースで検証。親席0・東1局残り5枚、席2は立直あり。**公開事実と契約に関する合格であり、Mortal推奨一致や戦術解説専門水準を証明しない**。前回assistantが「7索」と記したのは説明上の誤記で、ソースは`m7`＝7萬。
+- 実測Stage1の合格進捗**2/8**（pilot52・pilot47とも厳密契約PASS）、未実行6、段階2・反復・L3.5実モデル回答・L4採点は未実施。**ユーザーはすべての回答モデルがGPT-6だと明示**したのでGPT-6（ユーザー報告）として記録。実際のモデルUI証跡やThinking設定まで認証済みとは言わない。
+- **運用変更（ユーザー明示要望）**：今後の独立試験ChatGPTに対しては、**平文でJSONを貼るのではなく、UTF-8の`mahjong_P2a_v42_stage1_<caseId>_response.json`ファイルを作成・添付して、チャット本文はファイルリンクだけ**にするよう、別途納品指示を付ける。凍結済み出題ファイル`request.system`・`responseShape`・`requestHash`には手を加えない。モデルの戦術判断を誘導する指示は追加しない。
+- **次の対応依頼**：固定第3問`pilot-59.json`（requestHash`47170cba8287f79dd00045a15ca0d2890e6101445634e962f34f558cb31402e4`）を新規ChatGPT一時チャットへ添付し、**`mahjong_P2a_v42_stage1_pilot-59_response.json`をファイルとして生成**させ、原ファイルを開発チャットに返す。詳細`handoff/p2a-v42-pilot47-second-independent-model-receipt-file-delivery-20261123.md`、正本`handoff/state.json`。
