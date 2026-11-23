@@ -12,7 +12,8 @@ const fail=s=>{throw Error('p2a-v44-one-shot: '+s);};
 const hash=b=>createHash('sha256').update(b).digest('hex');
 const expectBranch='refs/heads/feat/coach-p2a-v44-api-transport-dryrun';
 const expectedApproval='$0.30_PILOT46_RETRY_2026-11-24';
-const RETRY_MARKER='research/approvals/pilot46-retry-20261124.run';
+const RETRY_MARKER='research/approvals/pilot46-retry2-20261124.run';
+const RETRY_MARKER_SHA='dec39d2c10e965ef659dbfb22ef8c71af8a9c2758010ce14efd96ea7c57c7286';
 // Safe for public CI logs: never include raw response body, error.message,
  // request payload or credential.
 export function sanitizeApiFailure(body,httpStatus){
@@ -28,13 +29,11 @@ export function assertEnv(env){
    fail('approval scope, branch, event or run attempt mismatch (no request)');
  if(!env.OPENAI_API_KEY)fail('missing API secret (no request)');
 }
-export function assertFreshMarker(event,env){
- if(event?.head_commit?.id!==env.GITHUB_SHA ||
-    !Array.isArray(event.head_commit.added) ||
-    !event.head_commit.added.includes(RETRY_MARKER) ||
-    (event.head_commit.modified??[]).includes(RETRY_MARKER) ||
-    (event.head_commit.removed??[]).includes(RETRY_MARKER))
-   fail('only original added approval marker commit may execute');
+// Validate immutable authorized marker bytes locally. The workflow path filter
+// restricts activation; a rerun is already rejected by RUN_ATTEMPT. No event-body
+// parser assumptions and no paid request before verifying content.
+export function assertFreshMarker(text){
+ if(hash(text)!==RETRY_MARKER_SHA)fail('approval marker content mismatch');
 }
 export function makeEncryptedArchive(clear,publicPem){
  const key=randomBytes(32),iv=randomBytes(12);
@@ -50,8 +49,7 @@ export function makeEncryptedArchive(clear,publicPem){
 }
 export async function main(env=process.env){
  assertEnv(env);
- const pushEvent=JSON.parse(await fs.readFile(env.GITHUB_EVENT_PATH,'utf8'));
- assertFreshMarker(pushEvent,env);
+ assertFreshMarker(await fs.readFile(RETRY_MARKER,'utf8'));
  const frozen=JSON.parse(await fs.readFile(env.V14_FOLLOWUP_PUBLIC,'utf8'));
  const packet=JSON.parse(await fs.readFile(path.join(env.V14_V44_QUESTIONS_DIR,'pilot-46.json'),'utf8'));
  checkFrozenPacket(packet,'pilot-46');
