@@ -66,7 +66,7 @@ test('four legal coupled riichi packages: both sides can record opposite public 
 });
 test('a factually valid generic answer that omits changed opponent never receives contrast awareness credit',()=>{
  if(!ready)return;
- const responses=pairRows().map((x,i)=>syntheticAnswer(x.pilotId,{omitChangedSeat:i%2===0}));
+ const responses=pairRows().map(x=>syntheticAnswer(x.pilotId,{omitChangedSeat:x.version==='a'}));
  const report=evaluatePairedStage1Awareness(stage1,lineage,reference,responses);
  assert.equal(report.bothSidesExplicitRiichiGrounding,0);
  assert.equal(report.availablePairedResponses,4);
