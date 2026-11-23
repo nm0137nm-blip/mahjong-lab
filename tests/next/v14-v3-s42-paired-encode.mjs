@@ -78,7 +78,25 @@ for(const [n,pair] of pairs.pairs.entries()){
    log.length>history.length&&
    JSON.stringify(log.slice(1,1+history.length).map(comparable))===JSON.stringify(history);
  });
- assert.equal(matches.length,1,'unique observable game prefix must be found');
+ if(matches.length!==1){
+  const sameRound=archive.log.filter(log=>{
+   const q=log[0].qipai;
+   return q.zhuangfeng==='東南西北'.indexOf(board.round[0])&&
+    q.jushu===Number(board.round[1])-1&&q.changbang===board.honba;
+  });
+  const overlap=log=>{
+   const comparableHistory=log.slice(1,1+history.length).map(comparable);
+   let n=0;while(n<Math.min(comparableHistory.length,history.length)&&
+    JSON.stringify(comparableHistory[n])===JSON.stringify(history[n]))n++;
+   return n;
+  };
+  throw Error('public-prefix-reconstruction: '+JSON.stringify({
+   caseId:pair.sourceCaseId,kind:pair.kind,shard:p.shard,
+   publicHistoryLength:history.length,matchingRounds:sameRound.length,
+   maxMatchingPublicEvents:Math.max(0,...sameRound.map(overlap)),
+   matchingOriginalLogs:matches.length
+  }));
+ }
  const prefix=matches[0].slice(0,1+history.length).map(m=>redact(m,board.ownSeat));
  // An identical physical point in the round, with only the declared public
  // intervention. This does not magically prove unobserved physical histories.
