@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-24T00:42:00+09:00",
+  "checkpoint": "2026-11-24T00:55:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -1713,7 +1713,7 @@
       "next": "対応依頼: New GPT-6 Temporary Chat with frozen pilot-46 public JSON; produce original untouched mahjong_P2a_v44_stage1_pilot-46_response.json UTF-8 JSON FILE attachment, not pasted. Return it for strict v44 original-source verifier. No old GPT answers or S42 labels supplied."
     },
     "api_transport_exploratory": {
-      "status": "PILOT46_ONE_APPROVED_API_POST_ATTEMPTED_ONCE_HTTP429_NO_MODEL_REPLY_NO_RETRY_WORKFLOW_DISARMED",
+      "status": "SECOND_PREAPPROVED_SINGLE_POST_HTTP429_BILLING_NOT_ACTIVE_NO_MODEL_OUTPUT_RETRY_DISABLED",
       "branch": "feat/coach-p2a-v44-api-transport-dryrun",
       "draftPR": 68,
       "headCommit": "17b56f1819302d2ecee25941bd599e86c0aa4140",
@@ -1810,7 +1810,41 @@
         "meaning": "Credential authentic and gpt-6-sol model metadata accessible. Does not prove Responses POST quota or billing activation.",
         "testCommit": "39e1901d787809c01d2a852f53beec74817132fe"
       },
-      "next": "No more organization or project cap screenshot needed. Need original 429 error.code for definitive diagnosis; cannot recover from sanitized 429 log. If authorized separately, next pilot-46 single POST logs only safe error type/code, one request/no retry; no auto-authorization."
+      "next": "No more organization or project cap screenshot needed. Need original 429 error.code for definitive diagnosis; cannot recover from sanitized 429 log. If authorized separately, next pilot-46 single POST logs only safe error type/code, one request/no retry; no auto-authorization.",
+      "newApproval": {
+        "time": "2026-11-24T00:45:28+09:00",
+        "scope": "pilot-46 one additional GPT-6 Sol Responses POST",
+        "maximumUSD": 0.3,
+        "count": 1,
+        "consumed": true
+      },
+      "unsuccessfulPrePostGuardRun": {
+        "runId": 45209494043,
+        "apiPostRequests": 0,
+        "reason": "Strict GitHub event head_commit.added check rejected legitimate original marker, fixed by exact content SHA guard"
+      },
+      "retriedActualPost": {
+        "runId": 45210322937,
+        "jobId": 137817072285,
+        "postRequests": 1,
+        "httpStatus": 429,
+        "errorType": "billing_not_active",
+        "errorCode": "billing_not_active",
+        "modelOutputCount": 0,
+        "verifierRuns": 0,
+        "encryptedArtifact": null,
+        "autoRetries": 0,
+        "billedAmount": "UNCONFIRMED; no response token usage reported",
+        "preflightUpperUSD": 0.171246
+      },
+      "workflowDisarmedCommits": [
+        "489197dd07d8e1bed23ab68dfbbde2bd7e9e751d",
+        "c68eaa31d69b75ab991d616dffd55c4baf1755bb"
+      ],
+      "whyNoFurtherPost": "billing_not_active billing state must be resolved, and specific one-post approval consumed; further POST requires new separate approval",
+      "originalManualStage1ResponseCount": 0,
+      "experimentVerdict": "BLOCKED_BILLING_NOT_ACTIVE_NOT_MODEL_TACTICAL_ASSESSMENT",
+      "evidence": "GitHub Actions job log 137817072285, safe 429 error type/code only"
     }
   },
   "previous_runs": [
@@ -3517,6 +3551,24 @@
       "errorCodeFromEarlier429": "NOT_CAPTURED",
       "noModelReply": true,
       "manualStage1Count": 0
+    },
+    {
+      "phase": "P2a-v4.4 automated GPT-6 pilot-46 API exploratory",
+      "status": "SECOND_SINGLE_APPROVAL_CONSUMED_429_BILLING_NOT_ACTIVE_NO_RESPONSE",
+      "run_id": 45210322937,
+      "job_id": 137817072285,
+      "apiPostAttempts": 1,
+      "errorCode": "billing_not_active",
+      "modelOutputs": 0,
+      "verifierRuns": 0,
+      "rawAnswerArtifact": false,
+      "retries": 0,
+      "approvedMaxUSD": 0.3,
+      "billedUSD": "unknown; billing screen check needed",
+      "noMainChange": true,
+      "originalV44Stage1Unchanged": "0 of 8",
+      "workflowDisarmed": true,
+      "remediation": "Inspect API Platform payment method/active subscription and organization-project alignment; contact OpenAI Support if active $5 credit but API still billing_not_active; no additional charge without explicit approval."
     }
   ],
   "roadmap": {
