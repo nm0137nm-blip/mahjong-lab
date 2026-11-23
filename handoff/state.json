@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-23T09:20:00+09:00",
+  "checkpoint": "2026-11-23T09:45:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -9,11 +9,11 @@
   },
   "active_task": {
     "phase": "P2a-v2-dev-repair",
-    "status": "dev_gate4_concrete_candidate_opponent_factual_link_check_pass_knowledge_semantics_not_certified",
+    "status": "gate5_paired_awareness_and_gate6_new36_prepared_audits_pass_full_legality_and_semantics_pending",
     "branch": "feat/coach-v14-pilot-boundary-v1",
-    "commit": "10c7a9884b9cc7659768d16d674c56609173a9a4",
+    "commit": "a11a162aaffe4201b8207227220637358603b991",
     "pr": 61,
-    "run_id": 45087267063,
+    "run_id": 45090234969,
     "prior_runs": [
       {
         "run_id": 44754324733,
@@ -252,10 +252,51 @@
         "actualStage2ModelInference": 0,
         "tacticalExplanationCertified": false,
         "formalGatePassed": false
+      },
+      {
+        "run_id": 45089601651,
+        "status": "gate5_paired_factual_riichi_awareness_and_onecase_transport_qa_success",
+        "commit": "dfe2fd0fdedd3a2c74d1c6485ba2016d8c393cf0",
+        "tests": 51,
+        "passed": 51,
+        "failed": 0,
+        "pairedContexts": 4,
+        "frozenOldPilotPrompts": 30,
+        "actualModelCalls": 0
+      },
+      {
+        "run_id": 45089922993,
+        "status": "gate6_new36_preregistered_public_development_set_frozen",
+        "commit": "05240f372895d69bdc3b045af9df146fd95d5a90",
+        "tests": 54,
+        "passed": 54,
+        "failed": 0,
+        "newDevelopmentScenes": 36,
+        "originalShards": 36,
+        "priorShards": 26,
+        "overlappingShards": 0,
+        "publicFactShapeRows": 403,
+        "publicFactScoreValues": 255,
+        "hypotheticalRankTransfers": 1512,
+        "hypotheticalRankChecks": 1512,
+        "actualModelCalls": 0,
+        "fullyIndependentLegality": false
+      },
+      {
+        "run_id": 45090234969,
+        "status": "gate6_independent_public_physical_action_subset_qa_success",
+        "commit": "a11a162aaffe4201b8207227220637358603b991",
+        "sourceFrozenRun": 45089922993,
+        "publicActionRecords": 324,
+        "separatelyVerifiedOptions": 322,
+        "optionsNotIndependentlyReconstructed": 2,
+        "failures": 0,
+        "allLegalMaskCertified": false,
+        "actualModelCalls": 0
       }
     ],
-    "decision": "Development Gate4 QA pass 44/44. Typed witness for specific opponent genbutsu/shape opportunity cost now must match the answer's exact recommended-vs-alternative candidates, correctly classified opponent seat, comparable metric/value, rather than a reusable citation elsewhere; 888 synthetic known-good math fixtures pass; 30 fact-padded generic fixtures fail this particular link check. Text remains semantically ungraded and generic prose with genuine typed facts can still pass. No actual LLM used, no strategy certification. Old 30 remain regression only. Full v1.4 pilot failed and official B/P1-Lite160/P3/main/public remain NO-GO.",
-    "next": "Expand paired legal public-factor counterfactuals and robust adversarial cases with correct values but swapped prose. Confirm genuinely independent model execution/run logs or report inability without pretending API. Build new 30–40 nonoverlapping dev cases, preregister next-stage criteria and execute Stage1+Stage2 only after end-to-end model path and post-freeze controls are ready. No formal seeds/official B or public release.",
+    "decision": "Gates 5+6 check-point QA success: 51/51 older-case regression tests, genuine evidence-vs-Mortal-response awareness separated over 4 coupled riichi packages; old 30 each separate onecase file. Follow-up 36 natural decisions preregistered BEFORE selection (12 reach+12 reaction+12 discard); 36 original source shards, zero overlap with old 26 origins, source 96 development-only pool, public-only frozen input sha 271b4a... Verified 403 shape rows, 255 scored conditional values, 1512 point transfers and 1512 rank orders, errors 0; independent Python material action feasibility checked 322/324 with zero discrepancies, 2 remain unverified, full action-mask legality and yaku-name audits remain open. No LLM real inference; 36 natural scenes have 0 new paired contrasts. S42 & strategic explanation capability unproven, evaluator semantic gate unresolved, formal B/P1Lite/B4/P3/main/public NO-GO. Do not pretend 54/54 QA tests or 36 new cases demonstrate skill.",
+    "next": "Continue independent legality completeness for remaining two unsupported public action categories and audit yaku names; then implement meaning-level evaluator controls with paired public-factor perturbations and genuine expert reference, not citation counts. Arrange real 1-case 1-session LLM inference with provider/setting/hashes and repeatability before new36 Stage1+Stage2 execution; no paid API without user consent. Prepare legal change/maintain pairs with new original matches, no formal seeds/old test data reuse for ability claims. Phase-end Claude/Gemini review when full Phase closes (not each checkpoint).",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -297,7 +338,28 @@
     "v2_checkpoint": "handoff/p2a-v2-initial-engineering-checkpoint-20261123.md",
     "gate2_report": "handoff/p2a-v2-mechanical-evaluation-gate2-20261123.md",
     "gate3_report": "handoff/p2a-v2-development-gate3-20261123.md",
-    "gate4_report": "handoff/p2a-v2-development-gate4-20261123.md"
+    "gate4_report": "handoff/p2a-v2-development-gate4-20261123.md",
+    "gates5_6_report": "handoff/p2a-v2-development-gates5-6-20261123.md",
+    "new36_prereg": "handoff/p2a-v2-second-dev-36-prereg-20261123.md",
+    "new36_artifacts": {
+      "sourceRun": 45089922993,
+      "publicArtifact": 14780434054,
+      "verifierOnlyArtifact": 14781325469,
+      "publicInputHash": "271b4a304ed86dc41be2e72766e2b5cc496966bdf8a0ce5a8d5a5d0334e6103a",
+      "verifierLineageHash": "bf434dc23a180d0c62cce1cb17d81dc06ec8331da1ca13e83b375ec6d7dbfed5",
+      "sourcePoolShards": 96,
+      "oldSourceShards": 26,
+      "new36Shards": 36,
+      "overlap": 0,
+      "groups": {
+        "reach": 12,
+        "reaction": 12,
+        "discard": 12
+      },
+      "frozen": true,
+      "realModelCalls": 0,
+      "legalMaskFullyIndependentCertified": false
+    }
   },
   "previous_runs": [
     {
