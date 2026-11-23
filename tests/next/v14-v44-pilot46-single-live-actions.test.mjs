@@ -43,11 +43,9 @@ test('429 diagnostics disclose only safe error type and code',()=>{
  assert.equal(unsafe.errorType,null);
 });
 
-test('only first committed added marker passes; modified/removed/re-run denied',()=>{
- const marker='research/approvals/pilot46-retry-20261124.run';
- const env={GITHUB_SHA:'SHA_EXACT_TEST'};
- const evt={head_commit:{id:'SHA_EXACT_TEST',added:[marker],modified:[],removed:[]}};
- assert.doesNotThrow(()=>assertFreshMarker(evt,env));
- assert.throws(()=>assertFreshMarker({...evt,head_commit:{...evt.head_commit,added:[],modified:[marker]}},env),/marker/);
- assert.throws(()=>assertFreshMarker(evt,{GITHUB_SHA:'WRONG'}),/marker/);
+test('only exact approved immutable marker content accepted',()=>{
+ const marker='P2A_V44_PILOT46_ONE_0.30_USD_POST_APPROVED_2026-11-24_SECOND_TRIGGER_AFTER_NO_POST_FAILED_GUARD\n';
+ assert.doesNotThrow(()=>assertFreshMarker(marker));
+ assert.throws(()=>assertFreshMarker(marker+'modified'),/marker/);
+ assert.throws(()=>assertFreshMarker(''),/marker/);
 });
