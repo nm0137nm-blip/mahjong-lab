@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-23T14:03:00+09:00",
+  "checkpoint": "2026-11-23T15:02:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -9,11 +9,11 @@
   },
   "active_task": {
     "phase": "P2a-v4 (conditional development GO, preregistered independent ChatGPT trial not started)",
-    "status": "P2a_v4_development_first_source_facts_settlement_and_anchored_tactics_CI_success_trial_NO_GO_pending_blockers",
+    "status": "P2a_v4_source_bound_dealer_and_conditional_candidate_settlement_CI_44_pass_4608_python_not_model_ready",
     "branch": "feat/coach-p2a-v4-fact-anchored-explanations",
-    "commit": "e49851bf6ce3f0ea07067c9127ef2062603e3c5a",
+    "commit": "376b7b34c597e606613454471312860ac652c91a",
     "pr": 63,
-    "run_id": 45115126032,
+    "run_id": 45121344528,
     "prior_runs": [
       {
         "run_id": 44754324733,
@@ -355,7 +355,7 @@
       }
     ],
     "decision": "P2a-v3 permanently CLOSED_NO_GO; Gemini and Claude Opus support phase termination and conditional P2a-v4 engineering GO. v4 model testing NOT GO, release unchanged NO-GO.",
-    "next": "Continue no-cost v4 dealer provenance plus candidate-specific scoring events; do not ask user to run real ChatGPT until input and verification are freeze-ready.",
+    "next": "Complete user-facing v4 compact brief/source-only numeric fact ID answer packet and rigorous end-to-end contract tests, then freeze v4 evaluation protocol before requesting one ChatGPT manual independent response. No model call and no paid API during these engineering tasks.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -817,45 +817,73 @@
       "branch": "feat/coach-p2a-v4-fact-anchored-explanations",
       "pr": 63,
       "draft": true,
-      "commit": "e49851bf6ce3f0ea07067c9127ef2062603e3c5a",
-      "latestRun": 45115126032,
+      "commit": "376b7b34c597e606613454471312860ac652c91a",
+      "latestRun": 45121344528,
       "ci": {
         "status": "success",
-        "nodeTests": 23,
+        "nodeTests": 44,
         "nodeFailed": 0,
         "independentPythonSettlementVectors": 4608,
         "pythonMismatches": 0,
-        "previousCountErrorRun": 45115021634,
-        "previousError": "expectation 2304 while generator emitted 4608; corrected"
+        "publicLegacyRonRows36Cases": 1080,
+        "publicLegacyRowsMismatched": 0,
+        "priorRunsFailureReasons": [
+          "45115021634 vector length expected 2304 vs generated 4608; corrected",
+          "45120652696 / 45120835243 / 45121089892 intermediate fixture/contract mismatch after stricter source and rationale rules; later corrected"
+        ]
       },
       "components": [
         "src/coach/v14-settlement-events-v4.mjs",
         "src/coach/v14-public-proof-gate-v4.mjs",
         "src/coach/v14-anchored-tactical-text-v4.mjs",
         "src/coach/v14-public-brief-v4.mjs",
-        "src/coach/v14-v4-smoke-selection.mjs"
+        "src/coach/v14-v4-smoke-selection.mjs",
+        "src/coach/v14-dealer-provenance-v4.mjs",
+        "src/coach/v14-candidate-settlement-v4.mjs"
       ],
       "developmentResults": {
         "pilot48Legacy15RowsSplitTo30EventsMatched": true,
         "publicBriefAll36DeterministicAndUnder20KB": true,
         "initial8PrototypeComposition": "reach2 interaction2 ron1 discard3 excluding pilot48",
-        "prototypeStage1ModelCalls": 0
+        "prototypeStage1ModelCalls": 0,
+        "engineRelativeDealerSeatEast0VerifiedAcross36PublicBoards": true,
+        "fullPrivateGameReplayNotCertified": true,
+        "publicLegacyRanksRonBothDirectionsVerifiedAcross36": 1080,
+        "redDoraAndCallPostDiscardSourceScoreModeJoined": true,
+        "pilot63FuritenWinSourceNotPromotedToLegalRon": true,
+        "sourceBoundEventFactsOnlyNoArbitraryCallerAmounts": true,
+        "v4TacticalThreeSeatEachRequiresRankGapProgressCandidateTradeoffReversal": true,
+        "genericSourceLessIfThreatThenDamaRejectedAsSchema": true,
+        "notAnExpertRationaleCertificate": true,
+        "compactPublicBriefWithSpecificLegalAfterCallDiscards": true,
+        "prospectiveEightBeforeAnyV4ModelAnswer": [
+          "pilot-42",
+          "pilot-47",
+          "pilot-59",
+          "pilot-62",
+          "pilot-63",
+          "pilot-71",
+          "pilot-70",
+          "pilot-67"
+        ],
+        "preModelSelectionCriterion": "SHA-ID-order with at least one honba>0 in each reach/react/discard category, no teacher or response labels",
+        "preModelTrialStatus": "NOT_PREREGISTERED_FINAL_NOT_AUTHORIZED"
       },
       "blockers": [
-        "verified dealer seat from live public source before v4 events are used",
-        "link candidate action mode, tile and yaku-conditioned score to event ID",
-        "complete valid concrete afterCallDiscard and source/physical legality",
-        "deterministic production Mortal recommendation plus all-opponent fixed public facts",
-        "full v4 versioned schema and preregistered Stage1, L3.5 and L4 blind protocols",
-        "true model Stage1 testing not started; not permitted before clear evidence gates",
-        "no new paid model API authorizations",
-        "actual model strategic reasoning expertise unmeasured"
+        "full live-game physical legality replay with independent scoring source, not just public source/relative engine seating",
+        "production recommendation from authenticated S42 not model's own unverified choice",
+        "model-usable v4 compact brief plus source fact ID output schema and end-to-end model API/manual packet gate",
+        "pre-reg frozen unbiased source-disjoint L3.5 changed/maintained paired examples >=4 each and independent physical check",
+        "pre-reg locked first eight manual model trials and human/Claude/Gemini L4 blind explanation evaluation",
+        "no real v4 model replies received; not licensed to claim strategy expert skill",
+        "no paid API or service without explicit user per-use approval"
       ],
       "independentModelResponses": 0,
       "notTrustedModelTacticalGrade": true,
       "sourceS42Exploratory58": "historical_only_never_promote_to_new_l35",
       "gate": "NO_GO_FOR_MANUAL_EXPERIMENT_AND_NO_GO_FOR_MAIN",
-      "next": "Continue no-cost v4 dealer provenance plus candidate-specific scoring events; do not ask user to run real ChatGPT until input and verification are freeze-ready."
+      "next": "Complete user-facing v4 compact brief/source-only numeric fact ID answer packet and rigorous end-to-end contract tests, then freeze v4 evaluation protocol before requesting one ChatGPT manual independent response. No model call and no paid API during these engineering tasks.",
+      "latestProgressReport": "handoff/p2a-v4-source-provenance-and-scenario-binding-20261123.md"
     }
   },
   "previous_runs": [
@@ -2072,6 +2100,25 @@
       },
       "limitations": "v4 preliminary engineering only, dealer/source-specific candidate scoring + pre-registered unseen model trial not ready, no production merge",
       "record": "handoff/p2a-v4-development-kickoff-20261123.md"
+    },
+    {
+      "status": "P2a_v4_dealer_provenance_source_bound_candidate_events_and_generic_prose_gate_development_QA",
+      "phase": "P2a-v4",
+      "branch": "feat/coach-p2a-v4-fact-anchored-explanations",
+      "commit": "376b7b34c597e606613454471312860ac652c91a",
+      "pr": 63,
+      "run_id": 45121344528,
+      "nodeTestsPassed": 44,
+      "nodeTestsFailed": 0,
+      "pythonCrossLanguageSettlementScenarios": 4608,
+      "pythonMismatches": 0,
+      "publicOriginalCasesVerified": 36,
+      "legacyRonRowsCompared": 1080,
+      "newModelRealAnswers": 0,
+      "formalL35": "NOT_RUN",
+      "formalL4": "NOT_RUN",
+      "subphaseStatus": "DEVELOPMENT_PROGRESS_NOT_PHASE_EXIT",
+      "report": "handoff/p2a-v4-source-provenance-and-scenario-binding-20261123.md"
     }
   ],
   "roadmap": {
