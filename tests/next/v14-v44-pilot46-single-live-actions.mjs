@@ -52,9 +52,18 @@ export async function main(env=process.env){
   body:JSON.stringify(payload),signal:AbortSignal.timeout(230000)
  });
  if(!res.ok){
-  // Do not log response body, which might echo sensitive values.
-  console.log('API HTTP status',res.status,'no retries');
-  process.exitCode=1;return {httpStatus:res.status,apiRequestAttempted:true,completed:false};
+  // Retain ONLY machine-readable error type/code, never the error message,
+  // arbitrary body, key, request input, or user text in public Actions logs.
+  let json=null;
+  try { json=await res.json(); } catch {}
+  const safeToken=x=>typeof x==='string'&&/^[a-z0-9_-]{1,64}$/.test(x)
+    ?x:null;
+  const errorType=safeToken(json?.error?.type);
+  const errorCode=safeToken(json?.error?.code);
+  const safeFailure={httpStatus:res.status,errorType,errorCode,
+    apiRequestAttempted:true,completed:false,retries:0};
+  console.log('API_SAFE_ERROR',JSON.stringify(safeFailure));
+  process.exitCode=1;return safeFailure;
  }
  const response=await res.json();
  let raw='',error=null,receipt=null;
