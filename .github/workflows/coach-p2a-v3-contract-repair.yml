@@ -234,19 +234,12 @@ jobs:
           run-id: 44673093075
           github-token: ${{ secrets.GITHUB_TOKEN }}
           path: /tmp/fixed-encoder
-      - name: Reinstall pinned legal S42 observation encoder and pinned model (no paid API)
+      - name: Reinstall SHA-pinned observation encoder before source reconstruction
         run: |
           set -euo pipefail
           cp /tmp/fixed-encoder/encoder-pkg/encoder* assets/mortal/
           echo '886cb7abb09034dcdf348039d651d63a83cd7edb87d3337a452722c960b9d97a  assets/mortal/encoder.js' | sha256sum -c -
           echo '0e9dcc57545afb5769d42f372bbd82be5c26941d1e352245b225d62ce0c611bf  assets/mortal/encoder_bg.wasm' | sha256sum -c -
-          if ! curl --fail --location --http1.1 --retry-all-errors --retry 1 --retry-delay 3 --silent --show-error --max-time 90 \
-            'https://huggingface.co/xzhe121/Mortal-S42-onnx/resolve/main/model.onnx' -o /tmp/mortal.onnx; then
-            rm -f /tmp/mortal.onnx
-            curl --fail --location --http1.1 --retry-all-errors --retry 3 --retry-delay 4 --silent --show-error --max-time 150 \
-              'https://hf-mirror.com/xzhe121/Mortal-S42-onnx/resolve/main/model.onnx' -o /tmp/mortal.onnx
-          fi
-          echo '30381bf21389e2d25d3edf48fed11bf772336ef3daeee67d1bdae7fb9dd30cb4  /tmp/mortal.onnx' | sha256sum -c -
       - uses: actions/download-artifact@v4
         with:
           name: p2a-v2-36-public-development-only
@@ -273,6 +266,19 @@ jobs:
           node tests/next/v14-v3-s42-paired-encode.mjs \
             /tmp/v3-new36/independent-requests.json /tmp/v3-verifier/lineage.json \
             /tmp/v14-dev /tmp/v3-public-pairs-obs
+      - name: Obtain exact SHA-pinned S42 ONNX after all source observables validate
+        run: |
+          set -euo pipefail
+          if ! curl --fail --location --http1.1 --retry-all-errors --retry 1 --retry-delay 3 --silent --show-error --max-time 90 \
+            'https://huggingface.co/xzhe121/Mortal-S42-onnx/resolve/main/model.onnx' -o /tmp/mortal.onnx; then
+            rm -f /tmp/mortal.onnx
+            curl --fail --location --http1.1 --retry-all-errors --retry 3 --retry-delay 4 --silent --show-error --max-time 150 \
+              'https://hf-mirror.com/xzhe121/Mortal-S42-onnx/resolve/main/model.onnx' -o /tmp/mortal.onnx
+          fi
+          echo '30381bf21389e2d25d3edf48fed11bf772336ef3daeee67d1bdae7fb9dd30cb4  /tmp/mortal.onnx' | sha256sum -c -
+      - name: Run S42 on pre-encoded redacted observations only
+        run: |
+          set -euo pipefail
           python tests/next/v14-v3-s42-paired-grade.py \
             /tmp/v3-public-pairs-obs /tmp/mortal.onnx /tmp/v3-s42-public-pairs-result.json
       - if: always()
