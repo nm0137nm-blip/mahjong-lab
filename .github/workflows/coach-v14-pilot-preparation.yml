@@ -506,6 +506,7 @@ jobs:
           node --test tests/next/v14-paired-awareness-v2.test.mjs
 
   v2-followup-freeze-36:
+    if: false # successful frozen 36 in run 45089922993; do not regenerate on future commits
     runs-on: ubuntu-24.04
     timeout-minutes: 25
     steps:
@@ -571,5 +572,34 @@ jobs:
         with:
           name: p2a-v2-36-verifier-only-development
           path: /tmp/p2a-v2-followup/verifier-only/
+          if-no-files-found: warn
+          retention-days: 30
+
+  v2-followup-public-physical-audit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - uses: actions/download-artifact@v4
+        with:
+          name: p2a-v2-36-public-development-only
+          run-id: 45089922993
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/frozen-v2-followup-public
+      - name: Independently audit physical public hand/riichi/chi/pon legality subset for all 36 frozen cases
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check mahjong==1.4.0
+          python tests/next/audit-v14-followup-public-legality.py \
+            /tmp/frozen-v2-followup-public/independent-requests.json \
+            /tmp/v2-followup-public-legality-subset.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: p2a-v2-36-public-physical-legality-subset-audit
+          path: /tmp/v2-followup-public-legality-subset.json
           if-no-files-found: warn
           retention-days: 30
