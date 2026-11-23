@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-24T01:59:00+09:00",
+  "checkpoint": "2026-11-24T06:42:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -355,7 +355,7 @@
       }
     ],
     "decision": "API pilot46 plus seven-stage attempted 4 newly: all under $0.05, first fatal pilot53. Do not run remaining pilot69/65/74 in v44. No Phase GO.",
-    "next": "Prepare P2a-v4.5 independent new source-only preregistration and updated versioned verifier after prospective Japanese grammar patch; must exclude all prior GPT-exposed cases, maintain blinded L4; separate user authorization required for any additional billed API. v44 closed first-fatal NO-GO.",
+    "next": "Prepare v4.5 original-source frozen eight never-answered manual GPT-6 Stage1 packets, one at a time, no paid API calls until eight manual responses all PASS; any first fatal means close that version NO-GO. No API automation without later authorization.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -1994,7 +1994,9 @@
       "newIndependentRealResponses": 0,
       "L4": "NOT_STARTED",
       "next": "new v45 full evidence contract and never-exposed cases fixed prospectively, then scoped API budget approval"
-    }
+    },
+    "manual_stage1_policy": "MANDATORY_MANUAL_FIRST_8_OF_8_PASS_BEFORE_REVISITING_API",
+    "api_post_authorized_now": false
   },
   "previous_runs": [
     {
@@ -3930,6 +3932,22 @@
       "approvalNotGeneralizedToOtherQuestions": true,
       "realAPICallsExecuted": 0,
       "currentBlockedReason": "No connected API key in execution runtime; direct API network unavailable in runtime. Need safe credential and reachable execution route."
+    }
+  },
+  "user_decisions_20261124": {
+    "stage1_transport_policy": {
+      "decision": "MANUAL_UNTIL_EIGHT_OF_EIGHT_PASS",
+      "recordedAt": "2026-11-24T06:42:00+09:00",
+      "userMessage": "こういう細かい修正が多いので、最初の8問をパスするまで手動にしましょう",
+      "scope": "New version's first 8 strictly frozen, previously unanswered GPT-6 questions",
+      "method": "one fresh isolated GPT-6 chat per case, original UTF-8 JSON file response submitted by user, unchanged original verifier, first fatal stops and closes version NO-GO",
+      "paidApiForInitialEight": false,
+      "apiAutoAfterInitialEight": "not automatically authorized; revisit with user after 8/8 PASS",
+      "noRetrospectivePassForV44": true,
+      "oldV44Result": "CLOSED_NO_GO_AFTER_PILOT53; manual trial still 0/8; prior API exploration 4 PASS 1 FAIL",
+      "activeNext": "Prepare prospective v4.5 full verifier and new frozen 8 never-GPT-answered source-only questions for manual testing; present first JSON question file",
+      "security": "Existing paid API workflows remain disabled; no API POST while 8/8 manual gate pending",
+      "constraints": "Independent blind L4, Stability, Stage2 and L3.5 remain separate; 8/8 contract pass alone not Phase overall GO"
     }
   }
 }
