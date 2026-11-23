@@ -28,7 +28,7 @@ jobs:
         run: |
           set -euo pipefail
           test -s "$V14_FOLLOWUP_PUBLIC"
-          node --test tests/next/v14-v45-japanese-condition.test.mjs tests/next/v14-v45-stage1-freeze.test.mjs
+          node --test tests/next/v14-v45-japanese-condition.test.mjs tests/next/v14-v45-stage1-freeze.test.mjs tests/next/v14-v45-stage1-receipt.test.mjs
       - name: Freeze eight unexposed public-only question JSON without API model calls
         run: |
           set -euo pipefail
