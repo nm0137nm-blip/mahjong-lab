@@ -24,7 +24,7 @@ export const P2A_V41_PACKET_HASHES=[
 ];
 export const P2A_V41_BASE_SOURCE_HASH='271b4a304ed86dc41be2e72766e2b5cc496966bdf8a0ce5a8d5a5d0334e6103a';
 export const P2A_V41_RESEARCH_PLAN=Object.freeze({
- version:P2A_V4_PLAN_VERSION,
+ version:P2A_V41_PLAN_VERSION,
  scope:'development_research_only_not_product_certification',
  historicalV3:'permanently_NO_GO_and_not_regraded',
  historicalV4:'P2a-v4 CLOSED_NO_GO instrumentation false positive; pilot42 response is never regraded',
