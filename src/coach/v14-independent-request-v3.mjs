@@ -7,31 +7,38 @@ const hash=x=>createHash('sha256').update(JSON.stringify(x)).digest('hex');
 const fail=s=>{throw Error('independent-v3: '+s);};
 const exact=(x,k)=>x&&typeof x==='object'&&!Array.isArray(x)&&Object.keys(x).sort().join('|')===k.slice().sort().join('|');
 const narrative=x=>typeof x==='string'&&x.trim().length>=8&&x.length<=3000;
-export const INDEPENDENT_VERSION_V3='p2a-v3-independent-public-explanation-1';
+export const INDEPENDENT_VERSION_V3='p2a-v3-independent-public-explanation-2';
 export const INDEPENDENT_RESPONSE_SHAPE_V3={
- version:INDEPENDENT_VERSION_V3,requestHash:'<this requestHash>',
- evidenceProof:{version:PROOF_VERSION_V3,requestHash:'<this requestHash>',
-  recommendation:{key:'a37-0',afterCallDiscard:null},
-  alternative:{key:'a15-0',afterCallDiscard:null},
+ version:INDEPENDENT_VERSION_V3,requestHash:'<exact requestHash from input>',
+ evidenceProof:{
+  version:PROOF_VERSION_V3,requestHash:'<exact requestHash from input>',
+  recommendation:{key:'<legal key from actions>',afterCallDiscard:null},
+  alternative:{key:'<different legal key>',afterCallDiscard:null},
   comparisons:[
-   {type:'actionKind',recommended:'riichi',alternative:'discard',relation:'different'},
-   {type:'shape',metric:'shanten',recommended:0,alternative:0,relation:'same'},
-   {type:'seatGenbutsu',seat:0,recommended:true,alternative:false,relation:'different'},
-   {type:'conditionalPoints',tile:'m1',mode:'ron',recommended:{status:'not_supplied'},alternative:{status:'not_supplied'},relation:'same'},
-   {type:'rankScenario',ronIndex:0,opponent:0,ownWinRank:1,ownDealInRank:4,winPointChange:3900,dealInPointChange:-3900}
+   {type:'actionKind',recommended:'<one of discard|riichi|call|kan|win|abort|pass>',alternative:'<one of same allowed kinds>',relation:'same|different'},
+   {type:'shape',metric:'shanten',recommended:'<number from chosen candidate calc>',alternative:'<number from chosen alternative calc>',relation:'lower|higher|same'},
+   {type:'conditionalRonByChoice',tile:'<actual possible winning tile>',recommendedMode:'ron|hypotheticalRiichiRon',alternativeMode:'ron|hypotheticalRiichiRon',
+    recommended:{status:'conditionally_scored',basePoints:'<actual numeric defen>',yaku:['<source yaku>']},
+    alternative:{status:'conditionally_scored',basePoints:'<actual numeric defen>',yaku:['<source yaku>']},relation:'same|different'}
   ],
-  opponentObservations:[{seat:1,field:'riichi',value:false,assessment:'not_established'}],
-  reversal:{unknownFactors:['pWin','pDealIn'],ifThen:'判断を反転させうる未知条件'},
-  explanation:'推薦と対案の公開確定情報の差と、推測に留まる要因'},
- importantSeats:[{seat:1,whyMatters:'実際に影響すると考えた公開根拠',changeCondition:'反転条件'}],
- uncertainSeats:[{seat:2,reason:'今の情報では真の影響を確定できない理由'}],
- educational:{reason:'この候補を優先する理由',opponentTradeoff:'特定の他家に対する事実と仮説',
-  boundary:'未校正の確率と推奨を反転する条件',lesson:'次局に生かせる具体的注意点'}
+  opponentObservations:[
+   {seat:'<opponent seat number>',field:'riichi|meldCount|exposedYakuhaiHan|exposedDoraHan|discardCount|points|pointGapFromOwn',value:'<source value>',assessment:'potentially_relevant|not_established'}
+  ],
+  reversal:{unknownFactors:['pWin','pDealIn'],ifThen:'<specific if-then reversal condition in Japanese>'},
+  explanation:'<specific tradeoff in Japanese separating source fact from tactical assumption>'
+ },
+ importantSeats:[{seat:'<seat classed potentially_relevant>',whyMatters:'<concrete public evidence and bounded hypothesis>',changeCondition:'<specific reversal>'}],
+ uncertainSeats:[{seat:'<seat classed not_established>',reason:'<what cannot be inferred from public evidence>'}],
+ educational:{reason:'<explain choice versus alternative>',opponentTradeoff:'<compare all three other players within limits>',
+  boundary:'<unknown probabilities, unverified tactical effects>',lesson:'<specific takeaway>'}
 };
 const instruction=[
  '麻雀LABの開発専用Stage1。Mortalの推奨、隠し牌、未来の結果、ユーザーが実際に選んだ牌は渡されていない。',
  '合法な具体候補から推薦と有力な対案を選ぶ。立直とダマ（同じ牌を切る場合でも別行動）、ロンとスルー、鳴きとスルー、他家別現物という差を比較する。',
  '候補の数字が同じでも無理に違いを作らない。終端のロンには未来の向聴・受け入れ数を捏造しない。現物でない牌が危険とは確定できない。',
+ 'responseShapeは項目名の型見本であり、<...>の例示値・候補・席・点数をコピーしない。候補の数字・相手席・和了点は実際の公開入力と一致させる。必須は確認できるactionKind比較1つ以上。確認できない比較typeは出力しない。',
+ '立直と同一牌ダマのロン点数はconditionalRonByChoiceで比較し、立直候補にはrecommendedMode/alternativeModeの該当側にhypotheticalRiichiRon、ダマ側にはronを指定する。sourceModeやstatus:suppliedは書かない。条件付き和了の値はsourceのbasePoints・yakuをそのまま引用し、status:conditionally_scoredかstatus:no_scored_win_under_assumptionsまたはstatus:not_suppliedだけを使う。',
+ '相手3人には1席につき1つの重要度potentially_relevantまたはnot_establishedを割り当てる。同じ相手の複数事実はopponentObservationsへseat+fieldで別々に出せるが、同じ席の重要度を変えない。同じseat+fieldは重複禁止。assessment:observedという値は使わない。importantSeats/uncertainSeatsは重要度を揃え、相手席ごと1行ずつ。',
  '比較証明欄のtype/数字/具体候補/相手席は実際の公開入力と一致させる。候補の異なる現物・仮の和了基本点・点棒移動の違いを見て、自手・他家・着順の観点で説明する。',
  '仮の和了点数は見込み勝率・確定打点ではない。仮の順位変動は特定の和了/放銃が起きた場合のみ。未校正の聴牌確率・放銃率・期待収支は計算済みとして記述しない。',
  '判断を変えそうな他家だけをimportantSeatsに挙げ、根拠が薄い相手はuncertainSeatsへ。必ず当該観測と矛盾しないよう記載する。',
@@ -60,7 +67,11 @@ export function verifyV3IndependentDevelopmentAnswer(envelope,answer){
  const p=verifyV3PublicContrast(envelope,answer.evidenceProof),own=envelope.request.input.evidence.find(e=>e.id==='board')?.value?.ownSeat;
  if(!Array.isArray(answer.importantSeats)||!Array.isArray(answer.uncertainSeats)||
     answer.importantSeats.length>3||answer.uncertainSeats.length>3)fail('invalid opponent classification');
- const expected=new Map(answer.evidenceProof.opponentObservations.map(x=>[x.seat,x.assessment])),seen=new Set();
+ const expected=new Map(),seen=new Set();
+ for(const o of answer.evidenceProof.opponentObservations){
+  if(expected.has(o.seat)&&expected.get(o.seat)!==o.assessment)fail('opponent observation has conflicting classification');
+  expected.set(o.seat,o.assessment);
+ }
  for(const [kind,rows] of [['important',answer.importantSeats],['uncertain',answer.uncertainSeats]]){
   for(const r of rows){
    const ks=kind==='important'?['seat','whyMatters','changeCondition']:['seat','reason'];
@@ -81,7 +92,7 @@ export function verifyV3IndependentDevelopmentAnswer(envelope,answer){
   instructionModel:'independent_stage1_development_only'};
 }
 export function makeV3SyntheticAnswer(packet,proof){
- const uncertain=proof.opponentObservations.map(o=>({seat:o.seat,
+ const uncertain=[...new Set(proof.opponentObservations.map(o=>o.seat))].map(seat=>({seat,
   reason:'この相手の公開情報から確定する事実と、実際の脅威の大きさは別なので未確定とする。'}));
  return {version:INDEPENDENT_VERSION_V3,requestHash:packet.requestHash,evidenceProof:proof,
   importantSeats:[],uncertainSeats:uncertain,
