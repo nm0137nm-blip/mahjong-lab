@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-23T10:20:00+09:00",
+  "checkpoint": "2026-11-23T10:50:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -8,12 +8,12 @@
     "coach_candidate_promoted": false
   },
   "active_task": {
-    "phase": "P2a-v2-closed",
-    "status": "v2_closed_NO_GO_both_reviews_complete_v3_user_policy_decisions_recorded_free_dev_possible_inference_method_pending",
-    "branch": "feat/coach-v14-pilot-boundary-v1",
-    "commit": "9f3ef9d575899db0569d1d6ec915439ea22650d9",
-    "pr": 61,
-    "run_id": 45091583566,
+    "phase": "P2a-v3",
+    "status": "development_gate1_contract_repair_9_of_9_pass_real_model_execution_method_user_choice_required",
+    "branch": "feat/coach-p2a-v3-contract-repair",
+    "commit": "ee6654155efa87fb71e72286778e6691de46d6a3",
+    "pr": 62,
+    "run_id": 45096251574,
     "prior_runs": [
       {
         "run_id": 44754324733,
@@ -308,10 +308,22 @@
         "yakuNameMismatches": 0,
         "realModelCalls": 0,
         "formalPhase": "NO-GO"
+      },
+      {
+        "run_id": 45096251574,
+        "status": "v3_dev_gate1_contract_and_stage2_unification_pass_9_of_9_no_actual_inference",
+        "commit": "ee6654155efa87fb71e72286778e6691de46d6a3",
+        "tests": 9,
+        "passed": 9,
+        "failed": 0,
+        "modelCalls": 0,
+        "billedCalls": 0,
+        "semanticCertified": false,
+        "formalGatePassed": false
       }
     ],
-    "decision": "P2a-v2 remains NO-GO closed after both reviews. User confirmed 2026-11-23: no blanket spend approval or discretionary capped spending; every new paid operation requires prior specific informed consent in plain Japanese covering need, purpose, cost and free alternatives. Final completed MahjongLAB personal user-only, offline-first (advanced LLM commentary may use network), not public distribution. L4 limited blind ratings by user and independent second model. Actual LLM inference transport not selected; no API spend approved. Free-only v3 schema repairs may proceed without charged operations. Historical initial API/JPY3000/public defaults were proposals only, explicitly superseded.",
-    "next": "Do free work on versioned v3 candidate comparison/Stage2 single schema; before any real model API or paid hosting/compute, explain in normal Japanese what will be done, need, cost and viable free alternatives and obtain authorization for that exact concrete use. Explore free manual or local models. Keep private offline-first finished app goal and independent blind L4 user+second model. No public release or unapproved payment.",
+    "decision": "P2a-v3 free dev gate1 pass 9/9: versioned public-only comparison accepts all 12 frozen same-tile riichi/dama, all 12 reaction scenarios incl one ron/pass, 12 discard, same-shape seat genbutsu and conditional score/rank facts without invented future shapes; invalid source facts rejected. Genuine and isolated fake Stage2 both use common answer schema and public fact checker, concrete userAction optional, true S42 pinned source only authenticates at separate genuine store, Q gap is explicitly unavailable. Onecase v3 receipts validate structure but no real model calls. User personal-only offline-first, NO blanket paid authorization and explicit per-purpose consent. Actual LLM route remains undecided and truly blocks meaningful next trial. Prior P2a-v2 CLOSED NO-GO.",
+    "next": "USER CHOICE REQUIRED for first genuine model demonstration: free manual isolated ChatGPT 5–8 cases (user must move requests/results), or free Gemini API via Google AI Studio with account/key safely configured by user and consideration that free prompts may be used for Google product improvement (confirm actual eligibility), or separately approved per-purpose paid API. Without this, no meaningful real Stage1/Stage2/L4 skill inference. Do not initiate any cost or private account setup. Once selected, test 5–8 real cases and validate source records, then continue phase. Keep v3 draft PR #62, main untouched, avoid fake semantic claims.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -407,7 +419,25 @@
       "L4": "CONFIRMED: blind assessment by user and separate independent model; limited learning usefulness only, no top-player certification",
       "inference": "NOT YET SELECTED: investigate free/manual/local methods first; when and only when an actual paid operation becomes necessary seek specific approval"
     },
-    "user_decisions_document": "handoff/p2a-v3-user-decisions-no-blanket-spend-private-offline-l4-20261123.md"
+    "user_decisions_document": "handoff/p2a-v3-user-decisions-no-blanket-spend-private-offline-l4-20261123.md",
+    "v3_gate1_report": "handoff/p2a-v3-development-gate1-contract-repair-20261123.md",
+    "v3_gate1": {
+      "tests": 9,
+      "passed": 9,
+      "failed": 0,
+      "workflowJobs": 2,
+      "new36ReachSameTileDamaScenarios": 12,
+      "new36ReactionScenarios": 12,
+      "new36DiscardScenarios": 12,
+      "new36RonVsPassCases": 1,
+      "seatSpecificGenbutsuSameShapeCase": "pilot-41",
+      "genuineVsTestsOnlyFalseV3Stage2ReferenceContexts": 8,
+      "realStage1LLMCalls": 0,
+      "realStage2LLMCalls": 0,
+      "uncertainty": "semantic_and_skill_not_certified",
+      "billedCalls": 0,
+      "mainMerged": false
+    }
   },
   "previous_runs": [
     {
