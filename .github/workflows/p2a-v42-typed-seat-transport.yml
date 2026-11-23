@@ -28,7 +28,7 @@ jobs:
         run: |
           set -euo pipefail
           test -s "$V14_FOLLOWUP_PUBLIC"
-          node --test tests/next/v14-anchored-tactical-text-v4.test.mjs tests/next/v14-anchored-tactical-text-v41.test.mjs tests/next/v14-v41-stage1-freeze.test.mjs tests/next/v14-v41-evaluation-plan.test.mjs tests/next/v14-v42-numeric-and-transport.test.mjs tests/next/v14-source-comparison-proof-v4.test.mjs
+          node --test tests/next/v14-anchored-tactical-text-v4.test.mjs tests/next/v14-anchored-tactical-text-v41.test.mjs tests/next/v14-v41-stage1-freeze.test.mjs tests/next/v14-v41-evaluation-plan.test.mjs tests/next/v14-v42-numeric-and-transport.test.mjs tests/next/v14-v42-stage1-freeze.test.mjs tests/next/v14-source-comparison-proof-v4.test.mjs
       - name: Generate versioned pilot52-first public questions and separate sealed weak control map
         env:
           V14_FOLLOWUP_PUBLIC: /tmp/p2a-v42-original36/independent-requests.json
