@@ -28,7 +28,7 @@ jobs:
         run: |
           set -euo pipefail
           test -s "$V14_FOLLOWUP_PUBLIC"
-          node --test tests/next/v14-anchored-tactical-text-v4.test.mjs tests/next/v14-anchored-tactical-text-v41.test.mjs tests/next/v14-v41-stage1-freeze.test.mjs tests/next/v14-compact-model-contract-v4.test.mjs tests/next/v14-source-comparison-proof-v4.test.mjs
+          node --test tests/next/v14-anchored-tactical-text-v4.test.mjs tests/next/v14-anchored-tactical-text-v41.test.mjs tests/next/v14-v41-stage1-freeze.test.mjs tests/next/v14-v41-evaluation-plan.test.mjs tests/next/v14-v41-stage1-receipt.test.mjs tests/next/v14-compact-model-contract-v4.test.mjs tests/next/v14-source-comparison-proof-v4.test.mjs
       - name: Make v4.1 first question plus complete eight-question frozen model package
         env:
           V14_FOLLOWUP_PUBLIC: /tmp/p2a-v41-original36/independent-requests.json
