@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-23T21:59:30+09:00",
+  "checkpoint": "2026-11-23T22:14:10+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -8,8 +8,8 @@
     "coach_candidate_promoted": false
   },
   "active_task": {
-    "phase": "P2a-v4.3 Stage1 six of eight independent GPT-6 user-provided JSON source-public contract PASS, next pilot70",
-    "status": "P2a_v43_STAGE1_PILOT43_49_57_62_63_71_CONTRACT_PASS_6_OF_8_NEXT_PILOT70",
+    "phase": "P2a-v4.3 CLOSED_NO_GO on 7th genuine GPT-6 pilot70 reply, 6/7 source-contract passes (1 non-meaningful public comparison failure)",
+    "status": "P2a_v43_PHASE_EXIT_NO_GO_FIRST_FATAL_PILOT70_PUBLIC_COMPARATOR_OMITS_FORMS_STANDARD_AND_IMPROVING",
     "branch": "feat/coach-p2a-v43-japanese-conditional-gate",
     "commit": "f92239ad355d069d43ead0cbe6951ade9a07ae3a",
     "pr": 66,
@@ -354,8 +354,8 @@
         "phaseCompleted": false
       }
     ],
-    "decision": "Sixth genuine GPT-6 JSON pilot71 passed original frozen v43 Node verifier, 6/8 public-source contract PASS, 0 failures, 2 unanswered. 10 public fact comparisons, 6 opponent facts, 4 distinct differences for legal s4 discard vs p6 discard, with 2 riichi. Model's suji-based tactical correctness not separately certified; S42 & L4 untested. Older v42 2/3 NO-GO remains closed.",
-    "next": "対応依頼: frozen Stage1 seventh question pilot-70 original JSON in fresh GPT-6 Temporary Chat; request UTF-8 mahjong_P2a_v43_stage1_pilot-70_response.json attachment only, untouched raw response; never supply Mortal S42 labels or previous model choices.",
+    "decision": "Formal preregistered fatal: seventh original GPT-6 pilot70 file failed fixed source comparison, raw JSON strict, legal recommendations a24 s7 vs a21 s4, both same shanten/ukeire/dora/genbutsu, zero counted public differences. Source itself contains distinct standard-form shanten 2 vs 3 and improving tile sets; fixed instrument did not compare them. Do not rescue old v43 answer with amended criteria. v43 closed NO-GO with 6/7 public-contract PASS and 1 failure, one eighth unattempted.",
+    "next": "No further v4.3 independent GPT-6 model prompt; pilot67 must not count as v4.3. Start new separately versioned v4.4 source-comparison engineering with standardShanten/improving composition under source-bound per-candidate evidence, prospective new unseen 8 only after all technical gates pass.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -1282,7 +1282,7 @@
       }
     },
     "v43_development": {
-      "status": "STAGE1_6_REAL_GPT6_JSON_ANSWERS_OF_8_PUBLIC_CONTRACT_PASS",
+      "status": "CLOSED_NO_GO_STAGE1_7_ATTEMPTED_6_PASS_1_FAIL",
       "branch": "feat/coach-p2a-v43-japanese-conditional-gate",
       "commit": "f92239ad355d069d43ead0cbe6951ade9a07ae3a",
       "pr": 66,
@@ -1354,26 +1354,26 @@
         "name": "p2a-v43-sealed-pre-answer-L4-controls-verifier-only",
         "neverGiveToModel": true
       },
-      "realIndependentGPT6Responses": 6,
+      "realIndependentGPT6Responses": 7,
       "actualL35ModelResponses": 0,
       "actualL4Ratings": 0,
       "noPaidApiCalls": true,
       "patchReviewerRound": "NOT_REQUESTED_PER_USER",
-      "phaseFinished": false,
+      "phaseFinished": true,
       "gate": "GO_FOR_FIRST_INDEPENDENT_MANUAL_TRIAL_ONLY; NOT_RESEARCH_PHASE_GO_OR_PRODUCTION_GO",
-      "next": "対応依頼: frozen Stage1 seventh question pilot-70 original JSON in fresh GPT-6 Temporary Chat; request UTF-8 mahjong_P2a_v43_stage1_pilot-70_response.json attachment only, untouched raw response; never supply Mortal S42 labels or previous model choices.",
-      "report": "handoff/p2a-v43-stage1-pilot71-sixth-gpt6-public-contract-receipt-20261123.md",
+      "next": "No further v4.3 independent GPT-6 model prompt; pilot67 must not count as v4.3. Start new separately versioned v4.4 source-comparison engineering with standardShanten/improving composition under source-bound per-candidate evidence, prospective new unseen 8 only after all technical gates pass.",
+      "report": "handoff/p2a-v43-phase-exit-pilot70-no-verified-comparison-20261123.md",
       "stage1": {
-        "status": "INCOMPLETE_STAGE1_NOT_GO_NO_FATAL_6_OF_8_PASS",
+        "status": "CLOSED_NO_GO_AFTER_FIRST_FATAL_SEVENTH_STAGE1_RESPONSE",
         "planned": 8,
-        "actualAttempts": 6,
+        "actualAttempts": 7,
         "publicContractPass": 6,
-        "failed": 0,
-        "unattempted": 2,
-        "nextCaseId": "pilot-70",
-        "nextCasePacketHash": "207394aca6e96f95985be2ca935430b2afb8080ad8f67c1013897591912dfa07",
+        "failed": 1,
+        "unattempted": 1,
+        "nextCaseId": null,
+        "nextCasePacketHash": null,
         "nextCaseQuestionFileSha256": "e41dab461df83964dbaf0a863b149e33ed9a1d1ec37bc39048e37d24fb6f3b7c",
-        "nextCaseFile": "/mnt/data/mahjong_P2a_v43_stage1_pilot-70.json",
+        "nextCaseFile": null,
         "initialAnswer": {
           "caseId": "pilot-43",
           "rawResponseSha256": "8ced3c7a8596cae3140434d25eb5a2e1119af54e5be7481c0847cfc0fa723ff0",
@@ -1529,12 +1529,68 @@
             "semanticGrade": "NOT_ASSESSED_BY_MACHINE",
             "mortalPolicyMatch": "UNKNOWN_NOT_TESTED",
             "riskNarrative": "Suji-based relative danger claims not independently verified by semantic/physical checker; pass is token/source shape gate only"
+          },
+          {
+            "caseId": "pilot-70",
+            "rawReplySha256": "f78821b96fe40583a1d8a0d21dfa83f9c8da5b7a9e1d03965e6951c628bc56e0",
+            "requestHash": "207394aca6e96f95985be2ca935430b2afb8080ad8f67c1013897591912dfa07",
+            "verdict": "STAGE1_NO_GO_INVALID_PUBLIC_CONTRACT",
+            "failure": "Error: v4-compact-contract: model supplied no meaningful public comparison; not a tactical proof",
+            "origin": "GPT-6 user-reported original JSON attachment",
+            "modelProposal": {
+              "recommendation": {
+                "key": "a24-0",
+                "afterCallDiscard": null
+              },
+              "alternative": {
+                "key": "a21-0",
+                "afterCallDiscard": null
+              }
+            },
+            "originalBytes": 7036,
+            "publicFactsVerifiedForComparison": 0,
+            "sourceGeneratedComparisonRows": 7,
+            "sourcePublicDiffCount": 0,
+            "originalSourceActualDifference": {
+              "recommendedDiscard": "s7",
+              "alternativeDiscard": "s4",
+              "standardShantenRecommended": 2,
+              "standardShantenAlternative": 3,
+              "otherDimensionsEqual": [
+                "shanten 1",
+                "ukeireUpperBound 8",
+                "retainedDoraHan 2",
+                "seat0 genbutsu true",
+                "seat2 genbutsu false",
+                "seat3 genbutsu false"
+              ],
+              "improvingTilesRecommended": [
+                "s2",
+                "s3",
+                "s4"
+              ],
+              "improvingTilesAlternative": [
+                "s2",
+                "s3",
+                "s7"
+              ]
+            },
+            "strictJson": true,
+            "transportCorrections": 0,
+            "semanticGrade": "NOT_ASSESSED",
+            "publicOpponentNarrativeContract": "NOT_REACHED_BEFORE_INITIAL_SOURCE_COMPARISON_FAILURE",
+            "mortalPolicyMatch": "UNKNOWN_NOT_TESTED",
+            "notRetrospectivelyRegraded": true
           }
         ],
         "phaseGo": false,
         "historicalV42NoGoUnchanged": true,
-        "modelProviderUIMetadata": "USER_REPORTED_NOT_INDEPENDENTLY_VERIFIED"
-      }
+        "modelProviderUIMetadata": "USER_REPORTED_NOT_INDEPENDENTLY_VERIFIED",
+        "fatal": true,
+        "canExpand": false,
+        "verdict": "PREDECLARED_PHASE_NO_GO_AFTER_FIRST_FATAL"
+      },
+      "closedNoGo": true
     }
   },
   "previous_runs": [
@@ -3152,6 +3208,25 @@
       "mortalMatch": "NOT_RUN",
       "rawModelReplyPublishedToGitHub": false,
       "report": "handoff/p2a-v43-stage1-pilot71-sixth-gpt6-public-contract-receipt-20261123.md"
+    },
+    {
+      "phase": "P2a-v4.3",
+      "status": "P2a_v43_CLOSED_NO_GO_SEVENTH_GENUINE_GPT6_PILOT70_SOURCE_PROOF_DIFF_ZERO",
+      "attempts": 7,
+      "passes": 6,
+      "failed": 1,
+      "unattempted": 1,
+      "formalVerdict": "PREDECLARED_PHASE_NO_GO_AFTER_FIRST_FATAL",
+      "firstFailureId": "pilot-70",
+      "replyRawSha256": "f78821b96fe40583a1d8a0d21dfa83f9c8da5b7a9e1d03965e6951c628bc56e0",
+      "originalSourceProofFailure": "Error: v4-compact-contract: model supplied no meaningful public comparison; not a tactical proof",
+      "sourceInstrumentOmission": "forms.standard and improving tile sets different, v43 source comparator only checks aggregate shanten, ukeire, dora, seatGenbutsu, actionKind",
+      "nextOfficialModelInput": null,
+      "noRetrospectiveRegrade": true,
+      "priorSixPassesRetained": true,
+      "mainUnchanged": true,
+      "modelName": "GPT-6 user reported",
+      "report": "handoff/p2a-v43-phase-exit-pilot70-no-verified-comparison-20261123.md"
     }
   ],
   "roadmap": {
