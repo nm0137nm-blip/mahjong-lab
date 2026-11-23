@@ -1844,7 +1844,16 @@
       "whyNoFurtherPost": "billing_not_active billing state must be resolved, and specific one-post approval consumed; further POST requires new separate approval",
       "originalManualStage1ResponseCount": 0,
       "experimentVerdict": "BLOCKED_BILLING_NOT_ACTIVE_NOT_MODEL_TACTICAL_ASSESSMENT",
-      "evidence": "GitHub Actions job log 137817072285, safe 429 error type/code only"
+      "evidence": "GitHub Actions job log 137817072285, safe 429 error type/code only",
+      "currentBillingOrganizationKeyListUserScreenshot": {
+        "observed": "API keys page showed empty-state 'Create an API key to access the OpenAI API'",
+        "relativeContext": "User had just viewed Default project settings and current organization settings",
+        "conclusion": "Possible API key organization/project mismatch; key generated through separate setup flow may be in different organization/project; NOT proven",
+        "recommendedNoCostRemediation": "Create a fresh project API key from the same currently billed organization and its Default project; replace GitHub repository secret OPENAI_API_KEY securely. No API request or new credit purchase needed for this change.",
+        "credentials": "Never paste key in chat or commit to repository",
+        "previousTest": "GET /v1/models/gpt-6-sol was HTTP200; Responses POST returned billing_not_active; cannot definitively attribute to org mismatch yet",
+        "billablePostAuthorization": "None remaining; require new separate single-purpose approval before further POST"
+      }
     }
   },
   "previous_runs": [
