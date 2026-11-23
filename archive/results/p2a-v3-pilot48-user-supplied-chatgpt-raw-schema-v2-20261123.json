@@ -1,0 +1,182 @@
+{
+  "version": "p2a-v3-independent-public-explanation-2",
+  "requestHash": "1e2d745af93726d1a68b6b3761ec916c0a55b004266130e9e170d860d460cc00",
+  "evidenceProof": {
+    "version": "p2a-v3-public-contrast-proof-2",
+    "requestHash": "1e2d745af93726d1a68b6b3761ec916c0a55b004266130e9e170d860d460cc00",
+    "recommendation": {
+      "key": "a37-1",
+      "afterCallDiscard": null
+    },
+    "alternative": {
+      "key": "a13-0",
+      "afterCallDiscard": null
+    },
+    "comparisons": [
+      {
+        "type": "actionKind",
+        "recommended": "riichi",
+        "alternative": "discard",
+        "relation": "different"
+      },
+      {
+        "type": "shape",
+        "metric": "shanten",
+        "recommended": 0,
+        "alternative": 0,
+        "relation": "same"
+      },
+      {
+        "type": "conditionalRonByChoice",
+        "tile": "m6",
+        "recommendedMode": "hypotheticalRiichiRon",
+        "alternativeMode": "ron",
+        "recommended": {
+          "status": "conditionally_scored",
+          "basePoints": 5200,
+          "yaku": [
+            "立直",
+            "一盃口"
+          ]
+        },
+        "alternative": {
+          "status": "conditionally_scored",
+          "basePoints": 2600,
+          "yaku": [
+            "一盃口"
+          ]
+        },
+        "relation": "different"
+      },
+      {
+        "type": "conditionalRonByChoice",
+        "tile": "m9",
+        "recommendedMode": "hypotheticalRiichiRon",
+        "alternativeMode": "ron",
+        "recommended": {
+          "status": "conditionally_scored",
+          "basePoints": 5200,
+          "yaku": [
+            "立直"
+          ]
+        },
+        "alternative": {
+          "status": "no_scored_win_under_assumptions"
+        },
+        "relation": "different"
+      }
+    ],
+    "opponentObservations": [
+      {
+        "seat": 0,
+        "field": "riichi",
+        "value": false,
+        "assessment": "potentially_relevant"
+      },
+      {
+        "seat": 0,
+        "field": "meldCount",
+        "value": 2,
+        "assessment": "potentially_relevant"
+      },
+      {
+        "seat": 0,
+        "field": "exposedYakuhaiHan",
+        "value": 1,
+        "assessment": "potentially_relevant"
+      },
+      {
+        "seat": 0,
+        "field": "points",
+        "value": 21400,
+        "assessment": "potentially_relevant"
+      },
+      {
+        "seat": 0,
+        "field": "pointGapFromOwn",
+        "value": -11400,
+        "assessment": "potentially_relevant"
+      },
+      {
+        "seat": 1,
+        "field": "riichi",
+        "value": false,
+        "assessment": "potentially_relevant"
+      },
+      {
+        "seat": 1,
+        "field": "meldCount",
+        "value": 0,
+        "assessment": "potentially_relevant"
+      },
+      {
+        "seat": 1,
+        "field": "points",
+        "value": 25200,
+        "assessment": "potentially_relevant"
+      },
+      {
+        "seat": 1,
+        "field": "pointGapFromOwn",
+        "value": -7600,
+        "assessment": "potentially_relevant"
+      },
+      {
+        "seat": 3,
+        "field": "riichi",
+        "value": false,
+        "assessment": "not_established"
+      },
+      {
+        "seat": 3,
+        "field": "meldCount",
+        "value": 0,
+        "assessment": "not_established"
+      },
+      {
+        "seat": 3,
+        "field": "points",
+        "value": 20600,
+        "assessment": "not_established"
+      },
+      {
+        "seat": 3,
+        "field": "pointGapFromOwn",
+        "value": -12200,
+        "assessment": "not_established"
+      }
+    ],
+    "reversal": {
+      "unknownFactors": [
+        "pWin",
+        "pDealIn"
+      ],
+      "ifThen": "席0の二副露が実際には高い聴牌・放銃リスクを伴い、立直で手を固定する損失が、m9ロン解禁とm6・m9の条件付き打点上昇の利点を上回ると判断できるなら、同じp5を切るダマ（a13-0）へ変更する。逆にm9でのロン機会を重視するなら立直を維持する。いずれの確率も公開情報からは確定しない。"
+    },
+    "explanation": "東3局・自席2は32800点の1位、残り49枚。合法な立直p5（a37-1）と通常打牌p5（a13-0）はどちらも聴牌（向聴0）で、和了候補m6・m9の見え枚数上の残存上限は各3枚、合計6枚、赤p0を保持しドラ保持数1も同じ。自己河フリテンは両候補ともfalse。入力の仮点数では、m6ロンは立直5200点（立直・一盃口）、ダマ2600点（一盃口）。m9ロンは立直5200点（立直）、ダマは役なしでロン点数なし。したがって打牌p5の放銃危険度を立直とダマで異なると決めつけず、立直による和了条件と打点の違いを主因に推奨する。ただし立直は1000点を供託し、手替わり・押し引きの自由を失う。席0の二副露・露出役牌1翻は警戒材料だが聴牌やp5の危険を証明しない。席1は25200点の次点で7600点差があり、例えば入力の仮清算では席1への3900点放銃なら自席は28900点で2位になる。これは放銃発生時の例であって、その可能性や当該手の失点額の予測ではない。"
+  },
+  "importantSeats": [
+    {
+      "seat": 0,
+      "whyMatters": "21400点、自席より11400点下。役牌z6ポンとs123チーの計二副露、露出役牌1翻が公開され、他家の中で攻撃継続を特に意識する観測がある。ただし聴牌・待ち・p5の危険度は不明。",
+      "changeCondition": "この二副露に伴う実際の危険が高く、立直による固定を避ける価値が上回ると判断できる場合は、同一p5のダマを優先する。"
+    },
+    {
+      "seat": 1,
+      "whyMatters": "25200点で自席32800点に最も近く、差は7600点。立直なし・副露なし。入力の仮清算では席1に3900点放銃すると自席28900点、席1は29100点となり自席2位。",
+      "changeCondition": "首位維持のため手牌固定と供託を避ける必要が高いと判断できるならダマを再検討する一方、m9ロン可能化と仮の高打点をより重視するなら立直を選ぶ。"
+    }
+  ],
+  "uncertainSeats": [
+    {
+      "seat": 3,
+      "reason": "20600点で自席と12200点差。立直・副露ともなしで、捨て牌5枚から聴牌、待ち、p5に対する放銃危険、和了速度を確定できない。警戒を不要と断定する根拠もない。"
+    }
+  ],
+  "educational": {
+    "reason": "立直p5（a37-1）を選ぶ。ダマp5（a13-0）も同じ向聴0、m6・m9各3枚の残存上限、受け入れ上限6枚、赤5筒保持で、打牌牌種と手形は同一。違いは立直の宣言と手牌固定、仮の和了役・点数。m6ロンは立直5200点対ダマ2600点、m9ロンは立直5200点対ダマ役なしのため未採点。仮の値は和了見込みを表さない。",
+    "opponentTradeoff": "席0は二副露・役牌1翻が見え、立直後に押し引きできない不利を考慮する相手。席1は7600点差の2位で、放銃時の首位逆転が条件次第で起こる重要な相手。席3は12200点差、非立直・門前だが進行状況は不明。立直p5もダマp5も各席に対する現物ではないものの、非現物は危険確定を意味しない。なおp6は席1の現物だが、合法なp6切り（a14-0）は向聴1に戻るため、今回の聴牌維持とは別の安全・速度交換になる。",
+    "boundary": "見えていない手牌、未来のツモ・他家の待ち・pWin・pDealInは不明。m6・m9の3枚ずつは見え枚数に基づく残存上限で、実際の山の枚数や和了確率ではない。立直・ダマの条件付きロン点は入力の役と基本点だけを採用し、裏ドラ・一発などは加算していない。席1への3900点放銃の順位変化は入力の仮清算例であり、今後の結果の予測ではない。",
+    "lesson": "同一牌の立直・ダマでは向聴数や待ち枚数に差を捏造せず、「ロンできる牌の違い」「条件付き和了点」「宣言後の押し引き不能」を分けて比べる。相手の副露と点差は重視しても、非現物を危険牌と断定しない。"
+  }
+}
