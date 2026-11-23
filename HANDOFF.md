@@ -401,3 +401,11 @@ ChatGPTが実際に独立して解いた回答を得る前に、採点・中止�
 - Stage1正式分母**実回答1／形式・公開事実PASS1／FAIL0／残り7未回答**。元v4.2のNO-GO（2/3）は変更しない。ユーザーによればモデルは全てGPT-6だが表示UI・独立一時チャットの第三者証明までは未取得。L3.5・Stage2・反復・三者L4は未実施。
 - **次の対応依頼：固定第2問pilot-49**（requestHash `877e4041137b537b10de3dbffe4305c6181484dbe6b97078652afb95b9321ee1`）を新規GPT-6一時チャットで独立回答、**`mahjong_P2a_v43_stage1_pilot-49_response.json`ファイルとして添付**し、未改変のまま開発チャットに送る。次問公開ファイルSHA256 `2dcceb319bdad186455c79216187f9e11d65d6db73c0737e74203d06e22fbd41`、元ZIPマニフェストの各8件も再照合済み。日本語平文ではなくファイル納品のユーザー要望維持。
 - 検証受領の詳細`handoff/p2a-v43-stage1-pilot43-first-real-gpt6-public-fact-receipt-20261123.md`と最新`handoff/state.json`。研究PR#66はDraft、mainやS42本番製品はNO-GO維持、有料API0、追加パッチレビューなし。
+
+
+## 2026-11-23 20:24 JST：P2a-v4.3 Stage1：pilot49第2問GPT-6 JSON PASS 2/8
+- ユーザーが`mahjong_P2a_v43_stage1_pilot-49_response.json`をファイルで添付。原本6,968バイト、SHA256 `613b9b7a18e15333e74f0ce0e5f2ff46614fd6a76ecf495c4081d3f9078a0344`。v4.3固定`requestHash=877e4041137b537b10de3dbffe4305c6181484dbe6b97078652afb95b9321ee1`と一致。原モデル答案をGitHub公開リポジトリには転載しない。
+- 前問と同じGitHub source-only取得済み**本物のv4.3 JS検証器**をローカルNodeで実行し、前の`pilot-43`元回答も併せて`summarizeV43Stage1Receipts([pilot43,pilot49])`で正しい出題順を検証。`pilot-49`は**`CONTRACT_AND_PUBLIC_FACT_GATE_PASS`**、strict JSON、転記補正0、公開候補比較10、相手席0/1/3の観測6、候補間実質差3。不正なFactID、生の捏造点数、違法打牌などの契約違反なし。
+- 推奨`a37-0`＝**m6（6萬）切り立直**、対案`a5-0`＝m6切りダマ。南3局・自席2の24,400点、首位席3 31,000点。0向聴、s5／赤s0を含む受入上限4、ドラ1。公開元仮ロンでは通常s5ダマ5,200／立直8,000、赤s0なら両者8,000と一致。**戦術最善手、Mortal S42一致、匿名L4品質は未検証**。
+- Stage1正式**実回答2／形式・公開事実PASS2／FAIL0／未実施6**。v42旧NO-GO履歴は不変。GPT-6はユーザー報告であり独立UIメタデータ証明はなし。
+- **次の対応依頼：固定第3問`pilot-57`**（requestHash `68af3860dd32ef1819062cdcf61f3cf1890f6168b7475a6dc3667443f83dbd7b`）を新規GPT-6一時チャットで解かせ、`mahjong_P2a_v43_stage1_pilot-57_response.json`というUTF-8 JSONファイルでそのまま返信。凍結8問ZIPの`questions/pilot-57.json`を変更なく抽出済（SHA256 `2788a588f27b146d630a0af7732238031c8891a6399da1096bd1fe6cd022e91b`）。追加のパッチレビュー不要、課金API0、main・本番NO-GO。詳細`handoff/p2a-v43-stage1-pilot49-second-gpt6-public-contract-receipt-20261123.md`、state.json更新済み。
