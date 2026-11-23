@@ -298,3 +298,12 @@ ChatGPTが実際に独立して解いた回答を得る前に、採点・中止�
 - 事後開発として一部日本語放銃点の矛盾を再計算する`src/coach/v14-narrative-rank-guard-v3.mjs`と、**機械で認証した公開候補・他家事実だけを表示し、ChatGPTの自由記述を捨てる**防御的フォールバック`src/coach/v14-safe-public-summary-v3.mjs`を開発ブランチに追加。新しく見た失敗例への回帰であり、これらを独立LLM性能の改善や正式対局統合と称しない。後者は教材価値や推薦の正確性を未証明。最新研究ブランチSHA `248a40dc07084d86107468eb07875a62bebb7e56`、Actions run **45111993969 success：5ジョブ成功、先に固定済みS42 2ジョブは意図的skip、15/15該当テスト合格**。モデル実力のPassではない。
 - S42探索58対照/32原型は参考のみ、変化4/維持54だがL3.5独立認証ではない。**本番main/公開/P1-Lite/B/P3-minはNO-GO**、費用のユーザー個別承認なし・追加課金なし。PR #62はDraft研究ブランチで、mainにマージしない。
 - **正本レポート**：`handoff/p2a-v3-phase-exit-no-go-20261123.md`、数値失敗`handoff/p2a-v3-pilot48-schema-v3-semantic-failure-20261123.md`、機械可読state`handoff/state.json`。**Claude Opus・Geminiの今回のPhase末独立レビューはまだ双方とも未受領**。一度目レビュー用に`handoff/p2a-v3-phase-exit-independent-review-request-20261123.md`の同一プロンプトを用意（2つのチャットを互いに見せず提出する必要あり）。レビューを実施したと偽装しない。原レビュー受領後に重大相違だけ第2往復。次版を作る場合は**P2a-v4として別版の事前登録／新しい独立試験**、費用は用途ごと事前承認。
+
+
+## 2026-11-23 14:03 JST：Gemini＋Claude OpusのP2a-v3 Phase末レビュー第1往復終了、P2a-v4開発着手
+- ユーザーがGemini/Claude Opus 5.5の独立レビュー全文を提供。両者P2a-v3 NO-GO支持、P2a-v4開発は条件付きGO、正式モデル試験/main/公開はNO-GOで一致。重大方針対立はなく第2往復を省略。統合文書：handoff/p2a-v3-claude-gemini-phase-exit-review-integrated-20261123.md。レビュアー原文正本はユーザー会話内。
+- 共通Blocker：自家ロン/自家放銃をイベント別IDで区別し、親・本場・供託・立直宣言の点棒を決定論的に計算。LLMの生数字による誤記をID参照に置換しつつ、相手3席別の具体戦術の理由・反転条件を残す。旧v3の実質比較0通過・席別上限不強制を修正、Mortal推奨と実験LLMの選択を混同しない。出題JSONは公開情報だけで要約。
+- 新ブランチ feat/coach-p2a-v4-fact-anchored-explanations、Draft PR #63。源泉コード5本：v14-settlement-events-v4.mjs、v14-public-proof-gate-v4.mjs、v14-anchored-tactical-text-v4.mjs、v14-public-brief-v4.mjs、v14-v4-smoke-selection.mjs。旧pilot48は回帰用で新未実測8問から除外。v4実LLM回答0、戦術認証なし。
+- GitHub Actions run45115126032成功、コミットe49851bf6ce3f0ea07067c9127ef2062603e3c5a。Node23/23件PASS、Python独立会計4,608ケースで不一致0。直前run45115021634は合成ケース数カウントを2,304と誤認したテストの誤りで失敗し、期待4,608に修正して再実行した。開発算術テスト合格を麻雀能力認証とはしない。
+- 未完：公開局面の親席出典を独立検証する処理、候補別ロン点数とイベントIDの連結、具体的な鳴き後打牌、Mortalの本番推奨との分離、L3.5未見合法対照、v4正式事前登録と実モデルStage1/Stage2/L4。まだユーザーにChatGPT再試験を依頼しない。main不変、有料モデルAPI利用0、P2a-v3 NO-GO不変。
+- 記録正本：handoff/p2a-v4-development-kickoff-20261123.md、handoff/p2a-v3-claude-gemini-phase-exit-review-integrated-20261123.md、handoff/state.json。次の第三者レビューはP2a-v4のPhase終了時に合否いずれでも実施。
