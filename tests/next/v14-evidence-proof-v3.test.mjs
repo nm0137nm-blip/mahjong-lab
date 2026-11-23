@@ -89,14 +89,14 @@ test('conditional point claims and hypothetical rank are audited without convert
  const b=i.actions.find(x=>x.group<=36&&x.key!==a.key);
  const {p,proof}=fixture(s,a,b);
  const calc=i.evidence.find(x=>x.id==='calc-'+a.key).value;
- const win=calc.conditionalNormalWins.find(x=>x.ron),tile=win.tile;
+ const win=calc.conditionalNormalWins.find(x=>x.tsumo),tile=win.tile,mode='tsumo';
  function c(key){
   const v=i.evidence.find(x=>x.id==='calc-'+key).value;
-  const m=v.conditionalNormalWins?.find(x=>x.tile===tile)?.ron;
+  const m=v.conditionalNormalWins?.find(x=>x.tile===tile)?.[mode];
   return m?{status:'conditionally_scored',basePoints:m.basePoints,yaku:[...m.yaku]}:
    v.conditionalNormalWins?.find(x=>x.tile===tile)?{status:'no_scored_win_under_assumptions'}:{status:'not_supplied'};
  }
- proof.comparisons.push({type:'conditionalPoints',tile,mode:'ron',recommended:c(a.key),
+ proof.comparisons.push({type:'conditionalPoints',tile,mode,recommended:c(a.key),
   alternative:c(b.key),relation:sha(c(a.key))===sha(c(b.key))?'same':'different'});
  const board=i.evidence.find(x=>x.id==='board').value,sc=i.evidence.find(x=>x.id==='rank-scenarios').value;
  const r=sc.ron[0],own=board.ownSeat;
