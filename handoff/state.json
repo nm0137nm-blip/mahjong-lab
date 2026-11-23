@@ -8,8 +8,8 @@
     "coach_candidate_promoted": false
   },
   "active_task": {
-    "phase": "P2a-v4.2: typed opponent seat and logged transport repair; pilot52 independent first question frozen",
-    "status": "P2a_v42_NEW_UNSEEN_PILOT52_READY_AFTER_V41_FIRST_RESPONSE_SCHEMA_COPY_NO_GO",
+    "phase": "P2a-v4.2 Stage1 empirical first response PASS; next untouched pilot-47 in independent Temporary Chat",
+    "status": "P2a_v42_STAGE1_FIRST_REAL_PILOT52_CONTRACT_PUBLIC_FACT_GATE_PASS_1_OF_8",
     "branch": "feat/coach-p2a-v42-typed-seat-transport",
     "commit": "05b0f5e74954170828686d0565ac93214f269c24",
     "pr": 65,
@@ -354,8 +354,8 @@
         "phaseCompleted": false
       }
     ],
-    "decision": "P2a-v4 historical NO_GO and P2a-v4.1 strict first pilot50 contract fail/non-accept preserved. New v4.2 source-only preselected pilot52 and versioned contract fixes before any new model answer; not a tactical pass or phase completion.",
-    "next": "対応依頼: pilot-52 original public JSON question in a NEW ChatGPT Temporary Chat; preserve original JSON file or raw text; record real UI model display. Do not reuse pilot42/pilot50, no need for extra Claude/Gemini patch review.",
+    "decision": "Fixed v42 first real pilot52 user-provided JSON passed exact local Node original v42 source gate. 1/8 model responses; 7 not attempted, independent strategic L4 and Mortal policy not certified; UI model display metadata missing.",
+    "next": "対応依頼: fixed second independent Stage1 question pilot-47.json in a FRESH ChatGPT Temporary Chat, preserve raw JSON reply, optionally report actual UI model display; do not reveal S42 labels or previous answers.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -1075,7 +1075,7 @@
       "report": "handoff/p2a-v41-first-pilot50-schema-receipt-stop-20261123.md"
     },
     "v42_development": {
-      "status": "NEW_VERSION_PUBLIC_UNSEEN_PILOT52_STAGE1_READY_FOR_USER_MANUAL_INDEPENDENT_ANSWER",
+      "status": "STAGE1_FIRST_REAL_1_OF_8_PUBLIC_CONTRACT_PASS_NOT_PHASE_GO",
       "previousPhases": [
         {
           "phase": "v4",
@@ -1137,14 +1137,51 @@
         "sealedVerifierArtifactId": 14799405652,
         "modelNeverReceivesSealed": true
       },
-      "newIndependentModelResponses": 0,
+      "newIndependentModelResponses": 1,
       "modelEvaluationStatus": "NOT_STARTED",
       "noPaidInference": true,
       "PhaseComplete": false,
       "l35SourceDisjointControlsFromPriorResearch": "4 S42 changed + 4 maintained ready, no new actual ChatGPT paired results",
       "finalL4Status": "NOT_RUN",
-      "report": "handoff/p2a-v42-typed-seat-and-copy-transport-repair-20261123.md",
-      "next": "対応依頼: pilot-52 original public JSON question in a NEW ChatGPT Temporary Chat; preserve original JSON file or raw text; record real UI model display. Do not reuse pilot42/pilot50, no need for extra Claude/Gemini patch review."
+      "report": "handoff/p2a-v42-pilot52-first-independent-model-receipt-20261123.md",
+      "next": "対応依頼: fixed second independent Stage1 question pilot-47.json in a FRESH ChatGPT Temporary Chat, preserve raw JSON reply, optionally report actual UI model display; do not reveal S42 labels or previous answers.",
+      "actualStage1": {
+        "planned": 8,
+        "received": 1,
+        "contractPublicFactPass": 1,
+        "contractFail": 0,
+        "remaining": 7,
+        "firstCaseId": "pilot-52",
+        "requestHash": "2a6aab21bc3d914183b7a91082f0939d68c5f619f8785ce19fb66f1639bde6b5",
+        "originalReplySha256": "9c3ad9e070bc089bdb31c8686f0248b9ecd31527e1f2b84ac0a54bb9c6912e36",
+        "replyVersion": "p2a-v42-compact-stage1-response-1",
+        "recommendation": "a0-0",
+        "alternative": "a37-1",
+        "verdict": "CONTRACT_AND_PUBLIC_FACT_GATE_PASS",
+        "rawReply": "stored in user-uploaded conversation file only, not published to GitHub",
+        "actualLocalVerifier": {
+          "source": "unchanged research branch src/coach/v14-*.mjs, transferred without user reply via Github Actions artifact 14803127130",
+          "run": 45143527398,
+          "strictJson": true,
+          "transportCorrections": 0,
+          "codePath": "createV3IndependentDevelopmentRequest -> createV42CompactDevelopmentPacket -> verifyAndRenderV42CompactModelResponse -> assessV42FirstRealStage1",
+          "publicComparisons": 10,
+          "opponentObservations": 6,
+          "meaningfullyDistinctPublicFacts": 3,
+          "seatStringNormalizations": 0,
+          "invalidFactIds": 0,
+          "outcome": "typed_facts_verified_qualitative_tactics_unverified",
+          "numericProofGeneratedByCodeNotLLM": true
+        },
+        "remainingMetadata": {
+          "observedModelName": "NOT_SUBMITTED",
+          "temporaryChatProviderProof": "NOT_VERIFIED",
+          "thinkingSetting": "NOT_SUBMITTED"
+        },
+        "tacticalSemanticScore": "NOT_RATED_QUALITATIVE_L4_PENDING",
+        "actualMortalPolicyMatch": "UNKNOWN_NOT_TESTED",
+        "phaseGo": false
+      }
     }
   },
   "previous_runs": [
@@ -2520,6 +2557,28 @@
       "paidApiCalls": 0,
       "phaseResult": "PENDING",
       "record": "handoff/p2a-v42-typed-seat-and-copy-transport-repair-20261123.md"
+    },
+    {
+      "status": "P2a_v42_STAGE1_FIRST_REAL_MODEL_PILOT52_CONTRACT_AND_PUBLIC_FACT_GATE_PASS",
+      "phase": "P2a-v4.2",
+      "caseId": "pilot-52",
+      "requestHash": "2a6aab21bc3d914183b7a91082f0939d68c5f619f8785ce19fb66f1639bde6b5",
+      "rawReplySha256": "9c3ad9e070bc089bdb31c8686f0248b9ecd31527e1f2b84ac0a54bb9c6912e36",
+      "sourceVerifierArtifact": 14803127130,
+      "originalJSVerifierRunLocally": true,
+      "publicFactsVerified": 10,
+      "opponentFactsVerified": 6,
+      "meaningfulPublicDifferences": 3,
+      "seatNormalizations": 0,
+      "actualResponses": 1,
+      "stage1Planned": 8,
+      "nextCaseId": "pilot-47",
+      "nextCaseHash": "e655cd7bf0346c19dce8776fd3082d296de2c9102973de9b4cf8d417ceff70f1",
+      "originalModelUiName": "NOT_VERIFIED",
+      "stage1Pass": true,
+      "overallPhasePass": false,
+      "tacticalSkill": "UNVERIFIED",
+      "report": "handoff/p2a-v42-pilot52-first-independent-model-receipt-20261123.md"
     }
   ],
   "roadmap": {
