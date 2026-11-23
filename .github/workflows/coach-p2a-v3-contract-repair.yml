@@ -95,3 +95,39 @@ jobs:
           path: /tmp/v3-chatgpt-manual-smoke/
           if-no-files-found: error
           retention-days: 30
+
+  v3-candidate-own-value-vs-opponent-public:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.23.4'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - uses: actions/download-artifact@v4
+        with:
+          name: p2a-v2-36-public-development-only
+          run-id: 45089922993
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/v3-new36
+      - name: Generate candidate-specific public winning scores and opponent comparison for 36 distinct dev cases
+        env:
+          V14_FOLLOWUP_PUBLIC: /tmp/v3-new36/independent-requests.json
+          V14_V3_CANDIDATE_TABLE_OUTPUT: /tmp/v3-conditional-value-tables.json
+        run: |
+          set -euo pipefail
+          node --test tests/next/v14-conditional-table-v3.test.mjs
+          python tests/next/audit-v14-conditional-table-v3.py \
+            "$V14_FOLLOWUP_PUBLIC" "$V14_V3_CANDIDATE_TABLE_OUTPUT" \
+            /tmp/v3-conditional-value-independent-audit.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p2a-v3-public-candidate-value-and-independent-audit-no-ev
+          path: |
+            /tmp/v3-conditional-value-tables.json
+            /tmp/v3-conditional-value-independent-audit.json
+          if-no-files-found: error
+          retention-days: 30
