@@ -16,8 +16,8 @@ test('v44 precommitted request hashes match every byte of original-source 8 and 
  assert.deepEqual(pack.publicManifest.rows.map(x=>x.packetHash),hashes);
  assert.equal(ids.length,8);
  assert.deepEqual(ids,['pilot-46','pilot-51','pilot-56','pilot-64','pilot-53','pilot-69','pilot-65','pilot-74']);
- assert(!ids.some(x=>['pilot-48','pilot-42','pilot-50','pilot-52','pilot-47','pilot-59'].includes(x)));
- assert.equal(pack.publicManifest.newV43IndependentResponsesAtFreeze,0);
+ assert(!ids.some(x=>['pilot-48','pilot-42','pilot-50','pilot-52','pilot-47','pilot-59','pilot-43','pilot-49','pilot-57','pilot-62','pilot-63','pilot-71','pilot-70'].includes(x)));
+ assert.equal(pack.publicManifest.newV44IndependentResponsesAtFreeze,0);
 });
 test('v44 historical NO-GO unchanged and gate thresholds remain strict',()=>{
  assert.match(plan.historicalV42,/CLOSED_NO_GO/);
