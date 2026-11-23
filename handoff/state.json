@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-23T09:45:00+09:00",
+  "checkpoint": "2026-11-23T10:06:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -8,12 +8,12 @@
     "coach_candidate_promoted": false
   },
   "active_task": {
-    "phase": "P2a-v2-dev-repair",
-    "status": "gate5_paired_awareness_and_gate6_new36_prepared_audits_pass_full_legality_and_semantics_pending",
+    "phase": "P2a-v2",
+    "status": "developer_phase_exit_no_go_claude_gemini_v2_review_pending",
     "branch": "feat/coach-v14-pilot-boundary-v1",
-    "commit": "a11a162aaffe4201b8207227220637358603b991",
+    "commit": "9f3ef9d575899db0569d1d6ec915439ea22650d9",
     "pr": 61,
-    "run_id": 45090234969,
+    "run_id": 45091583566,
     "prior_runs": [
       {
         "run_id": 44754324733,
@@ -293,10 +293,25 @@
         "failures": 0,
         "allLegalMaskCertified": false,
         "actualModelCalls": 0
+      },
+      {
+        "run_id": 45091583566,
+        "status": "phase_exit_final_machine_qa_success_no_llm_no_semantics",
+        "commit": "9f3ef9d575899db0569d1d6ec915439ea22650d9",
+        "pythonPublicLegalityCases": 36,
+        "offeredActionsPhysicallyChecked": 324,
+        "unverifiedOfferedActionSubset": 0,
+        "fullLegalActionMaskProven": false,
+        "conditionalScoringModes": 255,
+        "scoredYakuNameComparisons": 202,
+        "observedMappedYakuTypes": 12,
+        "yakuNameMismatches": 0,
+        "realModelCalls": 0,
+        "formalPhase": "NO-GO"
       }
     ],
-    "decision": "Gates 5+6 check-point QA success: 51/51 older-case regression tests, genuine evidence-vs-Mortal-response awareness separated over 4 coupled riichi packages; old 30 each separate onecase file. Follow-up 36 natural decisions preregistered BEFORE selection (12 reach+12 reaction+12 discard); 36 original source shards, zero overlap with old 26 origins, source 96 development-only pool, public-only frozen input sha 271b4a... Verified 403 shape rows, 255 scored conditional values, 1512 point transfers and 1512 rank orders, errors 0; independent Python material action feasibility checked 322/324 with zero discrepancies, 2 remain unverified, full action-mask legality and yaku-name audits remain open. No LLM real inference; 36 natural scenes have 0 new paired contrasts. S42 & strategic explanation capability unproven, evaluator semantic gate unresolved, formal B/P1Lite/B4/P3/main/public NO-GO. Do not pretend 54/54 QA tests or 36 new cases demonstrate skill.",
-    "next": "Continue independent legality completeness for remaining two unsupported public action categories and audit yaku names; then implement meaning-level evaluator controls with paired public-factor perturbations and genuine expert reference, not citation counts. Arrange real 1-case 1-session LLM inference with provider/setting/hashes and repeatability before new36 Stage1+Stage2 execution; no paid API without user consent. Prepare legal change/maintain pairs with new original matches, no formal seeds/old test data reuse for ability claims. Phase-end Claude/Gemini review when full Phase closes (not each checkpoint).",
+    "decision": "P2a-v2 DEVELOPER PHASE-EXIT NO-GO. Code/CI mechanical check success, but no independent real LLM Stage1/Stage2 responses; 36 frozen new dev scenes zero model calls, provider/model logs absent, semantic evaluator cannot distinguish typed-evidence fact-padding from high-quality strategic causality, real counterfeit S42 susceptibility unmeasured, independent expert oracle absent, no new change/maintain pairs. Full legal mask and rare role timing unproven. Current code sha 9f3ef9d... main untouched. External Phase-end Claude Opus and Gemini V2 reviews are required and not yet received; do NOT report phase endorsed by third parties, nor promote official B/P1Lite/P3/main/public.",
+    "next": "Await exact P2a-v2 first-round Claude Opus and Gemini independent major-only reviews of frozen code+docs; then integrate within max two rounds and choose next development phase only with real model inference path approved. Do not request additional code check-ins and do not run paid API without explicit consent. P2a-v2 code/QA phase exit is NO-GO, not tactical certification.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -359,6 +374,25 @@
       "frozen": true,
       "realModelCalls": 0,
       "legalMaskFullyIndependentCertified": false
+    },
+    "phase_exit_report": "handoff/p2a-v2-phase-exit-no-go-review-request-20261123.md",
+    "product_contract": "handoff/p2a-v2-product-coach-contract-20261123.md",
+    "v2_review_status": "phase_exit_developer_no_go_awaiting_claude_and_gemini_first_round",
+    "v2_review_rounds_used": 0,
+    "v2_reviewers_completed": [],
+    "no_new_api_payment_authorized": true,
+    "phase_gate": {
+      "qa": "limited_public_fact_mechanics_pass",
+      "semanticEvaluator": "blocker_not_certified",
+      "actualLLMInference": 0,
+      "stage2ActualLLMInference": 0,
+      "new36ModelResponses": 0,
+      "threeRepeatPerEightModelCalls": 0,
+      "heldoutNewContrastPairs": 0,
+      "overall": "NO-GO",
+      "reviews": "pending",
+      "main": "unchanged",
+      "productRelease": "NO-GO"
     }
   },
   "previous_runs": [
