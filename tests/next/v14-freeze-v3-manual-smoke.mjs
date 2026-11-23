@@ -10,7 +10,7 @@ import {renderV3PublicScene} from '../../src/coach/v14-human-public-preview-v3.m
 const sha=x=>createHash('sha256').update(JSON.stringify(x)).digest('hex');
 const h=x=>createHash('sha256').update(x).digest('hex');
 const fail=s=>{throw Error('v3-manual-freeze: '+s);};
-export const MANUAL_PACK_VERSION='p2a-v3-chatgpt-8x3-manual-smoke-2';
+export const MANUAL_PACK_VERSION='p2a-v3-chatgpt-8x3-manual-smoke-3';
 const selected={
  reach:['pilot-48','pilot-52','pilot-49'],
  reaction:['pilot-54','pilot-60','pilot-63'],
@@ -90,12 +90,13 @@ export function writeV3ManualSmokePack(frozen,out){
  put('SESSION_PLAN.json',pack.sessions);
  fs.writeFileSync(path.join(out,'READ_ME_FIRST_JP.txt'),[
   '麻雀LAB / P2a-v3 / ChatGPT独立試験のための8問×3回パック',
+  'schema-v3修正版。最初のschema-v2によるpilot-48原回答は観測13件で検証器の上限9件を超え不合格。元回答を書き換えず独立記録として保持。',
   'このZIPの作成ではAIに一問も解かせていません。結果も入っていません。',
   '人が局面を見るときはquestions/pilot-48-日本語の局面説明.mdを開く。67KBのJSON原本をiPhoneで直接読む必要はない。',
   'AIに解いてもらうときは数字を省略したメモだけではなく、questions/pilot-48.jsonの原本を添付する。',
   '開始時は1問だけ添付し、新しい一時ChatGPTチャットで解答する。',
   '例：questions/pilot-48.json を添付し、下の依頼文を送る。',
-  '「添付のJSONのrequestに書かれた公開情報のみを使い、request.systemに従って、responseShapeと同じ項目構成のJSON回答を1件だけ返してください。<...>の型見本をコピーせず、現実の候補・seat・点数で埋めてください。立直とダマの得点は立直側hypotheticalRiichiRon／ダマ側ronで別々に照合し、同じ相手の複数事実は同じ判断区分で記録してください。重要度はpotentially_relevantかnot_establishedだけです。JSONの値に無いことは不明としてください。」',
+  '「添付のJSONのrequestに書かれた公開情報のみを使い、request.systemに従って、responseShapeと同じ項目構成のJSON回答を1件だけ返してください。<...>の型見本をコピーせず、現実の候補・seat・点数で埋めてください。立直とダマの得点は立直側hypotheticalRiichiRon／ダマ側ronで別々に照合し、相手3人それぞれ最低1件、各席最大3件・総計9件以内のopponentObservationsに絞り、同じ相手の重要度は統一してください。重要度はpotentially_relevantかnot_establishedだけです。JSONの値に無いことは不明としてください。」',
   '重要：別問題や直前のChatGPT回答を同じ会話に入れない。毎回新しい一時チャット。',
   'SESSION_PLAN.jsonのrepetition=1の8問を最初に実行し、回答を別々のJSONファイルで回収。',
   'その後repetition=2,3でまったく同じ問題を、毎回新しい別チャットで繰返す。',
