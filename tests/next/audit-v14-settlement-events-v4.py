@@ -43,7 +43,7 @@ def main(path):
     v=json.load(open(path,encoding="utf-8"))
     assert v["version"]=="p2a-v4-independent-arithmetic-vectors-1"
     rows=v["vector"]
-    assert len(rows)==2304
+    assert len(rows)==4608
     assert set(x["board"]["ownSeat"] for x in rows)==set(range(4))
     assert set(x["options"]["dealerSeat"] for x in rows)==set(range(4))
     for i,row in enumerate(rows):
