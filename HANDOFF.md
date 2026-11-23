@@ -551,3 +551,13 @@ ChatGPTが実際に独立して解いた回答を得る前に、採点・中止�
 - 各問題は**独立した新規GPT-6チャット**で解き、オリジナルのUTF-8 JSON回答ファイルを無修正で受領、元のversion付き判定器で1問ずつ採点する。最初の重大な失敗で同versionをNO-GO終了（Promptや判定器を事後修正して同じ8問をPASS化しない）。別versionで改善・新規8問を凍結して再開。
 - **8/8の公開契約PASSまではAPI自動回答を再開しない**。8/8を満たしてもAPI自動化は無条件に解禁せず、ユーザーと用途・費用・基準を改めて確認。8/8は初期Stage1合格のみで、Stability/Stage2/L3.5/本人・Claude・Geminiの匿名L4の合格を意味しない。main、本番に影響なし。
 - 既存の有料APIワークフローは無効のままにし、GitHubでの無課金開発・テストを継続する。次のユーザー作業依頼はv4.5の正式な判定器と未見8問出題JSONを作成・凍結してから最初の1問を渡す時に行う。
+
+
+## 2026-11-24 07:00 JST：P2a-v4.5 独立GPT-6手動初回8問の判定器・問題ファイル凍結が完了（Stage1はまだ0/8）
+- **ユーザー最新方針：初回8問全てPASSまでAPI回答自動生成をしない**。1問1新規独立GPT-6チャット、オリジナルJSON回答ファイルのみ。回答修正・同版の採点器後付け変更・失敗問再回答でのPASS化禁止。最初の重大FAILでv4.5 NO-GO。
+- 元36 public-only SHA`271b4a304ed86dc41be2e72766e2b5cc496966bdf8a0ce5a8d5a5d0334e6103a`。旧GPT既回答13局面＋v4.4の固定8局面（未回答3局面を含む）を除外した15局面からSHAソルトで固定**`pilot-41,45,54,55,60,66,73,76`（立直2、副露3、打牌3）**。モデルにS42・隠し牌・L4弱対照は非提示。
+- v45バージョン専用: `src/coach/v14-v45-evaluation-plan.mjs`に8問の`requestHash`を固定、`src/coach/v14-v45-stage1-receipt.mjs`に順番・既存の重大失敗即STOPのルール、`src/coach/v14-anchored-tactical-text-v45.mjs`と`v14-japanese-condition-v45.mjs`で「選びやすくする」等の日本語活用形を前向き修正。旧v44判定とpilot53 NO-GOは変更なし。
+- GitHub Actions **run 45280357883** で単体テスト **11/11 PASS**、公開source全体SHA・選抜8局面・全出題requestHash・元のv45検証器での合成正例PASSと数値捏造/席別根拠不足の負例FAILを確認。GPTモデルAPI実行0回、費用0ドル。公開出題artifact **14869490546**（`p2a-v45-manual-eight-frozen-public-only-json`）。L4弱対照8件の事前digest **405559e17cd7e5f3711c172c4a17c7d3ad82819498e707584c71e1e51be531ba**、公開出題artifactに対照を含めない。
+- 第1問：`pilot-41` 出題JSON `mahjong_P2a_v45_stage1_pilot-41_question.json`（28,131bytes、file SHA256 `e8b3d275540888b9fef3ac1a5f2e056f0fbd40282ac65a5b904b60`）。GPTの回答ファイル名は`mahjong_P2a_v45_stage1_pilot-41_response.json`。質問`requestHash`は`deb876c26140d1b74fd0f11bc0ccb78f8d10c952c514541d66b6c5e3405fe338`。
+- 研究ブランチ`feat/coach-p2a-v45-japanese-reversal-lexemes` Draft PR#70。**まだ正式Phase完了ではなく、Stage1の実モデル回答は0/8**、後続Stability/Stage2/L3.5/本人・Claude・Gemini匿名L4も未実施。mainやS42製品方針変更なし。
+- 詳細ソース・8件ハッシュ表・次の手順：`handoff/p2a-v45-eight-manual-freeze-ready-20261124.md`。ユーザー本人の作業が必要なのは第1問へのGPT-6独立回答だけ。
