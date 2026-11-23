@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-23T13:03:00+09:00",
+  "checkpoint": "2026-11-23T13:23:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -9,11 +9,11 @@
   },
   "active_task": {
     "phase": "P2a-v3",
-    "status": "P2a_v3_raw_new_schema_v2_pilot48_received_invalid_13_vs_9_fixed_schema_v3_manual_retest_pending",
+    "status": "P2a_v3_preregistered_first_schema_v3_real_ChatGPT_pilot48_major_rank_math_failure_expansion_STOP",
     "branch": "feat/coach-p2a-v3-contract-repair",
-    "commit": "659bbbfa5dbb65d81d15042ec736c5ce524ae7a7",
+    "commit": "ee9894ec5f1e6e62ba60de1e81ee7b00ed640b60",
     "pr": 62,
-    "run_id": 45108629360,
+    "run_id": 45111335512,
     "prior_runs": [
       {
         "run_id": 44754324733,
@@ -355,7 +355,7 @@
       }
     ],
     "decision": "User explicitly says do not stop after each tiny task; keep autonomous development to next true blocker, no reviewer request until P2a-v3 overall Phase exit. After old pilot48 ChatGPT reply (correct UTF8/JSON but invalid typed proof), versioned revised prompt/proof independently tested and includes readable 1,200-character human scene companion. STRICT factual validation remains; old ChatGPT answer not retroactively accepted. CI run 45102049118 21/21 QA, zero mismatches public candidate score/rank. Actual pinned Mortal S42 ran on 8 selected paired public contexts, accepted original archive anchor with opponent hidden hands and future events removed from encoder input: changed 1, maintained 7, no ambiguous within predeclared 0.001 internal ranking margin; insufficient changed contrasts for L3.5 gate. No actual ChatGPT answer for revised schema, no Stage2, no blind user+Claude+Gemini ratings. No paid API/other billed action authorized. main and formal gates remain NO-GO.",
-    "next": "Request only independent ChatGPT temporary-chat schema-v3 pilot-48 one-case JSON after 9-observation prompt fix; check raw outcome before seven further smoke cases. Prior schema-v2 raw response contract FAIL preserved. Do not score as success, do not alter frozen case IDs, no paid API, Phase and release NO-GO.",
+    "next": "STOP next 7 and 16 repetitions under preregistered major publicly verifiable point/rank falsehood in first schema-v3 ChatGPT pilot. Autonomous development: determine winBase/lossBase confusion, improve numeric conditional claim verification with explicit versioned post-failure tests. Do not retroactively pass model or quietly change frozen scoring; user work NOT needed now. Stage2/anonymous blind scoring postponed. Main remains untouched and releases NO-GO.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -487,10 +487,10 @@
         "pilot-69"
       ],
       "independentSessionsPlanned": 24,
-      "actualFirstStageAnswers": 2,
+      "actualFirstStageAnswers": 3,
       "actualSecondStageAnswers": 0,
       "paidCalls": 0,
-      "immediateNext": "Schema-v3 independent new temporary-chat pilot-48 one case (new fixed prompt); old + schema-v2 FAILs remain in separate invalid logs",
+      "immediateNext": "No more user model executions required while STOP; develop numeric validation, preserve 3 raw real manual trial history with schema-v3 substantive math FAIL",
       "actualValidFirstStageAnswers": 0
     },
     "v3_public_values": {
@@ -510,7 +510,7 @@
       "jobsSucceeded": 6,
       "experimentalStage1Actual": 1,
       "firstResponseOldSchemaValid": false,
-      "newSchemaRealAnswers": 1,
+      "newSchemaRealAnswers": 2,
       "experimentalStage2Actual": 0,
       "repetitionActual": 0,
       "blindHumanClaudeGeminiActual": 0,
@@ -520,8 +520,11 @@
       "fullLegalL35Certified": false,
       "phaseComplete": false,
       "newSchemaRealAnswersPassingContract": 0,
-      "newSchemaV3IndependentReplies": 0,
-      "oldSchemaPlusNewRawManuallySubmittedCount": 2
+      "newSchemaV3IndependentReplies": 1,
+      "oldSchemaPlusNewRawManuallySubmittedCount": 2,
+      "schemaV3MajorPublicFactErrors": 1,
+      "stage1SmokeExpansionStopped": true,
+      "finalGradeCertified": false
     },
     "v3_first_actual_response": {
       "caseId": "pilot-48",
@@ -537,7 +540,7 @@
       "review": "not_due_until_phase_exit",
       "note": "handoff/p2a-v3-first-real-chatgpt-pilot48-format-20261123.md"
     },
-    "v3_latest_report": "handoff/p2a-v3-first-real-pilot48-20261123.md",
+    "v3_latest_report": "handoff/p2a-v3-pilot48-schema-v3-semantic-failure-20261123.md",
     "v3_v2_readable_model_artifact": {
       "run": 45102049118,
       "id": 14785867588,
@@ -670,7 +673,7 @@
       "artifactId": 14788033190,
       "artifactName": "p2a-v3-chatgpt-8x3-manual-readable-schema-v3",
       "questionPilot48RequestHash": "60dcbaf1b07be102477fbfdeea0849024c68e438d21d37852b826d46ea722383",
-      "newSchemaV3RealResponses": 0,
+      "newSchemaV3RealResponses": 1,
       "stillFrozenCaseSelection": [
         "pilot-48",
         "pilot-52",
@@ -683,7 +686,65 @@
       ],
       "priorSchemaV2InvalidResponses": 1,
       "schemaChangeDeclaredAfterFirstSchemaV2Response": true,
-      "preRegistrationAmendment": "handoff/p2a-v3-chatgpt-prereg-amendment-v2-20261123.md"
+      "preRegistrationAmendment": "handoff/p2a-v3-chatgpt-prereg-amendment-v2-20261123.md",
+      "postFailureStop": true,
+      "completedLaterGuardCI": {
+        "run": 45111335512,
+        "status": "success",
+        "jobsPassed": 5,
+        "jobsSkippedIntentional": 2,
+        "manualFreezeTests": 11,
+        "failedTests": 0
+      },
+      "nextManualChatgptRequest": "NONE_WHILE_PREREGISTERED_STOP_ACTIVE"
+    },
+    "v3_third_actual_response": {
+      "caseId": "pilot-48",
+      "schema": "manual-readable-schema-v3",
+      "sourceArtifactRun": 45108629360,
+      "sourceArtifactId": 14788033190,
+      "originalQuestionHash": "60dcbaf1b07be102477fbfdeea0849024c68e438d21d37852b826d46ea722383",
+      "modelSource": "user_reported_new_independent_ChatGPT_chat_pasted_response",
+      "modelId": null,
+      "modelVersion": null,
+      "providerRequestId": null,
+      "rawOutputRetention": "user_pasted_message_in_current_conversation_only",
+      "responseJSON": "visually_well_formed_not_byte_validated_against_node_verifier",
+      "recommendation": "a37-1_riichi_p5",
+      "alternative": "a13-0_discard_p5",
+      "candidateFactsCompared": 4,
+      "candidateFactsMatchingPublic": 4,
+      "opponentObservationCount": 7,
+      "opponentObservationsMatchingSource": 7,
+      "opponentObservationMax": 9,
+      "structuralSurface": "no_detected_issue",
+      "verifiedCriticalSemanticError": {
+        "location": "importantSeats[0].whyMatters",
+        "claim": "3900 point loss to seat0 yields self27000 seat0 27200 and loss of first",
+        "sourceActual3900": {
+          "self": 28900,
+          "seat0": 25300,
+          "selfRank": 1
+        },
+        "source5800": {
+          "self": 27000,
+          "seat0": 27200,
+          "selfRank": 2
+        },
+        "sourceRankRow": {
+          "other": 0,
+          "winBase": 3900,
+          "lossBase": 5800
+        },
+        "probableMechanism": "winBase_vs_lossBase_confusion",
+        "status": "FAIL_MAJOR_DETERMINISTIC_FACT_ERROR"
+      },
+      "performanceVerdict": "FAIL_PREREGISTERED_STOP_ON_FIRST_EIGHT",
+      "stage2Real": 0,
+      "blindEvaluationStarted": false,
+      "independentProvenanceAuthenticated": false,
+      "auditPath": "archive/results/p2a-v3-pilot48-schema-v3-real-chatgpt-numeric-failure-20261123.json",
+      "report": "handoff/p2a-v3-pilot48-schema-v3-semantic-failure-20261123.md"
     }
   },
   "previous_runs": [
@@ -1826,6 +1887,33 @@
       "newArtifact": "p2a-v3-chatgpt-8x3-manual-readable-schema-v3",
       "newArtifactId": 14788033190,
       "limitations": "manual provider not verified, blinded three-party quality not graded, new v3 response zero, user action needed"
+    },
+    {
+      "status": "p2a_v3_first_schema_v3_real_chatgpt_reply_major_rank_arithmetic_fail_pre_registered_expansion_STOP",
+      "branch": "feat/coach-p2a-v3-contract-repair",
+      "commit": "ee9894ec5f1e6e62ba60de1e81ee7b00ed640b60",
+      "run_id": 45111335512,
+      "userReportPath": "handoff/p2a-v3-pilot48-schema-v3-semantic-failure-20261123.md",
+      "auditPath": "archive/results/p2a-v3-pilot48-schema-v3-real-chatgpt-numeric-failure-20261123.json",
+      "explanation": "ChatGPT confused seat0 winBase3900 and lossBase5800: incorrectly says loss3900 results in self27000/opponent27200. Correct self28900/opponent25300 and own rank first; at loss5800 self27000/opp27200 own rank second.",
+      "source": [
+        "pilot-48 user message schema-v3",
+        "frozen public board and rank-scenarios ron index2"
+      ],
+      "structuredEvidenceCounts": {
+        "candidateComparisonsMatching": 4,
+        "opponentObservationsMatching": 7,
+        "maxObservations": 9
+      },
+      "rule": "preregistered STOP if one serious known value or payoff falsification in initial eight",
+      "newVerifier": "post-response partial Japanese narrative rank QA for known failure plus controls; NOT held-out general skill proof",
+      "CI": {
+        "run": 45111335512,
+        "success": 5,
+        "skippedIntentionally": 2,
+        "manualFreezeTestsPass": 11
+      },
+      "futureUserRequests": "none until new post-failure protocol"
     }
   ],
   "roadmap": {
