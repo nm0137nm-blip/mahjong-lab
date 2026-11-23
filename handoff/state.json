@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-23T22:14:10+09:00",
+  "checkpoint": "2026-11-23T22:42:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -8,8 +8,8 @@
     "coach_candidate_promoted": false
   },
   "active_task": {
-    "phase": "P2a-v4.3 CLOSED_NO_GO on 7th genuine GPT-6 pilot70 reply, 6/7 source-contract passes (1 non-meaningful public comparison failure)",
-    "status": "P2a_v43_PHASE_EXIT_NO_GO_FIRST_FATAL_PILOT70_PUBLIC_COMPARATOR_OMITS_FORMS_STANDARD_AND_IMPROVING",
+    "phase": "P2a-v4.4 separately-versioned public shape proof engineering complete with 74/74 Node tests, eight newly frozen never-GPT-answered public questions; next first pilot46 original GPT-6 JSON file",
+    "status": "P2a_v44_74_TESTS_PASS_NEW_EIGHT_ORIGINAL_PUBLIC_SHA_FROZEN_FIRST_PILOT46_AWAITING_GPT6_JSON_FILE",
     "branch": "feat/coach-p2a-v43-japanese-conditional-gate",
     "commit": "f92239ad355d069d43ead0cbe6951ade9a07ae3a",
     "pr": 66,
@@ -354,8 +354,8 @@
         "phaseCompleted": false
       }
     ],
-    "decision": "Formal preregistered fatal: seventh original GPT-6 pilot70 file failed fixed source comparison, raw JSON strict, legal recommendations a24 s7 vs a21 s4, both same shanten/ukeire/dora/genbutsu, zero counted public differences. Source itself contains distinct standard-form shanten 2 vs 3 and improving tile sets; fixed instrument did not compare them. Do not rescue old v43 answer with amended criteria. v43 closed NO-GO with 6/7 public-contract PASS and 1 failure, one eighth unattempted.",
-    "next": "No further v4.3 independent GPT-6 model prompt; pilot67 must not count as v4.3. Start new separately versioned v4.4 source-comparison engineering with standardShanten/improving composition under source-bound per-candidate evidence, prospective new unseen 8 only after all technical gates pass.",
+    "decision": "P2a-v4.3 officially closed 6/7 source-contract PASS then fatal pilot70 NO-GO; v44 source verifier adds standardShanten/improving composition/concreteDiscard witnesses and requires both candidate FactID citations. New all-previously-unanswered 8 source-only SHA selected and strict hashes frozen. Only development infrastructure / first independent Stage1 question ready, no tactical skill / S42 certified.",
+    "next": "対応依頼: New GPT-6 Temporary Chat with frozen pilot-46 public JSON; produce original untouched mahjong_P2a_v44_stage1_pilot-46_response.json UTF-8 JSON FILE attachment, not pasted. Return it for strict v44 original-source verifier. No old GPT answers or S42 labels supplied.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -1591,6 +1591,126 @@
         "verdict": "PREDECLARED_PHASE_NO_GO_AFTER_FIRST_FATAL"
       },
       "closedNoGo": true
+    },
+    "v44_development": {
+      "status": "GO_FOR_FIRST_NEW_REAL_STAGE1_MODEL_ANSWER_ONLY_NOT_PHASE_GO",
+      "branch": "feat/coach-p2a-v44-complete-public-shape-proof",
+      "commit": "31dcb41f73f3f510c873798ab9f4976d2402d920",
+      "draftPR": 67,
+      "baseBranch": "feat/coach-p2a-v43-japanese-conditional-gate",
+      "mainUnchanged": true,
+      "historicalV43": {
+        "status": "CLOSED_NO_GO",
+        "attempted": 7,
+        "sourceContractPass": 6,
+        "fail": 1,
+        "unattempted": 1,
+        "fatalCase": "pilot-70",
+        "originalReplySha256": "f78821b96fe40583a1d8a0d21dfa83f9c8da5b7a9e1d03965e6951c628bc56e0",
+        "instrumentOmission": "forms.standard 2 vs 3 and improving sets s2,s3,s4 vs s2,s3,s7, original comparator counted zero public differences",
+        "noRetroactiveRegrade": true
+      },
+      "historicalV42": {
+        "status": "CLOSED_NO_GO",
+        "attempted": 3,
+        "pass": 2,
+        "fail": 1,
+        "noRetroactiveRegrade": true
+      },
+      "changes": [
+        "v14-source-shape-contrast-v44: source-hash-verified standard-form shanten, exact improving tile composition and fallback concrete discarded tile",
+        "v14-public-proof-gate-v44: strict original public arithmetic/opponent evidence plus new source-verifiable material candidate distinction",
+        "v14-anchored-tactical-text-v44: new candidate standardShanten/improvingSummary/discardTile FactIDs and requirement for BOTH selected candidate refs when old aggregates tie",
+        "v14-compact-model-contract-v44: independent one-question GPT-6 file-only JSON answer with explicit shape-provenance comparison instructions",
+        "v14-v44-stage1-receipt: fixed eight preregistered request SHA and first fatal STOP, original user response always preserved"
+      ],
+      "unchangedOriginal36Sha256": "271b4a304ed86dc41be2e72766e2b5cc496966bdf8a0ce5a8d5a5d0334e6103a",
+      "sourceSelectionMethod": "fixed SHA-ranked source public honba/kyotaku; 2 reach, 3 call, 3 discard; no Mortal Q or previous GPT choices",
+      "excludedGPTPreviouslyAnswered": [
+        "pilot-48",
+        "pilot-42",
+        "pilot-50",
+        "pilot-52",
+        "pilot-47",
+        "pilot-59",
+        "pilot-43",
+        "pilot-49",
+        "pilot-57",
+        "pilot-62",
+        "pilot-63",
+        "pilot-71",
+        "pilot-70"
+      ],
+      "frozenEight": [
+        "pilot-46",
+        "pilot-51",
+        "pilot-56",
+        "pilot-64",
+        "pilot-53",
+        "pilot-69",
+        "pilot-65",
+        "pilot-74"
+      ],
+      "fixedPacketHashes": [
+        "3fd5108e628468c8f9b9b3e1719e3a42e5ae7432141d73af7594d15c80d577d5",
+        "5a25db9688d7106799d6b08818212bf06298438203dd8ce451df67e6a11834e5",
+        "ebc424b48798998f64e83b3218dace26021bec3fec00112cf2896de7c0cf97c3",
+        "7029a170a9db24d9fc523e7de482d1496de46e8e0f96d83d3df055016e4c02ae",
+        "1fb156cb92b9ad8ff2ba99bc65489a95ffb791cf88d5eaa1397c920d28ed40c2",
+        "01e840615061dd9575fc92b4552b6fa99f16a6a846e4105cb2ab4ecafeb3e85b",
+        "84810b9b07ac791db56b4ad903a31981d5db5f06baaa9a84d56e0779d7e1b548",
+        "c3719154f2ac69b3b1ac2c233fefe297ac76fc9823b0e31215e89f6ab32a0b0f"
+      ],
+      "firstCase": "pilot-46",
+      "firstCaseRequestHash": "3fd5108e628468c8f9b9b3e1719e3a42e5ae7432141d73af7594d15c80d577d5",
+      "firstCaseFileSha256": "cd56be60074c2cfff536aa077471bb248f1bcbfbf67aa38ba19e84163e232e2e",
+      "firstCaseFileBytes": 28706,
+      "firstCasePublicFile": "/mnt/data/mahjong_P2a_v44_stage1_pilot-46.json",
+      "firstAnswerRequired": "mahjong_P2a_v44_stage1_pilot-46_response.json",
+      "answerTransport": "UTF-8 JSON FILE ATTACHMENT ONLY; chat body just sandbox link; no JSON pasted in text",
+      "latestCI": {
+        "runId": 45186436930,
+        "commit": "31dcb41f73f3f510c873798ab9f4976d2402d920",
+        "status": "success",
+        "tests": 74,
+        "passes": 74,
+        "failures": 0,
+        "source36ActuallyRead": true,
+        "v43Pilot70OriginalComparisonStillZero": true,
+        "v44Pilot70SyntheticShapeWitnesses": 2,
+        "v44ModelMustActuallyCiteBothCandidateFactIds": true,
+        "allEightNewSourceCasesHaveSourceBoundValidComparisonPair": true
+      },
+      "publicArtifact": {
+        "id": 14823478002,
+        "name": "p2a-v44-public-frozen-8-unseen-GPT6-JSON-FILES",
+        "localZip": "/mnt/data/mahjong_P2a_v44_stage1_all8_public_verified_74tests.zip",
+        "localZipSHA256": "6f0e123b2f404c045489fa18af29d868e0ca847b9116f38caf5500e31b13d50b",
+        "allEightOriginalHashesVerifiedByNode": true
+      },
+      "separateSealedVerifierOnlyArtifact": {
+        "id": 14823488141,
+        "name": "p2a-v44-sealed-pre-answer-L4-controls-verifier-only",
+        "neverShowToGPTAnswerModel": true
+      },
+      "actualGPT6IndependentV44Responses": 0,
+      "stage1": {
+        "planned": 8,
+        "actual": 0,
+        "sourceContractPass": 0,
+        "failed": 0,
+        "remaining": 8,
+        "canExpand": false,
+        "state": "FIRST_PROSPECTIVE_NEW_INDEPENDENT_MODEL_REPLY_NEEDED"
+      },
+      "actualL35Responses": 0,
+      "actualL4RaterReports": 0,
+      "extraClaudeGeminiPatchReview": "NOT_REQUESTED_PER_USER",
+      "actualMaskedIndependentL4StillRequired": true,
+      "noPaidAPICalls": true,
+      "productionGo": false,
+      "report": "handoff/p2a-v44-source-shape-proof-74tests-eight-unseen-20261123.md",
+      "next": "対応依頼: New GPT-6 Temporary Chat with frozen pilot-46 public JSON; produce original untouched mahjong_P2a_v44_stage1_pilot-46_response.json UTF-8 JSON FILE attachment, not pasted. Return it for strict v44 original-source verifier. No old GPT answers or S42 labels supplied."
     }
   },
   "previous_runs": [
@@ -3227,6 +3347,33 @@
       "mainUnchanged": true,
       "modelName": "GPT-6 user reported",
       "report": "handoff/p2a-v43-phase-exit-pilot70-no-verified-comparison-20261123.md"
+    },
+    {
+      "phase": "P2a-v4.4",
+      "status": "P2a_v44_SOURCE_SHAPE_PROOF_ENGINEERING_74_NODE_TESTS_ALL_PASS_AND_EIGHT_NEW_SHA_FROZEN",
+      "draftPR": 67,
+      "branch": "feat/coach-p2a-v44-complete-public-shape-proof",
+      "commit": "31dcb41f73f3f510c873798ab9f4976d2402d920",
+      "ciRunId": 45186436930,
+      "nodeTests": 74,
+      "nodePass": 74,
+      "nodeFail": 0,
+      "previouslyGPTExposedExcluded": 13,
+      "unseenSourceSelected": 8,
+      "realGPT6Outputs": 0,
+      "oldV43Stage1": "CLOSED_NO_GO_6_OF_7_NO_REGRADE",
+      "initialQuestion": "pilot-46",
+      "requestHash": "3fd5108e628468c8f9b9b3e1719e3a42e5ae7432141d73af7594d15c80d577d5",
+      "publicArtifactId": 14823478002,
+      "verifierOnlyArtifactId": 14823488141,
+      "artifactAllEightHashVerified": true,
+      "stage1Result": "UNSTARTED",
+      "mortalMatch": "UNTESTED",
+      "blindL4": "UNTESTED",
+      "patchReviews": "waived per user",
+      "mainUnchanged": true,
+      "paidAPI": 0,
+      "report": "handoff/p2a-v44-source-shape-proof-74tests-eight-unseen-20261123.md"
     }
   ],
   "roadmap": {
