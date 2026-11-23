@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-23T19:23:00+09:00",
+  "checkpoint": "2026-11-23T20:03:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -8,12 +8,12 @@
     "coach_candidate_promoted": false
   },
   "active_task": {
-    "phase": "P2a-v4.2 Phase CLOSED NO-GO: third real pilot59 contract failure, 2/3 passes",
-    "status": "P2a_v42_PHASE_EXIT_NO_GO_FIRST_FATAL_PILOT59_JAPANESE_CONDITIONAL_REGEX_AND_MISSING_SEAT2_TRADEOFF_FACTID",
-    "branch": "feat/coach-p2a-v42-typed-seat-transport",
-    "commit": "05b0f5e74954170828686d0565ac93214f269c24",
-    "pr": 65,
-    "run_id": 45133880242,
+    "phase": "P2a-v4.3 development complete with 60 tests, newly frozen 8 GPT-6 JSON-file prompts; independent first reply needed",
+    "status": "P2a_v43_NEW_UNSEEN_EIGHT_STAGE1_FROZEN_60_NODE_TESTS_PASS_NEEDS_FIRST_PILOT43_GPT6_FILE_RESPONSE",
+    "branch": "feat/coach-p2a-v43-japanese-conditional-gate",
+    "commit": "f92239ad355d069d43ead0cbe6951ade9a07ae3a",
+    "pr": 66,
+    "run_id": 45161118786,
     "prior_runs": [
       {
         "run_id": 44754324733,
@@ -354,8 +354,8 @@
         "phaseCompleted": false
       }
     ],
-    "decision": "P2a-v4.2 strict 3rd user-provided model answer failed contract. Two identical uploaded pilot59 files count one. Two independent causes: Japanese conditional wording でなければ/なれば not recognized by frozen regex; seat2 tradeoff has no opponent:seat2 FactID. Historical pilot52/pilot47 pass 2/3, 5 unattempted. No regrade of seen answer; strategic/S42 proficiency not certified.",
-    "next": "Do not request more v4.2 model replies. New v4.3 must first test broad Japanese conditional patterns and enforce tradeoff opponent FactID, freeze unseen cases excluding prior answered, and verify with multiple synthetic regressions; only then request independent model results.",
+    "decision": "Historical v42 closed NO-GO 2/3 kept unchanged. New v43 updated Japanese reversal detector and strict per-opponent tradeoff citation, bound public river and selected genbutsu, 8 unseen source cases fixed without S42 labels or prior GPT choices. Actual independent v43 ChatGPT responses 0; strategy/L4 untested.",
+    "next": "対応依頼: GPT-6 fresh Temporary Chat with exact pilot-43.json; output mahjong_P2a_v43_stage1_pilot-43_response.json as file attachment, raw unchanged; after result verify source-hash and strict first-fatal stop before any more trials",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -1280,6 +1280,89 @@
         ],
         "noNewUserWorkUntilGatesPass": true
       }
+    },
+    "v43_development": {
+      "status": "STAGE1_NEW_MODEL_RESPONSE_READY_NOT_FULL_PHASE_GO",
+      "branch": "feat/coach-p2a-v43-japanese-conditional-gate",
+      "commit": "f92239ad355d069d43ead0cbe6951ade9a07ae3a",
+      "pr": 66,
+      "draft": true,
+      "baseBranch": "feat/coach-p2a-v42-typed-seat-transport",
+      "mainUnchanged": true,
+      "historicV42": {
+        "status": "CLOSED_NO_GO",
+        "passes": 2,
+        "attempts": 3,
+        "failedCase": "pilot-59",
+        "unattempted": 5,
+        "causes": [
+          "narrow Japanese conditional regex failed でなければ and なれば",
+          "answer had no seat2 FactID inside its opponent seat2 tradeoff"
+        ]
+      },
+      "fixes": [
+        "v14-japanese-condition-v43.mjs: natural Japanese conditional plus actual decision change",
+        "v14-anchored-tactical-text-v43.mjs: same-seat opponent FactID and concrete candidate FactID required in each tradeoff; retains strict missing seat2 rejection",
+        "source-bound opponent recentHandDiscards and candidate selected-concrete-discard genbutsuSeatN fact registry",
+        "compact model request system explicitly requires UTF-8 JSON file attachment and no pasted reply",
+        "new versioned v43 Stage1 receipt and static strict evaluation plan; v42 historical responses never regraded"
+      ],
+      "original36SourceHash": "271b4a304ed86dc41be2e72766e2b5cc496966bdf8a0ce5a8d5a5d0334e6103a",
+      "excludedPreviouslyViewed": [
+        "pilot-48",
+        "pilot-42",
+        "pilot-50",
+        "pilot-52",
+        "pilot-47",
+        "pilot-59"
+      ],
+      "fixedEight": [
+        "pilot-43",
+        "pilot-49",
+        "pilot-57",
+        "pilot-62",
+        "pilot-63",
+        "pilot-71",
+        "pilot-70",
+        "pilot-67"
+      ],
+      "replacement": "2 previously GPT-6 answered reach and 1 call replaced with original public SHA+honba predetermined candidates; five still-unanswered original scenes retained",
+      "firstCase": "pilot-43",
+      "firstCaseRequestHash": "efb22fe99f96dd6c629f586cfcc1b88a4ac63ee601fc23116ee86f2607cabddf",
+      "firstCaseFileSha256": "a80e75f4227f527e4bd26b3d0422135d523cc37a66894433d935643b9558f4bf",
+      "firstCaseBytes": 24356,
+      "replyFileRequired": "mahjong_P2a_v43_stage1_pilot-43_response.json",
+      "format": "UTF-8 JSON FILE ATTACHED; reply body only file link; model GPT-6 user-stated",
+      "ci": {
+        "runId": 45161118786,
+        "status": "success",
+        "nodeTests": 60,
+        "nodeFailures": 0,
+        "provenance": "original 36 source loaded non-vacuously from Github artifact",
+        "allEightPublicQuestionsHaveOneStructurallyAcceptableLegalSourceBoundPair": true,
+        "doesNotEstablishExpertTacticalSkill": true
+      },
+      "publicArtifact": {
+        "id": 14811101566,
+        "name": "p2a-v43-public-frozen-8-unseen-GPT6-JSON-FILES",
+        "localVerifiedZip": "/mnt/data/mahjong_P2a_v43_stage1_all8_public_verified.zip",
+        "localVerifiedZipSha256": "97771a3a300609d18815851aac11d488290a89a95b71fe620f884dac3a5e019d",
+        "everyQuestionHashCheckedAgainstManifest": true
+      },
+      "sealedVerifierOnlyArtifact": {
+        "id": 14811101570,
+        "name": "p2a-v43-sealed-pre-answer-L4-controls-verifier-only",
+        "neverGiveToModel": true
+      },
+      "realIndependentGPT6Responses": 0,
+      "actualL35ModelResponses": 0,
+      "actualL4Ratings": 0,
+      "noPaidApiCalls": true,
+      "patchReviewerRound": "NOT_REQUESTED_PER_USER",
+      "phaseFinished": false,
+      "gate": "GO_FOR_FIRST_INDEPENDENT_MANUAL_TRIAL_ONLY; NOT_RESEARCH_PHASE_GO_OR_PRODUCTION_GO",
+      "next": "対応依頼: GPT-6 fresh Temporary Chat with exact pilot-43.json; output mahjong_P2a_v43_stage1_pilot-43_response.json as file attachment, raw unchanged; after result verify source-hash and strict first-fatal stop before any more trials",
+      "report": "handoff/p2a-v43-japanese-conditional-repair-and-unseen-eight-20261123.md"
     }
   },
   "previous_runs": [
@@ -2717,6 +2800,48 @@
       "noRetrospectiveRegrade": true,
       "mainUnchanged": true,
       "report": "handoff/p2a-v42-phase-exit-pilot59-conditional-and-seat2-source-anchor-20261123.md"
+    },
+    {
+      "status": "P2a_v43_pre_response_engineering_and_frozen_unseen_eight_GO_FOR_FIRST_REAL_RESPONSE_ONLY",
+      "phase": "P2a-v4.3",
+      "branch": "feat/coach-p2a-v43-japanese-conditional-gate",
+      "commit": "f92239ad355d069d43ead0cbe6951ade9a07ae3a",
+      "pr": 66,
+      "run_id": 45161118786,
+      "nodeTests": 60,
+      "nodeFailed": 0,
+      "premodelUnseenEight": [
+        "pilot-43",
+        "pilot-49",
+        "pilot-57",
+        "pilot-62",
+        "pilot-63",
+        "pilot-71",
+        "pilot-70",
+        "pilot-67"
+      ],
+      "excludedPriorAnswered": [
+        "pilot-48",
+        "pilot-42",
+        "pilot-50",
+        "pilot-52",
+        "pilot-47",
+        "pilot-59"
+      ],
+      "firstPacketHash": "efb22fe99f96dd6c629f586cfcc1b88a4ac63ee601fc23116ee86f2607cabddf",
+      "publicArtifactId": 14811101566,
+      "verifierOnlyArtifactId": 14811101570,
+      "originalResponseCount": 0,
+      "repeatCount": 0,
+      "stage2Responses": 0,
+      "l35RealReplies": 0,
+      "l4Ratings": 0,
+      "userRequiredAnswerAsJsonFile": true,
+      "allModelLabels": "GPT-6 user provided",
+      "patchReview": "waived per user",
+      "paidModelAPI": 0,
+      "overallPhaseResult": "PENDING",
+      "report": "handoff/p2a-v43-japanese-conditional-repair-and-unseen-eight-20261123.md"
     }
   ],
   "roadmap": {
