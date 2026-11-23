@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {generateKeyPairSync,privateDecrypt,createDecipheriv,constants} from 'node:crypto';
-import {assertEnv,makeEncryptedArchive} from './v14-v44-pilot46-single-live-actions.mjs';
+import {assertEnv,makeEncryptedArchive,sanitizeApiFailure} from './v14-v44-pilot46-single-live-actions.mjs';
 test('one-shot guard rejects missing token, unexpected branch and rerun before network',()=>{
  const proper={GITHUB_ACTIONS:'true',GITHUB_EVENT_NAME:'push',
   GITHUB_REF:'refs/heads/feat/coach-p2a-v44-api-transport-dryrun',
@@ -28,4 +28,17 @@ test('private reply is encrypted and decipherable only by recipient private key'
  d.setAuthTag(Buffer.from(enc.tag,'base64'));
  const clear=Buffer.concat([d.update(Buffer.from(enc.ciphertext,'base64')),d.final()]).toString();
  assert.equal(clear,original);
+});
+
+test('429 diagnostics disclose only safe error type and code',()=>{
+ const malicious={error:{type:'insufficient_quota',code:'credit_balance_exhausted',
+  message:'REDACTED PRIVATE PROMPT AND SECRET INFO'}};
+ const clean=sanitizeApiFailure(malicious,429);
+ assert.equal(clean.errorCode,'credit_balance_exhausted');
+ assert.equal(clean.errorType,'insufficient_quota');
+ assert.ok(!JSON.stringify(clean).includes('PRIVATE'));
+ assert.ok(!JSON.stringify(clean).includes('message'));
+ const unsafe=sanitizeApiFailure({error:{code:'leaky key sk-example',type:'BAD DATA'}},429);
+ assert.equal(unsafe.errorCode,null);
+ assert.equal(unsafe.errorType,null);
 });
