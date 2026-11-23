@@ -1,0 +1,31 @@
+name: P2a-v4.3 readonly original source exporter for private on-device pilot43 receipt
+on:
+  push:
+    branches:
+      - audit/p2a-v43-read-only-source-export-pilot43
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  export-public-source-only:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify immutable v43 core source and no model output
+        run: |
+          set -euo pipefail
+          git rev-parse HEAD
+          test -s src/coach/v14-v43-evaluation-plan.mjs
+          test -s src/coach/v14-v43-stage1-receipt.mjs
+          test -s src/coach/v14-compact-model-contract-v43.mjs
+          git hash-object src/coach/v14-anchored-tactical-text-v43.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p2a-v43-original-src-only-NO-USER-ANSWER
+          path: |
+            src/coach/v14-*.mjs
+            package.json
+          retention-days: 7
+          if-no-files-found: error
+      - run: echo "Only frozen repository source files are exported, user response stays private and never enters GitHub Actions"
