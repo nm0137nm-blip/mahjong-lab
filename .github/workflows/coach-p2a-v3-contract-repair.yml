@@ -91,7 +91,7 @@ jobs:
       - name: Freeze human-use files without model answers or teacher reference
         uses: actions/upload-artifact@v4
         with:
-          name: p2a-v3-chatgpt-8x3-manual-readable-schema-v2
+          name: p2a-v3-chatgpt-8x3-manual-readable-schema-v3
           path: /tmp/v3-chatgpt-manual-smoke/
           if-no-files-found: error
           retention-days: 30
