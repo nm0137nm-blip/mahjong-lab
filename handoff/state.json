@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-23T12:11:33+09:00",
+  "checkpoint": "2026-11-23T12:23:30+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -9,11 +9,11 @@
   },
   "active_task": {
     "phase": "P2a-v3",
-    "status": "P2a_v3_in_progress_schema_v2_fixed_21_tests_pass_real_S42_counterfactual_8_changed1_maintained7_real_ChatGPT_still_old_invalid1",
+    "status": "P2a_v3_in_progress_exploratory_S42_extended_50_pairs_success_machine_gate_only_ChatGPT_real_new_schema_zero",
     "branch": "feat/coach-p2a-v3-contract-repair",
-    "commit": "8ae2fd179f7cf6c939b642aa08a55f8f9e49c9b0",
+    "commit": "7020aad6458d621f294820cd4ff68ace1889cb4a",
     "pr": 62,
-    "run_id": 45104501069,
+    "run_id": 45105677751,
     "prior_runs": [
       {
         "run_id": 44754324733,
@@ -355,7 +355,7 @@
       }
     ],
     "decision": "User explicitly says do not stop after each tiny task; keep autonomous development to next true blocker, no reviewer request until P2a-v3 overall Phase exit. After old pilot48 ChatGPT reply (correct UTF8/JSON but invalid typed proof), versioned revised prompt/proof independently tested and includes readable 1,200-character human scene companion. STRICT factual validation remains; old ChatGPT answer not retroactively accepted. CI run 45102049118 21/21 QA, zero mismatches public candidate score/rank. Actual pinned Mortal S42 ran on 8 selected paired public contexts, accepted original archive anchor with opponent hidden hands and future events removed from encoder input: changed 1, maintained 7, no ambiguous within predeclared 0.001 internal ranking margin; insufficient changed contrasts for L3.5 gate. No actual ChatGPT answer for revised schema, no Stage2, no blind user+Claude+Gemini ratings. No paid API/other billed action authorized. main and formal gates remain NO-GO.",
-    "next": "Check GitHub Actions run 45104501069 for expanded exploratory S42 evaluation. Never elevate it to formal L3.5 until independent legal/physical replay and true ChatGPT paired responses. New ChatGPT schema-2 Stage1 manual answers remain uncollected. No paid API calls, main or formal gate changes.",
+    "next": "Exploratory reference extension frozen: no more model selection on seen S42 labels. Independent revised-schema ChatGPT temporary-chat responses are now the next unavoidable real-data input; 8-case human-readable package from run 45102049118. Continue free validations if possible; request user only when genuinely required. Stage2 and user/Claude/Gemini blind assessment after genuine responses. Do not label as formal L3.5 or ask phase-end reviewers until phase exit.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -533,7 +533,7 @@
       "review": "not_due_until_phase_exit",
       "note": "handoff/p2a-v3-first-real-chatgpt-pilot48-format-20261123.md"
     },
-    "v3_latest_report": "handoff/p2a-v3-continued-repair-s42-eight-pairs-20261123.md",
+    "v3_latest_report": "handoff/p2a-v3-exploratory-expanded-s42-gate-20261123.md",
     "v3_v2_readable_model_artifact": {
       "run": 45102049118,
       "id": 14785867588,
@@ -561,24 +561,74 @@
     "v3_s42_expansion": {
       "phase": "P2a-v3_continuation_exploratory_only",
       "codeBranch": "feat/coach-p2a-v3-contract-repair",
-      "commit": "8ae2fd179f7cf6c939b642aa08a55f8f9e49c9b0",
-      "originalEightFrozenRun": 45102049118,
-      "originalEightChanged": 1,
-      "originalEightMaintained": 7,
-      "sourceSelection": "Frozen 36 public development scenes; do not reuse first 8 source cases or answered pilot-48; choose all remaining eligible reach, then at most 24 score scenes with up to three different opponent transfers per source; source-cluster not independent pairs",
-      "testRun": 45104501069,
-      "status": "RUNNING_WITH_EXTERNAL_PINNED_MODEL_DOWNLOAD_RETRIES",
-      "preliminary": "New prelabel selection and regression tests passed; genuine new S42 extension labels not yet obtained",
-      "firstFailedRun": 45104195743,
-      "firstFailure": "Transient pinned model fetch HTTP2 CANCEL curl 92, before any source pairs graded",
-      "integrity": "Pinned original S42 SHA256 required, no code path accepting substitute model; no concealed opponent hands passed to encoder",
-      "pending": [
-        "Inspect run 45104501069 and reproducible verifier-only artifact",
-        "If failure, fix external download or implementation without changing thresholds",
-        "Preserve original 8 and group new results by source clusters"
+      "evaluatedCommit": "2474982014196a02905726406e15454bcfc2a9cb",
+      "freezeJobCommit": "7020aad6458d621f294820cd4ff68ace1889cb4a",
+      "testedRun": 45105529039,
+      "runConclusion": "success",
+      "postFreezeRun": 45105677751,
+      "postFreezeConclusion": "success",
+      "artifactId": 14787261808,
+      "artifactName": "p2a-v3-expanded-source-disjoint-s42-verifier-only",
+      "expiresAt": "2026-12-23T03:22:30Z",
+      "reportPath": "handoff/p2a-v3-exploratory-expanded-s42-gate-20261123.md",
+      "archivedSummary": "archive/results/p2a-v3-s42-source-disjoint-exploratory-20261123.json",
+      "sourceInputHash": "271b4a304ed86dc41be2e72766e2b5cc496966bdf8a0ce5a8d5a5d0334e6103a",
+      "modelSHA256": "30381bf21389e2d25d3edf48fed11bf772336ef3daeee67d1bdae7fb9dd30cb4",
+      "selection": "SHA-deterministic on eligible remaining development originals, excludes initial eight source scenes and answered pilot-48; after initial 8 outcomes but before expansion model labels",
+      "originalEight": {
+        "run": 45102049118,
+        "pairs": 8,
+        "sourceClusters": 8,
+        "changed": 1,
+        "maintained": 7
+      },
+      "expansion": {
+        "pairs": 50,
+        "sourceClusters": 24,
+        "changed": 3,
+        "maintained": 47,
+        "ambiguousByMarginFloor": 0,
+        "clustersWithChanged": 3,
+        "clustersWithMaintained": 22,
+        "clusterOverlapPossible": true
+      },
+      "total": {
+        "pairs": 58,
+        "sourceClusters": 32,
+        "changed": 4,
+        "maintained": 54
+      },
+      "failuresResolved": {
+        "firstNetworkFailureRun": 45104195743,
+        "retryNetworkFailureRun": 45104501069,
+        "modelFetchedAndOriginalPublicPreflightFailureRun": 45104837598,
+        "diagnosticRuns": [
+          45105030134,
+          45105140613,
+          45105400563
+        ],
+        "cause": "kan, replacement draw and dora public comparator omissions; adjacent replacement-draw versus dora-reveal ordering differs between original paipu and public projection",
+        "fix": "compare only permissible public projection adjacent ordering; unchanged raw replay; hash-pinned alternate CDN model retrieval"
+      },
+      "technicalPass": [
+        "all 50 original S42 archive baseline anchors matched",
+        "no concealed opponent hands/future into S42",
+        "independent source grouping recorded",
+        "model exact SHA verified",
+        "existing original eight not changed"
       ],
-      "paidAPICalls": 0,
-      "userActionNeededForThisRun": false
+      "notPassed": [
+        "full physical counterfactual legal histories",
+        "formal heldout L3.5 acceptance",
+        "new ChatGPT actual Stage1 schema2",
+        "real Stage2 and counterfeit sensitivity",
+        "human Claude Gemini independent blind score",
+        "tactical skill certification"
+      ],
+      "paidCalls": 0,
+      "formalGate": "NO-GO",
+      "mainChanged": false,
+      "automaticExtensionRerunDisabled": true
     }
   },
   "previous_runs": [
@@ -1687,6 +1737,24 @@
         "failures": 0,
         "limitations": "No independent full derived fact audit, concrete action equivalence, or global production identity yet."
       }
+    },
+    {
+      "status": "p2a_v3_exploratory_source_disjoint_50_pair_s42_success_not_formal_certification",
+      "branch": "feat/coach-p2a-v3-contract-repair",
+      "commit": "2474982014196a02905726406e15454bcfc2a9cb",
+      "run_id": 45105529039,
+      "result_path": "archive/results/p2a-v3-s42-source-disjoint-exploratory-20261123.json",
+      "summary": {
+        "pairs": 50,
+        "clusters": 24,
+        "changed": 3,
+        "maintained": 47,
+        "ambiguous": 0,
+        "previousEightChanged": 1,
+        "previousEightMaintained": 7,
+        "modelsRunExactSHA": true
+      },
+      "limits": "after seeing initial eight S42 results exploratory non-independent; counterfactual full physical legality and ChatGPT model response absent; no paid API; no production change"
     }
   ],
   "roadmap": {
