@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-23T22:42:00+09:00",
+  "checkpoint": "2026-11-23T23:34:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -1711,6 +1711,25 @@
       "productionGo": false,
       "report": "handoff/p2a-v44-source-shape-proof-74tests-eight-unseen-20261123.md",
       "next": "対応依頼: New GPT-6 Temporary Chat with frozen pilot-46 public JSON; produce original untouched mahjong_P2a_v44_stage1_pilot-46_response.json UTF-8 JSON FILE attachment, not pasted. Return it for strict v44 original-source verifier. No old GPT answers or S42 labels supplied."
+    },
+    "api_transport_exploratory": {
+      "status": "DRY_RUN_EIGHT_OF_EIGHT_SOURCE_SHA_MATCH_API_CALLS_ZERO_CI_SUCCESS",
+      "branch": "feat/coach-p2a-v44-api-transport-dryrun",
+      "draftPR": 68,
+      "headCommit": "17b56f1819302d2ecee25941bd599e86c0aa4140",
+      "ciRun": 45195407121,
+      "jobId": 137764404290,
+      "frozenOriginalCases": 8,
+      "sourceVerified": 8,
+      "passedAllChecks": true,
+      "realAPIResponses": 0,
+      "billableCalls": 0,
+      "newCost": 0,
+      "execution": "requires separate eligibility/credit/secret verification plus per-purpose preapproval",
+      "transport": "stateless OpenAI Responses API with gpt-6-sol; not identical provenance to ChatGPT temporary chat",
+      "manualStage1ResponsesRemain": 0,
+      "confidentiality": "public GitHub Actions live disabled; raw API answer local private file only",
+      "report": "handoff/p2a-v44-api-automation-dryrun-20261123.md"
     }
   },
   "previous_runs": [
@@ -3374,6 +3393,16 @@
       "mainUnchanged": true,
       "paidAPI": 0,
       "report": "handoff/p2a-v44-source-shape-proof-74tests-eight-unseen-20261123.md"
+    },
+    {
+      "phase": "P2a-v4.4 transport exploration only",
+      "status": "API_TRANSPORT_NO_SPEND_DRY_RUN_CI_PASS_NOT_MODEL_VALIDATED",
+      "pr": 68,
+      "run_id": 45195407121,
+      "tests": "source-hash verified 8 frozen prompts; fail-closed live; zero API",
+      "actual_model_responses": 0,
+      "cost": 0,
+      "report": "handoff/p2a-v44-api-automation-dryrun-20261123.md"
     }
   ],
   "roadmap": {
