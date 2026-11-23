@@ -11,9 +11,9 @@ import {checkFrozenPacket,buildOneShotRequest,costCeilingUSD,extractRawOutput}
 const fail=s=>{throw Error('p2a-v44-one-shot: '+s);};
 const hash=b=>createHash('sha256').update(b).digest('hex');
 const expectBranch='refs/heads/feat/coach-p2a-v44-api-transport-dryrun';
-const expectedApproval='$0.30_PILOT46_RETRY_2026-11-24';
-const RETRY_MARKER='research/approvals/pilot46-retry2-20261124.run';
-const RETRY_MARKER_SHA='dec39d2c10e965ef659dbfb22ef8c71af8a9c2758010ce14efd96ea7c57c7286';
+const expectedApproval='$0.30_PILOT46_NEWKEY_2026-11-24';
+const RETRY_MARKER='research/approvals/pilot46-newkey-onepost-20261124.run';
+const RETRY_MARKER_SHA='a1f2af884f50046d5a700ba3d9454a2142f7a7923799f3d8b36895f0d26b7e43';
 // Safe for public CI logs: never include raw response body, error.message,
  // request payload or credential.
 export function sanitizeApiFailure(body,httpStatus){
