@@ -6,7 +6,7 @@ test('one-shot guard rejects missing token, unexpected branch and rerun before n
  const proper={GITHUB_ACTIONS:'true',GITHUB_EVENT_NAME:'push',
   GITHUB_REF:'refs/heads/feat/coach-p2a-v44-api-transport-dryrun',
   GITHUB_RUN_ATTEMPT:'1',
-  ONE_SHOT_APPROVAL:'$0.30_PILOT46_RETRY_2026-11-24',
+  ONE_SHOT_APPROVAL:'$0.30_PILOT46_NEWKEY_2026-11-24',
   OPENAI_API_KEY:'only_mock_never_sent'};
  assert.doesNotThrow(()=>assertEnv(proper));
  assert.throws(()=>assertEnv({...proper,OPENAI_API_KEY:''}),/missing API secret/);
@@ -44,7 +44,7 @@ test('429 diagnostics disclose only safe error type and code',()=>{
 });
 
 test('only exact approved immutable marker content accepted',()=>{
- const marker='P2A_V44_PILOT46_ONE_0.30_USD_POST_APPROVED_2026-11-24_SECOND_TRIGGER_AFTER_NO_POST_FAILED_GUARD\n';
+ const marker='P2A_V44_PILOT46_NEW_KEY_ONE_POST_APPROVED_2026_11_24_ONE_CALL_MAX_USD_0_30\n';
  assert.doesNotThrow(()=>assertFreshMarker(marker));
  assert.throws(()=>assertFreshMarker(marker+'modified'),/marker/);
  assert.throws(()=>assertFreshMarker(''),/marker/);
