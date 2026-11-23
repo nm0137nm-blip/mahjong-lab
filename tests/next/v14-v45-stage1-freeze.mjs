@@ -35,7 +35,7 @@ export function createV45FrozenStage1(frozen){
   version:V45_FREEZE_VERSION,originalPublicSourceHash:V45_SOURCE_SHA,
   selectedIds:panel.selectedIds,selectionReason:panel.method,
   previouslyAnsweredAndExcluded:panel.excludedPreviouslyFrozenOrGPTAnswered,
-  oldVersionOutcomes:'v4 NO-GO; v4.1 NO-GO; v4.2 2/3 CLOSED_NO_GO; v4.3 6/7 CLOSED_NO_GO; never retroactively regrade',
+  oldVersionOutcomes:'v4 NO-GO; v4.1 NO-GO; v4.2 2/3 CLOSED_NO_GO; v4.3 6/7 CLOSED_NO_GO; v4.4 API exploratory 4/5 public-contract CLOSED_NO_GO at pilot53; no retrospective regrading',
   originalModelTrialsNotCountedAsV45:true,
   newV45IndependentResponsesAtFreeze:0,
   questionFileCount:8,rows,
@@ -74,7 +74,7 @@ if(process.argv[1]&&fileURLToPath(import.meta.url)===path.resolve(process.argv[1
   JSON.stringify(p.verifierManifest,null,2)+'\n');
  fs.writeFileSync(path.join(outputDir,'public/READ_ME_FIRST_JP.txt'),[
   '麻雀LAB P2a-v4.5 独立Stage1・新規未見8問',
-  '回答済みpilot48,42,50,52,47,59,43,49,57,62,63,71,70は一切含めません。',
+  '過去にGPTが回答した13局面とv4.4で凍結した8局面は、未回答のv4.4残3問も含めすべて除外しています。',
   '1問につき新規ChatGPT一時チャットを使用。モデルはGPT-6（ユーザー申告）。',
   '問題JSONのrequest.systemとresponseShapeを変更せず、推薦・対案・根拠を独立に判断してください。',
   '各席のtradeoff本文には当該席のopponent:seatN:...と候補candidate:...両方のFactIDを明示してください。',
