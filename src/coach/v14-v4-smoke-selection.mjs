@@ -15,8 +15,17 @@ export function selectV4ProspectiveSmoke(frozen){
   fail('frozen input order, IDs or count changed');
  if(frozen.some(x=>x.request?.stage!=='independent'||hash(x.request)!==x.requestHash))
   fail('source public hash mismatch');
- const select=(arr,count)=>arr.map(x=>x.request.input.id)
-   .sort((a,b)=>score(a).localeCompare(score(b))).slice(0,count);
+ const select=(arr,count)=>{
+  const ranked=arr.map(x=>x.request.input.id)
+   .sort((a,b)=>score(a).localeCompare(score(b)));
+  // Reserve a nonzero-honba case in EACH action family. Without this
+  // public-only stratification the draft hash-only selection had 0/8 honba
+  // and would not exercise the accounting defects found in v3.
+  const source=id=>arr.find(x=>x.request.input.id===id);
+  const honba=ranked.find(id=>source(id).request.input.evidence.find(x=>x.id==='board')?.value.honba>0);
+  if(!honba)fail('no positive-honba case for family');
+  return [honba,...ranked.filter(id=>id!==honba).slice(0,count-1)];
+ };
  const reach=frozen.slice(0,12).filter(x=>x.request.input.id!=='pilot-48');
  const react=frozen.slice(12,24).filter(x=>x.request.input.id!=='pilot-63');
  const discard=frozen.slice(24,36);
@@ -44,12 +53,16 @@ export function selectV4ProspectiveSmoke(frozen){
    priorChatGPTAnswersInThisTrial:0,
    status:'NOT_YET_RUN'};
  });
+ if(rows.filter(x=>x.honba>0).length<3||rows.every(x=>x.kyotaku===0))
+  fail('publicly stratified honba/kyotaku coverage absent');
  return {
   version:V4_SMOKE_DRAFT,stage:'prospective_development_pilot_not_formally_heldout',
   basedOnFrozenPublicSetHash:hash(frozen),
   previouslyAnsweredExcluded:['pilot-48'],
-  selection:'deterministic SHA256 of public case IDs only, balanced across reach/interaction/ron/discard',
+  selection:'public-honba-positive per reach/interact/discard family; SHA256 ID order within strata; no S42 or model answers',
   categories,selectedIds,cases:rows,
+  positiveHonbaCaseCount:rows.filter(x=>x.honba>0).length,
+  kyotakuPresentCaseCount:rows.filter(x=>x.kyotaku>0).length,
   stage1DiagnosticTarget:8,
   followupConditions:'freeze full protocol and validated source events before any manual LLM session',
   abortExpansionOn:'any major known numeric falsehood, illegal choice, fabricated hidden state or unsupported anchor',
