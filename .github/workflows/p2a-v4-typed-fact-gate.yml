@@ -28,7 +28,7 @@ jobs:
         run: |
           set -euo pipefail
           test -s "$V14_FOLLOWUP_PUBLIC"
-          node --test tests/next/v14-settlement-events-v4.test.mjs tests/next/v14-public-proof-gate-v4.test.mjs tests/next/v14-anchored-tactical-text-v4.test.mjs tests/next/v14-public-brief-v4.test.mjs
+          node --test tests/next/v14-settlement-events-v4.test.mjs tests/next/v14-public-proof-gate-v4.test.mjs tests/next/v14-anchored-tactical-text-v4.test.mjs tests/next/v14-public-brief-v4.test.mjs tests/next/v14-v4-smoke-selection.test.mjs
       - name: Assert no genuine ChatGPT or paid inference ever called by development test workflow
         run: |
           echo 'P2a-v4 CI is deterministic source/public-calculation test only; ChatGPT model calls 0; model skill not graded.'
