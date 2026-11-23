@@ -382,3 +382,13 @@ ChatGPTが実際に独立して解いた回答を得る前に、採点・中止�
 - 正式Stage1：**回答3、契約合格2、契約不合格1、未実施5**。事前登録の初回重大契約FAIL停止規則により`P2a-v4.2`を**NO-GOでPhase終了**。過去のpilot52・47の2つのPASSも保持。重複2ファイルを別試行に数えない。ChatGPT新規反復・Stage2・L3.5実モデル回答・3者匿名L4はいずれも未実施。
 - 原モデル回答ファイルはGitHub公開リポジトリに書き出さず、GitHubには原因とSHAのみ記録。詳細`handoff/p2a-v42-phase-exit-pilot59-conditional-and-seat2-source-anchor-20261123.md`。初回修正版v4.3ブランチ`feat/coach-p2a-v43-japanese-conditional-gate`を作成済みだが、**答えを閲覧したpilot59の後付けPASSに使わず、条件文と相手席別出典の正例・負例テストを強化するまでは新しいユーザー実測を求めない**。既に回答済みpilot48,42,50,52,47,59は次の新未見出題から除く。
 - ユーザーに追加レビューを求めない指示を維持。研究Draft PR#65の旧v42はmain非統合、本番公開NO-GO、無断有料APIなし。**現時点はユーザー対応依頼なし**。
+
+
+## 2026-11-23 20:03 JST：P2a-v4.3：日本語条件文・相手別tradeoff根拠修正、未回答8問の事前固定
+- ユーザーがP2a-v4.2第3問`pilot-59`の回答JSONを2回添付（**同一SHA、1実測**）。原固定契約の判定は`STAGE1_NO_GO_INVALID_PUBLIC_CONTRACT`、合格2/3でPhase終了NO-GO。原因が**2つ独立**：①自然な「でなければ／なれば」を認識しない条件文検証器、②モデル自身の席2 tradeoff欄に`opponent:seat2`出典FactIDがない。後者は実際の河にm4があるという内容の正しさとは別の**形式契約違反**。旧回答を後付け合格にせず、Mortal最善手や戦術実力の誤りと断定しない。
+- **別版P2a-v4.3**研究枝`feat/coach-p2a-v43-japanese-conditional-gate`・Draft PR **#66**（base旧v42研究枝、main未変更）。自然な日本語条件文＋戦術判断変更を検査する`v14-japanese-condition-v43.mjs`を実装。全3席それぞれのtradeoff欄内に**同席のopponent根拠ID＋具体的候補candidate根拠ID**を必須とし、旧pilot59の席2根拠欠落を明示的に拒否する回帰テストを追加。公開元の最近河牌と、選択した鳴き後具体打牌に基づく席別現物を改めてFactIDに追加。
+- ユーザー指示の**GPT-6回答＝JSONファイル添付、平文本体へJSON貼付け禁止**を新v43問題`request.delivery`および`request.system`に直接凍結している。質問・説明・ファイル規約をモデル応答閲覧後に後付け変更しない。
+- 公開36問SHA `271b4a304ed86dc41be2e72766e2b5cc496966bdf8a0ce5a8d5a5d0334e6103a`は不変。既回答6局面`pilot-48/42/50/52/47/59`除外、立直2＋鳴き1を公開本場条件＋固定SHA順で差し替え。新8問：**`pilot-43,49,57,62,63,71,70,67`**（本場あり3、供託あり4）、5件は旧予定から継続。Mortalラベルや過去GPT回答選択を使った選別ではない。各問requestHashは`src/coach/v14-v43-evaluation-plan.mjs`に**実回答0の段階で固定**。
+- GitHub Actions **run45161118786 success、Node**60/60**、fail0**。条件文の正例/負例と席2根拠不在の不合格、全8問の異なる合法具体手の比較・構造上の出題可能性まで検証。これらは**モデルの戦術能力認定ではない**。独立v43実回答0、反復0、Stage2 0、L3.5本人の対応回答0、匿名L4 0。既存L3.5の正真正銘S42変化4/維持4の問題素材は別途用意済だが、推奨一致を宣言しない。
+- 公開出題ZIP artifact **14811101566**（`p2a-v43-public-frozen-8-unseen-GPT6-JSON-FILES`）、L4弱対照/verifier-only artifact **14811101570**（回答モデルへ渡さない）。ZIPをローカルで開き個別8問のSHA/requestHash一致を全件検査。最初の`pilot-43`質問requestHash `efb22fe99f96dd6c629f586cfcc1b88a4ac63ee601fc23116ee86f2607cabddf`、個別JSONファイルSHA256 `a80e75f4227f527e4bd26b3d0422135d523cc37a66894433d935643b9558f4bf`。user-facingリンクは確認済みの`/mnt/data/mahjong_P2a_v43_stage1_pilot-43.json`および8問ZIP。無断課金なし、Gemini/Claudeの追加パッチレビューはユーザー指示により依頼なし。
+- **現在の対応依頼**：新規ChatGPT GPT-6一時チャットで新`pilot-43.json`を1問だけ独立回答し、`mahjong_P2a_v43_stage1_pilot-43_response.json`という**UTF-8のJSONファイルを生成・添付**させ、未改変ファイルをこの開発チャットに返してもらう。旧回答済の6問の再実測は不可。初回重大不合格STOP・3者匿名L4必須・main/製品NO-GOを維持。詳細`handoff/p2a-v43-japanese-conditional-repair-and-unseen-eight-20261123.md`と`handoff/state.json`。
