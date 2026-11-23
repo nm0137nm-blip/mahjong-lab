@@ -9,11 +9,11 @@
   },
   "active_task": {
     "phase": "P2a-v3",
-    "status": "p2a_v3_one_actual_chatgpt_pilot48_reply_received_utf8_valid_proof_schema_invalid_v3_fix_needed",
+    "status": "P2a_v3_in_progress_schema_v2_fixed_21_tests_pass_real_S42_counterfactual_8_changed1_maintained7_real_ChatGPT_still_old_invalid1",
     "branch": "feat/coach-p2a-v3-contract-repair",
-    "commit": "d56c7430e4b4eb23694db0ab8b12b2172bc6271f",
+    "commit": "c066e07f9d3cd176923de47b5247d529bf243a1c",
     "pr": 62,
-    "run_id": 45099107005,
+    "run_id": 45102049118,
     "prior_runs": [
       {
         "run_id": 44754324733,
@@ -336,10 +336,26 @@
         "actualChatGPTResponses": 0,
         "paidCalls": 0,
         "noPhaseSuccessClaim": true
+      },
+      {
+        "run_id": 45102049118,
+        "status": "v3_21_dev_QA_and_true_pinned_S42_counterfactual_8_pairs_change1_maintain7_ChatGPT_remains_pending",
+        "commit": "c066e07f9d3cd176923de47b5247d529bf243a1c",
+        "qaPassed": 21,
+        "qaFailed": 0,
+        "realS42Replays": 8,
+        "changed": 1,
+        "maintained": 7,
+        "scoreAndRankAuditsDiscrepancies": 0,
+        "newChatGPTAnswers": 0,
+        "oldChatGPTAnswers": 1,
+        "oldAnswerValidUnderOldSchema": false,
+        "paidCalls": 0,
+        "phaseCompleted": false
       }
     ],
-    "decision": "P2a-v3 mechanical fixes for v2 comparison and Stage2 contract are on draft PR #62; free QA 15/15 after v3 inference receipt stage validation fix. Scoring/stopping thresholds were frozen before any ChatGPT replies at project-handoff commit a16e0b3... . Actual ChatGPT human-manual prompt artifact for 8 preregistered cases x3 new chats produced (artifact 14784815054), no responses yet. Candidate-specific public score/visible-opponent-han/rank table independently audited 36 cases, 72 candidate choices, 30 scored conditional ron forms, 144 illustrative opponent-loss ranks, discrepancies 0. No L3.5 legal new paired 8 refs, blind user/Claude/Gemini evaluation, or genuine real Stage1/2. User input now required to start isolated ChatGPT; cannot autonomously open new temporary ChatGPT sessions. No API fees approved. v3 Phase not complete, no interim Claude/Gemini phase review.",
-    "next": "Fix overly opaque 67KB question user-display and v3 semantic proof contract for riichi-vs-dama conditional score, introduce clear response schema guidance with a new version; preserve first attempted ChatGPT output as invalid under frozen v3 criteria, no retroactive pass. Do not ask user to repeat until corrected question is produced and verified. Next Phase-end Claude/Gemini review only, no paid services.",
+    "decision": "User explicitly says do not stop after each tiny task; keep autonomous development to next true blocker, no reviewer request until P2a-v3 overall Phase exit. After old pilot48 ChatGPT reply (correct UTF8/JSON but invalid typed proof), versioned revised prompt/proof independently tested and includes readable 1,200-character human scene companion. STRICT factual validation remains; old ChatGPT answer not retroactively accepted. CI run 45102049118 21/21 QA, zero mismatches public candidate score/rank. Actual pinned Mortal S42 ran on 8 selected paired public contexts, accepted original archive anchor with opponent hidden hands and future events removed from encoder input: changed 1, maintained 7, no ambiguous within predeclared 0.001 internal ranking margin; insufficient changed contrasts for L3.5 gate. No actual ChatGPT answer for revised schema, no Stage2, no blind user+Claude+Gemini ratings. No paid API/other billed action authorized. main and formal gates remain NO-GO.",
+    "next": "Continue only no-charge actions independently. New schema-2 human-readable eight-case question artifact is ready. True independent ChatGPT temporary chats cannot be created by GitHub action here; a batched user-assisted run is needed for real Stage1 and repeat; avoid asking every single question. Need enough additional actually S42 changed conditions before L3.5 sensitivity approval, plus legality and authentic response provenance. Do not claim ChatGPT model strength or ask Claude/Gemini phase reviews before Phase exit; pay-per-action individual prior approval is mandatory.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -487,15 +503,20 @@
       "source": "GitHub Actions 45098910277"
     },
     "v3_testing": {
-      "run": 45099107005,
-      "passed": 15,
+      "run": 45102049118,
+      "passed": 21,
       "failed": 0,
-      "jobs": 4,
+      "jobsSucceeded": 6,
       "experimentalStage1Actual": 1,
+      "firstResponseOldSchemaValid": false,
+      "newSchemaRealAnswers": 0,
       "experimentalStage2Actual": 0,
       "repetitionActual": 0,
       "blindHumanClaudeGeminiActual": 0,
-      "legalNewL35PairedActual": 0,
+      "publicS42PairedReplaysActual": 8,
+      "publicS42Changed": 1,
+      "publicS42Maintained": 7,
+      "fullLegalL35Certified": false,
       "phaseComplete": false
     },
     "v3_first_actual_response": {
@@ -511,6 +532,31 @@
       "dataPrivacy": "raw user model output kept out of public repo",
       "review": "not_due_until_phase_exit",
       "note": "handoff/p2a-v3-first-real-chatgpt-pilot48-format-20261123.md"
+    },
+    "v3_latest_report": "handoff/p2a-v3-continued-repair-s42-eight-pairs-20261123.md",
+    "v3_v2_readable_model_artifact": {
+      "run": 45102049118,
+      "id": 14785867588,
+      "name": "p2a-v3-chatgpt-8x3-manual-readable-schema-v2",
+      "version": "p2a-v3-chatgpt-8x3-manual-smoke-2",
+      "questions": 8,
+      "repetitionsPlanned": 3,
+      "realResponsesOnNewVersion": 0
+    },
+    "v3_s42_counterfactual": {
+      "run": 45102049118,
+      "artifactId": 14786046476,
+      "modelSHA256": "30381bf21389e2d25d3edf48fed11bf772336ef3daeee67d1bdae7fb9dd30cb4",
+      "sourceFrozenHash": "271b4a304ed86dc41be2e72766e2b5cc496966bdf8a0ce5a8d5a5d0334e6103a",
+      "registeredPairsBeforeMortalLabels": 8,
+      "riichiEscrowPairs": 4,
+      "previousRoundScorePairs": 4,
+      "recommendedGroupChanged": 1,
+      "recommendedGroupMaintained": 7,
+      "ambiguousUnderInternalMarginFloor": 0,
+      "internalQGapPredeclared": 0.001,
+      "doesNotProve": "full legal physical history, expert tactical explanation, actual ChatGPT reaction, calibrated EV",
+      "jobDisabledAfterSuccess": true
     }
   },
   "previous_runs": [
