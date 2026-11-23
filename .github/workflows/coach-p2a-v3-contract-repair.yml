@@ -86,7 +86,7 @@ jobs:
         run: |
           set -euo pipefail
           test -s "$V14_FOLLOWUP_PUBLIC"
-          node --test tests/next/v14-freeze-v3-manual-smoke.test.mjs tests/next/v14-pilot48-format-fix-v3.test.mjs tests/next/v14-narrative-rank-guard-v3.test.mjs
+          node --test tests/next/v14-freeze-v3-manual-smoke.test.mjs tests/next/v14-pilot48-format-fix-v3.test.mjs tests/next/v14-narrative-rank-guard-v3.test.mjs tests/next/v14-safe-public-summary-v3.test.mjs
           node tests/next/v14-freeze-v3-manual-smoke.mjs "$V14_FOLLOWUP_PUBLIC" /tmp/v3-chatgpt-manual-smoke
       - name: Freeze human-use files without model answers or teacher reference
         uses: actions/upload-artifact@v4
