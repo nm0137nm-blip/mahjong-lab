@@ -33,6 +33,9 @@ jobs:
             tests/next/v14-v43-stage1-freeze.test.mjs \
             tests/next/v14-v44-source-shape-and-regression.test.mjs \
             tests/next/v14-v44-stage1-freeze.test.mjs \
+            tests/next/v14-v44-preregistered-plan.test.mjs \
+            tests/next/v14-v44-stage1-receipt.test.mjs \
+            tests/next/v14-v44-all-eight-contract-expressibility.test.mjs \
             tests/next/v14-v43-preregistered-plan.test.mjs \
             tests/next/v14-v43-stage1-receipt.test.mjs \
             tests/next/v14-v43-all-eight-contract-expressibility.test.mjs \
