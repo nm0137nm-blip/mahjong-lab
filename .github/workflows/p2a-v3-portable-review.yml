@@ -1,0 +1,71 @@
+name: P2a-v3 portable third-party review materials (public-only)
+on:
+  push:
+    branches: [feat/coach-p2a-v3-contract-repair]
+    paths:
+      - '.github/workflows/p2a-v3-portable-review.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  portable-review:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: development
+      - uses: actions/checkout@v4
+        with:
+          ref: project-handoff
+          path: recorded-handoff
+      - name: Collect actual public text and source from both reviewed refs
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/p2a-portable/reports /tmp/p2a-portable/code /tmp/p2a-portable/tests
+          root=recorded-handoff
+          for f in             handoff/p2a-v3-phase-exit-no-go-20261123.md             handoff/p2a-v3-pilot48-schema-v3-semantic-failure-20261123.md             handoff/p2a-v3-chatgpt-36-blind-scoring-prereg-20261123.md             handoff/p2a-v3-chatgpt-prereg-amendment-v2-20261123.md             handoff/p2a-v3-first-real-pilot48-20261123.md             handoff/p2a-v3-phase-exit-independent-review-request-20261123.md; do
+            test -s "$root/$f"
+            cp "$root/$f" /tmp/p2a-portable/reports/
+          done
+          for f in             src/coach/v14-evidence-proof-v3.mjs             src/coach/v14-independent-request-v3.mjs             src/coach/v14-narrative-rank-guard-v3.mjs             src/coach/v14-safe-public-summary-v3.mjs; do
+            test -s "development/$f"
+            cp "development/$f" /tmp/p2a-portable/code/
+          done
+          for f in             tests/next/v14-narrative-rank-guard-v3.test.mjs             tests/next/v14-safe-public-summary-v3.test.mjs; do
+            test -s "development/$f"
+            cp "development/$f" /tmp/p2a-portable/tests/
+          done
+          cat > /tmp/p2a-portable/CI_RECORDED_RESULT.txt <<'TEXT'
+          GitHub Actions run ID: 45111993969
+          URL: https://github.com/nm0137nm-blip/mahjong-lab/actions/runs/45111993969
+          Run conclusion: success, 5 jobs success, 2 intentionally skipped S42 jobs.
+          Manual freeze job: 15 tests, 15 passed, 0 failed.
+          These CI observations were recorded by project developer; this text is not an independently authenticated CI attestation.
+          CI pass does not change the schema-v3 ChatGPT real-response semantic NO-GO.
+          TEXT
+          cat > /tmp/p2a-portable/README_FIRST.txt <<'TEXT'
+          麻雀LAB P2a-v3 Portable Review Materials
+          This package contains actual source/report contents, not only GitHub URLs.
+          Send the same package to both Claude and Gemini in separate sessions.
+          Start with reports/p2a-v3-phase-exit-independent-review-request-20261123.md
+          then reports/p2a-v3-phase-exit-no-go-20261123.md and error report.
+          Inspect code/ and tests/ for algorithm and regression behavior.
+          The original raw ChatGPT schema-v3 reply is NOT in this package; the
+          report includes the exact decisive contradictory quotation. This limits
+          independent assessment of the rest of that answer. The relevant public
+          question packet may be supplied separately.
+          The reviewers must say when source or test execution is unverified.
+          This is a phase-exit NO-GO review, not a blind L4 assessment of responses.
+          No teacher-only S42 datasets, private hands or paid API credentials are included.
+          TEXT
+          find /tmp/p2a-portable -type f -maxdepth 3 | sort > /tmp/p2a-portable/FILELIST.txt
+          cd /tmp
+          zip -q -r p2a-v3-portable-review.zip p2a-portable
+          test -s p2a-v3-portable-review.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p2a-v3-portable-independent-review-public-only
+          path: /tmp/p2a-v3-portable-review.zip
+          if-no-files-found: error
+          retention-days: 30
