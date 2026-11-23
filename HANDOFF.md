@@ -518,3 +518,12 @@ ChatGPTが実際に独立して解いた回答を得る前に、採点・中止�
 - ただし**旧キーでも同じGET HTTP200**だった。今回のGET 200は新しいキーの有効性とモデルメタデータへのアクセスを確認しただけで、以前のPOST `billing_not_active` が解消したとは保証しない。
 - 以前のpilot46 POSTの「1回限り上限US$0.30」の2件の承認はいずれも実POSTで消費済み。以後**新規の明示的個別承認なしにAPI Responses POSTを実施しない**。全ての従来の有料APIワークフローは無効化されたまま。v4.4の正式手動Stage1 0/8、全Phase NO-GO・main非変更。
 - OpenAI公式Helpの無料照会 `GET /v1/me` は利用者の関連組織情報を返すが、利用者が複数組織に属する場合、それ単体がキーで課金される組織の確定証拠になるとは限らない。機微な個人/組織IDを公開ログに出さず、今は追加照会しない。
+
+
+## 2026-11-24 01:29 JST：新課金組織キーでGPT-6 Sol実1問自動化成功
+- ユーザーが改めて**pilot-46・最大US$0.30・1回限り**を事前承認。新Default projectのAPIキー（GitHub Secrets）で実POST成功。GitHub Actions **run 45216681342 / job 137839578660**。実API応答`gpt-6-sol`、`status=completed`、429`billing_not_active`解消を今回の回答生成で確認。
+- 8問の事前凍結から`pilot-46`のrequestHash`3fd5108e628468c8f9b9b3e1719e3a42e5ae7432141d73af7594d15c80d577d5`を不変維持。実model回答を元v4.4検証器に通し**CONTRACT_AND_PUBLIC_FACT_GATE_PASS**。UTF-8の元回答SHA256 `dd23be5770f7d29087792ed284f9e7d5f25886172640cf5bf069e6132eee737e`は暗号化artifactから復号して再確認。生モデル選択/説明はGitHubに公開しない。
+- 入力5,785、出力2,336、合計8,121 tokens。現在の請求単価で**推定US$0.03493**（実際のBilling請求額は未確認）。APIリクエスト1回のみ・自動再試行0回、承認0.30ドル以内。原本はRSA/AESで暗号化したGitHub artifact ID `14839755422`と会話内の非公開回答JSONファイルに保存。
+- **重要：探索的なAPI運搬成功と公開事実契約PASSであり、元の独立ChatGPT一時チャットStage1 8問には算入しない（依然0/8）。** Mortal S42/Stage2/3者匿名L4/実戦指導力は未評価。P2a-v4.3 NO-GO不変、v4.4全Phase GOなし。本番main非変更。
+- 有料Workflowは成功直後に**再起動禁止**（commit `1fd16098252722afb5a8a6ad83311617ba29f2ca`）、今回の個別利用承認は消費済み。今後のAPI有料リクエストには目的/上限を明示した新規承認が必要。
+- 詳細：`handoff/p2a-v44-pilot46-newkey-oneapi-success-20261124.md`、`handoff/state.json`。
