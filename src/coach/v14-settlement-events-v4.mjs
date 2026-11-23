@@ -22,7 +22,7 @@ function verifiedBoard(board) {
     !board.scores.every(x=>seat(x.seat)&&nonnegative(x.points))||
     board.pendingReach===true)
   fail('invalid public board or pending reach state; cannot infer settlement');
- const points=board.scores.map(x=>x.points);
+ const points=Array(4);for(const record of board.scores)points[record.seat]=record.points;
  return {points,order:board.initialOrder,ownSeat:board.ownSeat,
   honba:board.honba,kyotaku:board.kyotaku};
 }
