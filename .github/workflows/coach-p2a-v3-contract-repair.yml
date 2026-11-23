@@ -240,8 +240,12 @@ jobs:
           cp /tmp/fixed-encoder/encoder-pkg/encoder* assets/mortal/
           echo '886cb7abb09034dcdf348039d651d63a83cd7edb87d3337a452722c960b9d97a  assets/mortal/encoder.js' | sha256sum -c -
           echo '0e9dcc57545afb5769d42f372bbd82be5c26941d1e352245b225d62ce0c611bf  assets/mortal/encoder_bg.wasm' | sha256sum -c -
-          curl --fail --location --http1.1 --retry-all-errors --retry 4 --retry-delay 3 --silent --show-error --max-time 160 \
-            'https://huggingface.co/xzhe121/Mortal-S42-onnx/resolve/main/model.onnx' -o /tmp/mortal.onnx
+          if ! curl --fail --location --http1.1 --retry-all-errors --retry 1 --retry-delay 3 --silent --show-error --max-time 90 \
+            'https://huggingface.co/xzhe121/Mortal-S42-onnx/resolve/main/model.onnx' -o /tmp/mortal.onnx; then
+            rm -f /tmp/mortal.onnx
+            curl --fail --location --http1.1 --retry-all-errors --retry 3 --retry-delay 4 --silent --show-error --max-time 150 \
+              'https://hf-mirror.com/xzhe121/Mortal-S42-onnx/resolve/main/model.onnx' -o /tmp/mortal.onnx
+          fi
           echo '30381bf21389e2d25d3edf48fed11bf772336ef3daeee67d1bdae7fb9dd30cb4  /tmp/mortal.onnx' | sha256sum -c -
       - uses: actions/download-artifact@v4
         with:
