@@ -12,14 +12,14 @@ const fail=s=>{throw Error('p2a-v44-one-shot: '+s);};
 const hash=b=>createHash('sha256').update(b).digest('hex');
 const expectBranch='refs/heads/feat/coach-p2a-v44-api-transport-dryrun';
 const expectedApproval='$0.30_PILOT46_ONLY_2026-11-23';
-function assertEnv(env){
+export function assertEnv(env){
  if(env.GITHUB_ACTIONS!=='true'||env.GITHUB_EVENT_NAME!=='push'||
     env.GITHUB_REF!==expectBranch||env.GITHUB_RUN_ATTEMPT!=='1'||
     env.ONE_SHOT_APPROVAL!==expectedApproval)
    fail('approval scope, branch, event or run attempt mismatch (no request)');
  if(!env.OPENAI_API_KEY)fail('missing API secret (no request)');
 }
-function makeEncryptedArchive(clear,publicPem){
+export function makeEncryptedArchive(clear,publicPem){
  const key=randomBytes(32),iv=randomBytes(12);
  const cipher=createCipheriv('aes-256-gcm',key,iv);
  const ct=Buffer.concat([cipher.update(Buffer.from(clear)),cipher.final()]);
@@ -100,6 +100,6 @@ export async function main(env=process.env){
  console.log('SAFE_SUMMARY',JSON.stringify(summary));
  return summary;
 }
-if(import.meta.url===new URL('file://'+process.argv[1]).href){
+if(process.argv[1]&&import.meta.url===new URL('file://'+path.resolve(process.argv[1])).href){
  main().catch(e=>{console.error('CONTROLLED_FAILURE',String(e));process.exitCode=1;});
 }
