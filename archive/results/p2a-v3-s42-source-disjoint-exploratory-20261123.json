@@ -1,0 +1,62 @@
+{
+  "schema": "P2a-v3-exploratory-S42-extension-summary-1",
+  "dateJST": "2026-11-23",
+  "sourceRepository": "nm0137nm-blip/mahjong-lab",
+  "developmentBranch": "feat/coach-p2a-v3-contract-repair",
+  "evaluatedCodeCommit": "2474982014196a02905726406e15454bcfc2a9cb",
+  "completedRun": 45105529039,
+  "runConclusion": "success",
+  "artifactId": 14787261808,
+  "artifactName": "p2a-v3-expanded-source-disjoint-s42-verifier-only",
+  "artifactExpiresAt": "2026-12-23T03:22:30Z",
+  "frozenPublicSourceHash": "271b4a304ed86dc41be2e72766e2b5cc496966bdf8a0ce5a8d5a5d0334e6103a",
+  "pinnedS42Sha256": "30381bf21389e2d25d3edf48fed11bf772336ef3daeee67d1bdae7fb9dd30cb4",
+  "onnxRuntime": "1.22.1",
+  "selection": "Deterministic expansion using remaining eligible unused source scenes, excluding original 8 and answered pilot-48. Inputs frozen before viewing labels for expansion.",
+  "results": {
+    "sourceClusters": 24,
+    "pairedConditions": 50,
+    "topGroupChangedPairs": 3,
+    "topGroupMaintainedPairs": 47,
+    "clearChangedPairsAtInternalMargin0001": 3,
+    "clearMaintainedPairsAtInternalMargin0001": 47,
+    "ambiguous": 0,
+    "sourceClustersWithAnyChanged": 3,
+    "sourceClustersWithAnyMaintained": 22,
+    "note": "a single source cluster may have both changed and maintained interventions; changed+maintained clusters are not additive"
+  },
+  "originalEight": {
+    "run": 45102049118,
+    "pairs": 8,
+    "sourceClusters": 8,
+    "changed": 1,
+    "maintained": 7
+  },
+  "totalExploratory": {
+    "pairs": 58,
+    "sourceClusters": 32,
+    "changed": 4,
+    "maintained": 54
+  },
+  "verification": {
+    "independentOriginalArchiveS42AnchorCheckedAll": true,
+    "onlyOriginalVisibleFocalHistoryEncoded": true,
+    "opponentConcealedHandsNotFedToEncoder": true,
+    "futureDrawsNotFedToEncoder": true,
+    "publicKanAndReplacementDrawProjectionOrderHandled": true,
+    "modelShaMatchEnforced": true,
+    "sourceClustersDeDuplicated": true
+  },
+  "limitations": [
+    "Not an independent formal held-out test: extension chosen after initial eight results observed",
+    "May contain up to three correlated score transfer comparisons from a single original source",
+    "Public history matching includes a narrow adjacent kan-replacement draw and dora reveal projection normalization, while model replay uses unchanged original log sequence",
+    "Variant actions' full physical legality and entire match history not independently replayed for all conditions",
+    "Score transfer assumes alternative preceding-round public score, does not prove a realizable prior full match",
+    "S42 internal Q score gap 0.001 not calibrated expected value",
+    "No genuine revised-schema ChatGPT Stage1, Stage2, repeated, or blind scoring in this run",
+    "Does not certify L3.5 formal gate or tactical expertise; prior P2a-v2 NO-GO unchanged",
+    "No paid model API used and main unchanged"
+  ],
+  "cost": "No new paid API or separately billed cloud services authorized or invoked"
+}
