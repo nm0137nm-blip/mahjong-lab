@@ -33,6 +33,7 @@ jobs:
             tests/next/v14-v43-stage1-freeze.test.mjs \
             tests/next/v14-v43-preregistered-plan.test.mjs \
             tests/next/v14-v43-stage1-receipt.test.mjs \
+            tests/next/v14-v43-all-eight-contract-expressibility.test.mjs \
             tests/next/v14-anchored-tactical-text-v4.test.mjs \
             tests/next/v14-anchored-tactical-text-v41.test.mjs \
             tests/next/v14-v41-stage1-freeze.test.mjs \
