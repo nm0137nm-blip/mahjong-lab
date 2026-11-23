@@ -1,5 +1,6 @@
 // Development-only, publicly deterministic LLM briefing, no S42 teacher.
 import {createHash} from 'node:crypto';
+import {verifyV4CurrentDealerSeat} from './v14-dealer-provenance-v4.mjs';
 const hash=x=>createHash('sha256').update(JSON.stringify(x)).digest('hex');
 const fail=x=>{throw Error('v4-public-brief: '+x);};
 const get=(i,id)=>i.evidence.find(e=>e.id===id)?.value;
@@ -51,6 +52,15 @@ export function createV4PublicBrief(envelope){
    improving:c.improving||[],retainedDoraHan:c.retainedDoraHan??null,
    ownRiverFuriten:c.ownRiverFuriten??null,
    conditionalNormalWins:c.conditionalNormalWins||[],
+   // For an actual call, only these concrete after-call discards are legal.
+   // Do not show a hypothetical tenpai/ron score before this discard choice.
+   afterCallDiscards:Array.isArray(c.afterCallDiscards)?c.afterCallDiscards.map(v=>({
+    discard:v.discard,shanten:v.shanten??null,
+    ukeireUpperBound:v.ukeireUpperBound??null,
+    retainedDoraHan:v.retainedDoraHan??null,
+    ownRiverFuriten:v.ownRiverFuriten??null,
+    conditionalNormalWins:v.conditionalNormalWins??[]
+   })):[],
    safety:c.safety||[],physicalShapeWarning:c.physicalShapeWarning??null};
  });
  const brief={version:BRIEF_V4,caseId:i.id,
@@ -61,8 +71,8 @@ export function createV4PublicBrief(envelope){
   own:{hand:own.hand,drawn:own.drawn,melds:own.melds,doraIndicators:own.doraIndicators,
    reaction:own.reaction},
   opponents,allLegalActions:all,detailedCandidates:details,
-  dealerSeat:'UNVERIFIED_PUBLIC_BOARD_DO_NOT_GUESS',
-  derivedSettlements:'NOT_PRESENT_UNTIL_DEALER_SOURCE_AUDIT',
+  dealerProvenance:verifyV4CurrentDealerSeat(b),
+  derivedSettlements:'NOT_PRESENT_IN_BRIEF_USE_SOURCE_BOUND_CANDIDATE_EVENT_CATALOG',
   unknown:['opponent private hands','future tiles','true pWin and pDealIn',
   'Mortal teacher choices and Q values','actual user move'],
   note:'These are public source facts, not a model recommendation or expected value.'};
