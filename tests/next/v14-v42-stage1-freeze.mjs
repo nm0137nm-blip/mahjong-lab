@@ -12,7 +12,7 @@ import {createV42BlindControlBatch} from '../../src/coach/v14-l4-blind-controls-
 const h=x=>createHash('sha256').update(JSON.stringify(x)).digest('hex');
 const SOURCE_SHA='271b4a304ed86dc41be2e72766e2b5cc496966bdf8a0ce5a8d5a5d0334e6103a';
 export const V42_FREEZE_VERSION='p2a-v42-stage1-pilot50-replaced-20261123-1';
-export function createV41FrozenStage1(source){
+export function createV42FrozenStage1(source){
  if(h(source)!==SOURCE_SHA)throw Error('frozen source drift');
  const selection=selectV42ProspectiveSmoke(source);
  if(JSON.stringify(selection.selectedIds)!==JSON.stringify(V42_EIGHT))
@@ -35,9 +35,9 @@ export function createV41FrozenStage1(source){
   oldPhase:'P2a-v4 and P2a-v4.1 NO_GO or non-accepted; prior pilot42/pilot50 known regressions only',
   originalV4ModelAttempts:1,
   originalV41ModelAttempts:1,
-  newV41ModelAttemptsAtFreeze:0,
+  newV42ModelAttemptsAtFreeze:0,
   candidateExclusions:['pilot-48','pilot-42','pilot-50'],
-  lockedSelectionRule:selection.basis,
+  lockedSelectionRule:selection.method,
   selectedIds:selection.selectedIds,
   rows,counts:{honbaPositive:selection.cases.filter(x=>x.honba>0).length,
    kyotakuPositive:selection.cases.filter(x=>x.kyotaku>0).length},
@@ -55,7 +55,7 @@ export function createV41FrozenStage1(source){
  const publicManifest={...shared,packetSetHash:h(rows),
   role:'PUBLIC_QUESTIONS_ONLY',
   maskedControls:'SEPARATE_VERIFIER_ONLY_NOT_FOR_ANSWERING_MODEL',
-  note:'One new ChatGPT Temporary Chat for pilot-52 first; never attach existing pilot42 reply'};
+  note:'One new ChatGPT Temporary Chat for pilot-52 first; never attach prior pilot42 or pilot50 replies'};
  const verifierManifest={...shared,
   role:'SEALED_VERIFIER_ONLY_NO_MODEL_VIEW',
   controlSetHash:h(preAnswerWeakControls),
@@ -68,7 +68,7 @@ if(process.argv[1]&&fileURLToPath(import.meta.url)===path.resolve(process.argv[1
  const [sourceFile,out]=process.argv.slice(2);
  if(!sourceFile||!out)throw Error('Usage: stage1-freeze.mjs original36.json outDir');
  const source=JSON.parse(fs.readFileSync(sourceFile,'utf8'));
- const {questions,publicManifest,verifierManifest}=createV41FrozenStage1(source);
+ const {questions,publicManifest,verifierManifest}=createV42FrozenStage1(source);
  fs.mkdirSync(path.join(out,'public/questions'),{recursive:true});
  fs.mkdirSync(path.join(out,'verifier'),{recursive:true});
  for(const q of questions)fs.writeFileSync(path.join(out,'public/questions',q.caseId+'.json'),
