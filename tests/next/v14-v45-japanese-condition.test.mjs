@@ -24,7 +24,7 @@ test('deny generic assertions without a condition or decision change',()=>{
   'この手牌の説明として、選びやすい牌を比較する。',
   '相手の安全牌について、選びやすくするという表現がある。',
   'もし場況がよいなら、選びやすい状況になる。',
-  'もし手牌が変わるなら、別の選びやすい道具を使う。',
+  'もし手牌が揃うなら、別の選びやすい道具を使う。',
   '見逃す事例では単に一覧を表示する。',
   ''
  ])assert.equal(hasV45ConditionalReversal(s),false,s);
