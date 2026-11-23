@@ -28,7 +28,7 @@ jobs:
         run: |
           set -euo pipefail
           test -s "$V14_FOLLOWUP_PUBLIC"
-          node --test tests/next/v14-settlement-events-v4.test.mjs tests/next/v14-public-proof-gate-v4.test.mjs tests/next/v14-anchored-tactical-text-v4.test.mjs tests/next/v14-public-brief-v4.test.mjs tests/next/v14-v4-smoke-selection.test.mjs tests/next/v14-dealer-provenance-v4.test.mjs tests/next/v14-candidate-settlement-v4.test.mjs tests/next/v14-compact-model-contract-v4.test.mjs tests/next/v14-v4-compact-pack.test.mjs tests/next/v14-source-comparison-proof-v4.test.mjs
+          node --test tests/next/v14-settlement-events-v4.test.mjs tests/next/v14-public-proof-gate-v4.test.mjs tests/next/v14-anchored-tactical-text-v4.test.mjs tests/next/v14-public-brief-v4.test.mjs tests/next/v14-v4-smoke-selection.test.mjs tests/next/v14-dealer-provenance-v4.test.mjs tests/next/v14-candidate-settlement-v4.test.mjs tests/next/v14-compact-model-contract-v4.test.mjs tests/next/v14-v4-compact-pack.test.mjs tests/next/v14-source-comparison-proof-v4.test.mjs tests/next/v14-l4-blind-controls-v4.test.mjs tests/next/v14-l4-blind-score-v4.test.mjs tests/next/v14-v4-evaluation-plan.test.mjs tests/next/v14-v4-freeze-protocol.test.mjs
       - uses: actions/setup-python@v5
         with:
           python-version: '3.13.5'
@@ -49,6 +49,24 @@ jobs:
           name: p2a-v4-public-8-compact-draft-not-preregistered
           path: /tmp/p2a-v4-compact-draft
           retention-days: 21
+          if-no-files-found: error
+      - name: Freeze independent Stage1 public inputs and sealed pre-answer adversarial L4 control manifest
+        env:
+          V14_FOLLOWUP_PUBLIC: /tmp/p2a-v4-frozen-public36/independent-requests.json
+        run: |
+          set -euo pipefail
+          node tests/next/v14-v4-freeze-protocol.mjs "$V14_FOLLOWUP_PUBLIC" /tmp/p2a-v4-preregistered-stage1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p2a-v4-frozen-stage1-8-public-only-no-model-answers
+          path: /tmp/p2a-v4-preregistered-stage1/public/
+          retention-days: 30
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p2a-v4-sealed-weak-controls-and-eval-protocol-verifier-only
+          path: /tmp/p2a-v4-preregistered-stage1/verifier/
+          retention-days: 30
           if-no-files-found: error
       - name: Assert no genuine ChatGPT or paid inference ever called by development test workflow
         run: |
