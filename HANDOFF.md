@@ -409,3 +409,11 @@ ChatGPTが実際に独立して解いた回答を得る前に、採点・中止�
 - 推奨`a37-0`＝**m6（6萬）切り立直**、対案`a5-0`＝m6切りダマ。南3局・自席2の24,400点、首位席3 31,000点。0向聴、s5／赤s0を含む受入上限4、ドラ1。公開元仮ロンでは通常s5ダマ5,200／立直8,000、赤s0なら両者8,000と一致。**戦術最善手、Mortal S42一致、匿名L4品質は未検証**。
 - Stage1正式**実回答2／形式・公開事実PASS2／FAIL0／未実施6**。v42旧NO-GO履歴は不変。GPT-6はユーザー報告であり独立UIメタデータ証明はなし。
 - **次の対応依頼：固定第3問`pilot-57`**（requestHash `68af3860dd32ef1819062cdcf61f3cf1890f6168b7475a6dc3667443f83dbd7b`）を新規GPT-6一時チャットで解かせ、`mahjong_P2a_v43_stage1_pilot-57_response.json`というUTF-8 JSONファイルでそのまま返信。凍結8問ZIPの`questions/pilot-57.json`を変更なく抽出済（SHA256 `2788a588f27b146d630a0af7732238031c8891a6399da1096bd1fe6cd022e91b`）。追加のパッチレビュー不要、課金API0、main・本番NO-GO。詳細`handoff/p2a-v43-stage1-pilot49-second-gpt6-public-contract-receipt-20261123.md`、state.json更新済み。
+
+
+## 2026-11-23 20:40 JST：P2a-v4.3 Stage1：pilot57第3問GPT-6 JSON PASS 3/8
+- ユーザーが`mahjong_P2a_v43_stage1_pilot-57_response.json`を**ファイル**で提出。元データ6,453バイト、SHA256 `c93a80b6809760b01355a1a35b165a6c64c6edc2464099672b69190e85a68e9f`。出題の事前固定`requestHash=68af3860dd32ef1819062cdcf61f3cf1890f6168b7475a6dc3667443f83dbd7b`に完全一致。ユーザー原回答本文はGitHubに転載しない。
+- 前2問と同一の**GitHub版のv4.3オリジナルJS検証器**を、公開36問と`pilot43/49/57`のユーザー元JSONに対して、ローカルNodeで`assessV43FirstRealStage1`と`summarizeV43Stage1Receipts`を固定順で実行。`pilot57`判定 **`CONTRACT_AND_PUBLIC_FACT_GATE_PASS`**、strict JSON、補正0。公開候補比較4、相手席1/2/3の観測6、候補間実質差3、未アンカー点数・偽FactID・相手別tradeoff引用漏れ・不正後打牌は検出されなかった。
+- モデル推奨`a45-0`＝**鳴かない**、対案`a39-0`＝**m3を鳴き、後打牌z4（北）**。両方合法。元公開局面は南3局、親自席0 4,900点、他席1 15,500、席2 32,900、席3 43,700、残38・本場1・供託3。スルー時2向聴、受入上限7、ドラ2。LLMの判断は未認証であり、**Mortal S42一致・戦術最適性・独立L4解説品質はまだ評価していない**。GPT-6名はユーザー申告。
+- Stage1集計は**実回答3／形式・公開事実PASS3／FAIL0／未実施5**。旧v4.2 2/3 NO-GO履歴は変更しない。次の固定第4問は**pilot-62**、事前登録requestHash `fecf293487d435e742a694443534ebe002f25f88bb4930bbba7b65172fabbe05`、元出題ファイルSHA256 `4349d20d489873e24cedb157c53c1951252bfaaf72b6ab13d7f5a897478d329e`。既存8問公開ZIPからバイトを変更せず`/mnt/data/mahjong_P2a_v43_stage1_pilot-62.json`へ抽出済み。
+- **現在の対応依頼**：新規GPT-6一時チャットにpilot-62の問題JSONを渡し、`mahjong_P2a_v43_stage1_pilot-62_response.json`という**UTF-8 JSONファイル**で無改変原回答を開発チャットに返す。反復・Stage2・L3.5・独立L4はStage1完了後。詳細`handoff/p2a-v43-stage1-pilot57-third-gpt6-public-contract-receipt-20261123.md`と正本`handoff/state.json`。main変更なし、追加Claude/Geminiパッチレビューなし、有料API利用0。
