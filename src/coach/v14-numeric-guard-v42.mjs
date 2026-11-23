@@ -14,12 +14,12 @@ const explicitCompoundAmount=/^(?:[〇零一二三四五六七八九壱弐参])?
 // LLM-generated prose is not expected to contain raw tile labels either;
 // plain Japanese yaku names like 一盃口 and 三色 are not raw tile labels.
 export function findV42UnanchoredQuantity(text){
- if(typeof text!=='string')throw new TypeError('v41 numeric guard expects text');
+ if(typeof text!=='string')throw new TypeError('v42 numeric guard expects text');
  // A named model identifier is metadata, not a mahjong quantity.
  // Its claim is not independently authenticated and is never used for scoring.
  // Only a one-digit major model ID (and at most two version digits) can be
  // elided; arbitrary point-like numbers (GPT-3900点) remain forbidden.
- const visible=text.replace(/(?:GPT|gpt)-[1-9](?:\\.[0-9]{1,2})?(?![0-9])/gu,'');
+ const visible=text.replace(/(?:GPT|gpt)-[1-9](?:\.[0-9]{1,2})?(?![0-9])/gu,'');
  const digit=visible.match(arabicOrFullwidth);
  if(digit)return {type:'arabic_or_fullwidth_digit',match:digit[0],index:digit.index};
  for(const m of visible.matchAll(kanjiNumerals)){
