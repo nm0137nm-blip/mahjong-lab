@@ -4,7 +4,8 @@
 // human evaluation remains mandatory. No Mortal label enters this Stage1 view.
 import {createHash} from 'node:crypto';
 import {verifyV4StrictPublicProof} from './v14-public-proof-gate-v4.mjs';
-import {buildV4RonSettlement,formatV4Settlement,V4_SETTLEMENT_VERSION} from './v14-settlement-events-v4.mjs';
+import {formatV4Settlement} from './v14-settlement-events-v4.mjs';
+import {buildV4CandidateSettlementCatalog} from './v14-candidate-settlement-v4.mjs';
 const fail=x=>{throw Error('v4-anchored: '+x);};
 const sha=x=>createHash('sha256').update(JSON.stringify(x)).digest('hex');
 const numeric=/[0-9０-９〇零一二三四五六七八九十百千万]/;
@@ -57,16 +58,44 @@ export function createV4PublicFactRegistry(envelope,settlementEvents=[]){
    if(Object.hasOwn(calc,field))
     add('candidate:'+act.key+':'+field,act.key+'の'+field+'：'+labelValue(calc[field]));
  }
- for(const e of settlementEvents){
-  if(e?.version!==V4_SETTLEMENT_VERSION)fail('invalid event type');
-  const recomputed=buildV4RonSettlement(board,{
-   kind:e.kind,opponentSeat:e.opponentSeat,dealerSeat:e.dealerSeat,
-   paymentBase:e.paymentBase,postRiichi:e.ownRiichiDeclared});
-  if(sha(recomputed)!==sha(e))fail('untrusted or tampered settlement event');
-  add('event:'+e.id,formatV4Settlement(e));
- }
+ if(!Array.isArray(settlementEvents)||settlementEvents.length)
+  fail('caller-supplied arithmetic event is not source-bound; use derived candidate registry');
  return Object.freeze(registry);
 }
+// Only factual event IDs that are actually derivable from the recommended and
+// alternative concrete candidate's published calc and rank tiers are accepted.
+// A fabricated but arithmetically coherent new amount will not enter the view.
+export function createV4SourceBoundFactRegistry(envelope,proof){
+ assertEnvelope(envelope);
+ verifyV4StrictPublicProof(envelope,proof);
+ const reg=Object.assign(Object.create(null),createV4PublicFactRegistry(envelope));
+ const add=(id,value)=>{
+  if(Object.hasOwn(reg,id))fail('duplicate source-bound fact ID');
+  reg[id]=value;
+ };
+ const catalogs=[
+  buildV4CandidateSettlementCatalog(envelope,proof.recommendation),
+  buildV4CandidateSettlementCatalog(envelope,proof.alternative)
+ ];
+ for(const cat of catalogs){
+  if(cat.choice.afterCallDiscard!==null){
+   const action=envelope.request.input.actions.find(a=>a.key===cat.choice.key);
+   add('candidate:'+cat.choice.key+':afterCallDiscard',
+    '具体的な鳴き：'+action.detail+'、鳴いた後に'+cat.choice.afterCallDiscard+'を切る');
+  }
+  for(const w of cat.scoredOwnRon){
+   add(w.factId,'候補'+cat.choice.key+'の'+w.sourceTile+
+    'による'+w.sourceMode+'。指定条件の役：'+w.yaku.join('・')+
+    '。'+formatV4Settlement(w.hypotheticalSettlement));
+  }
+  for(const l of cat.dealInSensitivity){
+   add(l.factId,'候補'+cat.choice.key+'の相手打点を仮定した感度例（実際の相手打点ではない）。'+
+    formatV4Settlement(l.hypotheticalSettlement));
+  }
+ }
+ return Object.freeze(reg);
+}
+
 function anchors(text,registry,label,{needAnchor=true}={}){
  if(typeof text!=='string'||text.trim().length<12||text.length>1900)
   fail(label+' needs bounded text');
@@ -84,6 +113,8 @@ function anchors(text,registry,label,{needAnchor=true}={}){
  return {text:rendered,factIds:refs};
 }
 export function verifyAndRenderV4AnchoredTactics(envelope,response,settlementEvents=[]){
+ if(!Array.isArray(settlementEvents)||settlementEvents.length)
+  fail('unverified caller-provided events forbidden; choose public source fact IDs only');
  assertEnvelope(envelope);
  if(!response||response.version!==V4_TACTIC_VERSION||
     response.requestHash!==envelope.requestHash||!response.proof||!response.tactics)
@@ -95,11 +126,16 @@ export function verifyAndRenderV4AnchoredTactics(envelope,response,settlementEve
  if(Object.keys(t).sort().join('|')!=='bottomLine|comparison|lesson|opponents|reversal'||
     !Array.isArray(t.opponents)||t.opponents.length!==3)
   fail('missing complete tactical tradeoff and all three opponents');
- const facts=createV4PublicFactRegistry(envelope,settlementEvents);
+ const facts=createV4SourceBoundFactRegistry(envelope,response.proof);
  const comparison=anchors(t.comparison,facts,'comparison');
  if(!comparison.factIds.includes('candidate:'+response.proof.recommendation.key+':kind')||
     !comparison.factIds.includes('candidate:'+response.proof.alternative.key+':kind'))
   fail('comparison must cite both legal candidate kinds');
+ for(const concrete of [response.proof.recommendation,response.proof.alternative]){
+  if(concrete.afterCallDiscard!==null&&
+     !comparison.factIds.includes('candidate:'+concrete.key+':afterCallDiscard'))
+    fail('call comparison must cite actual legal afterCallDiscard');
+ }
  const seen=new Set();
  const opponentSummaries=t.opponents.map(o=>{
   if(!o||!others.includes(o.seat)||seen.has(o.seat)||
