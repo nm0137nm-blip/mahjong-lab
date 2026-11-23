@@ -12,6 +12,14 @@ const fail=s=>{throw Error('p2a-v44-one-shot: '+s);};
 const hash=b=>createHash('sha256').update(b).digest('hex');
 const expectBranch='refs/heads/feat/coach-p2a-v44-api-transport-dryrun';
 const expectedApproval='$0.30_PILOT46_ONLY_2026-11-23';
+// Safe for public CI logs: never include raw response body, error.message,
+ // request payload or credential.
+export function sanitizeApiFailure(body,httpStatus){
+ const safe=x=>typeof x==='string'&&/^[a-z0-9_-]{1,64}$/.test(x)?x:null;
+ return {httpStatus,errorType:safe(body?.error?.type),
+   errorCode:safe(body?.error?.code),apiRequestAttempted:true,
+   completed:false,retries:0};
+}
 export function assertEnv(env){
  if(env.GITHUB_ACTIONS!=='true'||env.GITHUB_EVENT_NAME!=='push'||
     env.GITHUB_REF!==expectBranch||env.GITHUB_RUN_ATTEMPT!=='1'||
@@ -56,12 +64,7 @@ export async function main(env=process.env){
   // arbitrary body, key, request input, or user text in public Actions logs.
   let json=null;
   try { json=await res.json(); } catch {}
-  const safeToken=x=>typeof x==='string'&&/^[a-z0-9_-]{1,64}$/.test(x)
-    ?x:null;
-  const errorType=safeToken(json?.error?.type);
-  const errorCode=safeToken(json?.error?.code);
-  const safeFailure={httpStatus:res.status,errorType,errorCode,
-    apiRequestAttempted:true,completed:false,retries:0};
+  const safeFailure=sanitizeApiFailure(json,res.status);
   console.log('API_SAFE_ERROR',JSON.stringify(safeFailure));
   process.exitCode=1;return safeFailure;
  }
