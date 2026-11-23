@@ -45,4 +45,11 @@ jobs:
             --case=pilot-46 \
             --question="$V14_V44_QUESTIONS_DIR/pilot-46.json" \
             --frozen="$V14_FOLLOWUP_PUBLIC"
+      - name: Inspect registration of one-shot workflow without starting anything
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          gh api repos/${{ github.repository }}/actions/workflows --jq '.workflows[] | select(.path | contains("p2a-v44-pilot46-authorized-single")) | {id,name,state,path}'
+          gh api "repos/${{ github.repository }}/actions/runs?per_page=50" --jq '.workflow_runs[] | select(.name | contains("ONE-TIME authorized")) | {id,head_sha,status,conclusion,event}' || true
       - run: echo "No API key used. No model execution. No billable network request. Manual v4.4 Stage1 official denominator unchanged."
