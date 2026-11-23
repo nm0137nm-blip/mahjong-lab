@@ -52,4 +52,5 @@ P2a-v3は**当初定めた実モデルの停止条件を満たす重大な誤り
 - 実モデル重大数値不一致：`handoff/p2a-v3-pilot48-schema-v3-semantic-failure-20261123.md`、`archive/results/p2a-v3-pilot48-schema-v3-real-chatgpt-numeric-failure-20261123.json`
 - Mortal探索的参考：`archive/results/p2a-v3-s42-source-disjoint-exploratory-20261123.json`
 - 研究ブランチ：`feat/coach-p2a-v3-contract-repair`、Draft PR #62。**mainは未変更**。
-- 本フェーズのGitHub Actions回帰結果・最新コミット・レビューパケットは別の完了追記で確定させる。CIのテスト成功はあくまで自動QAであり、NO-GO判定は変わらない。
+- 最終研究コミット `248a40dc07084d86107468eb07875a62bebb7e56`。GitHub Actions `45111993969` **success、5ジョブ成功、過去に凍結したS42の2ジョブは意図的skip**。手動問題固定テスト・既知数値失敗回帰・安全公開サマリーで**15テスト合格、失敗0**。この機械テストPASSは元のChatGPTの数値誤りやPhaseのNO-GOを取消さない。
+- 本フェーズの第三者レビュー依頼文：`handoff/p2a-v3-phase-exit-independent-review-request-20261123.md`。Claude/Geminiの今フェーズについての実回答はこの時点で未入手。自動的に「独立評価済み」としない。
