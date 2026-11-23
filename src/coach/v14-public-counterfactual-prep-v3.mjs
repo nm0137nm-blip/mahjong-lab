@@ -150,3 +150,63 @@ export function prepareV3DevelopmentCounterfactualPairs(source){
   notCertified:['physical replay from originating developer paipu','S42 counterfactual ranks',
    'whether Mortal recommendation changed or maintained','GPT reaction sensitivity','strategic factor explanation']};
 }
+
+
+/**
+ * Second, source-disjoint, exploratory L3.5 development batch. This function
+ * is fixed BEFORE looking at any S42 labels for this batch. Existing eight
+ * registered pairs are deliberately immutable and excluded here.
+ * Each source is a cluster: three score transfers do NOT represent three
+ * statistically independent Mahjong decisions. Never call these formally
+ * held-out, causally isolated, or fully legally replayed conditions.
+ */
+export function prepareV3UnlabelledExpansionPairs(source){
+ const initial=prepareV3DevelopmentCounterfactualPairs(source);
+ const used=new Set(initial.pairs.map(p=>p.sourceCaseId));
+ const order=xs=>xs.slice().sort((a,b)=>hash('p2a-v3-unlabelled-expansion-before-s42-20261123|'+a.request.input.id)
+  .localeCompare(hash('p2a-v3-unlabelled-expansion-before-s42-20261123|'+b.request.input.id)));
+ const available=order(source.filter(s=>s.request.input.id!=='pilot-48'&&!used.has(s.request.input.id)));
+ const reach=available.filter(s=>{
+  const i=s.request.input,b=val(i,'board');
+  if(!b?.kyotaku||b.pendingReach)return false;
+  return [0,1,2,3].some(q=>q!==b.ownSeat&&val(i,'seat-'+q)?.riichi===true);
+ });
+ const reachIds=new Set(reach.map(s=>s.request.input.id));
+ const scores=available.filter(s=>{
+  const i=s.request.input,b=val(i,'board');
+  return !reachIds.has(i.id)&&b&&b.round!=='東1局'&&!b.pendingReach&&b.scores[b.ownSeat].points>=6000;
+ }).slice(0,24); // bound CI expense, fixed before scores are viewed
+ const proposed=[
+  ...reach.map(s=>({s,kind:'riichi_escrow',
+   seat:[0,1,2,3].find(q=>q!==val(s.request.input,'board').ownSeat&&val(s.request.input,'seat-'+q)?.riichi===true)})),
+  ...scores.flatMap(s=>[0,1,2,3].filter(q=>q!==val(s.request.input,'board').ownSeat)
+   .map(seat=>({s,kind:'prior_round_points',seat})))
+ ];
+ const out=[];
+ for(const {s,kind,seat} of proposed){
+  const baseline=createV3IndependentDevelopmentRequest(s);
+  const variation=kind==='riichi_escrow'?removeReach(baseline,seat):transferPreviousRoundPoints(baseline,seat);
+  const alternative=packetFromAltered(baseline,variation.input);
+  if(eq(baseline.request.input,alternative.request.input)||eq(baseline.requestHash,alternative.requestHash))
+   fail('expansion unchanged');
+  if(!eq(baseline.request.input.actions,alternative.request.input.actions)||
+     !eq(val(baseline.request.input,'visible'),val(alternative.request.input,'visible')))
+   fail('expansion changed physical candidates or visible tiles');
+  out.push({sourceCaseId:s.request.input.id,kind,changedSeat:seat,
+   baselinePublicInputHash:baseline.request.sourcePublicInputHash,
+   alternativePublicInputHash:alternative.request.sourcePublicInputHash,
+   originalSourceHash:s.requestHash,intervention:variation.intervention,
+   limitation:variation.limitation,baseline,alternative,
+   labelStatus:'NO_MORTAL_REPLAY_NO_CHANGE_OR_MAINTAIN_GROUP_ASSIGNED'});
+ }
+ if(!out.length)fail('no unlabelled expansion contexts');
+ return {version:'p2a-v3-new36-counterfactual-expansion-pre-s42-1',
+  sourceFrozenHash:hash(source),initialPairHashes:initial.pairs.map(p=>p.baseline.requestHash),
+  selectionBasis:'source-disjoint from frozen initial 8; all remaining eligible reach, then at most 24 ordered non-reach source cases with 3 opponent recipients',
+  observedS42LabelsAtSelection:false,pairCount:out.length,
+  sourceClusterCount:new Set(out.map(x=>x.sourceCaseId)).size,pairs:out,
+  status:'EXPLORATORY_DEVELOPMENT_NO_TEACHER_LABELS',
+  notCertified:['all legality and full original history replay','causal attribution',
+   'independence between transfers from one source','expert tactical gold labels',
+   'ChatGPT sensitivity','formal unseen evaluation']};
+}
