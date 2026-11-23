@@ -457,3 +457,10 @@ ChatGPTが実際に独立して解いた回答を得る前に、採点・中止�
 - 公開8問最終GitHub artifact ID **14823478002**、sealed verifier-only事前L4弱対照artifact ID **14823488141**（回答GPTに見せない）。公開ZIPをダウンロードし全8個別`requestHash`とpacket SHA256をNodeでmanifestと完全照合。ファイル`/mnt/data/mahjong_P2a_v44_stage1_all8_public_verified_74tests.zip` SHA256`6f0e123b2f404c045489fa18af29d868e0ca847b9116f38caf5500e31b13d50b`。最初の未見`pilot-46.json` SHA256`cd56be60074c2cfff536aa077471bb248f1bcbfbf67aa38ba19e84163e232e2e`、requestHash`3fd5108e628468c8f9b9b3e1719e3a42e5ae7432141d73af7594d15c80d577d5`。出題は既に完全固定。
 - **現在の対応依頼**：新規GPT-6一時チャットに`/mnt/data/mahjong_P2a_v44_stage1_pilot-46.json`のみ添付。問題の`request.system`と`responseShape`に従い、**`mahjong_P2a_v44_stage1_pilot-46_response.json`というUTF-8 JSONファイルを生成・添付**、チャット本文はファイルへのリンクのみ。回答原本を編集せず本開発チャットへ返す。v4.3のpilot70元回答やMortal正解、弱対照は回答用チャットへ与えない。
 - v4.4は**研究技術準備完了・実モデル回答0/8**。反復・Stage2・source-disjoint L3.5・本人/Claude/Gemini匿名L4は未実行。修正パッチの追加レビューはユーザー希望で省略、独立本番L4は後で必要。無断有料API0、本番/main・S42推薦昇格NO-GO。GitHub正本`handoff/state.json`と`handoff/p2a-v44-source-shape-proof-74tests-eight-unseen-20261123.md`。
+
+
+## 2026-11-23：P2a-v4.4 GPT-6 API自動化の費用ゼロdry-run成功
+- OpenAI公式では対象Pro契約者に追加料金なしで申請可能なAPIクレジット特典あり。ただし有効化・付与・残高・本人のplan適格を未確認。Pro契約=APIが即使えるとは断言しない。
+- 別枝 `feat/coach-p2a-v44-api-transport-dryrun` Draft PR#68 head `17b56f1819302d2ecee25941bd599e86c0aa4140`。API 1問独立呼出、元v4.4検証、私的JSON保存、無断課金・GitHub Actions上の実API実行を拒否するfail-closed設計。
+- GitHub Actions run `45195407121` は SUCCESS（元36 sourceと完全未見8問の全固定hash、payload、改ざん拒否・liveアクセス拒否のテスト）。**実API呼び出し0、実モデル新規回答0、費用0**。ChatGPT手動の正式分母は依然0/8であり、v4.4全Phase・L4・本番採用は未完。
+- 今後の実呼出は、ユーザーがAPI特典を有効化し、用途・費用を確認して事前個別承認した場合だけ。APIキーはチャットや公開repoに掲示しない。主な記録：`handoff/p2a-v44-api-automation-dryrun-20261123.md`。
