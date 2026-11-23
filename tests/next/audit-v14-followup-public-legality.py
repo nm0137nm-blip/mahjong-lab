@@ -39,6 +39,7 @@ def one(ev):
         reaction_tile=norm(reaction["tile"])
     else:reaction=None;reaction_tile=None
     stats=collections.Counter()
+    unverified=[]
     groups={a["group"] for a in inp["actions"]}
     for a in inp["actions"]:
         g=a["group"];detail=a["detail"];stats["legal_options_seen"]+=1
@@ -86,20 +87,25 @@ def one(ev):
             stats["reaction_pass_option"]+=1
         else:
             stats["not_independently_reconstructed_legal_option"]+=1
+            unverified.append({"caseId":inp["id"],"group":g,"detail":detail,"phase":phase})
     stats["cases"]+=1
     if phase=="turn":stats["turn_cases"]+=1
     else:stats["reaction_cases"]+=1
     if phase=="reaction" and 45 not in groups:raise ValueError("reaction without pass")
-    return stats
+    return stats,unverified
 def main(source,output):
     es=json.loads(Path(source).read_text())
     if len(es)!=36:raise ValueError("new dev freeze requires 36 distinct public cases")
-    stats=collections.Counter();errors=[]
+    stats=collections.Counter();errors=[];not_reconstructed=[]
     for e in es:
-        try:stats.update(one(e))
+        try:
+            row,unsupported=one(e)
+            stats.update(row)
+            not_reconstructed.extend(unsupported)
         except Exception as exc:errors.append({"id":e["request"]["input"]["id"],"error":str(exc)})
     result={"status":"independent_public_material_and_action_feasibility_subset_only",
        "casesExpected":36,"checks":dict(stats),"errors":errors,
+       "optionsNotIndependentlyReconstructed":not_reconstructed,
        "certified":["public own hand material 14/13 and 4-tile multiplicity",
                     "present discard/riichi options correspond to own tiles",
                     "basic physically valid chi/pon/open-kan material and source side where checked",
