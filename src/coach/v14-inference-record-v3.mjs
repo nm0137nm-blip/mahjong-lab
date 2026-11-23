@@ -10,7 +10,7 @@ const keys=(v,k)=>v&&typeof v==='object'&&!Array.isArray(v)&&Object.keys(v).sort
 const nonempty=x=>typeof x==='string'&&x.length>0&&x.length<512;
 const iso=x=>typeof x==='string'&&Number.isFinite(Date.parse(x))&&/^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d+)?(?:Z|[+-]\d\d:\d\d)$/.test(x);
 export function sealSingleInference(envelope,answerEnvelope,meta){
- if(!keys(envelope,['request','requestHash'])||!envelope.request?.stage==='independent-v3-dev'||
+ if(!keys(envelope,['request','requestHash'])||envelope.request?.stage!=='independent-v3-dev'||
     sha(envelope.request)!==envelope.requestHash)err('invalid immutable input');
  const id=envelope.request.input?.id;
  if(!nonempty(id)||!keys(answerEnvelope,['id','requestHash','answer'])||
