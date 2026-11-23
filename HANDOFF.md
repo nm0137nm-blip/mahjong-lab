@@ -357,3 +357,12 @@ ChatGPTが実際に独立して解いた回答を得る前に、採点・中止�
 - GitHub Actions **run45133880242成功、Node47/47テスト、失敗0**。元36公開問、古いv4/v4.1回帰、`pilot50`文字列席＋`GPT-6`＋可視コピー表記模擬の通過、偽点数拒否、新8問ハッシュ固定を確認。公開出題パックartifact **14798667823**／弱対照・採点資料verifier-only artifact **14799405652**。公開出題ZIPと個別`pilot-52.json`は現在の作業容器に生成、全質問requestHashをマニフェストと照合済。main不変、追加課金0、Claude/Gemini追加パッチレビューなし。
 - **次の対応依頼**：ユーザーに新規ChatGPT一時チャットで`pilot-52.json`を解いてもらい、可能なら**JSONファイルのまま**原文を送ってもらう。表示モデル名はユーザーが画面から別に記録する。**v4.2の実モデル新回答は0件、正式戦術能力/L4/Stage2/L3.5は未採点**。完成・Phase合格・本番昇格とは呼ばない。
 - 詳細レポート`handoff/p2a-v42-typed-seat-and-copy-transport-repair-20261123.md`、履歴`handoff/p2a-v41-first-pilot50-schema-receipt-stop-20261123.md`、正本`handoff/state.json`を参照。
+
+
+## 2026-11-23 17:57 JST：P2a-v4.2 Stage1：pilot52初回独立JSONの固定検証器PASS（全8問中1問）
+- ユーザーが`mahjong_P2a_v42_stage1_pilot-52_response.json`をファイルで提出。正規JSONを原本として、GitHub v4.2の**実ソースコード**`src/coach/v14-*.mjs`を専用ソースのみのartifact ID **14803127130**（GitHub Actions run **45143527398**）で取得し、モデル回答や隠し牌をGitHubへ投稿せず、ローカルNodeで`createV3IndependentDevelopmentRequest → createV42CompactDevelopmentPacket → verifyAndRenderV42CompactModelResponse → assessV42FirstRealStage1`を**直接実行**。**判定`CONTRACT_AND_PUBLIC_FACT_GATE_PASS`**。Pythonによる同条件ミラーも一致。
+- 凍結問題`pilot-52`のrequestHash`2a6aab21bc3d914183b7a91082f0939d68c5f619f8785ce19fb66f1639bde6b5`と回答一致。未改変回答のSHA256=`9c3ad9e070bc089bdb31c8686f0248b9ecd31527e1f2b84ac0a54bb9c6912e36`、原文はユーザー添付ファイルだけに保全、GitHubに複製しない。スマートクォートや席文字列の自動変換は**0**、元JSONとして通過。
+- モデル選択`a0-0`（m1切りダマ）、対案`a37-1`（m1切り立直）は公開合法手。両者0向聴、m3/m6待ち計6枚、ドラ2、自河フリテンなし。条件付きロンはm3ダマ7700／立直8000、m6ダマ8000／立直12000。親席0 45000、同点の役牌仕掛け席1 19000、自席2 19000、下位役牌仕掛け席3 17000。検証された公開比較証明10件、他家観測6件（3席×2）、実質比較差3件。LLMの数値証明ではなく**ソースから確定生成した証明**。戦術選択・Mortal S42一致やL4説明水準は**未評価**、モデル画面表示や独立一時チャットの客観情報も未受領のため未確認で記録。
+- Stage1の分母は**受信1／形式・公開事実ゲート合格1／未実施7**。重大契約エラーなしで**予定どおり2問目へ進行可**。まだPhase全体合格ではない。v3/v4/v4.1の旧失敗を遡及変更しない。
+- **現在の対応依頼**：v4.2固定順2問目`pilot-47.json`（requestHash`e655cd7bf0346c19dce8776fd3082d296de2c9102973de9b4cf8d417ceff70f1`、既存凍結8問ZIPから展開、ファイルSHA256 `def152c3f7556893b7cd6de45fd4147a35215f1f244fbcc2075008d893aa536d`）を新しいChatGPT一時チャットで解かせ、原JSONファイルを本開発チャットへ返す。可能ならUIで表示されるモデル名も添える。Stage2・L3.5実モデル回答・3者匿名L4採点はいずれも未実施、main・製品はNO-GO、有料APIなし、追加Patchレビュアー依頼なし。
+- 詳細：`handoff/p2a-v42-pilot52-first-independent-model-receipt-20261123.md`、最新`handoff/state.json`。
