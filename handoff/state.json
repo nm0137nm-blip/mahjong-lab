@@ -9,7 +9,7 @@
   },
   "active_task": {
     "phase": "P2a-v2-closed",
-    "status": "phase_closed_NO_GO_both_external_reviews_complete_next_v3_conditional_GO_pending_user_decisions",
+    "status": "v2_closed_NO_GO_both_reviews_complete_v3_user_policy_decisions_recorded_free_dev_possible_inference_method_pending",
     "branch": "feat/coach-v14-pilot-boundary-v1",
     "commit": "9f3ef9d575899db0569d1d6ec915439ea22650d9",
     "pr": 61,
@@ -310,8 +310,8 @@
         "formalPhase": "NO-GO"
       }
     ],
-    "decision": "Both Claude Opus 5.5 and Gemini P2a-v2 Phase-end first-round independent reviews received, BOTH support NO-GO closure. Both support P2a-v3 conditional GO ONLY after user selects real model inference route and core schema breaks are fixed; other third party round NOT required as major technical findings aligned. Gemini independently found numeric-only distinct candidate proof schema rejects fundamental same-tile riichi-vs-dama and terminal ron/pass; source confirmed. Reviewers both flag incompatible Stage2 genuine-vs-counterfeit output schema, zero real model calls, unreachable perfect tactical oracle framing, missing new legal change/maintain counterfactual pairs, product-route and rank/score gaps. Freezing v2 on prior code sha; no code changes to retroactively pass. Formal B, P1Lite, B4, P3, main, public remain NO-GO. Await user choices of inference mode, intended distribution, L4 expert review scope before beginning v3; do not incur costs.",
-    "next": "P2a-v2 is CLOSED NO-GO with both reviewer first-round results recorded. User decision on capped API vs manual (and bound), intended distribution and expert blind review level; then versioned P2a-v3 proof-contract and Stage2 schema fixes, real model smoke, legal counterfactual tests, blind challenger rubric. Do not open repeated reviewer round absent conflict; do not add mechanical-only tests for their own sake; no API costs without consent.",
+    "decision": "P2a-v2 remains NO-GO closed after both reviews. User confirmed 2026-11-23: no blanket spend approval or discretionary capped spending; every new paid operation requires prior specific informed consent in plain Japanese covering need, purpose, cost and free alternatives. Final completed MahjongLAB personal user-only, offline-first (advanced LLM commentary may use network), not public distribution. L4 limited blind ratings by user and independent second model. Actual LLM inference transport not selected; no API spend approved. Free-only v3 schema repairs may proceed without charged operations. Historical initial API/JPY3000/public defaults were proposals only, explicitly superseded.",
+    "next": "Do free work on versioned v3 candidate comparison/Stage2 single schema; before any real model API or paid hosting/compute, explain in normal Japanese what will be done, need, cost and viable free alternatives and obtain authorization for that exact concrete use. Explore free manual or local models. Keep private offline-first finished app goal and independent blind L4 user+second model. No public release or unapproved payment.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -402,10 +402,12 @@
     },
     "v2_review_final": "handoff/p2a-v2-claude-gemini-phase-exit-review-integrated-20261123.md",
     "nextPhaseEntryDecisions": {
-      "inference": "user_choose_capped_API_or_scaled_manual",
-      "distribution": "user_choose_private_test_only_or_future_public_web",
-      "L4": "user_choose_real_blinded_expert_limited_evaluation_or_unaudited_L4_scope"
-    }
+      "spending": "CONFIRMED: per-use prior consent with simple purpose, necessity, costs and free alternative review; no discretionary budget, nothing paid is currently approved",
+      "distribution": "CONFIRMED: personal use only, offline-first; no plan to general-public launch",
+      "L4": "CONFIRMED: blind assessment by user and separate independent model; limited learning usefulness only, no top-player certification",
+      "inference": "NOT YET SELECTED: investigate free/manual/local methods first; when and only when an actual paid operation becomes necessary seek specific approval"
+    },
+    "user_decisions_document": "handoff/p2a-v3-user-decisions-no-blanket-spend-private-offline-l4-20261123.md"
   },
   "previous_runs": [
     {
@@ -1592,5 +1594,42 @@
     "problem": "自力で解決できない問題だけ。",
     "action_request": "ユーザーの判断・作業が必要な場合のみ。",
     "review": "Phase終了時は合否によらずClaudeとGemini、重大な問題に限定、最大2往復、件数制限なし。"
+  },
+  "user_decisions_20261123": {
+    "source": "User direct explicit response 2026-11-23; supersedes all proposed default API/JPY3000/public-web suggestions",
+    "policy_document": "handoff/p2a-v3-user-decisions-no-blanket-spend-private-offline-l4-20261123.md",
+    "spending": {
+      "mode": "NO_BLANKET_AUTHORIZATION_NO_PREAPPROVED_CAP",
+      "any_new_paid_action_requires_explicit_prior_approval": true,
+      "per_action_explanation_required": [
+        "concrete purpose",
+        "why it is needed",
+        "what outcome it enables",
+        "cost estimate and possible recurrence",
+        "checked free alternatives and their limitations",
+        "exact scope being approved"
+      ],
+      "plain_japanese_no_unexplained_technical_terms": true,
+      "authorization_valid_only_for_specific_approved_action": true,
+      "no_automatic_carryover_even_within_any_budget": true,
+      "current_paid_api_authorizations": 0,
+      "no_new_billed_API_or_paid_compute_without_explicit_approval": true
+    },
+    "end_product": {
+      "audience": "USER_ONLY_PRIVATE_PERSONAL_USE_NOT_PUBLIC_SERVICE",
+      "architecture_preference": "OFFLINE_FIRST",
+      "llm_explanations_may_require_network_acknowledged": true,
+      "prefer_local_gameplay_and_AI_decisions": true,
+      "public_GitHub_Pages_existing_development_URL_not_automatically_private": true,
+      "launch_public_distribution": "NOT_A_GOAL"
+    },
+    "limited_blind_evaluation": {
+      "decision": "YES_USER_AND_INDEPENDENT_SECOND_MODEL",
+      "compare_anonymized_explanations_and_adversarial_weak_controls": true,
+      "user_and_independent_model_blind_scoring": true,
+      "independent_model_extra_expense_requires_same_prior_approval": true,
+      "scope": "limited_strategic_consistency_learning_utility_not_pro_level_certificate"
+    },
+    "inference_execution_method": "NOT_YET_CHOSEN_FREE_FIRST_COSTS_REQUIRE_SPECIFIC_CONSENT"
   }
 }
