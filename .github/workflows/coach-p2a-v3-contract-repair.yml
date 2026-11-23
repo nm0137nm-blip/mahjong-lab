@@ -217,6 +217,7 @@ jobs:
           retention-days: 30
 
   v3-s42-paired-public-reference-expansion:
+    if: false # exploratory extension fixed in successful run 45105529039; prevent re-running on unrelated edits
     runs-on: ubuntu-24.04
     timeout-minutes: 18
     steps:
