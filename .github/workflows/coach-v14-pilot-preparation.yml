@@ -1,0 +1,762 @@
+name: v1.4 pilot transport preparation
+on:
+  pull_request:
+    branches: [feat/coach-p2a-facts-only-v1]
+permissions:
+  contents: read
+  actions: read
+jobs:
+  prepare:
+    if: false # completed in 44758253864; avoid repeating until packet changes
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.23.4'
+      - run: node --test tests/next/v14-pilot-boundary.test.mjs
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: p1-v2-dev-data-*
+          run-id: 44726204303
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/v14-dev
+      - run: node tests/next/prepare-v14-pilot.mjs /tmp/v14-dev /tmp/v14-pilot
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - run: python -m pip install mahjong==1.4.0
+      - run: python tests/next/audit-v14-public-calculations.py /tmp/v14-pilot/independent-requests.json /tmp/v14-pilot/calculation-audit.json
+      - run: node tests/next/v14-negative-controls.mjs select /tmp/v14-pilot/independent-requests.json /tmp/v14-pilot/weak-control-lock.json
+      - run: node tests/next/v14-negative-controls.mjs grade /tmp/v14-pilot/independent-requests.json /tmp/v14-pilot/weak-control-lock.json /tmp/v14-pilot/lineage.json /tmp/v14-dev /tmp/v14-pilot/weak-control-results.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v14-pilot-public-preparation
+          path: /tmp/v14-pilot
+          if-no-files-found: warn
+          retention-days: 30
+
+  sampler:
+    if: false # contrast run 44758253864 already dispatched
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.23.4'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - run: python -m pip install mahjong==1.4.0
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: p1-v2-dev-data-*
+          run-id: 44726204303
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/v14-dev
+      - run: python tests/next/v14-sampler-feasibility.py /tmp/v14-dev /tmp/v14-sampler-feasibility.json /tmp/v14-private-trajectories.json
+      - run: node tests/next/v14-contrast-probe.mjs /tmp/v14-private-trajectories.json /tmp/v14-contrast-probe.json /tmp/v14-contrast-public.json
+      - run: node tests/next/v14-negative-controls.mjs contrast /tmp/v14-contrast-public.json /tmp/v14-contrast-control.json
+      - if: always()
+        run: rm -f /tmp/v14-private-trajectories.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v14-contrast-feasibility
+          path: |
+            /tmp/v14-sampler-feasibility.json
+            /tmp/v14-contrast-probe.json
+            /tmp/v14-contrast-public.json
+            /tmp/v14-contrast-control.json
+          if-no-files-found: warn
+          retention-days: 30
+
+  bias-verifier:
+    if: false # completed in 44758490026
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - run: python -m pip install mahjong==1.4.0
+      - uses: actions/download-artifact@v4
+        with:
+          name: v14-sampler-feasibility
+          run-id: 44755542405
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/frozen-sampler
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: p1-v2-dev-data-*
+          run-id: 44726204303
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/v14-dev
+      - run: python tests/next/v14-sampler-bias-audit.py /tmp/v14-dev /tmp/frozen-sampler/v14-sampler-feasibility.json /tmp/v14-sampler-bias.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v14-sampler-bias-aggregate
+          path: /tmp/v14-sampler-bias.json
+          if-no-files-found: warn
+          retention-days: 30
+
+  late-proposal:
+    if: false # run 44812741900 already dispatched
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - run: python -m pip install mahjong==1.4.0
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: p1-v2-dev-data-*
+          run-id: 44726204303
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/v14-dev
+      - run: python tests/next/v14-late-proposal-probe.py /tmp/v14-dev /tmp/v14-late-proposal.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v14-late-proposal-frozen
+          path: /tmp/v14-late-proposal.json
+          retention-days: 30
+  late-verifier:
+    if: false # run 44812741900 already dispatched
+    needs: late-proposal
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - run: python -m pip install mahjong==1.4.0
+      - uses: actions/download-artifact@v4
+        with:
+          name: v14-late-proposal-frozen
+          path: /tmp/frozen
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: p1-v2-dev-data-*
+          run-id: 44726204303
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/v14-dev
+      - run: python tests/next/v14-late-proposal-verifier.py /tmp/v14-dev /tmp/frozen/v14-late-proposal.json /tmp/v14-late-verification.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v14-late-proposal-aggregate
+          path: /tmp/v14-late-verification.json
+          retention-days: 30
+
+  freeze-pilot:
+    if: false # quota-repair run already dispatched; inspect separately
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.23.4'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - run: python -m pip install mahjong==1.4.0
+      - uses: actions/download-artifact@v4
+        with:
+          name: v14-pilot-public-preparation
+          run-id: 44758253864
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/natural
+      - uses: actions/download-artifact@v4
+        with:
+          name: v14-contrast-feasibility
+          run-id: 44758253864
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/contrast
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: p1-v2-dev-data-*
+          run-id: 44726204303
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/v14-dev
+      - run: node tests/next/v14-freeze-pilot-set.mjs /tmp/natural /tmp/contrast/v14-contrast-public.json /tmp/frozen-pilot /tmp/v14-dev
+      - run: python tests/next/audit-v14-public-calculations.py /tmp/frozen-pilot/stage1/independent-requests.json /tmp/frozen-pilot/verifier/calculation-audit.json
+      - run: node tests/next/v14-negative-controls.mjs select /tmp/frozen-pilot/stage1/independent-requests.json /tmp/frozen-pilot/verifier/weak-control-lock.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v14-frozen-stage1-only
+          path: /tmp/frozen-pilot/stage1
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v14-frozen-verifier-only
+          path: /tmp/frozen-pilot/verifier
+          retention-days: 30
+
+  contrast-mortal:
+    if: false # completed 44813459829
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.23.4'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.10'
+      - run: python -m pip install onnxruntime==1.22.1 numpy==2.2.6
+      - uses: actions/download-artifact@v4
+        with:
+          name: corrected-encoder
+          run-id: 44673093075
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/fixed-encoder
+      - run: |
+          cp /tmp/fixed-encoder/encoder-pkg/encoder* assets/mortal/
+          echo '886cb7abb09034dcdf348039d651d63a83cd7edb87d3337a452722c960b9d97a  assets/mortal/encoder.js' | sha256sum -c -
+          echo '0e9dcc57545afb5769d42f372bbd82be5c26941d1e352245b225d62ce0c611bf  assets/mortal/encoder_bg.wasm' | sha256sum -c -
+          curl --fail --location --retry 2 --silent --show-error --max-time 160 'https://huggingface.co/xzhe121/Mortal-S42-onnx/resolve/main/model.onnx' -o /tmp/mortal.onnx
+          echo '30381bf21389e2d25d3edf48fed11bf772336ef3daeee67d1bdae7fb9dd30cb4  /tmp/mortal.onnx' | sha256sum -c -
+      - uses: actions/download-artifact@v4
+        with:
+          name: v14-contrast-feasibility
+          run-id: 44758253864
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/contrast
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: p1-v2-dev-data-*
+          run-id: 44726204303
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/v14-dev
+      - run: node tests/next/v14-contrast-mortal-encode.mjs /tmp/v14-dev /tmp/contrast/v14-contrast-public.json /tmp/contrast-obs
+      - run: python tests/next/v14-contrast-mortal-grade.py /tmp/contrast-obs /tmp/mortal.onnx /tmp/contrast-mortal-result.json
+      - if: always()
+        run: rm -rf /tmp/contrast-obs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v14-contrast-mortal-verifier-only
+          path: /tmp/contrast-mortal-result.json
+          if-no-files-found: warn
+          retention-days: 30
+
+  pilot-answer-audit:
+    if: false # completed 44814792884; benchmark artifacts frozen
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.23.4'
+      - run: node --test tests/next/v14-pilot-boundary.test.mjs
+      - uses: actions/download-artifact@v4
+        with:
+          name: v14-frozen-stage1-only
+          run-id: 44813180639
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/stage1
+      - run: node tests/next/v14-pilot-answer-audit.mjs controls /tmp/stage1/independent-requests.json /tmp/control-locks
+      - uses: actions/download-artifact@v4
+        with:
+          name: v14-frozen-verifier-only
+          run-id: 44813180639
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/verifier
+      - uses: actions/download-artifact@v4
+        with:
+          name: v14-contrast-mortal-verifier-only
+          run-id: 44813459829
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/contrast-ref
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: p1-v2-dev-data-*
+          run-id: 44726204303
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/v14-dev
+      - run: node tests/next/v14-pilot-answer-audit.mjs refs /tmp/stage1/independent-requests.json /tmp/verifier/lineage.json /tmp/contrast-ref/contrast-mortal-result.json /tmp/v14-dev /tmp/verifier/references.json
+      - run: |
+          for name in efficiency_own_only own_points boilerplate boilerplate_cited; do
+            node tests/next/v14-pilot-answer-audit.mjs grade /tmp/stage1/independent-requests.json /tmp/control-locks/$name.json /tmp/verifier/references.json /tmp/verifier/$name-grade.json
+          done
+          node -e 'for(const k of ["efficiency_own_only","own_points","boilerplate","boilerplate_cited"]){const r=require("/tmp/verifier/"+k+"-grade.json");console.log(k,JSON.stringify({...r,rows:undefined}));}'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v14-pilot-answer-audit-verifier-only
+          path: |
+            /tmp/control-locks
+            /tmp/verifier/references.json
+            /tmp/verifier/*-grade.json
+          retention-days: 30
+
+  gemini-review-snapshot:
+    if: false # completed 45079837798; trigger only for handoff snapshot refresh
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - name: Prepare verified cross-branch reviewer packs (no private trial data)
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin refs/heads/project-handoff:refs/remotes/origin/project-handoff
+          git fetch origin refs/heads/main:refs/remotes/origin/main
+          python - <<'PY'
+          import pathlib,subprocess,json,hashlib,zipfile,datetime
+          root=pathlib.Path('/tmp/mahjong-gemini-snapshot')
+          def rev(ref):return subprocess.check_output(['git','rev-parse',ref],text=True).strip()
+          docsha=rev('refs/remotes/origin/project-handoff')
+          codesha=rev('HEAD')
+          mainsha=rev('refs/remotes/origin/main')
+          docs='''HANDOFF.md
+          handoff/state.json
+          handoff/roadmap-v1.4-pilot-go-20261120.md
+          handoff/p2a-v14-30-dev-pilot-first-stage-review-20261121.md
+          handoff/p2a-v14-claude-opus-review-stat-followup-20261123.md
+          handoff/coach-relative-quality-20261120.md
+          handoff/roadmap-v1.4-review-amendment-20261120.md
+          handoff/license-decision-20261120.md
+          handoff/v14-manual-pilot-execution-20261121.md
+          handoff/third-party-review-protocol-20261123.md'''.splitlines()
+          codes='''src/coach/v14-pilot-boundary.mjs
+          src/coach/v14-public-calculations.mjs
+          src/coach/p2a-facts-only.mjs
+          src/coach/phoenix-coach.mjs
+          src/coach/s42-benchmark.mjs
+          src/mortal/mjai-bridge.mjs
+          src/mortal/mortal-worker.mjs
+          src/mortal/mortal-cpu.mjs
+          src/mortal/mortal-client.mjs
+          src/mortal/s42-analytics.mjs
+          tests/next/v14-pilot-boundary.test.mjs
+          tests/next/v14-negative-controls.mjs
+          tests/next/v14-pilot-answer-audit.mjs
+          tests/next/v14-contrast-mortal-encode.mjs
+          tests/next/v14-contrast-mortal-grade.py
+          tests/next/v14-sampler-feasibility.py
+          tests/next/v14-engine-rollout-probe.mjs
+          tests/next/v14-contrast-probe.mjs
+          tests/next/v14-freeze-pilot-set.mjs
+          tests/next/v14-late-proposal-probe.py
+          tests/next/v14-late-proposal-verifier.py
+          tests/next/audit-v14-public-calculations.py
+          .github/workflows/coach-v14-pilot-preparation.yml
+          index.html'''.splitlines()
+          for p in docs:
+              data=subprocess.check_output(['git','show',f'{docsha}:{p}'])
+              f=root/'docs'/p
+              f.parent.mkdir(parents=True,exist_ok=True);f.write_bytes(data)
+          for p in codes:
+              f=root/'code'/p
+              f.parent.mkdir(parents=True,exist_ok=True)
+              f.write_bytes(pathlib.Path(p).read_bytes())
+          readme='''# 麻雀LAB: Gemini / Claude 向けオフライン引き継ぎ
+          このZIPはリポジトリの2ブランチをコミット固定してコピーしたものです。GitHubへ直接アクセスできない場合も、添付ファイルとして実際の記録を読めます。
+          ## 読む順番
+          1. docs/handoff/state.json （最新作業状態・レビュー担当）
+          2. docs/HANDOFF.md （時系列。必ず末尾まで）
+          3. docs/handoff/third-party-review-protocol-20261123.md （レビュワーの指摘範囲・最大2往復）
+          4. docs/handoff/roadmap-v1.4-pilot-go-20261120.md
+          5. docs/handoff/p2a-v14-30-dev-pilot-first-stage-review-20261121.md
+          6. docs/handoff/p2a-v14-claude-opus-review-stat-followup-20261123.md
+          7. 必要に応じ code/src/coach/, code/src/mortal/, code/tests/next/, code/index.html
+          8. CI/RUNS.md、MANIFEST.jsonでブランチ・コミット・検証状況を確認
+          ## 現状の重要な留保
+          初回P2a 30問pilotは「コーチ戦術解説は未実証／評価器は不合格」。正式試験への移行はNO-GO。P1-Liteは未認証、ロールアウトB4は未合格。
+          第三者レビュアーは今後ClaudeとGeminiの2者。Copilotの過去コメントは履歴として残す。独立した重大な完成阻害要因は件数上限なく漏れなく報告。軽微な論点は省略し、最大2往復で次工程を決める。詳細は docs/handoff/third-party-review-protocol-20261123.md。
+          文書は project-handoff、ソースコードは feat/coach-v14-pilot-boundary-v1。双方が同一ブランチにあるわけではなく、アプリmainの本番実装とも限らない。
+          ユーザーの個別チャットで生成した実回答、他家の隠し手・oracle、学習モデルの重み、過去の全CI生ログは同梱しない。
+          GitHubへアクセスしたと偽らず「添付されたGitHubスナップショットを読んだ」と明記すること。最新のGitHub状態は本スナップショット取得後に変わり得る。
+          '''
+          (root/'START_HERE.md').write_text(readme,encoding='utf-8')
+          logs='''# 主要CI Run IDの索引（生ログを収録したものではありません）
+          - 44726204303: 96半荘の開発データ収集・初回監査
+          - 44758253864: 弱対照、立直あり／なし4組の試験
+          - 44812741900: 隠し手牌サンプラーの偏り・感度
+          - 44813180639: 実30問固定、公開計算値の独立監査
+          - 44813459829: pinned Mortalで4対照組の比較
+          - 44814792884: 引用付き定型解説が形式検査に通る問題を検出
+          CI URL: https://github.com/nm0137nm-blip/mahjong-lab/actions
+          各検証の数値・合否はdocs/HANDOFF.mdおよび関連資料を優先して確認。
+          '''
+          (root/'CI').mkdir(exist_ok=True)
+          (root/'CI/RUNS.md').write_text(logs,encoding='utf-8')
+          for name,ref in [('CODE_LAST10_COMMITS.txt','HEAD'),('HANDOFF_LAST10_COMMITS.txt','refs/remotes/origin/project-handoff')]:
+              log=subprocess.check_output(['git','log','-n','10','--date=iso-strict','--pretty=format:%H %ad %s',ref],text=True)
+              (root/'CI'/name).write_text(log+'\n',encoding='utf-8')
+          files=[]
+          for f in sorted(root.rglob('*')):
+              if f.is_file():
+                  rel=f.relative_to(root).as_posix()
+                  files.append({'path':rel,'size':f.stat().st_size,'sha256':hashlib.sha256(f.read_bytes()).hexdigest(),
+                      'source_branch':'project-handoff' if rel.startswith('docs/') else 'feat/coach-v14-pilot-boundary-v1' if rel.startswith('code/') else 'generated'})
+          manifest={'repo':'nm0137nm-blip/mahjong-lab','commits':{'project-handoff':docsha,'feat/coach-v14-pilot-boundary-v1':codesha,'main':mainsha},
+                    'created_at_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),
+                    'note':'Frozen Git contents. No private pilot answers, hidden hands, or model weights.',
+                    'files':files}
+          (root/'MANIFEST.json').write_text(json.dumps(manifest,indent=2,ensure_ascii=False)+'\n',encoding='utf-8')
+          for name,include in [
+            ('/tmp/mahjong_lab_gemini_full_review.zip',lambda rel:True),
+            ('/tmp/mahjong_lab_gemini_essentials.zip',lambda rel:rel.startswith('docs/') or rel in ('START_HERE.md','MANIFEST.json'))
+          ]:
+              with zipfile.ZipFile(name,'w',compression=zipfile.ZIP_DEFLATED,compresslevel=9) as z:
+                  for f in sorted(root.rglob('*')):
+                      if f.is_file() and include(f.relative_to(root).as_posix()):
+                          z.write(f,f.relative_to(root))
+              with zipfile.ZipFile(name) as z:assert z.testzip() is None
+              print(name,pathlib.Path(name).stat().st_size)
+          print('docsha',docsha,'codesha',codesha,'files',len(files))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mahjong-gemini-review-two-zips
+          path: |
+            /tmp/mahjong_lab_gemini_full_review.zip
+            /tmp/mahjong_lab_gemini_essentials.zip
+          if-no-files-found: error
+          retention-days: 30
+
+  v2-evidence-proof:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.23.4'
+      - uses: actions/download-artifact@v4
+        with:
+          name: v14-frozen-stage1-only
+          run-id: 44813180639
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/v14-frozen-stage1
+      - name: Verify independent 30-input trace arithmetic, adversarial corruptions and no tactical-certification confusion
+        env:
+          V14_STAGE1: /tmp/v14-frozen-stage1/independent-requests.json
+        run: |
+          test -s "$V14_STAGE1"
+          node --test tests/next/v14-evidence-proof-v2.test.mjs
+          node --test tests/next/v14-inference-record-v2.test.mjs
+          node --test tests/next/v14-conditional-table-v2.test.mjs
+          node --test tests/next/v14-independent-request-v2.test.mjs
+          node --test tests/next/v14-seat-genbutsu-proof-v2.test.mjs
+          node --test tests/next/v14-public-tradeoff-witness-v2.test.mjs
+          node --test tests/next/v14-candidate-seat-attribution-v2.test.mjs
+          node --test tests/next/v14-onecase-export-v2.test.mjs
+          node tests/next/v14-onecase-write-v2.mjs "$V14_STAGE1" /tmp/p2a-v2-onecase-export
+          node --test tests/next/v14-pilot-boundary.test.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p2a-v2-public-onecase-regression-only
+          path: /tmp/p2a-v2-onecase-export/
+          if-no-files-found: error
+          retention-days: 14
+
+  v2-paired-contrast:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.23.4'
+      - uses: actions/download-artifact@v4
+        with:
+          name: v14-frozen-stage1-only
+          run-id: 44813180639
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/v14-frozen-stage1
+      - uses: actions/download-artifact@v4
+        with:
+          name: v14-frozen-verifier-only
+          run-id: 44813180639
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/v14-verifier-only
+      - uses: actions/download-artifact@v4
+        with:
+          name: v14-contrast-mortal-verifier-only
+          run-id: 44813459829
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/v14-contrast-verifier
+      - name: Matched 4 reach-plus-deposit packages with blinded Stage1 and separate pinned Mortal oracle
+        env:
+          V14_STAGE1: /tmp/v14-frozen-stage1/independent-requests.json
+          V14_LINEAGE: /tmp/v14-verifier-only/lineage.json
+          V14_PINNED_CONTRAST: /tmp/v14-contrast-verifier/contrast-mortal-result.json
+        run: |
+          test -s "$V14_STAGE1"
+          test -s "$V14_LINEAGE"
+          test -s "$V14_PINNED_CONTRAST"
+          node --test tests/next/v14-paired-contrast-v2.test.mjs
+          node --test tests/next/v14-stage2-boundary-v2.test.mjs
+          node --test tests/next/v14-stage2-counterfeit-isolated-v2.test.mjs
+          node --test tests/next/v14-paired-awareness-v2.test.mjs
+
+  v2-followup-freeze-36:
+    if: false # successful frozen 36 in run 45089922993; do not regenerate on future commits
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.23.4'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: p1-v2-dev-data-*
+          run-id: 44726204303
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/p2a-v2-prior-96
+      - uses: actions/download-artifact@v4
+        with:
+          name: v14-frozen-stage1-only
+          run-id: 44813180639
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/v14-frozen-stage1
+      - uses: actions/download-artifact@v4
+        with:
+          name: v14-frozen-verifier-only
+          run-id: 44813180639
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/v14-verifier-only
+      - name: Freeze preregistered non-overlapping 36 public followup cases without model or hidden data
+        run: |
+          set -euo pipefail
+          node tests/next/freeze-v2-followup-36.mjs \
+            /tmp/p2a-v2-prior-96 \
+            /tmp/v14-frozen-stage1/independent-requests.json \
+            /tmp/v14-verifier-only/lineage.json \
+            /tmp/p2a-v2-followup
+      - name: Independently check public candidate arithmetic, point transfers, and source lineage
+        env:
+          V14_STAGE1: /tmp/v14-frozen-stage1/independent-requests.json
+          V14_LINEAGE: /tmp/v14-verifier-only/lineage.json
+          V14_FOLLOWUP_PUBLIC: /tmp/p2a-v2-followup/stage1/independent-requests.json
+          V14_FOLLOWUP_LINEAGE: /tmp/p2a-v2-followup/verifier-only/lineage.json
+          V14_FOLLOWUP_MANIFEST: /tmp/p2a-v2-followup/verifier-only/manifest.json
+          V14_FOLLOWUP_CASE_DIR: /tmp/p2a-v2-followup/stage1/onecase
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check mahjong==1.4.0
+          test -s "$V14_FOLLOWUP_PUBLIC"
+          node --test tests/next/v14-followup-36-freeze.test.mjs
+          python tests/next/audit-v14-public-calculations.py "$V14_FOLLOWUP_PUBLIC" \
+            /tmp/p2a-v2-followup/verifier-only/public-calculation-audit.json 36
+      - name: Store model-visible PUBLIC development-only cases without verifier lineage
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: p2a-v2-36-public-development-only
+          path: /tmp/p2a-v2-followup/stage1/
+          if-no-files-found: error
+          retention-days: 30
+      - name: Store SHA lineage and independent audit in a separate verifier-only artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: p2a-v2-36-verifier-only-development
+          path: /tmp/p2a-v2-followup/verifier-only/
+          if-no-files-found: warn
+          retention-days: 30
+
+  v2-followup-public-physical-audit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - uses: actions/download-artifact@v4
+        with:
+          name: p2a-v2-36-public-development-only
+          run-id: 45089922993
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/frozen-v2-followup-public
+      - name: Independently audit physical public hand/riichi/chi/pon legality subset for all 36 frozen cases
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check mahjong==1.4.0
+          python tests/next/audit-v14-followup-public-legality.py \
+            /tmp/frozen-v2-followup-public/independent-requests.json \
+            /tmp/v2-followup-public-legality-subset.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: p2a-v2-36-public-physical-legality-subset-audit
+          path: /tmp/v2-followup-public-legality-subset.json
+          if-no-files-found: warn
+          retention-days: 30
+
+  v2-followup-yaku-name-diagnostic:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - uses: actions/download-artifact@v4
+        with:
+          name: p2a-v2-36-public-development-only
+          run-id: 45089922993
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/frozen-v2-followup-public
+      - name: Independently inspect per-yaku identity after score match
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check mahjong==1.4.0
+          python tests/next/audit-v14-public-yaku-names-v2.py \
+            /tmp/frozen-v2-followup-public/independent-requests.json \
+            /tmp/p2a-v2-independent-yaku-names.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: p2a-v2-36-yaku-name-mapping-diagnostic
+          path: /tmp/p2a-v2-independent-yaku-names.json
+          if-no-files-found: warn
+          retention-days: 30
+
+  v2-phase-exit-review-snapshot:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Prepare pinned Phase v2 review documents and code (no raw player answers)
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin refs/heads/project-handoff:refs/remotes/origin/project-handoff
+          python - <<'PY'
+          import hashlib,json,pathlib,subprocess,zipfile,datetime
+          root=pathlib.Path('/tmp/p2a-v2-phase-review')
+          def cmd(*args):return subprocess.check_output(args)
+          code_sha=cmd('git','rev-parse','HEAD').decode().strip()
+          doc_sha=cmd('git','rev-parse','refs/remotes/origin/project-handoff').decode().strip()
+          code_anchor='9f3ef9d575899db0569d1d6ec915439ea22650d9'
+          changed=cmd('git','diff','--name-only',code_anchor,code_sha).decode().splitlines()
+          assert all(x=='.github/workflows/coach-v14-pilot-preparation.yml' for x in changed),changed
+          docs='''HANDOFF.md
+          handoff/state.json
+          handoff/third-party-review-protocol-20261123.md
+          handoff/p2a-v2-phase-exit-no-go-review-request-20261123.md
+          handoff/p2a-v2-product-coach-contract-20261123.md
+          handoff/p2a-v2-second-dev-36-prereg-20261123.md
+          handoff/p2a-v2-development-gates5-6-20261123.md
+          handoff/p2a-v2-development-gate4-20261123.md
+          handoff/p2a-v2-development-gate3-20261123.md
+          handoff/p2a-v2-mechanical-evaluation-gate2-20261123.md
+          handoff/p2a-v2-initial-engineering-checkpoint-20261123.md
+          handoff/p2a-v14-claude-gemini-review-integrated-20261123.md
+          handoff/p2a-v14-30-dev-pilot-first-stage-review-20261121.md
+          handoff/roadmap-v1.4-pilot-go-20261120.md
+          handoff/license-decision-20261120.md'''.splitlines()
+          codes='''src/coach/v14-pilot-boundary.mjs
+          src/coach/v14-public-calculations.mjs
+          src/coach/p2a-facts-only.mjs
+          src/coach/v14-evidence-proof-v2.mjs
+          src/coach/v14-conditional-table-v2.mjs
+          src/coach/v14-independent-request-v2.mjs
+          src/coach/v14-inference-record-v2.mjs
+          src/coach/v14-seat-genbutsu-proof-v2.mjs
+          src/coach/v14-public-tradeoff-witness-v2.mjs
+          src/coach/v14-candidate-seat-attribution-v2.mjs
+          src/coach/v14-paired-contrast-v2.mjs
+          src/coach/v14-paired-awareness-v2.mjs
+          src/coach/v14-stage2-boundary-v2.mjs
+          tests/next/v14-evidence-proof-v2.test.mjs
+          tests/next/v14-conditional-table-v2.test.mjs
+          tests/next/v14-independent-request-v2.test.mjs
+          tests/next/v14-inference-record-v2.test.mjs
+          tests/next/v14-seat-genbutsu-proof-v2.test.mjs
+          tests/next/v14-public-tradeoff-witness-v2.test.mjs
+          tests/next/v14-candidate-seat-attribution-v2.test.mjs
+          tests/next/v14-paired-contrast-v2.test.mjs
+          tests/next/v14-paired-awareness-v2.test.mjs
+          tests/next/v14-stage2-boundary-v2.test.mjs
+          tests/next/v14-stage2-counterfeit-isolated-v2.mjs
+          tests/next/v14-stage2-counterfeit-isolated-v2.test.mjs
+          tests/next/v14-onecase-export-v2.mjs
+          tests/next/v14-onecase-export-v2.test.mjs
+          tests/next/v14-onecase-write-v2.mjs
+          tests/next/freeze-v2-followup-36.mjs
+          tests/next/v14-followup-36-freeze.test.mjs
+          tests/next/audit-v14-followup-public-legality.py
+          tests/next/audit-v14-public-yaku-names-v2.py
+          tests/next/audit-v14-public-calculations.py
+          src/coach/s42-benchmark.mjs
+          src/coach/phoenix-coach.mjs
+          src/mortal/mjai-bridge.mjs
+          src/mortal/mortal-worker.mjs
+          src/mortal/mortal-cpu.mjs
+          src/mortal/mortal-client.mjs
+          src/mortal/s42-analytics.mjs
+          tests/next/v14-pilot-answer-audit.mjs
+          tests/next/v14-negative-controls.mjs
+          tests/next/v14-pilot-boundary.test.mjs
+          .github/workflows/coach-v14-pilot-preparation.yml
+          index.html'''.splitlines()
+          entries=[]
+          for kind,items in [('docs',docs),('code',codes)]:
+              for p in items:
+                  blob=cmd('git','show',doc_sha+':'+p) if kind=='docs' else pathlib.Path(p).read_bytes()
+                  dst=root/kind/p;dst.parent.mkdir(parents=True,exist_ok=True);dst.write_bytes(blob)
+                  entries.append({'file':kind+'/'+p,'bytes':len(blob),'sha256':hashlib.sha256(blob).hexdigest()})
+          intro='# 麻雀LAB P2a-v2 Phase終了（開発側NO-GO・第三者未実施）レビュー資料\n'
+          intro+='作業状況は docs/handoff/state.json、NO-GO判定は docs/handoff/p2a-v2-phase-exit-no-go-review-request-20261123.md、規程は docs/handoff/third-party-review-protocol-20261123.md を参照。\n'
+          intro+='Claude OpusおよびGeminiには別々に重大Blocker/Majorのみを最大2往復で審査依頼。指摘数上限なし。\n'
+          intro+='モデル実推論0、コーチ戦術説明未認証、製品改変/リリースなし。private牌/実際の試験回答なし。\n'
+          (root/'START_HERE.md').write_text(intro,encoding='utf8')
+          plain='# 麻雀LAB P2a-v2 Phaseレビュー用原文一括\n\n'
+          plain+='Documentation commit: '+doc_sha+'\nImplementation anchor: '+code_anchor+'\nWorkflow snapshot commit: '+code_sha+'\n\n'
+          for p in docs:
+              plain+='\n\n-----\n\n# Source: '+p+'\n\n'
+              t=(root/'docs'/p).read_text(encoding='utf8')
+              plain+=('~~~json\n'+t+'\n~~~\n') if p.endswith('.json') else (t+'\n')
+          (root/'P2A_V2_FULL_DOCS.md').write_text(plain,encoding='utf8')
+          (root/'MANIFEST.json').write_text(json.dumps({
+            'docCommit':doc_sha,'codeCommit':code_sha,'implementationAnchor':code_anchor,
+            'createdAt':datetime.datetime.now(datetime.timezone.utc).isoformat(),
+            'phaseVerdict':'developer_NO_GO_review_pending',
+            'realModelCalls':0,'containsHiddenHands':False,
+            'containsRealCoachAnswers':False,'files':entries
+          },ensure_ascii=False,indent=2)+'\n',encoding='utf8')
+          for fname,onlydocs in [('mahjong_p2a_v2_review_full.zip',False),
+                                 ('mahjong_p2a_v2_review_docs.zip',True)]:
+              with zipfile.ZipFile('/tmp/'+fname,'w',zipfile.ZIP_DEFLATED,compresslevel=9) as z:
+                  for p in sorted(root.rglob('*')):
+                      rel=p.relative_to(root).as_posix()
+                      if p.is_file() and (not onlydocs or rel.startswith('docs/') or rel in ('MANIFEST.json','START_HERE.md','P2A_V2_FULL_DOCS.md')):
+                          z.write(p,rel)
+              with zipfile.ZipFile('/tmp/'+fname) as z:assert z.testzip() is None
+              print(fname,pathlib.Path('/tmp/'+fname).stat().st_size)
+          pathlib.Path('/tmp/mahjong_p2a_v2_review_full_docs.md').write_text(plain,encoding='utf8')
+          print('SNAPSHOT',doc_sha,code_sha,'total_files',len(entries))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mahjong-p2a-v2-phase-exit-review-package-claude-gemini
+          path: |
+            /tmp/mahjong_p2a_v2_review_full.zip
+            /tmp/mahjong_p2a_v2_review_docs.zip
+            /tmp/mahjong_p2a_v2_review_full_docs.md
+          if-no-files-found: error
+          retention-days: 30
