@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import {createHash} from 'node:crypto';
 import {buildV3ManualSmokePack,validateV3ManualSmokePack} from './v14-freeze-v3-manual-smoke.mjs';
 import {createV3IndependentDevelopmentRequest} from '../../src/coach/v14-independent-request-v3.mjs';
 import {sealSingleInference} from '../../src/coach/v14-inference-record-v3.mjs';
@@ -44,7 +45,7 @@ test('v3 inference receipt rejects a v2 request even when it has a recomputed an
  if(!ready)return;
  const v1=frozen[0],v3=createV3IndependentDevelopmentRequest(v1),bad=clone(v3);
  bad.request.stage='independent-v2-dev';
- bad.requestHash='any';
+ bad.requestHash=createHash('sha256').update(JSON.stringify(bad.request)).digest('hex');
  const meta={sessionId:'synthetic-stage-test',transport:'manual_chat',provider:'unit test',
   modelId:'NO_MODEL_CALLED',modelVersion:null,effort:null,temperature:null,seed:null,
   startedAt:'2026-11-23T00:00:00+09:00',endedAt:'2026-11-23T00:00:01+09:00',
