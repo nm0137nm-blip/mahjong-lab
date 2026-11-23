@@ -527,3 +527,12 @@ ChatGPTが実際に独立して解いた回答を得る前に、採点・中止�
 - **重要：探索的なAPI運搬成功と公開事実契約PASSであり、元の独立ChatGPT一時チャットStage1 8問には算入しない（依然0/8）。** Mortal S42/Stage2/3者匿名L4/実戦指導力は未評価。P2a-v4.3 NO-GO不変、v4.4全Phase GOなし。本番main非変更。
 - 有料Workflowは成功直後に**再起動禁止**（commit `1fd16098252722afb5a8a6ad83311617ba29f2ca`）、今回の個別利用承認は消費済み。今後のAPI有料リクエストには目的/上限を明示した新規承認が必要。
 - 詳細：`handoff/p2a-v44-pilot46-newkey-oneapi-success-20261124.md`、`handoff/state.json`。
+
+
+## 2026-11-24 01:52 JST：P2a-v4.4 8問（先行1＋新規最大7）API探索を最初の重大FAILでSTOP→NO-GO確定
+- ユーザーが「**1回あたり0.05ドル以下**なら**8回**の検証もAPI自動で」と承認。既存`pilot-46`回答PASSを再利用（再送信せず）、新規7問固定順`pilot-51,56,64,53,69,65,74`へ1問ずつ進む研究枝`feat/coach-p2a-v44-api-seven-capped` Draft PR#69。出題/判定器不変、無料公式入力token countから出力capを動的設定し原本暗号化。ユーザーの承認は最大新規7回・1回US$0.05以下、途中FAIL停止を維持。
+- Actions run **45220219174**：新規POST **4回**、**pilot-51 PASS / pilot-56 PASS / pilot-64 PASS / pilot-53 FAIL**。`pilot-69,65,74`は未回答のまま停止。API探索累計5問（先行pilot46含む）**4 PASS・1 FAIL**。契約FAIL`v4-anchored: opponent change condition needs a cited public seat and explicit conditional reversal`。原回答/記録を暗号化artifact **14840600680**へ保存。SHA検証済み。**v4.4 NO-GOで終了、再採点禁止**。
+- pilot53の直接の不合格要因：旧日本語条件判定正規表現が、モデルが書いた「選びやすくする」の`選び`形を決定変更語として認識できず、条件部分`なら`は認識しているにもかかわらず偽陰性。これは戦術の誤りの証明ではない。一方、元契約の重大FAILには変わりなく、旧v4.4への後付けPASS化は禁止。別バージョンのv4.5改善対象。
+- 4回とも1回US$0.05以下。通常単価推定合計 **US$0.141978**、30分キャッシュ書込単価込み保守的再計算 **US$0.150974**（実請求額未確認）。出力上限は最大3200、再試行0回。
+- 実行後の有料トリガーを無効化（`845e70f7e5fe6cced621de7b9207c73354bf9e0b`）。**追加API POSTの承認なし**。正式なChatGPT一時チャットStage1は0/8、Stability/Stage2/L3.5/L4は未評価、フェーズ全GOなし、本番main不変。
+- 詳細報告：`handoff/p2a-v44-seven-5cent-first-fatal-no-go-20261124.md`、`handoff/state.json`。個別の回答原本JSONは公開GitHubに置かない。
