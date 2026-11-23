@@ -28,7 +28,7 @@ jobs:
         run: |
           set -euo pipefail
           test -s "$V14_FOLLOWUP_PUBLIC"
-          node --test tests/next/v14-settlement-events-v4.test.mjs tests/next/v14-public-proof-gate-v4.test.mjs tests/next/v14-anchored-tactical-text-v4.test.mjs tests/next/v14-public-brief-v4.test.mjs tests/next/v14-v4-smoke-selection.test.mjs tests/next/v14-dealer-provenance-v4.test.mjs tests/next/v14-candidate-settlement-v4.test.mjs tests/next/v14-compact-model-contract-v4.test.mjs tests/next/v14-v4-compact-pack.test.mjs tests/next/v14-source-comparison-proof-v4.test.mjs tests/next/v14-l4-blind-controls-v4.test.mjs tests/next/v14-l4-blind-score-v4.test.mjs tests/next/v14-v4-evaluation-plan.test.mjs tests/next/v14-v4-freeze-protocol.test.mjs
+          node --test tests/next/v14-settlement-events-v4.test.mjs tests/next/v14-public-proof-gate-v4.test.mjs tests/next/v14-anchored-tactical-text-v4.test.mjs tests/next/v14-public-brief-v4.test.mjs tests/next/v14-v4-smoke-selection.test.mjs tests/next/v14-dealer-provenance-v4.test.mjs tests/next/v14-candidate-settlement-v4.test.mjs tests/next/v14-compact-model-contract-v4.test.mjs tests/next/v14-v4-compact-pack.test.mjs tests/next/v14-source-comparison-proof-v4.test.mjs tests/next/v14-l4-blind-controls-v4.test.mjs tests/next/v14-l4-blind-score-v4.test.mjs tests/next/v14-v4-evaluation-plan.test.mjs tests/next/v14-v4-freeze-protocol.test.mjs tests/next/v14-v4-stage1-receipt.test.mjs
       - uses: actions/setup-python@v5
         with:
           python-version: '3.13.5'
