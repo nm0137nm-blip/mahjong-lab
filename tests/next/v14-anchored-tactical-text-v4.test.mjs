@@ -23,15 +23,15 @@ function fixture(){
  const allowed=catalog.dealInSensitivity.find(x=>x.sourceTierBase===5800&&x.hypotheticalSettlement.opponentSeat===0);
  const event=allowed.hypotheticalSettlement,eventFactId=allowed.factId;
  const opponent=s=>({seat:s,
-  analysis:'[[opponent:seat'+s+':points]]という公開点棒を見て、和了価値との相対関係を考える。',
-  tradeoff:'この相手への安全性と自分の和了機会は別々の条件付き価値である。',
-  changeCondition:'相手の攻撃が明示されたら、攻撃を続ける条件を再検討する。'});
+  analysis:'[[opponent:seat'+s+':points]]の点棒と[[opponent:seat'+s+':meldCount]]の進行材料を区別し、攻守の重みを考える。',
+  tradeoff:'[[opponent:seat'+s+':riichi]]という公開状況と[[candidate:a37-1:kind]]の防御制限を合わせて、和了価値を比較する。',
+  changeCondition:'もし[[opponent:seat'+s+':riichi]]の観測が変わる場合、押し引きの条件を変えて考える。'});
  const answer={version:V4_TACTIC_VERSION,requestHash:input.requestHash,proof,
   tactics:{
-   comparison:'[[candidate:a37-1:kind]]と[[candidate:a13-0:kind]]を比べ、役が増える利点と防御へ変更できない欠点を区別する。',
+   comparison:'[[candidate:a37-1:kind]]と[[candidate:a13-0:kind]]を比べる。[[candidate:a37-1:shanten]]を保ちつつ、役が増える利点と防御へ変更できない欠点を区別する。',
    opponents:[opponent(0),opponent(1),opponent(3)],
-   bottomLine:'現物かどうかと待ちの価値を検討するが、正解確率は確定していない。',
-   reversal:'相手の脅威の確信度が変われば、選択の重みが変化する。',
+   bottomLine:'[[candidate:a37-1:kind]]を暫定選択とし、現物と待ちを比較する。ただし正解確率は確定していない。',
+   reversal:'もし[[opponent:seat1:meldCount]]など公開情報が変わる場合、選択の相対価値は再検討する。',
    lesson:'観測される事実と実際には分からない他家の和了率を分けて考える。'
   }};
  return {input,answer,event,eventFactId};
@@ -71,7 +71,7 @@ test('duplicate seats, missing seat citations and fabricated public values are r
  assert.throws(()=>verifyAndRenderV4AnchoredTactics(f.input,f.answer),/duplicate opponent/);
  const g=fixture();if(!g)return;
  g.answer.tactics.opponents[1].analysis='[[candidate:a13-0:kind]]だけを考えて相手の情報に言及しない。';
- assert.throws(()=>verifyAndRenderV4AnchoredTactics(g.input,g.answer),/opponent analysis must cite/);
+ assert.throws(()=>verifyAndRenderV4AnchoredTactics(g.input,g.answer),/opponent analysis requires own seat-specific/);
  const h=fixture();if(!h)return;
  h.answer.proof.opponentObservations[0].value='bogus';
  assert.throws(()=>verifyAndRenderV4AnchoredTactics(h.input,h.answer),/v3-proof/);
@@ -99,4 +99,24 @@ test('a valid source tier cannot be reinterpreted with an arbitrary other candid
  const wrong='candidate:pilot-48:a14-0:none:ron:m6:opp0:'+f.event.id;
  f.answer.tactics.lesson='[['+wrong+']]のときに対応を検討する。';
  assert.throws(()=>verifyAndRenderV4AnchoredTactics(f.input,f.answer),/unknown fact ID/);
+});
+
+
+test('empty generic tactical statements cannot pass by citing only candidate name and not opponent context',()=>{
+ const f=fixture();if(!f)return;
+ f.answer.tactics.opponents[0].tradeoff='相手が早そうならダマに切り替えるべきだが、現状は確定しない。';
+ assert.throws(()=>verifyAndRenderV4AnchoredTactics(f.input,f.answer),/lacks concrete public-fact anchor/);
+ const x=fixture();if(!x)return;
+ x.answer.tactics.reversal='もし相手が怖い場合は変更するが、実際の確率は分からない。';
+ assert.throws(()=>verifyAndRenderV4AnchoredTactics(x.input,x.answer),/lacks concrete public-fact anchor/);
+});
+test('seat analysis must actually contrast scoreboard and progress instead of just copying points',()=>{
+ const f=fixture();if(!f)return;
+ f.answer.tactics.opponents[0].analysis='[[opponent:seat0:points]]だけから脅威を判断することはできない。';
+ assert.throws(()=>verifyAndRenderV4AnchoredTactics(f.input,f.answer),/requires own seat-specific rank gap plus public progress/);
+});
+test('candidate action labels without nontrivial comparison evidence do not satisfy v4 structure',()=>{
+ const f=fixture();if(!f)return;
+ f.answer.tactics.comparison='[[candidate:a37-1:kind]]と[[candidate:a13-0:kind]]だけを並べても、選択の比較にはならない。';
+ assert.throws(()=>verifyAndRenderV4AnchoredTactics(f.input,f.answer),/comparison only names actions/);
 });
