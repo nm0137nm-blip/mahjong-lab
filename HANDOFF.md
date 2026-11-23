@@ -464,3 +464,10 @@ ChatGPTが実際に独立して解いた回答を得る前に、採点・中止�
 - 別枝 `feat/coach-p2a-v44-api-transport-dryrun` Draft PR#68 head `17b56f1819302d2ecee25941bd599e86c0aa4140`。API 1問独立呼出、元v4.4検証、私的JSON保存、無断課金・GitHub Actions上の実API実行を拒否するfail-closed設計。
 - GitHub Actions run `45195407121` は SUCCESS（元36 sourceと完全未見8問の全固定hash、payload、改ざん拒否・liveアクセス拒否のテスト）。**実API呼び出し0、実モデル新規回答0、費用0**。ChatGPT手動の正式分母は依然0/8であり、v4.4全Phase・L4・本番採用は未完。
 - 今後の実呼出は、ユーザーがAPI特典を有効化し、用途・費用を確認して事前個別承認した場合だけ。APIキーはチャットや公開repoに掲示しない。主な記録：`handoff/p2a-v44-api-automation-dryrun-20261123.md`。
+
+
+## 2026-11-23 ユーザー訂正：ChatGPT契約はProではなくPlus
+- ユーザーが明示的に**ChatGPT Plus**契約と訂正。先のPro前提のAPIクレジット特典の案内は**ユーザーには該当しない**。OpenAI公式ヘルプでPlusは該当プロモーションの対象外であり、ChatGPT Plus契約からAPIを無料で自動実行できるとは扱わない。
+- API有料処理の個別事前承認は依然**ゼロ**。新たに有料APIを呼び出さない。API側の個別無料付与等があるかは不明であり、存在を推定しない。
+- PR#68 のGitHub Actionsは無課金のdry-runとして成功（8/8固定出題、実API呼出0）。これを維持しつつ、Plusの範囲では手動GPT-6回答+GitHub検証器自動採点が基本。署名済みのAPI使用権限と混同せず、ネット経由での本当のGPT-6全自動回答には別途実行手段・費用・許可の確認が必要。
+- 2026-11-23 の記録 `handoff/p2a-v44-api-automation-dryrun-20261123.md` 内のPro特典記述は一般的事実としての説明であり、ユーザーの加入プランを表していない。最新のユーザー訂正が優先。
