@@ -28,13 +28,19 @@ export function createV43CompactDevelopmentPacket(envelope){
   '必須：各席のtradeoff本文は、同じ席番号の[[opponent:seat<seat>:...]] FactIDと[[candidate:<legal key>:...]] FactIDを少なくとも1件ずつ直接引用する。analysisや別席だけで引用してもtradeoffの代用にはならない。具体的な河の現物比較には公開河FactIDや選択した候補のgenbutsuSeat FactIDを使う（存在する場合のみ）。',
   '必須：各席のchangeConditionと全体reversalは対象席を示すFactIDと、日本語の明確な条件（「もし...なら」「...でなければ」「...になれば」「...の場合」「...ならば」など）と、そのとき判断をどう変えるかを書く。',
   '比較には推薦/対案双方の[[candidate:<key>:kind]]と追加の公開形・打点指標を含め、bottomLineとreversalにも適切な根拠IDを引用する。',
-  'この回答は数値証明ファイルではない。出力はresponseShapeの項目と型だけを守るJSONオブジェクト1件のみ。相手席番号seatは数値0,1,2,3のうち自分以外の3席として記載し、サンプルの文字列や席番号を機械的にコピーしない。ASCIIの半角ダブルクォートでJSONを記述し、参照IDの[[と]]にバックスラッシュを入れない。JSON前後のコードフェンスや解説は不要。モデル自身の名称を戦術説明へ書かず、回答画面のモデル名は依頼主が別に記録する。'
+  'この回答は数値証明ファイルではない。responseShapeの項目と型だけを守るJSONオブジェクト1件を、request.delivery.filenameで指定されたUTF-8のJSONファイルとして作成・添付し、チャット本文はファイルリンクのみとする。回答JSONを本文に貼り付けない。相手席番号seatは数値0,1,2,3のうち自分以外の3席として記載し、サンプルの文字列や席番号を機械的にコピーしない。ASCIIの半角ダブルクォートでJSONを記述し、参照IDの[[と]]にバックスラッシュを入れない。JSON前後のコードフェンスや解説は不要。モデル自身の名称を戦術説明へ書かず、回答画面のモデル名は依頼主が別に記録する。'
  ].join('\n');
  const request={stage:'p2a-v43-compact-independent-dev',version:V43_COMPACT_PACKET,
   sourceV3RequestHash:envelope.requestHash,
   sourcePublicInputHash:envelope.request.sourcePublicInputHash,
   system,availableFactIds:names,
   publicBrief:brief,
+  delivery:{
+   format:'UTF-8 JSON FILE ATTACHMENT, NOT PASTED TEXT',
+   filename:'mahjong_P2a_v43_stage1_'+envelope.request.input.id+'_response.json',
+   chatBody:'file link only',
+   preserveOriginalResponse:true
+  },
   responseShape:{
    version:V43_COMPACT_RESPONSE,requestHash:'<packet requestHash>',
    recommendation:{key:'<legal action key>',afterCallDiscard:null},
