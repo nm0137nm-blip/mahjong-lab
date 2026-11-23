@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-23T16:10:00+09:00",
+  "checkpoint": "2026-11-23T16:23:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -8,12 +8,12 @@
     "coach_candidate_promoted": false
   },
   "active_task": {
-    "phase": "P2a-v4 CLOSED NO-GO after first genuine user-submitted pilot42 response (verifier false positive, not tactical grade)",
-    "status": "P2a_v4_PHASE_EXIT_NO_GO_pilot42_first_actual_model_response_frozen_kanji_numeral_regex_false_positive",
-    "branch": "feat/coach-p2a-v4-fact-anchored-explanations",
-    "commit": "bffd83e23ceaabad6463c8af4bbfb01082047842",
-    "pr": 63,
-    "run_id": 45128674839,
+    "phase": "P2a-v4.1: user-approved minor Japanese numeral guard repair, independent Stage1 newly frozen and ready",
+    "status": "P2a_v41_SEPARATE_NEW_VERSION_FIRST_UNSEEN_PILOT50_READY_OLD_V4_NO_GO_UNCHANGED",
+    "branch": "feat/coach-p2a-v41-japanese-numeric-guard",
+    "commit": "fff4f3f430e0a16e97fe1adaba5f53e153d20e83",
+    "pr": 64,
+    "run_id": 45130655753,
     "prior_runs": [
       {
         "run_id": 44754324733,
@@ -354,8 +354,8 @@
         "phaseCompleted": false
       }
     ],
-    "decision": "CLOSED_NO_GO_BY_PREREGISTERED_FIRST_FATAL_CONTRACT_GATE; cause v4 numeric regex rejects ordinary Japanese 一致/一方, not arithmetic or strategy skill failure; no post hoc regrade",
-    "next": "New separately versioned v5 design and independent third party review of v4 exit; prohibit reusing answered pilot42 in fresh independent test. No more v4 model questions or repeated answer requests.",
+    "decision": "P2a-v4 historical NO-GO final, explicitly NOT rescored. P2a-v4.1 user-approved minor technical amendment: first test pilot42 replaced with prospectively SHA-selected unseen pilot50, new versioned text guard and frozen request hashes; actual v41 ChatGPT answers 0.",
+    "next": "対応依頼: new pilot-50.json in fresh independent ChatGPT Temporary Chat; return original JSON and displayed model. Do not reuse pilot42 or amend after answer.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -989,6 +989,76 @@
         "thirdPartyL4RealScoreCount": 0,
         "phaseExitReview": "NOT_YET_SUBMITTED"
       }
+    },
+    "v41_development": {
+      "status": "V41_MINOR_PATCH_AND_FROZEN_FIRST_UNSEEN_MODEL_PROMPT_READY",
+      "policy": "user waived additional Gemini/Claude patch-phase reviewer round; existing future genuine independent blind tactical L4 remains a separate planned test",
+      "previousPhaseV4": {
+        "status": "CLOSED_NO_GO",
+        "cause": "Japanese 一致/一方 falsely matched standalone kanji numeral",
+        "attempts": 1,
+        "passed": 0,
+        "answeredCaseId": "pilot-42",
+        "knownRegressionOnly": true,
+        "retroactiveRegradeForbidden": true
+      },
+      "branch": "feat/coach-p2a-v41-japanese-numeric-guard",
+      "commit": "fff4f3f430e0a16e97fe1adaba5f53e153d20e83",
+      "pr": 64,
+      "baseBranch": "feat/coach-p2a-v4-fact-anchored-explanations",
+      "mainUnchanged": true,
+      "verifierFix": "v14-numeric-guard-v41.mjs identifies explicit Arabic/kanji point values and units/tiles, permits standard Japanese lexical words including 一致 and 一方",
+      "sourceSetHash": "271b4a304ed86dc41be2e72766e2b5cc496966bdf8a0ce5a8d5a5d0334e6103a",
+      "firstUnseenQuestion": "pilot-50",
+      "firstQuestionRequestHash": "606913fa4c64b4ace976f02097c5df5f634d2fdf174e30dcb74f1683f93c62ab",
+      "fixedEight": [
+        "pilot-50",
+        "pilot-47",
+        "pilot-59",
+        "pilot-62",
+        "pilot-63",
+        "pilot-71",
+        "pilot-70",
+        "pilot-67"
+      ],
+      "excludedAlreadyAnswered": [
+        "pilot-42",
+        "pilot-48"
+      ],
+      "substitutionRule": "original v4 SHA-rank positive-honba reach choices, exclude observed pilot42/pilot48; next positive-honba case pilot50; leave rest seven untouched",
+      "reuseV4ExistingFrozenS42L35MaterialOnlyAsExploratoryReference": true,
+      "newQuestionVersion": "p2a-v41-independent-public-brief-1",
+      "newResponseVersion": "p2a-v41-compact-stage1-response-1",
+      "firstQuestionFile": "questions/pilot-50.json",
+      "ci": {
+        "runId": 45130655753,
+        "status": "success",
+        "nodeTests": 47,
+        "nodeFailures": 0,
+        "sourceDownload": "frozen public original36 tested non-vacuously",
+        "previousIntegrationRun45130547774": "failure from undefined plan version constant corrected before any new answer",
+        "sameVersionOldV4RegexRegressionsStillPass": true
+      },
+      "publicPackArtifact": {
+        "runId": 45130655753,
+        "artifactId": 14797014342,
+        "name": "p2a-v41-public-frozen-eight-first-pilot50",
+        "manifestAndEightOriginalRequestsVerifiedAgainstHashes": true,
+        "verifiedSeparateZipPath": "/mnt/data/mahjong-p2a-v41-stage1-eight-final-verified.zip",
+        "firstQuestionFileSha256": "a382bd7f2b6de691ee4330d31a0651f1751e5dc6893884041365015fb57cb3e1"
+      },
+      "verifierOnlyArtifact": {
+        "runId": 45130655753,
+        "artifactId": 14797578637,
+        "name": "p2a-v41-sealed-L4-controls-verifier-only",
+        "doNotShowToAnswerModel": true
+      },
+      "actualIndependentModelAnswers": 0,
+      "paidApiCalls": 0,
+      "newPhaseComplete": false,
+      "record": "handoff/p2a-v41-japanese-guard-and-unseen-case-replacement-20261123.md",
+      "remaining": "one fresh Temporary Chat pilot50 response needed; after pass continue other 7 and prelocked stability, Stage2, L3.5 and 3-rater L4; no additional patch review",
+      "next": "対応依頼: new pilot-50.json in fresh independent ChatGPT Temporary Chat; return original JSON and displayed model. Do not reuse pilot42 or amend after answer."
     }
   },
   "previous_runs": [
@@ -2294,6 +2364,37 @@
       "sourceS42L35SelectedDifferentOriginalClusters": 8,
       "report": "handoff/p2a-v4-phase-exit-contract-false-positive-pilot42-20261123.md",
       "next": "v5 only new prereg after separate contract repair; never retroactive v4 scoring"
+    },
+    {
+      "status": "P2a_v41_user_approved_minor_fix_one_case_replacement_preregistered_READY_NEW_MODEL",
+      "phase": "P2a-v4.1",
+      "previousP2aV4": "CLOSED_NO_GO_NOT_RESCORING",
+      "branch": "feat/coach-p2a-v41-japanese-numeric-guard",
+      "pr": 64,
+      "commit": "fff4f3f430e0a16e97fe1adaba5f53e153d20e83",
+      "ciRun": 45130655753,
+      "nodeTests": 47,
+      "nodeFailures": 0,
+      "firstQuestionId": "pilot-50",
+      "firstQuestionRequestHash": "606913fa4c64b4ace976f02097c5df5f634d2fdf174e30dcb74f1683f93c62ab",
+      "fixedEight": [
+        "pilot-50",
+        "pilot-47",
+        "pilot-59",
+        "pilot-62",
+        "pilot-63",
+        "pilot-71",
+        "pilot-70",
+        "pilot-67"
+      ],
+      "publicPackArtifactId": 14797014342,
+      "sealedVerifierArtifactId": 14797578637,
+      "oldAnsweredPilot42Excluded": true,
+      "actualNewModelResponses": 0,
+      "patchReviewerRound": "SKIPPED_PER_USER",
+      "paidApiCalls": 0,
+      "phaseCompletion": "NO_NOT_UNTIL_INDEPENDENT_RESPONSES",
+      "report": "handoff/p2a-v41-japanese-guard-and-unseen-case-replacement-20261123.md"
     }
   ],
   "roadmap": {
