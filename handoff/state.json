@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-24T00:30:00+09:00",
+  "checkpoint": "2026-11-24T00:42:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -1785,7 +1785,32 @@
         "safety": "no retry or spend without new explicit approval"
       },
       "nextNoCostInvestigation": "Compare API key project to billed organization/project and inspect project Limits; 429 API error code needs another API response so do NOT fetch it via another billable POST on old approval.",
-      "sanitizedDiagnosticSourceCommit": "5476ece4d1e8459aea268f86c0f410cf4838f004"
+      "sanitizedDiagnosticSourceCommit": "5476ece4d1e8459aea268f86c0f410cf4838f004",
+      "projectScreenshots": {
+        "projectName": "Default project",
+        "projectSpendLimit": "NO_SPEND_LIMIT_SET",
+        "projectDefaultServiceTier": "Standard",
+        "standardServiceTierAllowed": true,
+        "modelAllowBlockSelection": "not expanded in screenshot",
+        "specificRateLimits": "inherit organization unless overridden; not shown",
+        "note": "user screenshot is in Default project; key project match cannot be proven from screenshot alone"
+      },
+      "nonBilledModelMetadataCheck": {
+        "runId": 45207998275,
+        "jobId": 137808852039,
+        "status": "SUCCESS",
+        "endpoint": "GET /v1/models/gpt-6-sol",
+        "httpStatus": 200,
+        "readableModel": true,
+        "secretStoredInGitHubActions": true,
+        "generationCalls": 0,
+        "associatedCharge": "NONE_FROM_MODEL_GENERATION",
+        "outputContainsKey": false,
+        "commitment": "NO further POST without new individual approval",
+        "meaning": "Credential authentic and gpt-6-sol model metadata accessible. Does not prove Responses POST quota or billing activation.",
+        "testCommit": "39e1901d787809c01d2a852f53beec74817132fe"
+      },
+      "next": "No more organization or project cap screenshot needed. Need original 429 error.code for definitive diagnosis; cannot recover from sanitized 429 log. If authorized separately, next pilot-46 single POST logs only safe error type/code, one request/no retry; no auto-authorization."
     }
   },
   "previous_runs": [
@@ -3479,6 +3504,19 @@
       "result": "external API quota/rate/billing blocker; no Phase GO; no evidence of model tactical quality",
       "next": "Check API credit balance and organization/project limits without another paid API request. Do not auto-retry. Separate explicit approval for another billable attempt.",
       "workflowDisarmed": true
+    },
+    {
+      "phase": "P2a-v4.4 API transport diagnostic",
+      "status": "NON_BILLED_MODEL_GET_200_CONFIRMS_VALID_KEY_MODEL_METADATA",
+      "run_id": 45207998275,
+      "job_id": 137808852039,
+      "apiGetCalls": 1,
+      "apiPaidPostCalls": 0,
+      "modelGenerationCalls": 0,
+      "modelMetadataVisible": true,
+      "errorCodeFromEarlier429": "NOT_CAPTURED",
+      "noModelReply": true,
+      "manualStage1Count": 0
     }
   ],
   "roadmap": {
