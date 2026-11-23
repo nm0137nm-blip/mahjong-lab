@@ -19,7 +19,7 @@
 ## 実装とCIの結果
 - v4.1の旧v4契約を残した互換・新数字ガード・新8問ハッシュ・Stage1検収回帰テスト：GitHub Actions **run 45130655753 SUCCESS、47/47テスト合格、0失敗**（元公開36問をダウンロードしテストしているので空振りPASSではない）。
 - 1つ前の初回統合run`45130547774`は、新しい評価計画ファイルの定数参照の誤記`P2A_V4_PLAN_VERSION`で2テストが停止。新ファイルの参照を`P2A_V41_PLAN_VERSION`に訂正し、上記最終run成功。モデル回答はまだ0なので採点上の事後救済ではない。
-- 研究CI公開パックartifact：`p2a-v41-public-frozen-eight-first-pilot50` **14797890803**（新v41の個別8問ZIPをダウンロード済み）。弱対照と評点閾値などの非公開検証パック：`p2a-v41-sealed-L4-controls-verifier-only` **14797596323**。両方をユーザーに同時に渡さない。
+- 研究CI公開パックartifact：`p2a-v41-public-frozen-eight-first-pilot50` **14797014342**（新v41の個別8問ZIPをダウンロード済み）。弱対照と評点閾値などの非公開検証パック：`p2a-v41-sealed-L4-controls-verifier-only` **14797578637**。両方をユーザーに同時に渡さない。
 - 旧v4の実回答1件の失敗記録は`handoff/p2a-v4-phase-exit-contract-false-positive-pilot42-20261123.md`として保存。v41は**新規実回答0件**。正式L4、Stage2、L3.5の新モデル回答も未着手。レビュー再依頼なし、有料API0、`main`不変。
 
 ## 現在の次アクション
