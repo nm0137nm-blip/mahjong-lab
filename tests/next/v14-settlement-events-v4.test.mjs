@@ -71,7 +71,7 @@ test('honba, existing kyotaku and newly declared riichi counted exactly once',()
 });
 test('legacy zero-honba/kyotaku claims cannot validate nonzero hypothetical scenarios',()=>{
  const p=pilot();if(!p)return;
- assert.throws(()=>buildV4LegacyCompatibleCatalog({...p.board,honba:1},p.legacy,{dealerSeat:0}),/legacy zero-sticks/);
+ assert.throws(()=>buildV4LegacyCompatibleCatalog({...p.board,honba:1},p.legacy,{dealerSeat:0}),/legacy public settlement disagrees/);
  const changed=structuredClone(p.legacy);
  changed.ron[2].lossBase=3900;
  assert.throws(()=>buildV4LegacyCompatibleCatalog(p.board,changed,{dealerSeat:0}),/legacy public settlement disagrees/);
@@ -83,4 +83,26 @@ test('explicitly reject unknown dealer, invalid seats, negative payment, pending
  assert.throws(()=>buildV4RonSettlement(p.board,{...base,dealerSeat:0,opponentSeat:2}),/explicit kind/);
  assert.throws(()=>buildV4RonSettlement(p.board,{...base,dealerSeat:0,paymentBase:-3900}),/explicit kind/);
  assert.throws(()=>buildV4RonSettlement({...p.board,pendingReach:true},{...base,dealerSeat:0}),/pending reach/);
+});
+
+test('all 36 original public rank grids split win/deal-in with 1080 row-by-row checked events',()=>{
+ if(!sources.length)return;
+ let events=0,withHonba=0,withSticks=0;
+ for(const source of sources){
+  const b=get(source.request.input,'board'),legacy=get(source.request.input,'rank-scenarios');
+  const p=buildV4LegacyCompatibleCatalog(b,legacy,{dealerSeat:0});
+  assert.equal(p.legacyAllMatched,true);
+  assert.equal(p.originalLegacyRows,15);
+  assert.equal(p.localLegacyRowsRecomputed,30);
+  events+=p.events.length;
+  if(b.honba)withHonba++;
+  if(b.kyotaku)withSticks++;
+  assert(p.events.every(e=>e.dealerSeat===0));
+ }
+ assert.equal(events,1080);
+ assert(withHonba>0&&withSticks>0);
+});
+test('public legacy grid cannot be reclassified with an incompatible assumed dealer',()=>{
+ const p=pilot();if(!p)return;
+ assert.throws(()=>buildV4LegacyCompatibleCatalog(p.board,p.legacy,{dealerSeat:2}),/public projection uses current-wind-relative dealer seat0/);
 });
