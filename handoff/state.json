@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-23T13:23:00+09:00",
+  "checkpoint": "2026-11-23T13:32:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -8,12 +8,12 @@
     "coach_candidate_promoted": false
   },
   "active_task": {
-    "phase": "P2a-v3",
-    "status": "P2a_v3_preregistered_first_schema_v3_real_ChatGPT_pilot48_major_rank_math_failure_expansion_STOP",
+    "phase": "P2a-v3 (closed NO-GO; phase-end Claude+Gemini independent reviews pending external receipt)",
+    "status": "P2a_v3_PHASE_CLOSED_NO_GO_preregistered_chatgpt_major_numeric_error_1st_new_schema_case",
     "branch": "feat/coach-p2a-v3-contract-repair",
-    "commit": "ee9894ec5f1e6e62ba60de1e81ee7b00ed640b60",
+    "commit": "248a40dc07084d86107468eb07875a62bebb7e56",
     "pr": 62,
-    "run_id": 45111335512,
+    "run_id": 45111993969,
     "prior_runs": [
       {
         "run_id": 44754324733,
@@ -354,8 +354,8 @@
         "phaseCompleted": false
       }
     ],
-    "decision": "User explicitly says do not stop after each tiny task; keep autonomous development to next true blocker, no reviewer request until P2a-v3 overall Phase exit. After old pilot48 ChatGPT reply (correct UTF8/JSON but invalid typed proof), versioned revised prompt/proof independently tested and includes readable 1,200-character human scene companion. STRICT factual validation remains; old ChatGPT answer not retroactively accepted. CI run 45102049118 21/21 QA, zero mismatches public candidate score/rank. Actual pinned Mortal S42 ran on 8 selected paired public contexts, accepted original archive anchor with opponent hidden hands and future events removed from encoder input: changed 1, maintained 7, no ambiguous within predeclared 0.001 internal ranking margin; insufficient changed contrasts for L3.5 gate. No actual ChatGPT answer for revised schema, no Stage2, no blind user+Claude+Gemini ratings. No paid API/other billed action authorized. main and formal gates remain NO-GO.",
-    "next": "STOP next 7 and 16 repetitions under preregistered major publicly verifiable point/rank falsehood in first schema-v3 ChatGPT pilot. Autonomous development: determine winBase/lossBase confusion, improve numeric conditional claim verification with explicit versioned post-failure tests. Do not retroactively pass model or quietly change frozen scoring; user work NOT needed now. Stage2/anonymous blind scoring postponed. Main remains untouched and releases NO-GO.",
+    "decision": "P2a-v3 closed with NO-GO: verified ChatGPT pilot-48 actual model response conflates 3900 winBase vs 5800 dealer lossBase, false rank inversion; preregistered one major factual mistake stops expansion. Development QA pass != model pass.",
+    "next": "P2a-v3 is CLOSED as NO-GO. Do not restart its frozen eight-case smoke, call it PASS, or merge to main. Phase-end independent Claude and Gemini reviews remain to be obtained separately; packet ready. Plan a separately preregistered P2a-v4 repair of generation/verification boundary, guarded against free-text rank hallucinations. No API spending permitted.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -377,14 +377,11 @@
       "robust_rollout_labels": 0,
       "metadata": "provider/effort not independently recorded"
     },
-    "review_status": "Claude Opus 5.5 and Gemini both reported. First reviewer round complete; second round unnecessary. Closed under blocker-only max-two-exchanges protocol.",
+    "review_status": "P2a_v3_PHASE_EXIT_NO_GO_external_review_packet_prepared_Claude_and_Gemini_response_not_received",
     "review_first": "handoff/p2a-v14-claude-opus-review-stat-followup-20261123.md",
-    "review_final": "handoff/p2a-v14-claude-gemini-review-integrated-20261123.md",
-    "reviewers_completed": [
-      "Claude Opus 5.5",
-      "Gemini"
-    ],
-    "review_rounds_used": 1,
+    "review_final": "NOT_OBTAINED_FOR_V3",
+    "reviewers_completed": 0,
+    "review_rounds_used": 0,
     "git_diff_checked": {
       "base": "41d13c8ded49d216805b22cb09d92131feaf0c6d",
       "head": "cfff272c04ea3f67b7685761f6c22c947a63f5f0",
@@ -518,13 +515,18 @@
       "publicS42Changed": 1,
       "publicS42Maintained": 7,
       "fullLegalL35Certified": false,
-      "phaseComplete": false,
+      "phaseComplete": true,
       "newSchemaRealAnswersPassingContract": 0,
       "newSchemaV3IndependentReplies": 1,
       "oldSchemaPlusNewRawManuallySubmittedCount": 2,
       "schemaV3MajorPublicFactErrors": 1,
       "stage1SmokeExpansionStopped": true,
-      "finalGradeCertified": false
+      "finalGradeCertified": false,
+      "phaseSuccess": false,
+      "phaseExitVerdict": "NO_GO_STOP",
+      "latestCIRun": 45111993969,
+      "researchFallbackCompiledAndTested": true,
+      "externalReviewerResponsesPending": 2
     },
     "v3_first_actual_response": {
       "caseId": "pilot-48",
@@ -540,7 +542,7 @@
       "review": "not_due_until_phase_exit",
       "note": "handoff/p2a-v3-first-real-chatgpt-pilot48-format-20261123.md"
     },
-    "v3_latest_report": "handoff/p2a-v3-pilot48-schema-v3-semantic-failure-20261123.md",
+    "v3_latest_report": "handoff/p2a-v3-phase-exit-no-go-20261123.md",
     "v3_v2_readable_model_artifact": {
       "run": 45102049118,
       "id": 14785867588,
@@ -745,6 +747,60 @@
       "independentProvenanceAuthenticated": false,
       "auditPath": "archive/results/p2a-v3-pilot48-schema-v3-real-chatgpt-numeric-failure-20261123.json",
       "report": "handoff/p2a-v3-pilot48-schema-v3-semantic-failure-20261123.md"
+    },
+    "v3_phase_exit": {
+      "status": "CLOSED_NO_GO",
+      "phasewidePass": false,
+      "realModelError": "first schema-v3 ChatGPT pilot48 has one major deterministically false dealer point/rank claim; user-reported model output",
+      "preregistration": "handoff/p2a-v3-chatgpt-36-blind-scoring-prereg-20261123.md",
+      "initialExperimentVotes": {
+        "oldInitialStage1SchemaInvalid": 1,
+        "v2SchemaContractInvalid": 1,
+        "v3SchemaApparentValidButNumericCriticalFail": 1
+      },
+      "userReportedGenuineChatGPTTrials": 3,
+      "modelSpecificModelVersion": null,
+      "independentProviderAuthenticated": false,
+      "distinctPublicCasesTested": 1,
+      "newSchemaV3CasesTested": 1,
+      "v3FirstEightCompleted": 1,
+      "v3FirstEightStopped": 7,
+      "v3RepetitionsPerformed": 0,
+      "stage2RealModelCalls": 0,
+      "formalL35Certified": false,
+      "exploratoryS42": {
+        "pairs": 58,
+        "sourceClusters": 32,
+        "changed": 4,
+        "maintained": 54,
+        "sourceIndependentFormal": false
+      },
+      "blindEvaluation": {
+        "human": 0,
+        "claude": 0,
+        "gemini": 0
+      },
+      "rankErrorDetail": "seat0 deal-in 3900 => self28900, seat0 25300, own rank1; model wrote self27000, seat027200 (actual dealer 5800 loss gives own rank2)",
+      "guard": "src/coach/v14-narrative-rank-guard-v3.mjs post-observation advisory partial guard only",
+      "safeFallback": "src/coach/v14-safe-public-summary-v3.mjs source-backed typed facts only with free-form narrative omitted; test only, not integrated",
+      "ci": {
+        "run": 45111993969,
+        "commit": "248a40dc07084d86107468eb07875a62bebb7e56",
+        "status": "success",
+        "jobsSuccess": 5,
+        "jobsSkippedIntentionally": 2,
+        "relatedTests": 15,
+        "failedTests": 0,
+        "legalityAndPublicProofStillModelCompetenceNotCertified": true
+      },
+      "report": "handoff/p2a-v3-phase-exit-no-go-20261123.md",
+      "reviewerPacket": "handoff/p2a-v3-phase-exit-independent-review-request-20261123.md",
+      "phaseExitClaudeGeminiReviewRequestedByUserPolicy": true,
+      "phaseExitExternalReviewsActuallyReceived": 0,
+      "next": "Independent third-party reviews via separate Claude and Gemini user-operated chats, only when user can run them; further development in new distinct P2a-v4 design after review and prereg. No additional unapproved paid model calls.",
+      "mainUnaffected": true,
+      "release": "NO_GO",
+      "additionalBillableCalls": 0
     }
   },
   "previous_runs": [
@@ -1914,6 +1970,31 @@
         "manualFreezeTestsPass": 11
       },
       "futureUserRequests": "none until new post-failure protocol"
+    },
+    {
+      "status": "P2a_v3_phase_closed_NO_GO_final_internal_evidence_gate",
+      "phase": "P2a-v3",
+      "branch": "feat/coach-p2a-v3-contract-repair",
+      "commit": "248a40dc07084d86107468eb07875a62bebb7e56",
+      "run_id": 45111993969,
+      "phaseExitVerdict": "NO_GO",
+      "phaseSuccess": false,
+      "why": "Real independent manual ChatGPT schema-v3 pilot-48 made major 3900/5800 dealer deal-in numeric/rank inversion mistake. Preregistered stop after one major error in first eight.",
+      "experiments": "Old/v2/v3 user-provided model replies are three different prompts for the same single public case, not three independent cases.",
+      "remaining": "Stage1 first eight 7 cases, all repetitions, Stage2 real model calls and 3 reviewer blind scores not run, L3.5 formal not certified",
+      "hardening": "Partial narrative arithmetic guard plus typed-public-summary fallback explicitly not production; after seeing first failure.",
+      "CI": {
+        "jobsSuccess": 5,
+        "jobsSkippedByDesign": 2,
+        "manualFreezeTestsPassed": 15,
+        "failed": 0
+      },
+      "review": {
+        "claude": false,
+        "gemini": false,
+        "reviewPacketsPrepared": true
+      },
+      "note": "handoff/p2a-v3-phase-exit-no-go-20261123.md"
     }
   ],
   "roadmap": {
