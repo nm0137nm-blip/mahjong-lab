@@ -63,4 +63,4 @@ jobs:
           path: /tmp/p2a-v44-pack/verifier
           retention-days: 30
           if-no-files-found: error
-      - run: echo "NO real GPT-6 v4.3 answers. Older failures not regraded. No paid API, no main branch changes."
+      - run: echo "NO real GPT-6 v4.4 answers. Older failures not regraded. No paid API, no main branch changes."
