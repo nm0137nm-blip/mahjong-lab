@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-24T01:21:00+09:00",
+  "checkpoint": "2026-11-24T01:29:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -1713,7 +1713,7 @@
       "next": "対応依頼: New GPT-6 Temporary Chat with frozen pilot-46 public JSON; produce original untouched mahjong_P2a_v44_stage1_pilot-46_response.json UTF-8 JSON FILE attachment, not pasted. Return it for strict v44 original-source verifier. No old GPT answers or S42 labels supplied."
     },
     "api_transport_exploratory": {
-      "status": "SECOND_PREAPPROVED_SINGLE_POST_HTTP429_BILLING_NOT_ACTIVE_NO_MODEL_OUTPUT_RETRY_DISABLED",
+      "status": "NEW_KEY_PILOT46_ONE_POST_SUCCESS_STAGE1_CONTRACT_PASS",
       "branch": "feat/coach-p2a-v44-api-transport-dryrun",
       "draftPR": 68,
       "headCommit": "17b56f1819302d2ecee25941bd599e86c0aa4140",
@@ -1874,7 +1874,34 @@
         "workflow": "p2a-v44-newkey-readonly-model-check.yml"
       },
       "currentStage": "WAITING_SEPARATE_POST_APPROVAL_IF_USER_WANTS_RETEST; original 429 billing_not_active remains untested after key replacement",
-      "manualStage1Count": 0
+      "manualStage1Count": 0,
+      "newKeySuccess": {
+        "runId": 45216681342,
+        "jobId": 137839578660,
+        "model": "gpt-6-sol",
+        "apiPosts": 1,
+        "retries": 0,
+        "apiStatus": "completed",
+        "stage1": "CONTRACT_AND_PUBLIC_FACT_GATE_PASS",
+        "inputTokens": 5785,
+        "outputTokens": 2336,
+        "totalTokens": 8121,
+        "estimatedCostUSD": 0.03493,
+        "authorizedCapUSD": 0.3,
+        "actualBilledUSD": "UNCONFIRMED",
+        "requestHash": "3fd5108e628468c8f9b9b3e1719e3a42e5ae7432141d73af7594d15c80d577d5",
+        "rawReplySha256": "dd23be5770f7d29087792ed284f9e7d5f25886172640cf5bf069e6132eee737e",
+        "artifactId": 14839755422,
+        "originalJsonDecryptedAndHashVerified": true,
+        "recommendedKey": "a30-0",
+        "alternativeKey": "a1-0",
+        "separateFromManualStage1": true,
+        "manualStage1ResponsesStill": 0,
+        "mortalSkillCertified": false,
+        "semanticCertified": false,
+        "workflowDisarmedCommit": "1fd16098252722afb5a8a6ad83311617ba29f2ca",
+        "newPaidApprovalAvailable": false
+      }
     }
   },
   "previous_runs": [
@@ -3611,6 +3638,19 @@
       "mainChanged": false,
       "manualStage1Count": 0,
       "notes": "new secret valid for model metadata; billing active for response generation not proven"
+    },
+    {
+      "phase": "P2a-v4.4 API exploratory",
+      "status": "ONE_REAL_GPT6_SOL_PUBLIC_CONTRACT_PASS",
+      "run_id": 45216681342,
+      "artifact_id": 14839755422,
+      "apiPosts": 1,
+      "rawReplySha256": "dd23be5770f7d29087792ed284f9e7d5f25886172640cf5bf069e6132eee737e",
+      "estimatedUSD": 0.03493,
+      "capUSD": 0.3,
+      "manualStage1Counted": false,
+      "semanticCertified": false,
+      "mainUnchanged": true
     }
   ],
   "roadmap": {
