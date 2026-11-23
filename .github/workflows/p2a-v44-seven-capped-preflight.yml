@@ -1,0 +1,42 @@
+name: P2a-v44 Seven API <5c PRE-FLIGHT ONLY, zero inference
+on:
+  push:
+    branches:
+      - feat/coach-p2a-v44-api-seven-capped
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  safe-seven:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    env:
+      V14_FOLLOWUP_PUBLIC: /tmp/v44-seven-original36/independent-requests.json
+      V14_V44_QUESTIONS_DIR: /tmp/v44-seven-questions/questions
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.23.4'
+      - uses: actions/download-artifact@v4
+        with:
+          name: p2a-v2-36-public-development-only
+          run-id: 45089922993
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/v44-seven-original36
+      - uses: actions/download-artifact@v4
+        with:
+          name: p2a-v44-public-frozen-8-unseen-GPT6-JSON-FILES
+          run-id: 45186436930
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/v44-seven-questions
+      - name: Run frozen-source, cost-bound, encryption and replay controls; NO API
+        run: |
+          set -euo pipefail
+          test -s "$V14_FOLLOWUP_PUBLIC"
+          test -s "$V14_V44_QUESTIONS_DIR/pilot-51.json"
+          node --test tests/next/v14-v44-seven-capped-api.test.mjs tests/next/v14-v44-api-onecase.test.mjs tests/next/v14-v44-pilot46-single-live-actions.test.mjs
+      - run: echo "CI SUCCESS is mechanical readiness only. No real GPT6 answers and zero API calls."
