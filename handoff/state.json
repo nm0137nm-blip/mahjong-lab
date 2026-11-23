@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-23T16:23:00+09:00",
+  "checkpoint": "2026-11-23T16:51:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -8,12 +8,12 @@
     "coach_candidate_promoted": false
   },
   "active_task": {
-    "phase": "P2a-v4.1: user-approved minor Japanese numeral guard repair, independent Stage1 newly frozen and ready",
-    "status": "P2a_v41_SEPARATE_NEW_VERSION_FIRST_UNSEEN_PILOT50_READY_OLD_V4_NO_GO_UNCHANGED",
-    "branch": "feat/coach-p2a-v41-japanese-numeric-guard",
-    "commit": "fff4f3f430e0a16e97fe1adaba5f53e153d20e83",
-    "pr": 64,
-    "run_id": 45130655753,
+    "phase": "P2a-v4.2: typed opponent seat and logged transport repair; pilot52 independent first question frozen",
+    "status": "P2a_v42_NEW_UNSEEN_PILOT52_READY_AFTER_V41_FIRST_RESPONSE_SCHEMA_COPY_NO_GO",
+    "branch": "feat/coach-p2a-v42-typed-seat-transport",
+    "commit": "05b0f5e74954170828686d0565ac93214f269c24",
+    "pr": 65,
+    "run_id": 45133880242,
     "prior_runs": [
       {
         "run_id": 44754324733,
@@ -354,8 +354,8 @@
         "phaseCompleted": false
       }
     ],
-    "decision": "P2a-v4 historical NO-GO final, explicitly NOT rescored. P2a-v4.1 user-approved minor technical amendment: first test pilot42 replaced with prospectively SHA-selected unseen pilot50, new versioned text guard and frozen request hashes; actual v41 ChatGPT answers 0.",
-    "next": "対応依頼: new pilot-50.json in fresh independent ChatGPT Temporary Chat; return original JSON and displayed model. Do not reuse pilot42 or amend after answer.",
+    "decision": "P2a-v4 historical NO_GO and P2a-v4.1 strict first pilot50 contract fail/non-accept preserved. New v4.2 source-only preselected pilot52 and versioned contract fixes before any new model answer; not a tactical pass or phase completion.",
+    "next": "対応依頼: pilot-52 original public JSON question in a NEW ChatGPT Temporary Chat; preserve original JSON file or raw text; record real UI model display. Do not reuse pilot42/pilot50, no need for extra Claude/Gemini patch review.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -991,7 +991,7 @@
       }
     },
     "v41_development": {
-      "status": "V41_MINOR_PATCH_AND_FROZEN_FIRST_UNSEEN_MODEL_PROMPT_READY",
+      "status": "CLOSED_FIRST_MODEL_OUTPUT_CONTRACT_NOT_ACCEPTED_NO_GO",
       "policy": "user waived additional Gemini/Claude patch-phase reviewer round; existing future genuine independent blind tactical L4 remains a separate planned test",
       "previousPhaseV4": {
         "status": "CLOSED_NO_GO",
@@ -1053,12 +1053,98 @@
         "name": "p2a-v41-sealed-L4-controls-verifier-only",
         "doNotShowToAnswerModel": true
       },
-      "actualIndependentModelAnswers": 0,
+      "actualIndependentModelAnswers": 1,
       "paidApiCalls": 0,
       "newPhaseComplete": false,
       "record": "handoff/p2a-v41-japanese-guard-and-unseen-case-replacement-20261123.md",
       "remaining": "one fresh Temporary Chat pilot50 response needed; after pass continue other 7 and prelocked stability, Stage2, L3.5 and 3-rater L4; no additional patch review",
-      "next": "対応依頼: new pilot-50.json in fresh independent ChatGPT Temporary Chat; return original JSON and displayed model. Do not reuse pilot42 or amend after answer."
+      "next": "対応依頼: new pilot-50.json in fresh independent ChatGPT Temporary Chat; return original JSON and displayed model. Do not reuse pilot42 or amend after answer.",
+      "actualFirstReceived": {
+        "caseId": "pilot-50",
+        "requestHash": "606913fa4c64b4ace976f02097c5df5f634d2fdf174e30dcb74f1683f93c62ab",
+        "recommended": "a37-0",
+        "alternative": "a1-0",
+        "sourceFactsLargelyConsistent": true,
+        "providerUiMetadata": "NOT_VERIFIED",
+        "raw": "conversation inline, not published to Github",
+        "unverifiedTransport": "curly quotes and escaped FactID brackets in user-visible message; origin unknown",
+        "schemaFailure": "seat string according to sample prompt although verifier required integer; GPT-6 model name matched raw digit guard",
+        "grade": "NOT_CONTRACT_ACCEPTED; not an expert strategic fail",
+        "remainingTrialsNotRun": 7
+      },
+      "report": "handoff/p2a-v41-first-pilot50-schema-receipt-stop-20261123.md"
+    },
+    "v42_development": {
+      "status": "NEW_VERSION_PUBLIC_UNSEEN_PILOT52_STAGE1_READY_FOR_USER_MANUAL_INDEPENDENT_ANSWER",
+      "previousPhases": [
+        {
+          "phase": "v4",
+          "status": "CLOSED_NO_GO_JAPANESE_NUMERIC_GUARD_FALSE_POSITIVE",
+          "answered": "pilot-42"
+        },
+        {
+          "phase": "v4.1",
+          "status": "CLOSED_FIRST_ANSWER_NOT_ACCEPTED_SCHEMA_SEAT_TYPE_AND_COPY_METADATA",
+          "answered": "pilot-50"
+        }
+      ],
+      "policy": "User approved minor format repairs, one-for-one unseen question replacement, no extra Claude/Gemini patch-phase review. This is not a waiver of later L4 blind grading.",
+      "branch": "feat/coach-p2a-v42-typed-seat-transport",
+      "commit": "05b0f5e74954170828686d0565ac93214f269c24",
+      "pr": 65,
+      "baseBranch": "feat/coach-p2a-v41-japanese-numeric-guard",
+      "mainUnchanged": true,
+      "bugfixes": [
+        "sample responseShape seat integer0 replaces wrong seat string model template",
+        "strict numeral digit-string seats 0..3 canonicalized in verifier while retaining exact original reply; invalid strings fail closed",
+        "literal restricted GPT-6 ID treated as unverified model metadata, not a point amount",
+        "strict parse then only transparent logged mobile JSON copy quotation, bracket and fence normalization; raw never replaced",
+        "unanchored real Arabic or kanji points, tile counts and impossible FactIDs still prohibited"
+      ],
+      "firstQuestionId": "pilot-52",
+      "firstQuestionRequestHash": "2a6aab21bc3d914183b7a91082f0939d68c5f619f8785ce19fb66f1639bde6b5",
+      "firstQuestionSHA256": "37f7eaba10a46fe52f58d2fdee4df2af9e870cedc90dc150ac122809a8e296a7",
+      "selectedEight": [
+        "pilot-52",
+        "pilot-47",
+        "pilot-59",
+        "pilot-62",
+        "pilot-63",
+        "pilot-71",
+        "pilot-70",
+        "pilot-67"
+      ],
+      "excludedAnswered": [
+        "pilot-48",
+        "pilot-42",
+        "pilot-50"
+      ],
+      "selection": "unchanged source36, next SHA-priority positive-honba reach scene after the 3 known answered exclusions, no S42 or user answer used",
+      "sourceSetHash": "271b4a304ed86dc41be2e72766e2b5cc496966bdf8a0ce5a8d5a5d0334e6103a",
+      "sourcePack": "/mnt/data/mahjong_P2a_v42_stage1_all8_public.zip",
+      "firstQuestionLocal": "/mnt/data/mahjong_P2a_v42_stage1_pilot-52.json",
+      "ci": {
+        "runId": 45133880242,
+        "status": "success",
+        "nodeTests": 47,
+        "nodeFailures": 0,
+        "nonVacuousSource36FromOriginalArtifact": true,
+        "syntheticKnownPilot50BugRegressionPass": true
+      },
+      "artifacts": {
+        "publicArtifactId": 14798667823,
+        "publicName": "p2a-v42-public-8-unseen-first-pilot52",
+        "sealedVerifierArtifactId": 14799405652,
+        "modelNeverReceivesSealed": true
+      },
+      "newIndependentModelResponses": 0,
+      "modelEvaluationStatus": "NOT_STARTED",
+      "noPaidInference": true,
+      "PhaseComplete": false,
+      "l35SourceDisjointControlsFromPriorResearch": "4 S42 changed + 4 maintained ready, no new actual ChatGPT paired results",
+      "finalL4Status": "NOT_RUN",
+      "report": "handoff/p2a-v42-typed-seat-and-copy-transport-repair-20261123.md",
+      "next": "対応依頼: pilot-52 original public JSON question in a NEW ChatGPT Temporary Chat; preserve original JSON file or raw text; record real UI model display. Do not reuse pilot42/pilot50, no need for extra Claude/Gemini patch review."
     }
   },
   "previous_runs": [
@@ -2395,6 +2481,45 @@
       "paidApiCalls": 0,
       "phaseCompletion": "NO_NOT_UNTIL_INDEPENDENT_RESPONSES",
       "report": "handoff/p2a-v41-japanese-guard-and-unseen-case-replacement-20261123.md"
+    },
+    {
+      "status": "P2a_v42_user_approved_minor_format_fix_new_unseen_pilot52_47_qa_pass_STAGE1_UNRUN",
+      "phase": "P2a-v4.2",
+      "branch": "feat/coach-p2a-v42-typed-seat-transport",
+      "pr": 65,
+      "commit": "05b0f5e74954170828686d0565ac93214f269c24",
+      "ciRun": 45133880242,
+      "nodeTests": 47,
+      "nodeFailed": 0,
+      "previousV41Attempted": 1,
+      "previousV41Valid": 0,
+      "previousV41Reason": "response example string seat and verifier numeric mismatch + model ID digit and copy-format ambiguity",
+      "previousV41StrategicSkillAssessment": "NOT_ESTABLISHED",
+      "newFirstCaseId": "pilot-52",
+      "frozenHash": "2a6aab21bc3d914183b7a91082f0939d68c5f619f8785ce19fb66f1639bde6b5",
+      "newEight": [
+        "pilot-52",
+        "pilot-47",
+        "pilot-59",
+        "pilot-62",
+        "pilot-63",
+        "pilot-71",
+        "pilot-70",
+        "pilot-67"
+      ],
+      "answeredScenesExcluded": [
+        "pilot-48",
+        "pilot-42",
+        "pilot-50"
+      ],
+      "firstFileSha256": "37f7eaba10a46fe52f58d2fdee4df2af9e870cedc90dc150ac122809a8e296a7",
+      "publicArtifactId": 14798667823,
+      "sealedVerifierArtifactId": 14799405652,
+      "realV42ChatGPTAnswers": 0,
+      "patchReviewerRound": "SKIPPED_PER_USER",
+      "paidApiCalls": 0,
+      "phaseResult": "PENDING",
+      "record": "handoff/p2a-v42-typed-seat-and-copy-transport-repair-20261123.md"
     }
   ],
   "roadmap": {
