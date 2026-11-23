@@ -15,6 +15,11 @@ test('proposed independent 8-case panel excludes already-answered pilot48 and ke
  assert.deepEqual(a.categories.ron,['pilot-63']);
  assert.equal(a.categories.discard.length,3);
  assert.equal(a.actualNewModelCalls,0);
+ assert(a.positiveHonbaCaseCount>=3);
+ assert(a.kyotakuPresentCaseCount>=1);
+ assert.equal(a.categories.reach[0],'pilot-42');
+ assert.equal(a.categories.callOrPass[0],'pilot-59');
+ assert.equal(a.categories.discard[0],'pilot-71');
  assert(a.cases.every(x=>x.status==='NOT_YET_RUN'));
 });
 test('selection cannot silently mutate input or drift to invalid public freeze',()=>{
