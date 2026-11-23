@@ -154,6 +154,7 @@ jobs:
           node --test tests/next/v14-public-counterfactual-prep-v3.test.mjs
 
   v3-s42-paired-public-reference:
+    if: false # actual S42 8-pair reference frozen in completed run 45102049118; do not rerun on unrelated commits
     runs-on: ubuntu-24.04
     timeout-minutes: 18
     steps:
