@@ -30,7 +30,7 @@ export function createV45CompactDevelopmentPacket(envelope){
   '必須：各席のchangeConditionと全体reversalは対象席を示すFactIDと、日本語の明確な条件（「もし...なら」「...でなければ」「...になれば」「...の場合」「...ならば」など）と、そのとき判断をどう変えるかを書く。',
   '比較には推薦/対案双方の[[candidate:<key>:kind]]と追加の公開形・打点指標を含め、bottomLineとreversalにも適切な根拠IDを引用する。',
   '特に候補の総向聴数・受け入れ合計・ドラ枚数・現物判定が同じ場合は、通常手としての向聴数[[candidate:<key>:standardShanten]]、改善牌内訳[[candidate:<key>:improvingSummary]]、具体的な打牌[[candidate:<key>:discardTile]]（それぞれ利用可能なもの）を推薦と対案の双方で照合し、実際に差がある項目のFactIDを両候補分直接引用して説明する。差が確認できない場合は別の有力対案を選び直す。両候補が同じと虚偽に断定しない。',
-  '条件変更の表現には、例えば「もし相手の進行が変わるなら、対案を選びやすくする」のような自然な日本語活用形を使用してよい。条件と方針変化を具体的に書く。\n  この回答は数値証明ファイルではない。responseShapeの項目と型だけを守るJSONオブジェクト1件を、request.delivery.filenameで指定されたUTF-8のJSONファイルとして作成・添付し、チャット本文はファイルリンクのみとする。回答JSONを本文に貼り付けない。相手席番号seatは数値0,1,2,3のうち自分以外の3席として記載し、サンプルの文字列や席番号を機械的にコピーしない。ASCIIの半角ダブルクォートでJSONを記述し、参照IDの[[と]]にバックスラッシュを入れない。JSON前後のコードフェンスや解説は不要。モデル自身の名称を戦術説明へ書かず、回答画面のモデル名は依頼主が別に記録する。'
+  'この回答は数値証明ファイルではない。responseShapeの項目と型だけを守るJSONオブジェクト1件を、request.delivery.filenameで指定されたUTF-8のJSONファイルとして作成・添付し、チャット本文はファイルリンクのみとする。回答JSONを本文に貼り付けない。相手席番号seatは数値0,1,2,3のうち自分以外の3席として記載し、サンプルの文字列や席番号を機械的にコピーしない。ASCIIの半角ダブルクォートでJSONを記述し、参照IDの[[と]]にバックスラッシュを入れない。JSON前後のコードフェンスや解説は不要。モデル自身の名称を戦術説明へ書かず、回答画面のモデル名は依頼主が別に記録する。'
  ].join('\n');
  const request={stage:'p2a-v45-compact-independent-dev',version:V45_COMPACT_PACKET,
   sourceV3RequestHash:envelope.requestHash,
