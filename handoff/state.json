@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-24T01:52:00+09:00",
+  "checkpoint": "2026-11-24T01:59:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -355,7 +355,7 @@
       }
     ],
     "decision": "API pilot46 plus seven-stage attempted 4 newly: all under $0.05, first fatal pilot53. Do not run remaining pilot69/65/74 in v44. No Phase GO.",
-    "next": "Complete read-only root-cause audit and prepare separately versioned v45 Japanese morphological reversal verifier; freeze entirely new untouched public cases before any future paid GPT-6 API attempts and obtain separate authorization. L4 remains unmet.",
+    "next": "Prepare P2a-v4.5 independent new source-only preregistration and updated versioned verifier after prospective Japanese grammar patch; must exclude all prior GPT-exposed cases, maintain blinded L4; separate user authorization required for any additional billed API. v44 closed first-fatal NO-GO.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -1979,6 +1979,21 @@
       "s42Alignment": "NOT_ASSESSED",
       "originalManualChatStage1Count": 0,
       "phaseOverall": "NO_GO_AND_CLOSED"
+    },
+    "v45_prospective_preparation": {
+      "status": "GRAMMAR_ONLY_CI_PASS_NOT_PHASE_GO",
+      "branch": "feat/coach-p2a-v45-japanese-reversal-lexemes",
+      "draftPR": 70,
+      "workflowRun": 45222359529,
+      "conclusion": "success",
+      "newModule": "src/coach/v14-japanese-condition-v45.mjs",
+      "tests": "tests/next/v14-v45-japanese-condition.test.mjs",
+      "changedOldV43OrV44Verifier": false,
+      "paidAPICalls": 0,
+      "newFrozenUnseenCases": 0,
+      "newIndependentRealResponses": 0,
+      "L4": "NOT_STARTED",
+      "next": "new v45 full evidence contract and never-exposed cases fixed prospectively, then scoped API budget approval"
     }
   },
   "previous_runs": [
@@ -3746,6 +3761,16 @@
       "originalManualChatStage1Count": 0,
       "semanticCertified": false,
       "paidWorkflowDisarmed": true
+    },
+    {
+      "phase": "P2a-v4.5 prospective preparation",
+      "status": "JAPANESE_MORPHOLOGY_REGRESSION_CI_PASS_ONLY",
+      "pr": 70,
+      "run_id": 45222359529,
+      "apiCalls": 0,
+      "costUSD": 0,
+      "noHistoricalRegrade": true,
+      "noProductionPromotion": true
     }
   ],
   "roadmap": {
