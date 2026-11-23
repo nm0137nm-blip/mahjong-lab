@@ -8,11 +8,12 @@ import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {initSync} from '../../assets/mortal/encoder.js';
 import {MortalMjaiBridge} from '../../src/mortal/mjai-bridge.mjs';
-import {prepareV3DevelopmentCounterfactualPairs} from '../../src/coach/v14-public-counterfactual-prep-v3.mjs';
+import {prepareV3DevelopmentCounterfactualPairs,prepareV3UnlabelledExpansionPairs} from '../../src/coach/v14-public-counterfactual-prep-v3.mjs';
 const [frozenFile,lineageFile,devRoot,outDir]=process.argv.slice(2);
 if(!frozenFile||!lineageFile||!devRoot||!outDir)throw Error('usage: frozen36 lineage dev-root out');
 const read=p=>JSON.parse(fs.readFileSync(p,'utf8')),sha=x=>createHash('sha256').update(x).digest('hex');
-const source=read(frozenFile),privateLineage=read(lineageFile),pairs=prepareV3DevelopmentCounterfactualPairs(source);
+const source=read(frozenFile),privateLineage=read(lineageFile),expanded=process.env.V14_PAIR_BATCH==='expansion';
+const pairs=expanded?prepareV3UnlabelledExpansionPairs(source):prepareV3DevelopmentCounterfactualPairs(source);
 const data=new Map(privateLineage.map(x=>[x.id,x]));assert.equal(data.size,36);
 const wasm=initSync({module:fs.readFileSync('assets/mortal/encoder_bg.wasm')});
 fs.mkdirSync(outDir,{recursive:true});
@@ -106,6 +107,7 @@ for(const [n,pair] of pairs.pairs.entries()){
  results.push(row);
 }
 fs.writeFileSync(path.join(outDir,'manifest.json'),JSON.stringify({
- version:'p2a-v3-8-development-paired-s42-verifier-only-1',rows:results,
+ version:expanded?'p2a-v3-unlabelled-expansion-s42-verifier-only-1':'p2a-v3-8-development-paired-s42-verifier-only-1',
+ selectionFrozenPreLabel:true,sourceClusterCount:new Set(results.map(x=>x.sourceCaseId)).size,rows:results,
  selectionFrozenSourceHash:pairs.sourceFrozenHash,warning:pairs.notCertified},null,2)+'\n');
 console.log('V3 PAIRED ENCODED',results.length,'public-only focal decisions; concealed other hands discarded');
