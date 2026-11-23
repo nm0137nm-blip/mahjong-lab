@@ -27,6 +27,18 @@ const comparable=m=>{
   ツモ切り:m.dapai.p.includes('_'),立直宣言:m.dapai.p.includes('*')};
  return null;
 };
+// The public snapshot moves the newly revealed dora ahead of the immediately
+// following replacement draw; some archived original paipu records the two
+// adjacent events in the reverse order. Compare *public* projections under
+// this narrowly defined adjacent swap. Never reorder the original engine replay.
+const publicComparableFromLog=log=>{
+ const out=log.slice(1).map(comparable);
+ for(let i=0;i<out.length-1;i++)if(
+  out[i]?.種類==='嶺上自摸'&&out[i+1]?.種類==='ドラ表示追加'){
+  [out[i],out[i+1]]=[out[i+1],out[i]];i++;
+ }
+ return out;
+};
 const redact=(msg,own)=>{
  if(msg.qipai)return {qipai:{...msg.qipai,shoupai:msg.qipai.shoupai.map((h,i)=>i===own?h:'')}};
  if(msg.zimo)return {zimo:{l:msg.zimo.l,p:msg.zimo.l===own?msg.zimo.p:''}};
@@ -82,7 +94,7 @@ for(const [n,pair] of pairs.pairs.entries()){
   return q.zhuangfeng==='東南西北'.indexOf(board.round[0])&&
    q.jushu===Number(board.round[1])-1&&q.changbang===board.honba&&
    log.length>history.length&&
-   JSON.stringify(log.slice(1,1+history.length).map(comparable))===JSON.stringify(history);
+   JSON.stringify(publicComparableFromLog(log).slice(0,history.length))===JSON.stringify(history);
  });
  if(matches.length!==1){
   const sameRound=archive.log.filter(log=>{
@@ -91,14 +103,14 @@ for(const [n,pair] of pairs.pairs.entries()){
     q.jushu===Number(board.round[1])-1&&q.changbang===board.honba;
   });
   const overlap=log=>{
-   const comparableHistory=log.slice(1,1+history.length).map(comparable);
+   const comparableHistory=publicComparableFromLog(log).slice(0,history.length);
    let n=0;while(n<Math.min(comparableHistory.length,history.length)&&
     JSON.stringify(comparableHistory[n])===JSON.stringify(history[n]))n++;
    return n;
   };
   const most=sameRound.slice().sort((x,y)=>overlap(y)-overlap(x))[0];
   const n=most?overlap(most):0;
-  const visible=most?most.slice(1,1+history.length).map(comparable):[];
+  const visible=most?publicComparableFromLog(most).slice(0,history.length):[];
   throw Error('public-prefix-reconstruction: '+JSON.stringify({
    caseId:pair.sourceCaseId,kind:pair.kind,shard:p.shard,
    publicHistoryLength:history.length,matchingRounds:sameRound.length,
