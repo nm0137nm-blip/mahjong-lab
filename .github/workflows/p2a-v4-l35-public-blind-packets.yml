@@ -1,0 +1,72 @@
+name: P2a-v4 L3.5 blinded source-disjoint 16 public question packets (no model calls)
+on:
+  push:
+    branches:
+      - feat/coach-p2a-v4-fact-anchored-explanations
+    paths:
+      - 'tests/next/v14-v4-l35-blind-question-pack.mjs'
+      - 'tests/next/v14-v4-l35-blind-question-pack.test.mjs'
+      - '.github/workflows/p2a-v4-l35-public-blind-packets.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  public-only-question-pack:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.23.4'
+      - uses: actions/download-artifact@v4
+        with:
+          name: p2a-v4-l35-unused-original-shards-prelabel-verifier-only
+          run-id: 45126193433
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/p2a-v4-l35-pool
+      - uses: actions/download-artifact@v4
+        with:
+          name: p2a-v4-l35-sealed-first-unseen-shard-s42-verifier-only
+          run-id: 45126701390
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/p2a-v4-l35-result
+      - name: Run source/label blinding and consistency QA before creating public model prompts
+        env:
+          V14_L35_PRELABEL_DIR: /tmp/p2a-v4-l35-pool
+          V14_L35_S42: /tmp/p2a-v4-l35-result/p2a-v4-l35-sealed-s42.json
+        run: |
+          set -euo pipefail
+          node --test tests/next/v14-v4-l35-blind-question-pack.test.mjs
+          node tests/next/v14-v4-l35-blind-question-pack.mjs \
+            "$V14_L35_PRELABEL_DIR" "$V14_L35_S42" /tmp/p2a-v4-l35-blind
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path('/tmp/p2a-v4-l35-blind')
+          m=json.loads((root/'public/manifest.json').read_text())
+          v=json.loads((root/'verifier/paired-mapping.json').read_text())
+          assert m['fileCount']==16 and v['changed']==4 and v['maintained']==4
+          assert m['observedChatGPTReplies']==0
+          for p in (root/'public/questions').glob('*.json'):
+            text=p.read_text()
+            for forbidden in ('sourceCluster','referenceChanged','changed_clear_internal_ranking','maintained_clear_internal_ranking','archiveQ','archiveBest','privateHands'):
+              assert forbidden not in text,(p.name,forbidden)
+          assert len(list((root/'public/questions').glob('*.json')))==16
+          print('BLINDED PUBLIC 16 SUBJECTS QA PASS. NO S42 LABEL LEAK.')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p2a-v4-l35-16-heldout-public-only-opaque-no-reference
+          path: /tmp/p2a-v4-l35-blind/public/
+          retention-days: 30
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p2a-v4-l35-8pair-source-class-map-verifier-only
+          path: /tmp/p2a-v4-l35-blind/verifier/
+          retention-days: 30
+          if-no-files-found: error
+      - if: always()
+        run: rm -rf /tmp/p2a-v4-l35-pool /tmp/p2a-v4-l35-result
