@@ -51,5 +51,5 @@ jobs:
         run: |
           set -euo pipefail
           gh api repos/${{ github.repository }}/actions/workflows --jq '.workflows[] | select(.path | contains("p2a-v44-pilot46-authorized-single")) | {id,name,state,path}'
-          gh api "repos/${{ github.repository }}/actions/runs?per_page=50" --jq '.workflow_runs[] | select(.name | contains("zero-cost GET")) | {id,head_sha,status,conclusion,event}' || true
+          gh api "repos/${{ github.repository }}/actions/runs?per_page=50" --jq '.workflow_runs[] | select(.name | contains("GPT-6 pilot46 retry")) | {id,head_sha,status,conclusion,event}' || true
       - run: echo "No API key used. No model execution. No billable network request. Manual v4.4 Stage1 official denominator unchanged."
