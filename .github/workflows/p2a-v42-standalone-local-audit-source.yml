@@ -1,0 +1,29 @@
+name: P2a-v4.2 export source-only standalone off-GitHub reply validator
+on:
+  push:
+    branches:
+      - feat/coach-p2a-v42-typed-seat-transport
+    paths:
+      - '.github/workflows/p2a-v42-standalone-local-audit-source.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  export-local-audit-source:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          set -euo pipefail
+          test -s src/coach/v14-v42-stage1-receipt.mjs
+          test -s src/coach/v14-compact-model-contract-v42.mjs
+          test -s src/coach/v14-anchored-tactical-text-v42.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p2a-v42-local-audit-source-only-no-responses
+          path: |
+            src/coach/v14-*.mjs
+            package.json
+          retention-days: 7
+          if-no-files-found: error
+      - run: echo 'No real or private user response uploaded; only repository source code exported.'
