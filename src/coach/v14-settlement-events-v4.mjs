@@ -74,11 +74,12 @@ export function buildV4RonSettlement(board,options){
  };
 }
 export function buildV4LegacyCompatibleCatalog(board,oldRankScenarios,{dealerSeat}){
+ if(dealerSeat!==0)fail('public projection uses current-wind-relative dealer seat0');
  const b=verifiedBoard(board);
  if(!oldRankScenarios||oldRankScenarios.status!=='hypothetical_settlements_only'||
     !Array.isArray(oldRankScenarios.ron)||!oldRankScenarios.ron.length)
   fail('invalid legacy reference');
- if(b.honba!==0||b.kyotaku!==0)fail('legacy zero-sticks rows cannot validate nonzero tables');
+ // Legacy rows can include honba and existing kyotaku; verify each strictly.
  const all=[],ids=new Set();
  for(const row of oldRankScenarios.ron){
   if(!seat(row.other)||row.other===b.ownSeat)fail('invalid legacy opponent');
