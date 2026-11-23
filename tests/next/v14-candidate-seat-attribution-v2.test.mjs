@@ -88,10 +88,14 @@ test('valid cited facts for irrelevant candidates or wrong seat do not satisfy t
   assert.throws(()=>verifyCandidateSeatTradeoff(e,a,w,f),/factual-attribution-v2/);
  }
  const notRelated=clone(a);
- notRelated.evidenceProof.recommendation='a0-0';
- notRelated.evidenceProof.alternative='a1-0';
- notRelated.evidenceProof.comparisons[0].recommended=e.request.input.evidence.find(x=>x.id==='calc-a0-0').value.ukeireUpperBound;
- notRelated.evidenceProof.comparisons[0].alternative=e.request.input.evidence.find(x=>x.id==='calc-a1-0').value.ukeireUpperBound;
+ const metrics=new Map(e.request.input.evidence.filter(x=>x.id.startsWith('calc-')).map(x=>[x.id.slice(5),x.value.ukeireUpperBound]));
+ const legal=e.request.input.actions.filter(x=>x.key!==w.genbutsuAction&&x.key!==w.otherAction&&Number.isFinite(metrics.get(x.key)));
+ const first=legal[0],second=legal.find(x=>metrics.get(x.key)!==metrics.get(first.key));
+ assert(first&&second,'need a genuinely unrelated calculated contrast');
+ notRelated.evidenceProof.recommendation=first.key;
+ notRelated.evidenceProof.alternative=second.key;
+ notRelated.evidenceProof.comparisons[0].recommended=metrics.get(first.key);
+ notRelated.evidenceProof.comparisons[0].alternative=metrics.get(second.key);
  notRelated.evidenceProof.comparisons[0].relation=relation(notRelated.evidenceProof.comparisons[0].recommended,notRelated.evidenceProof.comparisons[0].alternative);
  assert.throws(()=>attachCandidateSeatTradeoff(e,notRelated,w),/factual-attribution-v2|v2-proof/);
 });
