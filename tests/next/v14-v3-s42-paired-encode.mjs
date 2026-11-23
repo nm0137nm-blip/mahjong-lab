@@ -90,11 +90,14 @@ for(const [n,pair] of pairs.pairs.entries()){
     JSON.stringify(comparableHistory[n])===JSON.stringify(history[n]))n++;
    return n;
   };
+  const most=sameRound.slice().sort((x,y)=>overlap(y)-overlap(x))[0];
+  const n=most?overlap(most):0;
+  const visible=most?most.slice(1,1+history.length).map(comparable):[];
   throw Error('public-prefix-reconstruction: '+JSON.stringify({
    caseId:pair.sourceCaseId,kind:pair.kind,shard:p.shard,
    publicHistoryLength:history.length,matchingRounds:sameRound.length,
-   maxMatchingPublicEvents:Math.max(0,...sameRound.map(overlap)),
-   matchingOriginalLogs:matches.length
+   maxMatchingPublicEvents:n,matchingOriginalLogs:matches.length,
+   firstExpectedPublicEvent:history[n]??null,firstActualPublicEvent:visible[n]??null
   }));
  }
  const prefix=matches[0].slice(0,1+history.length).map(m=>redact(m,board.ownSeat));
