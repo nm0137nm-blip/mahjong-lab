@@ -11,7 +11,7 @@ import {initSync} from '../../assets/mortal/encoder.js';
 import {MortalMjaiBridge} from '../../src/mortal/mjai-bridge.mjs';
 const [prelabelDir,devRoot,outDir]=process.argv.slice(2);
 if(!prelabelDir||!devRoot||!outDir)throw Error('usage: prelabel-directory dev-root output-dir');
-const read=p=>JSON.parse(fs.readFileSync(p,'utf8')),sha=x=>createHash('sha256').update(x).digest('hex');
+const read=p=>JSON.parse(fs.readFileSync(p,'utf8')),sha=x=>createHash('sha256').update(typeof x==='string'||Buffer.isBuffer(x)?x:JSON.stringify(x)).digest('hex');
 const frozen=read(path.join(prelabelDir,'prelabel-manifest.json')),rawPairs=read(path.join(prelabelDir,'public-pairs.json')),origins=read(path.join(prelabelDir,'verifier-origin-map.json'));
 assert.equal(frozen.publicPairHash,sha(rawPairs));
 assert.equal(frozen.labelStatus,'UNSCORED_S42_NOT_YET_CALLED');
