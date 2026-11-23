@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-23T13:32:00+09:00",
+  "checkpoint": "2026-11-23T14:03:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -8,12 +8,12 @@
     "coach_candidate_promoted": false
   },
   "active_task": {
-    "phase": "P2a-v3 (closed NO-GO; phase-end Claude+Gemini independent reviews pending external receipt)",
-    "status": "P2a_v3_PHASE_CLOSED_NO_GO_preregistered_chatgpt_major_numeric_error_1st_new_schema_case",
-    "branch": "feat/coach-p2a-v3-contract-repair",
-    "commit": "248a40dc07084d86107468eb07875a62bebb7e56",
-    "pr": 62,
-    "run_id": 45111993969,
+    "phase": "P2a-v4 (conditional development GO, preregistered independent ChatGPT trial not started)",
+    "status": "P2a_v4_development_first_source_facts_settlement_and_anchored_tactics_CI_success_trial_NO_GO_pending_blockers",
+    "branch": "feat/coach-p2a-v4-fact-anchored-explanations",
+    "commit": "e49851bf6ce3f0ea07067c9127ef2062603e3c5a",
+    "pr": 63,
+    "run_id": 45115126032,
     "prior_runs": [
       {
         "run_id": 44754324733,
@@ -354,8 +354,8 @@
         "phaseCompleted": false
       }
     ],
-    "decision": "P2a-v3 closed with NO-GO: verified ChatGPT pilot-48 actual model response conflates 3900 winBase vs 5800 dealer lossBase, false rank inversion; preregistered one major factual mistake stops expansion. Development QA pass != model pass.",
-    "next": "P2a-v3 is CLOSED as NO-GO. Do not restart its frozen eight-case smoke, call it PASS, or merge to main. Phase-end independent Claude and Gemini reviews remain to be obtained separately; packet ready. Plan a separately preregistered P2a-v4 repair of generation/verification boundary, guarded against free-text rank hallucinations. No API spending permitted.",
+    "decision": "P2a-v3 permanently CLOSED_NO_GO; Gemini and Claude Opus support phase termination and conditional P2a-v4 engineering GO. v4 model testing NOT GO, release unchanged NO-GO.",
+    "next": "Continue no-cost v4 dealer provenance plus candidate-specific scoring events; do not ask user to run real ChatGPT until input and verification are freeze-ready.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -377,11 +377,11 @@
       "robust_rollout_labels": 0,
       "metadata": "provider/effort not independently recorded"
     },
-    "review_status": "P2a_v3_PHASE_EXIT_NO_GO_external_review_packet_prepared_Claude_and_Gemini_response_not_received",
+    "review_status": "P2a_v3_claude_gemini_first_round_consensus_complete_no_second_round_needed_P2a_v4_starts",
     "review_first": "handoff/p2a-v14-claude-opus-review-stat-followup-20261123.md",
-    "review_final": "NOT_OBTAINED_FOR_V3",
-    "reviewers_completed": 0,
-    "review_rounds_used": 0,
+    "review_final": "Gemini_and_Claude_Opus_first_round_independent_both_support_V3_NO_GO_and_V4_conditional_development_GO",
+    "reviewers_completed": 2,
+    "review_rounds_used": 1,
     "git_diff_checked": {
       "base": "41d13c8ded49d216805b22cb09d92131feaf0c6d",
       "head": "cfff272c04ea3f67b7685761f6c22c947a63f5f0",
@@ -796,11 +796,66 @@
       "report": "handoff/p2a-v3-phase-exit-no-go-20261123.md",
       "reviewerPacket": "handoff/p2a-v3-phase-exit-independent-review-request-20261123.md",
       "phaseExitClaudeGeminiReviewRequestedByUserPolicy": true,
-      "phaseExitExternalReviewsActuallyReceived": 0,
+      "phaseExitExternalReviewsActuallyReceived": 2,
       "next": "Independent third-party reviews via separate Claude and Gemini user-operated chats, only when user can run them; further development in new distinct P2a-v4 design after review and prereg. No additional unapproved paid model calls.",
       "mainUnaffected": true,
       "release": "NO_GO",
-      "additionalBillableCalls": 0
+      "additionalBillableCalls": 0,
+      "phaseExitClaudeGeminiReviewCompleted": true,
+      "reviewerAgreement": "P2a-v3 NO-GO confirmed 2 of 2, v4 conditional development GO 2 of 2; no critical disagreement requiring round2",
+      "reviewSynthesis": "handoff/p2a-v3-claude-gemini-phase-exit-review-integrated-20261123.md"
+    },
+    "v4_development": {
+      "status": "DEVELOPMENT_STARTED_NOT_MODEL_TEST_READY",
+      "reviewConsensus": {
+        "gemini": "support_v3_NO_GO_v4_conditional_development_GO",
+        "claudeOpus": "support_v3_NO_GO_v4_conditional_development_GO",
+        "round2Needed": false
+      },
+      "reviewIntegration": "handoff/p2a-v3-claude-gemini-phase-exit-review-integrated-20261123.md",
+      "kickoffReport": "handoff/p2a-v4-development-kickoff-20261123.md",
+      "branch": "feat/coach-p2a-v4-fact-anchored-explanations",
+      "pr": 63,
+      "draft": true,
+      "commit": "e49851bf6ce3f0ea07067c9127ef2062603e3c5a",
+      "latestRun": 45115126032,
+      "ci": {
+        "status": "success",
+        "nodeTests": 23,
+        "nodeFailed": 0,
+        "independentPythonSettlementVectors": 4608,
+        "pythonMismatches": 0,
+        "previousCountErrorRun": 45115021634,
+        "previousError": "expectation 2304 while generator emitted 4608; corrected"
+      },
+      "components": [
+        "src/coach/v14-settlement-events-v4.mjs",
+        "src/coach/v14-public-proof-gate-v4.mjs",
+        "src/coach/v14-anchored-tactical-text-v4.mjs",
+        "src/coach/v14-public-brief-v4.mjs",
+        "src/coach/v14-v4-smoke-selection.mjs"
+      ],
+      "developmentResults": {
+        "pilot48Legacy15RowsSplitTo30EventsMatched": true,
+        "publicBriefAll36DeterministicAndUnder20KB": true,
+        "initial8PrototypeComposition": "reach2 interaction2 ron1 discard3 excluding pilot48",
+        "prototypeStage1ModelCalls": 0
+      },
+      "blockers": [
+        "verified dealer seat from live public source before v4 events are used",
+        "link candidate action mode, tile and yaku-conditioned score to event ID",
+        "complete valid concrete afterCallDiscard and source/physical legality",
+        "deterministic production Mortal recommendation plus all-opponent fixed public facts",
+        "full v4 versioned schema and preregistered Stage1, L3.5 and L4 blind protocols",
+        "true model Stage1 testing not started; not permitted before clear evidence gates",
+        "no new paid model API authorizations",
+        "actual model strategic reasoning expertise unmeasured"
+      ],
+      "independentModelResponses": 0,
+      "notTrustedModelTacticalGrade": true,
+      "sourceS42Exploratory58": "historical_only_never_promote_to_new_l35",
+      "gate": "NO_GO_FOR_MANUAL_EXPERIMENT_AND_NO_GO_FOR_MAIN",
+      "next": "Continue no-cost v4 dealer provenance plus candidate-specific scoring events; do not ask user to run real ChatGPT until input and verification are freeze-ready."
     }
   },
   "previous_runs": [
@@ -1995,6 +2050,28 @@
         "reviewPacketsPrepared": true
       },
       "note": "handoff/p2a-v3-phase-exit-no-go-20261123.md"
+    },
+    {
+      "status": "P2a_v3_2_independent_reviewer_consensus_and_v4_first_engineering_gate",
+      "reviewSummary": "handoff/p2a-v3-claude-gemini-phase-exit-review-integrated-20261123.md",
+      "reviewFirstRound": {
+        "gemini": "V3 NO-GO, V4 conditional GO",
+        "claudeOpus": "V3 NO-GO, V4 conditional GO",
+        "reconciliation": "no material conflict on architecture; staged manual test counts differ",
+        "secondRound": false
+      },
+      "v4": {
+        "branch": "feat/coach-p2a-v4-fact-anchored-explanations",
+        "pr": 63,
+        "commit": "e49851bf6ce3f0ea07067c9127ef2062603e3c5a",
+        "run": 45115126032,
+        "testsPassed": 23,
+        "pythonVectors": 4608,
+        "pythonMismatches": 0,
+        "realLLMTrials": 0
+      },
+      "limitations": "v4 preliminary engineering only, dealer/source-specific candidate scoring + pre-registered unseen model trial not ready, no production merge",
+      "record": "handoff/p2a-v4-development-kickoff-20261123.md"
     }
   ],
   "roadmap": {
