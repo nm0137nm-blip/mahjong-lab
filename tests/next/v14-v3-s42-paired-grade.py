@@ -12,7 +12,12 @@ expected_sha='30381bf21389e2d25d3edf48fed11bf772336ef3daeee67d1bdae7fb9dd30cb4'
 sha=hashlib.sha256(model.read_bytes()).hexdigest()
 if sha!=expected_sha:raise ValueError('Mortal graph hash mismatch')
 d=json.loads((root/'manifest.json').read_text())
-if len(d['rows'])!=8:raise ValueError('expected 8 preregistered pairs')
+expanded=d.get('version')=='p2a-v3-unlabelled-expansion-s42-verifier-only-1'
+if not d.get('selectionFrozenPreLabel'):raise ValueError('unfrozen prelabel selection')
+if (not expanded and len(d['rows'])!=8) or (expanded and not 1<=len(d['rows'])<=96):
+ raise ValueError('unexpected preregistered pair count')
+if len(set(r['sourceCaseId'] for r in d['rows']))!=d['sourceClusterCount']:
+ raise ValueError('source cluster count mismatch')
 options=ort.SessionOptions()
 options.intra_op_num_threads=1;options.inter_op_num_threads=1
 options.graph_optimization_level=ort.GraphOptimizationLevel.ORT_ENABLE_BASIC
@@ -69,13 +74,17 @@ output={
  'selectionInputHash':d['selectionFrozenSourceHash'],
  'modelSHA256':sha,'onnxruntime':ort.__version__,
  'predeclaredMinGroupMarginInternalQ':PREDECLARED_MIN_MARGIN,
+ 'batch':'source_disjoint_exploratory_expansion' if expanded else 'original_eight_frozen',
+ 'sourceClusterCount':d['sourceClusterCount'],
+ 'changedSourceClusters':len({r['sourceCaseId'] for r in rows if r['referenceChanged']}),
+ 'maintainedSourceClusters':len({r['sourceCaseId'] for r in rows if not r['referenceChanged']}),
  'n':len(rows),'rawTopChanged':changed,'rawTopMaintained':len(rows)-changed,
  'clearChanged':clear_changed,'clearMaintained':clear_maintained,'ambiguous':ambiguous,
  'rows':rows,
  'limitations':['Not an expert tactical gold label','Full original physical replay and action legality require separate verification',
   'Score changed as alternative prior-round public points; no true opponent hidden hand inference',
   'Mortal Q is an internal ordinal response, NOT points EV or calibrated confidence',
-  'Only 8 preregistered public contrast pairs, label selection not tailored after observing Q',
+  'All pairs selected by public-source deterministic rules before any labels for this batch; repeats from one source not independent',
   'No genuine ChatGPT contrast answer is evaluated here']
 }
 out.write_text(json.dumps(output,ensure_ascii=False,indent=2)+'\n')
