@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-23T15:12:00+09:00",
+  "checkpoint": "2026-11-23T15:55:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -8,12 +8,12 @@
     "coach_candidate_promoted": false
   },
   "active_task": {
-    "phase": "P2a-v4 (conditional development GO, preregistered independent ChatGPT trial not started)",
-    "status": "P2a_v4_compact_stage1_8_public_draft_52_tests_4608_python_NO_REAL_MODEL_READY",
+    "phase": "P2a-v4 (Stage1 independent model run now requires user manual temporary chat; full phase NOT complete)",
+    "status": "P2a_v4_stage1_preregistered_READY_for_independent_manual_response_0_actual_model_answers",
     "branch": "feat/coach-p2a-v4-fact-anchored-explanations",
-    "commit": "dcdd250ba00d5ad5219ce04fd270ae61afa0565b",
+    "commit": "9b20f66a24cbc34c2d34e3769a89d513d80b1151",
     "pr": 63,
-    "run_id": 45122127872,
+    "run_id": 45127192276,
     "prior_runs": [
       {
         "run_id": 44754324733,
@@ -354,8 +354,8 @@
         "phaseCompleted": false
       }
     ],
-    "decision": "P2a-v3 permanently CLOSED_NO_GO; Gemini and Claude Opus support phase termination and conditional P2a-v4 engineering GO. v4 model testing NOT GO, release unchanged NO-GO.",
-    "next": "Complete v4 preregistered STOP/L4 evaluation protocol plus independently legal L3.5 control examples. Only after freeze ask user for separate temporary ChatGPT responses. Draft eight-case pack is NOT READY.",
+    "decision": "Stage1 manual model evaluation ready under frozen research preregistration. Real model trials 0. Phase GO/NO-GO not determined; product NO-GO.",
+    "next": "対応依頼: Ask user to run pilot-42 exact frozen JSON in a NEW ChatGPT temporary chat and return unedited JSON reply + displayed model/date. Preserve first fatal predeclared NO-GO if any. After first pass proceed through remaining seven distinct temporary chats and conditional blinded tests. Never infer actual independent answers by current development self-conversation.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -806,7 +806,7 @@
       "reviewSynthesis": "handoff/p2a-v3-claude-gemini-phase-exit-review-integrated-20261123.md"
     },
     "v4_development": {
-      "status": "DEVELOPMENT_STARTED_NOT_MODEL_TEST_READY",
+      "status": "STAGE1_PUBLIC_PACK_FROZEN_L35_HELDOUT_PAIRS_READY_EXTERNAL_MODEL_RESPONSES_REQUIRED",
       "reviewConsensus": {
         "gemini": "support_v3_NO_GO_v4_conditional_development_GO",
         "claudeOpus": "support_v3_NO_GO_v4_conditional_development_GO",
@@ -817,15 +817,23 @@
       "branch": "feat/coach-p2a-v4-fact-anchored-explanations",
       "pr": 63,
       "draft": true,
-      "commit": "dcdd250ba00d5ad5219ce04fd270ae61afa0565b",
-      "latestRun": 45122127872,
+      "commit": "9b20f66a24cbc34c2d34e3769a89d513d80b1151",
+      "latestRun": 45127192276,
       "ci": {
         "status": "success",
-        "nodeTests": 52,
+        "nodeTests": 71,
         "nodeFailed": 0,
         "independentPythonSettlementVectors": 4608,
         "pythonMismatches": 0,
-        "publicLegacyRonEvents36Cases": 1080
+        "legacyOriginalPublicEventRowsVerified": 1080,
+        "l35NewSourceOriginalShards": 32,
+        "l35PrelabelPairs": 104,
+        "l35PhysicallyCompatibleEncodedPairs": 104,
+        "l35PinnedS42ChangedPairs": 11,
+        "l35PinnedS42MaintainedPairs": 93,
+        "l35SelectedChanged": 4,
+        "l35SelectedMaintained": 4,
+        "l35PublicPackets": 16
       },
       "components": [
         "src/coach/v14-settlement-events-v4.mjs",
@@ -886,21 +894,73 @@
           "eightFilesVerifiedAgainstSHA256Manifest": true,
           "artifactStatus": "DEVELOPMENT_PACKAGE_NOT_PREREGISTERED_DO_NOT_SEND_TO_MODELS_YET",
           "chatgptRealModelResponses": 0
-        }
+        },
+        "finalIndependentStage1": {
+          "status": "FROZEN_PUBLIC_INPUTS_READY_FOR_USER_MANUAL_ONE_CHAT_PER_QUESTION",
+          "sourceHash": "271b4a304ed86dc41be2e72766e2b5cc496966bdf8a0ce5a8d5a5d0334e6103a",
+          "artifactId": 14795119094,
+          "artifactName": "p2a-v4-frozen-stage1-8-public-only-no-model-answers",
+          "publicRunId": 45125740049,
+          "publicQuestionIDs": [
+            "pilot-42",
+            "pilot-47",
+            "pilot-59",
+            "pilot-62",
+            "pilot-63",
+            "pilot-71",
+            "pilot-70",
+            "pilot-67"
+          ],
+          "planCode": "src/coach/v14-v4-evaluation-plan.mjs",
+          "sourceProofCode": "src/coach/v14-source-comparison-proof-v4.mjs",
+          "sampleReceiptCode": "src/coach/v14-v4-stage1-receipt.mjs",
+          "weakControlsArtifactId": 14795866231,
+          "realChatGPTAnswers": 0,
+          "firstPromptStatus": "user must run pilot-42 in fresh temporary ChatGPT chat; do not send sealed controls or S42 labels"
+        },
+        "sourceDisjointL35": {
+          "status": "SELECTED_8_INDEPENDENT_ORIGINAL_CLUSTERS_GO_FOR_BLIND_L35_RESPONSE_COLLECTION_AFTER_STAGE1",
+          "prelabelArtifact": 14795467921,
+          "pinnedS42Artifact": 14795708343,
+          "selectedOriginalClusters": [
+            75,
+            29,
+            72,
+            28,
+            80,
+            38,
+            39,
+            43
+          ],
+          "classSelection": {
+            "changed": 4,
+            "maintained": 4,
+            "selectionRule": "SHA first four distinct-source changed clear then four distinct-source maintained clear, predeclared before inference"
+          },
+          "publicNoLabel16ArtifactId": 14795433930,
+          "privateClassMapArtifactId": 14795823044,
+          "archiveRunId": 45127192278,
+          "physicalHistoricalPrefixesMatched": 104,
+          "focalLegalActionMasksMatched": 104,
+          "sourceDisjointFromOldPilotAndExpanded58": true,
+          "chatgptResponses": 0,
+          "caveat": "point shifts model alternative previous-round score distributions; not observed historical results or expert tactical labels"
+        },
+        "latestProgressReport": "handoff/p2a-v4-stage1-preflight-and-l35-ready-20261123.md"
       },
       "blockers": [
-        "v4 final protocol not preregistered: 8-case STOP rules, all denominator thresholds and independent L4 assessor blinded negative controls",
-        "L3.5 new source-disjoint physically legal S42 changed >=4 and unchanged >=4 reference pairs not yet independently certified",
-        "true model strategic explanation not measured; all 8 questions are draft and must not be sent for evaluation yet",
-        "production recommendation from authentic S42 and distinct deterministic public-fact UI not integrated",
-        "full independent physical legality and scoring-source audit beyond 4608 point-only math examples",
-        "no paid API or external inference without user's separate explicit approval"
+        "external user's independent ChatGPT Temporary Chat Stage1 eight real responses not executed: need the first pilot-42 JSON reply and provider UI metadata, no paid API",
+        "after Stage1 8/8 success, repeat four cases twice and Stage2 true/fake reference eight separate manual model sessions remain",
+        "L3.5 selected 4 changed +4 maintained (16 opaque public question files) still have 0 real GPT independent results",
+        "L4 actual three-rater masked evaluation and independent Claude/Gemini phase-exit reviews still 0",
+        "full product Mortal S42 policy UI and independent game scoring/legality end-to-end gates separate; main and public release NO-GO",
+        "no unapproved paid model APIs"
       ],
       "independentModelResponses": 0,
       "notTrustedModelTacticalGrade": true,
       "sourceS42Exploratory58": "historical_only_never_promote_to_new_l35",
-      "gate": "NO_GO_FOR_V4_MANUAL_REAL_MODEL_TRIAL_OR_PRODUCTION",
-      "next": "Complete v4 preregistered STOP/L4 evaluation protocol plus independently legal L3.5 control examples. Only after freeze ask user for separate temporary ChatGPT responses. Draft eight-case pack is NOT READY.",
+      "gate": "STAGE1_MANUAL_INDEPENDENT_DIAGNOSTIC_INPUT_READY; OVERALL_PHASE_GO_NOT_YET_DETERMINED; NO_PRODUCTION_RELEASE",
+      "next": "対応依頼: Ask user to run pilot-42 exact frozen JSON in a NEW ChatGPT temporary chat and return unedited JSON reply + displayed model/date. Preserve first fatal predeclared NO-GO if any. After first pass proceed through remaining seven distinct temporary chats and conditional blinded tests. Never infer actual independent answers by current development self-conversation.",
       "latestProgressReport": "handoff/p2a-v4-compact-independent-stage1-devpack-20261123.md"
     }
   },
@@ -2158,6 +2218,31 @@
       "formalL35": "NOT_RUN",
       "formalL4": "NOT_RUN",
       "record": "handoff/p2a-v4-compact-independent-stage1-devpack-20261123.md"
+    },
+    {
+      "status": "P2a_v4_independent_public_stage1_prereg_and_new_unseen_L35_materials_ready_FOR_REAL_MODEL",
+      "phase": "P2a-v4",
+      "headCommit": "9b20f66a24cbc34c2d34e3769a89d513d80b1151",
+      "pr": 63,
+      "sourceRun": 45127192276,
+      "sourceNodeTestsPass": 71,
+      "sourceNodeTestsFail": 0,
+      "pythonIndependentSettlementVectors": 4608,
+      "pythonMismatches": 0,
+      "newHeldoutOriginalClusters": 32,
+      "pairPool": 104,
+      "l35SourceEncoderPass": 104,
+      "pinnedS42Changed": 11,
+      "pinnedS42Maintained": 93,
+      "selectedSourceDisjointChanged": 4,
+      "selectedSourceDisjointMaintained": 4,
+      "stage1Public8ArtifactId": 14795119094,
+      "stage1SealedWeakControls": 14795866231,
+      "l35BlindPublic16ArtifactId": 14795433930,
+      "realChatGPTStage1Responses": 0,
+      "formalPhaseResult": "PENDING",
+      "report": "handoff/p2a-v4-stage1-preflight-and-l35-ready-20261123.md",
+      "next": "First user-origin independent pilot-42 JSON required; no background / no paid API"
     }
   ],
   "roadmap": {
