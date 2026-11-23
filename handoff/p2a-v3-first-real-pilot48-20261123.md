@@ -1,0 +1,27 @@
+# P2a-v3 最初の真正ChatGPT手動回答 pilot-48 — 元回答は形式不合格（2026-11-23）
+
+**状態：P2a-v3途中の実モデル受領・仕様不備の修正。Phase完了ではない。**
+
+## 実測と回答原文の保全
+- ユーザーが別の一時ChatGPTで解いたと申告し、`pilot-48-response.json` をこの開発会話に提出した。**独立チャットを提供元署名で認証できたわけではない。** UIモデルの表示名/正確な版、開始/終了日時、各種生成パラメータは未報告のため捏造せずnull扱い。
+- 問題はschema-v2の`pilot-48.json`。旧run **45102049118**、artifact **14785867588**。source requestHash `1e2d745af93726d1a68b6b3761ec916c0a55b004266130e9e170d860d460cc00`。
+- **原文を一切修正せず** `archive/results/p2a-v3-pilot48-user-supplied-chatgpt-raw-schema-v2-20261123.json` に格納。ユーザーアップロード時バイトSHA256 `4dda6ae5163680b874c0e5946fc08428c612d70f4aaf21b568d0721afcf9c9a3`。モデルの内容を開発側で代作していない。
+- 旧問題ファイルSHA256 `509d50f63563402efbf5295701aa2e6f676579c1536a788c83213d5b06e78214`。その問題のハッシュに対するモデル回答は**1件、原本のまま有効回答0件**。Stage2実モデル0、匿名3者採点0。
+
+## 客観照合（原回答のまま）
+- 形式：UTF-8でJSONとして読み込め、version `p2a-v3-independent-public-explanation-2`、requestHash、候補の存在、トップレベル全6欄とproof構造が正しい。
+- 選択：`a37-1`（立直p5）vs `a13-0`（通常打牌p5）。ともに合法で、シャンテン0、待ちm6/m9、残存上限各3枚（計6）。
+- 原文4 comparisons の actionKind と shanten と m6/m9の別条件ロン点数・役は公開calcと一致。m6：立直5,200（一盃口・立直）対ダマ2,600（一盃口）、m9：立直5,200対ダマ役なし。
+- 13件の相手観測の **各seat・field・value・assessmentはすべて公開事実に合致**。席0が5件、席1が4件、席3が4件。席ごとの重要度は一貫している。seat1への条件付き3,900点放銃時の自分28,900・相手29,100・自分2位という例は公開資料と一致。
+- **唯一確認された契約違反**：`verifyV3PublicContrast()` は `opponentObservations.length<=9` を必須とするが、回答は**13件**（4件超過）。したがって**元回答はschema verification FAIL**。局面観測自体が正しいことを理由にPASSへ格上げしない。機械検証（別実装の93件の構造/値チェック）で92件pass／上限だけ1件fail。これは戦術能力テストではない。
+- 出題側の `request.system` に**上限9が書かれていなかった**。13件は事実の捏造とは別種の、出題・検証契約の齟齬を露呈した例。ユーザーに誤った手順の責任はない。
+- 仮点数と未知の和了確率/放銃確率を区別し、席0の二副露の危険度を断定しない等、説明の節度はある。一方、これで「立直p5が正解」やL4=高評価を保証しない。**独立匿名採点は未実施**。作成元の推奨をMortal Qと比べて良否断定しない。
+
+## 修正の時系列とゲート
+1. 初回手動回答は**schema-v2**で受領/閲覧された。原文を保存した上で、旧schema-v2の不合格を確定。
+2. その後、開発ブランチ `feat/coach-p2a-v3-contract-repair` の `src/coach/v14-independent-request-v3.mjs` の出題指示に **全席を含めopponentObservationsを1～9件／各席最大3件**と明記した。選抜8問・公開原型36・点数計算・検証器の9件上限は変更しない。
+3. `tests/next/v14-freeze-v3-manual-smoke.mjs` のパック識別子と日本語手順、GitHub Actionsの新artifact名を**schema-v3**へ改版。旧artifactは不変で保存。schema-v3質問のrequestHashは指示文改訂に伴って新しい値となる。回帰テストには実測で露呈した13件がFAILになるケースを追加。新モデル呼出し0、追加課金0。
+4. **事前登録の履歴を改竄しない**。元の`handoff/p2a-v3-chatgpt-36-blind-scoring-prereg-20261123.md`は保存し、改訂追記は`handoff/p2a-v3-chatgpt-prereg-amendment-v2-20261123.md`に別版として登録。旧実測を新しいschema-v3での合格に流用しない。
+
+## 次の外部依頼と止める基準
+schema-v3の新しい`questions/pilot-48.json`を**新しい一時チャットで1回だけ**解かせて元のファイルを返却（他回答、Mortal Q、以前の回答を渡さない）。新稿で形式が通るか先に確かめる。形式FAILなら次の7問へ拡大せず原因を修正/記録。PASSなら固定8問の初回残り7問を毎問独立チャットで実施。既存のpilot-48 schema-v2失敗は別の実測として通算保存。未知のパラメータはnull。Phase全体はNO-GO、main不変。
