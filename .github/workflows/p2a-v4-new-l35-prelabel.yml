@@ -1,0 +1,86 @@
+name: P2a-v4 new unseen L3.5 original-shard pool BEFORE labels (verifier only)
+on:
+  push:
+    branches:
+      - feat/coach-p2a-v4-fact-anchored-explanations
+    paths:
+      - 'tests/next/v14-v4-l35-independent-source-pool.mjs'
+      - '.github/workflows/p2a-v4-new-l35-prelabel.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  source-disjoint-public-interventions:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.23.4'
+      - uses: actions/download-artifact@v4
+        with:
+          name: p2a-v2-36-public-development-only
+          run-id: 45089922993
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/l35-new36
+      - uses: actions/download-artifact@v4
+        with:
+          name: p2a-v2-36-verifier-only-development
+          run-id: 45089922993
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/l35-newlineage
+      - uses: actions/download-artifact@v4
+        with:
+          name: v14-frozen-stage1-only
+          run-id: 44813180639
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/l35-old30
+      - uses: actions/download-artifact@v4
+        with:
+          name: v14-frozen-verifier-only
+          run-id: 44813180639
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/l35-oldlineage
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: p1-v2-dev-data-*
+          run-id: 44726204303
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/l35-dev-archive
+      - name: Hash-lock new original-shard pool before any Mortal or ChatGPT label
+        run: |
+          set -euo pipefail
+          node tests/next/v14-v4-l35-independent-source-pool.mjs \
+            /tmp/l35-new36/independent-requests.json \
+            /tmp/l35-newlineage/lineage.json \
+            /tmp/l35-old30/independent-requests.json \
+            /tmp/l35-oldlineage/lineage.json \
+            /tmp/l35-dev-archive \
+            /tmp/l35-prelabel
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('/tmp/l35-prelabel/prelabel-manifest.json')
+          m=json.loads(p.read_text())
+          assert m['labelStatus']=='UNSCORED_S42_NOT_YET_CALLED'
+          assert m['noModelAnswers'] and m['noTeacherRead']
+          assert m['selectedClusters']>=8
+          assert m['publicPairs']>=16
+          assert len(m['unusedCandidateShards'])==34
+          assert not set(m['usedPriorOrV3Shards'])&set(m['unusedCandidateShards'])
+          assert len({x['shard'] for x in m['selected']})==m['selectedClusters']
+          print('NEW-L35 UNSCORED ORIGINAL SOURCE CLUSTERS',m['selectedClusters'],'PAIRS',m['publicPairs'])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p2a-v4-l35-unused-original-shards-prelabel-verifier-only
+          path: /tmp/l35-prelabel
+          retention-days: 30
+          if-no-files-found: error
+      - name: Ensure original private archives do not enter public file artifacts
+        if: always()
+        run: |
+          rm -rf /tmp/l35-dev-archive /tmp/l35-old30 /tmp/l35-oldlineage /tmp/l35-newlineage /tmp/l35-new36
+          echo "S42 model calls 0. ChatGPT model calls 0. No paid model API calls."
