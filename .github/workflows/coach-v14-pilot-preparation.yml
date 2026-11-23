@@ -632,3 +632,131 @@ jobs:
           path: /tmp/p2a-v2-independent-yaku-names.json
           if-no-files-found: warn
           retention-days: 30
+
+  v2-phase-exit-review-snapshot:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Prepare pinned Phase v2 review documents and code (no raw player answers)
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin refs/heads/project-handoff:refs/remotes/origin/project-handoff
+          python - <<'PY'
+          import hashlib,json,pathlib,subprocess,zipfile,datetime
+          root=pathlib.Path('/tmp/p2a-v2-phase-review')
+          def cmd(*args):return subprocess.check_output(args)
+          code_sha=cmd('git','rev-parse','HEAD').decode().strip()
+          doc_sha=cmd('git','rev-parse','refs/remotes/origin/project-handoff').decode().strip()
+          code_anchor='9f3ef9d575899db0569d1d6ec915439ea22650d9'
+          changed=cmd('git','diff','--name-only',code_anchor,code_sha).decode().splitlines()
+          assert all(x=='.github/workflows/coach-v14-pilot-preparation.yml' for x in changed),changed
+          docs='''HANDOFF.md
+          handoff/state.json
+          handoff/third-party-review-protocol-20261123.md
+          handoff/p2a-v2-phase-exit-no-go-review-request-20261123.md
+          handoff/p2a-v2-product-coach-contract-20261123.md
+          handoff/p2a-v2-second-dev-36-prereg-20261123.md
+          handoff/p2a-v2-development-gates5-6-20261123.md
+          handoff/p2a-v2-development-gate4-20261123.md
+          handoff/p2a-v2-development-gate3-20261123.md
+          handoff/p2a-v2-mechanical-evaluation-gate2-20261123.md
+          handoff/p2a-v2-initial-engineering-checkpoint-20261123.md
+          handoff/p2a-v14-claude-gemini-review-integrated-20261123.md
+          handoff/p2a-v14-30-dev-pilot-first-stage-review-20261121.md
+          handoff/roadmap-v1.4-pilot-go-20261120.md
+          handoff/license-decision-20261120.md'''.splitlines()
+          codes='''src/coach/v14-pilot-boundary.mjs
+          src/coach/v14-public-calculations.mjs
+          src/coach/p2a-facts-only.mjs
+          src/coach/v14-evidence-proof-v2.mjs
+          src/coach/v14-conditional-table-v2.mjs
+          src/coach/v14-independent-request-v2.mjs
+          src/coach/v14-inference-record-v2.mjs
+          src/coach/v14-seat-genbutsu-proof-v2.mjs
+          src/coach/v14-public-tradeoff-witness-v2.mjs
+          src/coach/v14-candidate-seat-attribution-v2.mjs
+          src/coach/v14-paired-contrast-v2.mjs
+          src/coach/v14-paired-awareness-v2.mjs
+          src/coach/v14-stage2-boundary-v2.mjs
+          tests/next/v14-evidence-proof-v2.test.mjs
+          tests/next/v14-conditional-table-v2.test.mjs
+          tests/next/v14-independent-request-v2.test.mjs
+          tests/next/v14-inference-record-v2.test.mjs
+          tests/next/v14-seat-genbutsu-proof-v2.test.mjs
+          tests/next/v14-public-tradeoff-witness-v2.test.mjs
+          tests/next/v14-candidate-seat-attribution-v2.test.mjs
+          tests/next/v14-paired-contrast-v2.test.mjs
+          tests/next/v14-paired-awareness-v2.test.mjs
+          tests/next/v14-stage2-boundary-v2.test.mjs
+          tests/next/v14-stage2-counterfeit-isolated-v2.mjs
+          tests/next/v14-stage2-counterfeit-isolated-v2.test.mjs
+          tests/next/v14-onecase-export-v2.mjs
+          tests/next/v14-onecase-export-v2.test.mjs
+          tests/next/v14-onecase-write-v2.mjs
+          tests/next/freeze-v2-followup-36.mjs
+          tests/next/v14-followup-36-freeze.test.mjs
+          tests/next/audit-v14-followup-public-legality.py
+          tests/next/audit-v14-public-yaku-names-v2.py
+          tests/next/audit-v14-public-calculations.py
+          src/coach/s42-benchmark.mjs
+          src/coach/phoenix-coach.mjs
+          src/mortal/mjai-bridge.mjs
+          src/mortal/mortal-worker.mjs
+          src/mortal/mortal-cpu.mjs
+          src/mortal/mortal-client.mjs
+          src/mortal/s42-analytics.mjs
+          tests/next/v14-pilot-answer-audit.mjs
+          tests/next/v14-negative-controls.mjs
+          tests/next/v14-pilot-boundary.test.mjs
+          .github/workflows/coach-v14-pilot-preparation.yml
+          index.html'''.splitlines()
+          entries=[]
+          for kind,items in [('docs',docs),('code',codes)]:
+              for p in items:
+                  blob=cmd('git','show',doc_sha+':'+p) if kind=='docs' else pathlib.Path(p).read_bytes()
+                  dst=root/kind/p;dst.parent.mkdir(parents=True,exist_ok=True);dst.write_bytes(blob)
+                  entries.append({'file':kind+'/'+p,'bytes':len(blob),'sha256':hashlib.sha256(blob).hexdigest()})
+          intro='# 麻雀LAB P2a-v2 Phase終了（開発側NO-GO・第三者未実施）レビュー資料\n'
+          intro+='作業状況は docs/handoff/state.json、NO-GO判定は docs/handoff/p2a-v2-phase-exit-no-go-review-request-20261123.md、規程は docs/handoff/third-party-review-protocol-20261123.md を参照。\n'
+          intro+='Claude OpusおよびGeminiには別々に重大Blocker/Majorのみを最大2往復で審査依頼。指摘数上限なし。\n'
+          intro+='モデル実推論0、コーチ戦術説明未認証、製品改変/リリースなし。private牌/実際の試験回答なし。\n'
+          (root/'START_HERE.md').write_text(intro,encoding='utf8')
+          plain='# 麻雀LAB P2a-v2 Phaseレビュー用原文一括\n\n'
+          plain+='Documentation commit: '+doc_sha+'\nImplementation anchor: '+code_anchor+'\nWorkflow snapshot commit: '+code_sha+'\n\n'
+          for p in docs:
+              plain+='\n\n-----\n\n# Source: '+p+'\n\n'
+              t=(root/'docs'/p).read_text(encoding='utf8')
+              plain+=('~~~json\n'+t+'\n~~~\n') if p.endswith('.json') else (t+'\n')
+          (root/'P2A_V2_FULL_DOCS.md').write_text(plain,encoding='utf8')
+          (root/'MANIFEST.json').write_text(json.dumps({
+            'docCommit':doc_sha,'codeCommit':code_sha,'implementationAnchor':code_anchor,
+            'createdAt':datetime.datetime.now(datetime.timezone.utc).isoformat(),
+            'phaseVerdict':'developer_NO_GO_review_pending',
+            'realModelCalls':0,'containsHiddenHands':False,
+            'containsRealCoachAnswers':False,'files':entries
+          },ensure_ascii=False,indent=2)+'\n',encoding='utf8')
+          for fname,onlydocs in [('mahjong_p2a_v2_review_full.zip',False),
+                                 ('mahjong_p2a_v2_review_docs.zip',True)]:
+              with zipfile.ZipFile('/tmp/'+fname,'w',zipfile.ZIP_DEFLATED,compresslevel=9) as z:
+                  for p in sorted(root.rglob('*')):
+                      rel=p.relative_to(root).as_posix()
+                      if p.is_file() and (not onlydocs or rel.startswith('docs/') or rel in ('MANIFEST.json','START_HERE.md','P2A_V2_FULL_DOCS.md')):
+                          z.write(p,rel)
+              with zipfile.ZipFile('/tmp/'+fname) as z:assert z.testzip() is None
+              print(fname,pathlib.Path('/tmp/'+fname).stat().st_size)
+          pathlib.Path('/tmp/mahjong_p2a_v2_review_full_docs.md').write_text(plain,encoding='utf8')
+          print('SNAPSHOT',doc_sha,code_sha,'total_files',len(entries))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mahjong-p2a-v2-phase-exit-review-package-claude-gemini
+          path: |
+            /tmp/mahjong_p2a_v2_review_full.zip
+            /tmp/mahjong_p2a_v2_review_docs.zip
+            /tmp/mahjong_p2a_v2_review_full_docs.md
+          if-no-files-found: error
+          retention-days: 30
