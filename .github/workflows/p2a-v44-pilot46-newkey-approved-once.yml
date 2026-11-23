@@ -1,10 +1,8 @@
 name: P2a-v4.4 GPT-6 pilot46 NEWKEY one approved POST encrypted
+# One authorization consumed by successful single Responses POST in run 45216681342.
+# Disarmed; direct dispatch also fails explicit approval check.
 on:
-  push:
-    branches:
-      - feat/coach-p2a-v44-api-transport-dryrun
-    paths:
-      - research/approvals/pilot46-newkey-onepost-20261124.run
+  workflow_dispatch:
 permissions:
   contents: read
   actions: read
@@ -19,7 +17,7 @@ jobs:
       V14_FOLLOWUP_PUBLIC: /tmp/p2a-v44-original36/independent-requests.json
       V14_V44_QUESTIONS_DIR: /tmp/p2a-v44-public8/questions
       PILOT46_ENCRYPTED_DIR: /tmp/pilot46-newkey-encrypted-only
-      ONE_SHOT_APPROVAL: '$0.30_PILOT46_NEWKEY_2026-11-24'
+      ONE_SHOT_APPROVAL: 'EXPIRED_AFTER_SUCCESS_45216681342'
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
     steps:
       - uses: actions/checkout@v4
