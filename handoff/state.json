@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-23T23:34:00+09:00",
+  "checkpoint": "2026-11-23T23:43:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -1729,7 +1729,8 @@
       "transport": "stateless OpenAI Responses API with gpt-6-sol; not identical provenance to ChatGPT temporary chat",
       "manualStage1ResponsesRemain": 0,
       "confidentiality": "public GitHub Actions live disabled; raw API answer local private file only",
-      "report": "handoff/p2a-v44-api-automation-dryrun-20261123.md"
+      "report": "handoff/p2a-v44-api-automation-dryrun-20261123.md",
+      "planCorrection": "USER_HAS_PLUS_NOT_PRO; Pro subscription API grant unavailable under Plus; live remains prohibited without individual explicit consent"
     }
   },
   "previous_runs": [
@@ -3533,6 +3534,16 @@
       "api_payment": "NOT_AUTHORIZED",
       "intended_free_first_test": "Use existing ChatGPT access, isolated single-case temporary conversations when practical; preserve actual model run metadata and disclose what cannot be authenticated",
       "boundary": "Neither Claude nor Gemini scoring of explanations alone certifies professional/tactical correctness, and Gemini/Claude direct answer quality must not substitute for testing ChatGPT coach"
+    },
+    "account_plan_correction": {
+      "reportedPlan": "ChatGPT Plus (not Pro)",
+      "source": "user explicit correction 2026-11-23 23:42 JST",
+      "proAPIGrantEligibility": false,
+      "plusAPIUsageIncluded": false,
+      "apiPlatformSeparateBilling": true,
+      "freeAPIGrantAtUserOrg": "NOT_VERIFIED",
+      "newPaidApiAuthorization": 0,
+      "action": "do not trigger billable API; use dry run and manual ChatGPT plus deterministic verifier until an approved route exists"
     }
   }
 }
