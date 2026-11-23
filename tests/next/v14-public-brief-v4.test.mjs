@@ -34,11 +34,26 @@ test('pilot48 still places same-tile riichi and dama as deterministic detailed p
  assert(ids.includes('a13-0'));
  assert.equal(x.brief.allLegalActions.length,13);
  assert(x.bytes<Buffer.byteLength(JSON.stringify(e),'utf8')/2);
- assert.equal(x.brief.dealerSeat,'UNVERIFIED_PUBLIC_BOARD_DO_NOT_GUESS');
+ assert.equal(x.brief.dealerProvenance.dealerSeat,0);
 });
 test('input mutation cannot silently update source digest or alter brief',()=>{
  const v=all.find(x=>x.request.input.id==='pilot-48');if(!v)return;
  const e=createV3IndependentDevelopmentRequest(v);
  const wrong=structuredClone(e);wrong.request.input.actions[0].detail='another';
  assert.throws(()=>createV4PublicBrief(wrong),/untrusted public packet/);
+});
+
+test('call candidate brief includes all legal concrete after-call discards, not a fictional pre-choice tenpai',()=>{
+ const v=all.find(x=>x.request.input.id==='pilot-59');if(!v)return;
+ const e=createV3IndependentDevelopmentRequest(v),res=createV4PublicBrief(e);
+ const call=res.brief.detailedCandidates.find(x=>x.key==='a41-0');
+ assert(call);
+ assert.equal(call.shanten,null);
+ assert(call.afterCallDiscards.length>0);
+ const m4=call.afterCallDiscards.find(x=>x.discard==='m4');
+ assert(m4);
+ assert.equal(m4.shanten,0);
+ assert.equal(m4.ownRiverFuriten,false);
+ assert(m4.conditionalNormalWins.some(x=>x.tile==='p0'));
+ assert.equal(res.brief.dealerProvenance.dealerSeat,0);
 });
