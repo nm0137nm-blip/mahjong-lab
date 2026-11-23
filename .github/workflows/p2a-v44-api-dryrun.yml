@@ -3,6 +3,9 @@ on:
   push:
     branches:
       - feat/coach-p2a-v44-api-transport-dryrun
+  pull_request:
+    branches:
+      - feat/coach-p2a-v44-complete-public-shape-proof
   workflow_dispatch:
 permissions:
   contents: read
