@@ -6,7 +6,7 @@ import {BATCH_VERSION,CASE_ORDER,guardOneTime,budgetFromExactTokenCount,
   estimateUsageUSD,PER_CALL_CAP_USD,APPROVAL_MARKER_TEXT,APPROVAL_MARKER}
  from './v14-v44-seven-capped-api.mjs';
 import {makeEncryptedArchive} from './v14-v44-pilot46-single-live-actions.mjs';
-import {P2A_V44_FIXED_EIGHT} from '../../src/coach/v14-v44-evaluation-plan.mjs';
+import {P2A_V44_FIXED_EIGHT,P2A_V44_PACKET_HASHES} from '../../src/coach/v14-v44-evaluation-plan.mjs';
 const standard={GITHUB_ACTIONS:'true',GITHUB_EVENT_NAME:'push',GITHUB_RUN_ATTEMPT:'1',
  GITHUB_REF:'refs/heads/feat/coach-p2a-v44-api-seven-capped',
  V44_SEVEN_APPROVAL:'SEVEN_AT_MOST_005_20261124',
@@ -56,7 +56,6 @@ test('RSA private decrypt recovers raw receipt, public artifact never contains p
 });
 test('seven source packets and original contract are available when freeze source set',()=>{
  if(!process.env.V14_V44_QUESTIONS_DIR)return;
- const {P2A_V44_PACKET_HASHES}=await import('../../src/coach/v14-v44-evaluation-plan.mjs');
  CASE_ORDER.forEach((id,i)=>{
   const packet=JSON.parse(fs.readFileSync(
    process.env.V14_V44_QUESTIONS_DIR+'/'+id+'.json','utf8'));
