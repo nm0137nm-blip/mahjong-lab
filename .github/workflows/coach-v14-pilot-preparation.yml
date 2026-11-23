@@ -455,7 +455,15 @@ jobs:
           node --test tests/next/v14-seat-genbutsu-proof-v2.test.mjs
           node --test tests/next/v14-public-tradeoff-witness-v2.test.mjs
           node --test tests/next/v14-candidate-seat-attribution-v2.test.mjs
+          node --test tests/next/v14-onecase-export-v2.test.mjs
+          node tests/next/v14-onecase-write-v2.mjs "$V14_STAGE1" /tmp/p2a-v2-onecase-export
           node --test tests/next/v14-pilot-boundary.test.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p2a-v2-public-onecase-regression-only
+          path: /tmp/p2a-v2-onecase-export/
+          if-no-files-found: error
+          retention-days: 14
 
   v2-paired-contrast:
     runs-on: ubuntu-24.04
