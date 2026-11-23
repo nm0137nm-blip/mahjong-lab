@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-23T09:10:00+09:00",
+  "checkpoint": "2026-11-23T09:20:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -9,11 +9,11 @@
   },
   "active_task": {
     "phase": "P2a-v2-dev-repair",
-    "status": "development_gate3_specific_public_tradeoffs_and_blind_adversarial_qa_success_semantic_gate_still_open",
+    "status": "dev_gate4_concrete_candidate_opponent_factual_link_check_pass_knowledge_semantics_not_certified",
     "branch": "feat/coach-v14-pilot-boundary-v1",
-    "commit": "c8cf63c6a532fa4c92bf7fd0729ca7b84b420b9d",
+    "commit": "10c7a9884b9cc7659768d16d674c56609173a9a4",
     "pr": 61,
-    "run_id": 45086327347,
+    "run_id": 45087267063,
     "prior_runs": [
       {
         "run_id": 44754324733,
@@ -235,10 +235,27 @@
         "actualIndependentModelCalls": 0,
         "semanticCoachQualityCertified": false,
         "formalGatePassed": false
+      },
+      {
+        "run_id": 45087267063,
+        "commit": "10c7a9884b9cc7659768d16d674c56609173a9a4",
+        "status": "p2a_v2_gate4_factual_link_QA_success_semantic_not_certified",
+        "tests": 44,
+        "passed": 44,
+        "failed": 0,
+        "verifiedSyntheticFactualTradeoffs": 888,
+        "sourceCases": 30,
+        "casesWithWitness": 22,
+        "weakGenericFactualLinkCount": 0,
+        "weakGenericTotal": 30,
+        "actualIndependentModelInference": 0,
+        "actualStage2ModelInference": 0,
+        "tacticalExplanationCertified": false,
+        "formalGatePassed": false
       }
     ],
-    "decision": "Development Gate3 mechanical QA passed 40/40 on code sha c8cf63c6...; public candidate-specific concrete seat-genbutsu vs own shape sacrifice witnesses 888 in 22/30 regression scenes (58 seat contexts). V2 relevance partition can no longer contradict typed assessment. Stage2 test-only isolated genuine/counterfeit reference packets for 8 contrast variants have model-visible equivalent structure and verifier-only labels; production genuine reference path rejects counterfeit even if rehashed. No actual Stage2 inference, no behavioral fake recommendation adherence or deep tactical causality demonstrated. Evaluator strategic correctness Blocker remains. Prior v1.4 pilot failed; formal B/P1Lite/P3/main/public still NO-GO.",
-    "next": "Implement mechanism to detect inconsistent and generic causal explanations with legally paired public factor changes plus positive/negative controls and truly held-out attacks. Keep genuine/fake Stage2 trial only in tests path. Determine 1-case real model inference and audit provenance without assuming external paid APIs. Independently prepare unseen 30-40 developer cases and preregister all thresholds before inference, but no formal seeds or release.",
+    "decision": "Development Gate4 QA pass 44/44. Typed witness for specific opponent genbutsu/shape opportunity cost now must match the answer's exact recommended-vs-alternative candidates, correctly classified opponent seat, comparable metric/value, rather than a reusable citation elsewhere; 888 synthetic known-good math fixtures pass; 30 fact-padded generic fixtures fail this particular link check. Text remains semantically ungraded and generic prose with genuine typed facts can still pass. No actual LLM used, no strategy certification. Old 30 remain regression only. Full v1.4 pilot failed and official B/P1-Lite160/P3/main/public remain NO-GO.",
+    "next": "Expand paired legal public-factor counterfactuals and robust adversarial cases with correct values but swapped prose. Confirm genuinely independent model execution/run logs or report inability without pretending API. Build new 30–40 nonoverlapping dev cases, preregister next-stage criteria and execute Stage1+Stage2 only after end-to-end model path and post-freeze controls are ready. No formal seeds/official B or public release.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -279,7 +296,8 @@
     },
     "v2_checkpoint": "handoff/p2a-v2-initial-engineering-checkpoint-20261123.md",
     "gate2_report": "handoff/p2a-v2-mechanical-evaluation-gate2-20261123.md",
-    "gate3_report": "handoff/p2a-v2-development-gate3-20261123.md"
+    "gate3_report": "handoff/p2a-v2-development-gate3-20261123.md",
+    "gate4_report": "handoff/p2a-v2-development-gate4-20261123.md"
   },
   "previous_runs": [
     {
