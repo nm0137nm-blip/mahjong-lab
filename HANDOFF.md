@@ -493,3 +493,10 @@ ChatGPTが実際に独立して解いた回答を得る前に、採点・中止�
 - ただし画像は**プロジェクト単位**のLimitsやAPIキーの所属組織・プロジェクトを表示していない。429の`error.code`未取得であり、project spend cap / キーの別組織所属 / 反映遅延 / 他のレート条件を区別できない。残高があるから原因確定・再試行GOとはしない。
 - 修正版研究枝 commit `5476ece4d1e8459aea268f86c0f410cf4838f004`で将来の失敗時には`error.type`と`error.code`の安全な英数字のみを出力し、`error.message`・元本文・秘密情報はログ非表示。非課金CI run `45206316435` SUCCESS。**実API再送信0**、pilot46の旧1回承認は消費済み、ワークフロー無効化は維持。
 - 現在の対応依頼は、ユーザーによるOpenAI Platformの**APIキーを発行したプロジェクト**のLimitsと、請求画面の組織が同一かの確認。今すぐ追加で5ドル購入する必要なし。APIを試し直す場合は新しい用途別個別承認が必要。
+
+
+## 2026-11-24 00:42 JST：Default project画像＋無料モデル情報GET成功
+- ユーザー画像：Default projectのProject Settings > Limitsは**No spend limit set**、Generalのdefault service tier Standard、Standard許可チェックあり。Organization側は5ドル残高・自動チャージOFF・Spend $0/100上限強制OFF、gpt-6-sol枠十分。モデル個別block/unblockとAPIキーの所属プロジェクトは画像だけでは確認できない。Project上限0ドルが429原因という従前仮説は退ける。
+- 実APIキーをGitHub Secretsから読み取る**モデル情報のみGET `/v1/models/gpt-6-sol`** を課金対象の回答生成なしで1回実行。GitHub Actions run **45207998275**, job **137808852039** がSUCCESS。実レスポンス **HTTP 200**, `readableModel:true`、モデル生成POST=0、追加費用を伴う生成=0、キー/プロンプト/元回答公開なし。
+- これによりキー無効とモデルメタデータへのアクセス不可は否定的。ただし**モデルGET 200はResponses POSTの割当・請求利用可まで保証しない**。旧パイロットPOST run45203665432のHTTP 429のbody/error.codeは保存されておらず、具体的原因未確定。古いログから429の詳細を取り戻すことはできない。
+- 将来の診断コードはerror.type/error.codeのみ安全に出力するよう修正済み（非課金run45206316435成功）。旧1回限り最大0.30ドル承認はHTTP 429 POSTで使い切ったため、**新たな課金の可能性あるPOSTは必ず用途限定の新規事前承認**。ワークフローの旧トリガーは無効化済み。v4.4手動正式Stage1 0/8・本番採用NO-GOは変更なし。
