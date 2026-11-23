@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-24T01:29:00+09:00",
+  "checkpoint": "2026-11-24T01:52:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -8,12 +8,12 @@
     "coach_candidate_promoted": false
   },
   "active_task": {
-    "phase": "P2a-v4.4 separately-versioned public shape proof engineering complete with 74/74 Node tests, eight newly frozen never-GPT-answered public questions; next first pilot46 original GPT-6 JSON file",
-    "status": "P2a_v44_74_TESTS_PASS_NEW_EIGHT_ORIGINAL_PUBLIC_SHA_FROZEN_FIRST_PILOT46_AWAITING_GPT6_JSON_FILE",
-    "branch": "feat/coach-p2a-v43-japanese-conditional-gate",
+    "phase": "P2a-v4.4 API exploratory fixed 8: first fatal at pilot-53, closed NO-GO; source frozen, no posthoc regrade; original manual Stage1 0/8",
+    "status": "P2a_v44_API_EXPLORATORY_NO_GO_FIRST_FATAL_PILOT53_VERIFIER_JAPANESE_MORPHOLOGY_FALSE_NEGATIVE_NEXT_V45_SEPARATE_PRE_REG",
+    "branch": "feat/coach-p2a-v44-api-seven-capped",
     "commit": "f92239ad355d069d43ead0cbe6951ade9a07ae3a",
-    "pr": 66,
-    "run_id": 45161118786,
+    "pr": 69,
+    "run_id": 45220219174,
     "prior_runs": [
       {
         "run_id": 44754324733,
@@ -354,8 +354,8 @@
         "phaseCompleted": false
       }
     ],
-    "decision": "P2a-v4.3 officially closed 6/7 source-contract PASS then fatal pilot70 NO-GO; v44 source verifier adds standardShanten/improving composition/concreteDiscard witnesses and requires both candidate FactID citations. New all-previously-unanswered 8 source-only SHA selected and strict hashes frozen. Only development infrastructure / first independent Stage1 question ready, no tactical skill / S42 certified.",
-    "next": "対応依頼: New GPT-6 Temporary Chat with frozen pilot-46 public JSON; produce original untouched mahjong_P2a_v44_stage1_pilot-46_response.json UTF-8 JSON FILE attachment, not pasted. Return it for strict v44 original-source verifier. No old GPT answers or S42 labels supplied.",
+    "decision": "API pilot46 plus seven-stage attempted 4 newly: all under $0.05, first fatal pilot53. Do not run remaining pilot69/65/74 in v44. No Phase GO.",
+    "next": "Complete read-only root-cause audit and prepare separately versioned v45 Japanese morphological reversal verifier; freeze entirely new untouched public cases before any future paid GPT-6 API attempts and obtain separate authorization. L4 remains unmet.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -1901,6 +1901,84 @@
         "newPaidApprovalAvailable": false,
         "privateOutputPolicy": "Raw response and direct model choices withheld from public GitHub; SHA and mechanical verdict only."
       }
+    },
+    "v44_seven_budget_autorun": {
+      "userAuthorization": "2026-11-24 01:36 JST: max 8 total with <=0.05 USD each; pilot46 already answered, so 7 new posts maximum",
+      "branch": "feat/coach-p2a-v44-api-seven-capped",
+      "draftPR": 69,
+      "workflowRun": 45220219174,
+      "jobId": 137852134591,
+      "originalFixedOrder": [
+        "pilot-46",
+        "pilot-51",
+        "pilot-56",
+        "pilot-64",
+        "pilot-53",
+        "pilot-69",
+        "pilot-65",
+        "pilot-74"
+      ],
+      "priorPilot46": {
+        "verdict": "CONTRACT_AND_PUBLIC_FACT_GATE_PASS",
+        "estimateUSD": 0.03493,
+        "sourceRun": 45216681342
+      },
+      "attemptedNewCases": [
+        {
+          "caseId": "pilot-51",
+          "verdict": "CONTRACT_AND_PUBLIC_FACT_GATE_PASS",
+          "standardUSD": 0.03991,
+          "cacheWriteAdjustedUSD": 0.042991,
+          "rawSha": "baa9b88afa473f1dcdbbec421b5ed809bb59301761f52a242a952c8e8b46c64d"
+        },
+        {
+          "caseId": "pilot-56",
+          "verdict": "CONTRACT_AND_PUBLIC_FACT_GATE_PASS",
+          "standardUSD": 0.034622,
+          "cacheWriteAdjustedUSD": 0.036516,
+          "rawSha": "8b405b307afcfad1293762cefc71de5e82268c295dbd672d08a9a1e927a6b7bc"
+        },
+        {
+          "caseId": "pilot-64",
+          "verdict": "CONTRACT_AND_PUBLIC_FACT_GATE_PASS",
+          "standardUSD": 0.030738,
+          "cacheWriteAdjustedUSD": 0.032686,
+          "rawSha": "4cf0d4b42a18aaa8e350111ec2f90eb7ebacf32d6543cdc4ed3a7b89b3d21590"
+        },
+        {
+          "caseId": "pilot-53",
+          "verdict": "STAGE1_NO_GO_INVALID_PUBLIC_CONTRACT",
+          "standardUSD": 0.036708,
+          "cacheWriteAdjustedUSD": 0.038781,
+          "rawSha": "43b1f1bb179ee937d16a7104ebe96d8e7b6c16e794902a11c85c2e34da3d6b82"
+        }
+      ],
+      "remainingUnattempted": [
+        "pilot-69",
+        "pilot-65",
+        "pilot-74"
+      ],
+      "strictFirstFatal": true,
+      "actualPaidPosts": 4,
+      "automaticRetries": 0,
+      "standardRateTotalUSD": 0.141978,
+      "cacheWriteAdjustedUSD": 0.150974,
+      "actualPlatformBilledUSD": "UNCONFIRMED",
+      "allFiveAPIExploratory": {
+        "pass": 4,
+        "fail": 1,
+        "attempted": 5,
+        "outOfFixed8": 8
+      },
+      "fatalMessage": "v4-anchored: opponent change condition needs a cited public seat and explicit conditional reversal",
+      "fatalSpecificCause": "Seat0 changeCondition: conditional なら matched but selection expression 選びやすくする not recognized by frozen v43 decision regex, i.e. mechanical false negative; v44 still FAIL permanently",
+      "repoArtifactId": 14840600680,
+      "privateResponsesRecoveredAndSHA256Verified": true,
+      "scriptDisarmedCommit": "845e70f7e5fe6cced621de7b9207c73354bf9e0b",
+      "semanticL4": "NOT_ASSESSED",
+      "s42Alignment": "NOT_ASSESSED",
+      "originalManualChatStage1Count": 0,
+      "phaseOverall": "NO_GO_AND_CLOSED"
     }
   },
   "previous_runs": [
@@ -3650,6 +3728,24 @@
       "manualStage1Counted": false,
       "semanticCertified": false,
       "mainUnchanged": true
+    },
+    {
+      "phase": "P2a-v4.4 seven capped GPT-6 Sol API exploration",
+      "status": "CLOSED_NO_GO_ON_FIRST_FATAL_PILOT53",
+      "run_id": 45220219174,
+      "artifact_id": 14840600680,
+      "posts": 4,
+      "newContractPass": 3,
+      "newContractFail": 1,
+      "unattempted": 3,
+      "priorPilot46ContractPass": 1,
+      "strictStopEnforced": true,
+      "standardEstimatedUSD": 0.141978,
+      "cacheWriteAdjustedEstimatedUSD": 0.150974,
+      "perCallAllUnderUSD": 0.05,
+      "originalManualChatStage1Count": 0,
+      "semanticCertified": false,
+      "paidWorkflowDisarmed": true
     }
   ],
   "roadmap": {
