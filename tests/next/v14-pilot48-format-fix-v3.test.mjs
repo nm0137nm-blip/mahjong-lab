@@ -97,3 +97,27 @@ test('human display includes own hand, score, public rivers, viable actions but 
  assert(!text.includes('封じられた相手の手牌'));
  assert(text.length<11000,'a readable preview should be much smaller than machine JSON');
 });
+
+
+test('post-real-pilot correction explicitly says max nine opponent observations and stays fail-closed',()=>{
+ if(!cases.length)return;
+ const {p,answer}=check42();
+ assert.match(p.request.system,/opponentObservationsは合計1〜9件のみ/);
+ assert.match(p.request.system,/各席の観測事実は最大3件/);
+ const bad=clone(answer);
+ const i=p.request.input;
+ const obs=bad.evidenceProof.opponentObservations;
+ for(const seat of [0,1,3]){
+  for(const field of ['riichi','meldCount','points','pointGapFromOwn']){
+   if(!obs.some(x=>x.seat===seat&&x.field===field)){
+    obs.push({seat,field,value:get(i,'public-value-'+seat)[field],
+     assessment:seat===3?'not_established':'potentially_relevant'});
+   }
+  }
+ }
+ // 13 exact, nonfabricated public facts are STILL an invalid raw answer contract.
+ assert(obs.length>9);
+ assert.throws(()=>verifyV3IndependentDevelopmentAnswer(p,bad),/missing opponent observations/);
+ // The actual original user response is never silently normalized or upgraded to a pass.
+ assert.equal(verifyV3IndependentDevelopmentAnswer(p,answer).publicFacts,'verified');
+});
