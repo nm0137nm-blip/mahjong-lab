@@ -1,0 +1,657 @@
+{
+  "version": "q1-dev-1",
+  "sourceRun": 44726204303,
+  "artifacts": [
+    {
+      "shard": 1,
+      "id": 14624775477,
+      "digest": "sha256:595859cdfe52a08391cb2fb11bc7ec1e724142fbb3dee29f88fc696b1c02f3e1",
+      "bytes": 132122
+    },
+    {
+      "shard": 2,
+      "id": 14624800315,
+      "digest": "sha256:ca0bc5447fb89bfd43a0fcc8e8b14bc56e6e0131bc414509d7133aaaff98e08c",
+      "bytes": 96304
+    },
+    {
+      "shard": 3,
+      "id": 14624855295,
+      "digest": "sha256:3933e159977c018131db6e3aab0daabf3c8d3cd1e1047e485df3b760c519e5ab",
+      "bytes": 104766
+    },
+    {
+      "shard": 4,
+      "id": 14624600939,
+      "digest": "sha256:1503c9082b9cbc1bda90e7c89af433ec0315fdd523cd0130f978c5242b249ae1",
+      "bytes": 141882
+    },
+    {
+      "shard": 5,
+      "id": 14623763387,
+      "digest": "sha256:a5165011d430dab03c0a4d903484f9754b50c00535c4dfe44841cdf22a8584d7",
+      "bytes": 111477
+    },
+    {
+      "shard": 6,
+      "id": 14624665752,
+      "digest": "sha256:3d4b5ffaa69694f691bbad7c86a5e8977d9df0635ba0859f1ad01548e4618678",
+      "bytes": 150469
+    },
+    {
+      "shard": 7,
+      "id": 14623568598,
+      "digest": "sha256:6d8eaefbf09750cac15829e53da7ebadf9f560003ba9ada2e26dcd1a374ac68c",
+      "bytes": 48074
+    },
+    {
+      "shard": 8,
+      "id": 14624372040,
+      "digest": "sha256:9440704e57207bc520fe7e0690f1ef516d95f27330d92337b6554939c41a8e5a",
+      "bytes": 142536
+    },
+    {
+      "shard": 9,
+      "id": 14624237389,
+      "digest": "sha256:b4575d7941390e7bbfd961137a6cfd2445bcb4d373aafd6b5c3530beec40f275",
+      "bytes": 104260
+    },
+    {
+      "shard": 10,
+      "id": 14624555988,
+      "digest": "sha256:cbe0d80fac8ee9c49a2e3b89a8d1df80e35307672f086c09ec7aead4f998ee51",
+      "bytes": 40683
+    },
+    {
+      "shard": 11,
+      "id": 14623922816,
+      "digest": "sha256:c59d1c64f80cf416aaeeaa9b9ea753ac9e95b07511413d4bcad56ed1522d11f7",
+      "bytes": 156995
+    },
+    {
+      "shard": 12,
+      "id": 14624476443,
+      "digest": "sha256:b6831f80e7c59971649c19a9e4d5a0cf35621f624fcf1c0ecb9902ff2b3b5f8f",
+      "bytes": 127035
+    },
+    {
+      "shard": 13,
+      "id": 14624710639,
+      "digest": "sha256:302633bc0e642c7339baf3568a6d2911d2fb7954f1df14118985937e616cb775",
+      "bytes": 90159
+    },
+    {
+      "shard": 14,
+      "id": 14623534126,
+      "digest": "sha256:76da93b006c016826461fa04cb1724b68aa65ad8807b540966af16716e3d8e28",
+      "bytes": 140264
+    },
+    {
+      "shard": 15,
+      "id": 14624062765,
+      "digest": "sha256:72b4dd11d8e1b3269edcd39937ba3c97a53bdc5c8b08863964fd0256ad27bc99",
+      "bytes": 128718
+    },
+    {
+      "shard": 16,
+      "id": 14623863405,
+      "digest": "sha256:511de5baf4f121ba36858116171c42b881784d9b5e599a32af94d6a9f978ae19",
+      "bytes": 48606
+    },
+    {
+      "shard": 17,
+      "id": 14624187563,
+      "digest": "sha256:c4dfba015edfa6886078ed769e6c490035472d519eb43baefb41f9cd95e0a748",
+      "bytes": 148924
+    },
+    {
+      "shard": 18,
+      "id": 14624252643,
+      "digest": "sha256:75f388877ed56e20a69b4bd76a7b4e2af288fdbc15289bcac1909b2c5090f5c4",
+      "bytes": 125321
+    },
+    {
+      "shard": 19,
+      "id": 14624690754,
+      "digest": "sha256:b608c3d5e56ee818b95a403212d5c7548b5195d96da990d298d301f286629fa8",
+      "bytes": 108238
+    },
+    {
+      "shard": 20,
+      "id": 14624357105,
+      "digest": "sha256:baadaeeb3ee1233314e1021a08d922b1c03d4326c13d9d1447982ba3fa65d8ea",
+      "bytes": 125618
+    },
+    {
+      "shard": 21,
+      "id": 14623628442,
+      "digest": "sha256:2efd1fc2bebb27c6e41312c27a6030ad252b708e6449e92b9a6d8aa9d891aaec",
+      "bytes": 55196
+    },
+    {
+      "shard": 22,
+      "id": 14623354971,
+      "digest": "sha256:24e05758343e092428dc05ec13c42db0eb38f1263db4df9700133e1fc48186c7",
+      "bytes": 68318
+    },
+    {
+      "shard": 23,
+      "id": 14624387076,
+      "digest": "sha256:58e2559b9e1c1b1a965bc7a88277f543e6a76624d6bd43010d84a17ebe14ef93",
+      "bytes": 104672
+    },
+    {
+      "shard": 24,
+      "id": 14624471880,
+      "digest": "sha256:602941bc530f15d5e7f750bf40beeb4282da2e93f4955edf3344eb867fbdf08a",
+      "bytes": 123840
+    },
+    {
+      "shard": 25,
+      "id": 14624092952,
+      "digest": "sha256:d01b99d41621d8fd82869f3fe1c203fdfe8c0c0b33e839b6b7a4369ccd5ca736",
+      "bytes": 142213
+    },
+    {
+      "shard": 26,
+      "id": 14624591450,
+      "digest": "sha256:0221867dcc8fd684149b8ff4af25ef9b07c1c4eecbe70fd337e35cf7e299c0f4",
+      "bytes": 164726
+    },
+    {
+      "shard": 27,
+      "id": 14624078129,
+      "digest": "sha256:35cf92e7e87c8d8d8a355f50ae4f735793faedbbde7c443b6e920a0fe8f211a4",
+      "bytes": 97921
+    },
+    {
+      "shard": 28,
+      "id": 14623723440,
+      "digest": "sha256:50338f0f84c62ec1df2f0c5429d7b94bd371118da0d7208104d78992a36e28ef",
+      "bytes": 140667
+    },
+    {
+      "shard": 29,
+      "id": 14624536804,
+      "digest": "sha256:4c1400f133204ed1f8fe4108b910c07f78c232e82b9b3e5324b20b7850eb3c46",
+      "bytes": 124932
+    },
+    {
+      "shard": 30,
+      "id": 14624422431,
+      "digest": "sha256:c9c0bdb88b9758efaac7cd466d9450568e3366446eed750ba44c6f9b791d0a12",
+      "bytes": 94911
+    },
+    {
+      "shard": 31,
+      "id": 14623898700,
+      "digest": "sha256:0786f5240283d196fbe9e74a2669a7ca4df271225fed0dffb03998c3bbba5759",
+      "bytes": 203570
+    },
+    {
+      "shard": 32,
+      "id": 14623723464,
+      "digest": "sha256:1fa7bdd3fce4ea7c294e8c8d5e3c86e885cc366de00f823e4887235e1749fbac",
+      "bytes": 181597
+    },
+    {
+      "shard": 33,
+      "id": 14624721082,
+      "digest": "sha256:df97d88b7375a12fc2becb8fcc80436b3c0d84a151e79f7fabc581adca5f244b",
+      "bytes": 132230
+    },
+    {
+      "shard": 34,
+      "id": 14623569102,
+      "digest": "sha256:30dfda9610017a6710f965ea722145a37778452c6138d6bb5e6669a622017a1a",
+      "bytes": 104902
+    },
+    {
+      "shard": 35,
+      "id": 14625090417,
+      "digest": "sha256:066b8560863260c9c7bdcd4390a3a0f4cf0d15e32e0bb290f1b5ad840ec9f7aa",
+      "bytes": 177234
+    },
+    {
+      "shard": 36,
+      "id": 14625712712,
+      "digest": "sha256:59d5701cdbf4662c47427161ba3f2a3c94cb12644ec2b4c5ada71b00a2b4a435",
+      "bytes": 114322
+    },
+    {
+      "shard": 37,
+      "id": 14623888772,
+      "digest": "sha256:69858d89d186c75dbf3845a7fa04a111ff6f5a9a84875924f9b600ebbe834671",
+      "bytes": 114125
+    },
+    {
+      "shard": 38,
+      "id": 14623803200,
+      "digest": "sha256:6d1f37816466c59e048eea1dd1a322ce7de41e816960a0a3727b173dad6d93a7",
+      "bytes": 91719
+    },
+    {
+      "shard": 39,
+      "id": 14624826175,
+      "digest": "sha256:7ab70e3e699b7117da6122b12185cec7b7601df2477ff7ad7f1f13525c0691d2",
+      "bytes": 85998
+    },
+    {
+      "shard": 40,
+      "id": 14623579222,
+      "digest": "sha256:052abacf056efe5b27dc8320d03ec3dcd92d0aa2546d9fb7983feb093cac7778",
+      "bytes": 123864
+    },
+    {
+      "shard": 41,
+      "id": 14625085425,
+      "digest": "sha256:0431a9692a4c102aae65cc4a512c817fcfaf765fe5bc4c9a2c452da3787f3ce9",
+      "bytes": 132308
+    },
+    {
+      "shard": 42,
+      "id": 14624920799,
+      "digest": "sha256:ba4b5013771f766b9d195351835f7e54aae8f666a3175a8b551cd00df296dd34",
+      "bytes": 157257
+    },
+    {
+      "shard": 43,
+      "id": 14623913129,
+      "digest": "sha256:da6b3c3c865a1b27559cea64860237652312520f8cb55739fbcd38b2def5be5c",
+      "bytes": 129518
+    },
+    {
+      "shard": 44,
+      "id": 14624057804,
+      "digest": "sha256:07ecc460b490f7c3fcb8bc3f31cf190030fd22d67768ded4cb93fd85487e0aea",
+      "bytes": 75989
+    },
+    {
+      "shard": 45,
+      "id": 14624057839,
+      "digest": "sha256:dc8ed169dd88fb239d8da8d1a77c4d05e786fed32c892a6a59b349d81655bef1",
+      "bytes": 133253
+    },
+    {
+      "shard": 46,
+      "id": 14624497312,
+      "digest": "sha256:b460f14d259cd68b588ff3b954c4ec5daa4f8d476c568cacfe827505798dc3ef",
+      "bytes": 134101
+    },
+    {
+      "shard": 47,
+      "id": 14623893700,
+      "digest": "sha256:756be27c5e4dbb9ad87eb59eae8dbc86c8aa2699a14aa38335362cfbe406c8ef",
+      "bytes": 79094
+    },
+    {
+      "shard": 48,
+      "id": 14624851057,
+      "digest": "sha256:a60cc8fb507d6f2ed11ff1fd0408a03041237be9b8cd2558690aa51104cd58c9",
+      "bytes": 121917
+    },
+    {
+      "shard": 49,
+      "id": 14624676688,
+      "digest": "sha256:9085e2cae78bbd523f503341b5e0a3c6b4d6b5c01f2ac2b403dce7e7281c8e48",
+      "bytes": 93271
+    },
+    {
+      "shard": 50,
+      "id": 14625090808,
+      "digest": "sha256:80e522d94c4c49115c3656394d665129be444fe89c1c261ed83377c70ae7d475",
+      "bytes": 150887
+    },
+    {
+      "shard": 51,
+      "id": 14623839348,
+      "digest": "sha256:bb696ff9e64892a2446b9d40a39fb5a2edb3b745c02e550e338ecd9f77c54c89",
+      "bytes": 111895
+    },
+    {
+      "shard": 52,
+      "id": 14623854210,
+      "digest": "sha256:2f5a65601e4c2cce7333aba5d03c06c04a05a61f807d68043ed4f774fce2ac75",
+      "bytes": 99233
+    },
+    {
+      "shard": 53,
+      "id": 14623469965,
+      "digest": "sha256:18a92cfdcc660407361d2396a6aa3e2050166d380db88f91f0ee4e26294a47cb",
+      "bytes": 83687
+    },
+    {
+      "shard": 54,
+      "id": 14623604466,
+      "digest": "sha256:c29a5e79c38e5e792375b10c6d4d2f76c72e126d16b0e143c0c72bf5d1979d5a",
+      "bytes": 126471
+    },
+    {
+      "shard": 55,
+      "id": 14625160813,
+      "digest": "sha256:25343ddaea68b429c7d13d41881414cebab80c18078de897bd68784b34b1e0d3",
+      "bytes": 104785
+    },
+    {
+      "shard": 56,
+      "id": 14624223360,
+      "digest": "sha256:f16e3bb3092671a73035aae96f6803bb0ac2dbb3b4766b04bf3fcdfb2ff53014",
+      "bytes": 137538
+    },
+    {
+      "shard": 57,
+      "id": 14625290308,
+      "digest": "sha256:0edda2681f39619185e4795c5593b3e5ea3fdf31673597943d11157bcd60bbae",
+      "bytes": 118828
+    },
+    {
+      "shard": 58,
+      "id": 14623589577,
+      "digest": "sha256:c2395c2862548a1452f4106e312552a565e09ec3455f1b7962da70bf45f9f91f",
+      "bytes": 126024
+    },
+    {
+      "shard": 59,
+      "id": 14624651583,
+      "digest": "sha256:47cd5b24b23f0572acc58ecd70e9162c9224cfb3417640185aa4819ed375b867",
+      "bytes": 104353
+    },
+    {
+      "shard": 60,
+      "id": 14624113675,
+      "digest": "sha256:3dc7b30e59625f496351eb936bd1aa0dc7408f76a276e83fcd54d9c1c678085f",
+      "bytes": 140998
+    },
+    {
+      "shard": 61,
+      "id": 14625265449,
+      "digest": "sha256:5faffbbe6b1c94d72e1c8a4d0ae41675fbf0f66eefdcf5ae6f21eff602ed117a",
+      "bytes": 125862
+    },
+    {
+      "shard": 62,
+      "id": 14624003957,
+      "digest": "sha256:6f2e9f94d3bea9fa5b8906c6523dccf4d1b54bea41de531c4df47fdb69edf35b",
+      "bytes": 123327
+    },
+    {
+      "shard": 63,
+      "id": 14626307126,
+      "digest": "sha256:a45e83c3f5261e918652c7c1708b9487a2b62a3dbef5439efa2298f059417f25",
+      "bytes": 132593
+    },
+    {
+      "shard": 64,
+      "id": 14625160909,
+      "digest": "sha256:51f6e50bc388b24fe9878ea92ea9145f8746f4cd3650cde4559db9e639aec8ee",
+      "bytes": 20387
+    },
+    {
+      "shard": 65,
+      "id": 14624841737,
+      "digest": "sha256:3ac0e74e795332e82de79c75f48e61aca91311219dd9b6ad7d688afb1956f078",
+      "bytes": 99458
+    },
+    {
+      "shard": 66,
+      "id": 14624168934,
+      "digest": "sha256:68ce5d65c56e9731d40198e6dcc7e0bf558bc776554ef72e724429dbde90dd42",
+      "bytes": 94240
+    },
+    {
+      "shard": 67,
+      "id": 14625335319,
+      "digest": "sha256:94b7e963cee7d9b2c20b49ccbb5bb024f23304af645eea89853053284b686eb5",
+      "bytes": 110352
+    },
+    {
+      "shard": 68,
+      "id": 14623979134,
+      "digest": "sha256:c1dc8c68fe3ef734ceab613bab37df88df00e6a8046bf9b6fdeb275d90f5c394",
+      "bytes": 90976
+    },
+    {
+      "shard": 69,
+      "id": 14624128748,
+      "digest": "sha256:694325697b891fd2eb5e2a79c12b0ac4d44e83ace501fb10e8dad0e6deffc9f1",
+      "bytes": 129271
+    },
+    {
+      "shard": 70,
+      "id": 14624058345,
+      "digest": "sha256:67ae0fa6446cdeda47dd93f894dae98c3b62ad9da01e6ac3a59e7646dcdc6695",
+      "bytes": 183988
+    },
+    {
+      "shard": 71,
+      "id": 14623724164,
+      "digest": "sha256:fdc417013f817b27548d2522d52d5b085409b286ee0ecfec77270b395ed5df5b",
+      "bytes": 155368
+    },
+    {
+      "shard": 72,
+      "id": 14624293520,
+      "digest": "sha256:251c2fb4bb8ec16eaca4e5234b315080cecf5583ecf0fc270dd54b5ef8b9f277",
+      "bytes": 134567
+    },
+    {
+      "shard": 73,
+      "id": 14625250631,
+      "digest": "sha256:8f6cac00aebe812069d82bc877aa7a791702eef6ebf9e2cc04c9dca43542c0e3",
+      "bytes": 108294
+    },
+    {
+      "shard": 74,
+      "id": 14625026199,
+      "digest": "sha256:f7e6304f88be8b500cecb8d1ebcdb178becc2eb50400298f27e8b6de079920a1",
+      "bytes": 126782
+    },
+    {
+      "shard": 75,
+      "id": 14624258930,
+      "digest": "sha256:066782d3f8e82b9cfa841ad2f6cd45b5c6cd767d3dd709213198ccc30b18ec07",
+      "bytes": 102335
+    },
+    {
+      "shard": 76,
+      "id": 14625500068,
+      "digest": "sha256:1d7fd03d68d31711a8bec398295a8f01ad99eac4ea7dc37fdb2380136b88a461",
+      "bytes": 106698
+    },
+    {
+      "shard": 77,
+      "id": 14625016343,
+      "digest": "sha256:f563da935052080f1a757db98f75fd21342ff1e73fed550371e0c9d3c89fb391",
+      "bytes": 109641
+    },
+    {
+      "shard": 78,
+      "id": 14625196270,
+      "digest": "sha256:50792865d31a37d7f148bd30f70a038e8ee55fc0910d9f6a656e063aa89addf9",
+      "bytes": 131091
+    },
+    {
+      "shard": 79,
+      "id": 14624318944,
+      "digest": "sha256:5e151e95ac262c89df29f8d54720f000498e57f984b2941277039bccdbfa3371",
+      "bytes": 128362
+    },
+    {
+      "shard": 80,
+      "id": 14623999197,
+      "digest": "sha256:78b8a74b709edcfc5946c17ed3008879b081ad413003aae189c175356a268a1f",
+      "bytes": 122379
+    },
+    {
+      "shard": 81,
+      "id": 14624607207,
+      "digest": "sha256:15536bfc603debf983f8196c9a40f336c369e447f6f11e41d0c18b2b7db38f8a",
+      "bytes": 86223
+    },
+    {
+      "shard": 82,
+      "id": 14625585003,
+      "digest": "sha256:c917dcc7bcffa0e8baa9ab8f0650ab27adb8a99de3b2b9c870e3fe195af3fa5e",
+      "bytes": 246529
+    },
+    {
+      "shard": 83,
+      "id": 14624328964,
+      "digest": "sha256:d892eb3683deaaf3db1ea439db6ac3163a32910c157024abc13378eac5be630a",
+      "bytes": 150466
+    },
+    {
+      "shard": 84,
+      "id": 14624069489,
+      "digest": "sha256:5110a64b358f2f990cc54244e723bc627cc6ab1d524f3a8ec7bd6df63749502f",
+      "bytes": 141214
+    },
+    {
+      "shard": 85,
+      "id": 14624836762,
+      "digest": "sha256:f38f37ac23f27a7478521dc026f65b7e4e0aafdc5ed2e7cadfb0a64dfc09ddca",
+      "bytes": 169310
+    },
+    {
+      "shard": 86,
+      "id": 14624478205,
+      "digest": "sha256:9ccf6f35b47c09da4144383e1279bc001707cbbf4b160e744cb351cc39cf3350",
+      "bytes": 134710
+    },
+    {
+      "shard": 87,
+      "id": 14623889916,
+      "digest": "sha256:e2ee37e2f93b94df606af60f912f3bb8b90478c5a8148bd89d90f0851b2a85d4",
+      "bytes": 20941
+    },
+    {
+      "shard": 88,
+      "id": 14625006972,
+      "digest": "sha256:5c0019e1ad64e99c0c942b42c40f887edbbeb4954cac39afa7152a1d5205afab",
+      "bytes": 211879
+    },
+    {
+      "shard": 89,
+      "id": 14624572974,
+      "digest": "sha256:ce9dc24dadc369fd785ba7422af1375ec5aaafead3f5376d96d99b46411841dd",
+      "bytes": 162802
+    },
+    {
+      "shard": 90,
+      "id": 14626446217,
+      "digest": "sha256:ad6b0e67c73ae91ff0e2d92d83de260671177a689135c798063d892576baa5cb",
+      "bytes": 154446
+    },
+    {
+      "shard": 91,
+      "id": 14624239455,
+      "digest": "sha256:1526cc0ddd63bc3987134ab49078781f20015d4c2813f343691493a7329a8837",
+      "bytes": 178719
+    },
+    {
+      "shard": 92,
+      "id": 14624388585,
+      "digest": "sha256:a3122a81049bf6e1bfa94874a05eaba840dd47d231c188b079685a3581cc628d",
+      "bytes": 131703
+    },
+    {
+      "shard": 93,
+      "id": 14624941813,
+      "digest": "sha256:873de2eed6e4a9c9eb92a143587b5cec68593cc996737d65265e46edb47dc9c2",
+      "bytes": 120087
+    },
+    {
+      "shard": 94,
+      "id": 14624468723,
+      "digest": "sha256:2653391f46ce12e1ad247e74ea089ec98395e98f012ee11447b22ea1ea7055c5",
+      "bytes": 147628
+    },
+    {
+      "shard": 95,
+      "id": 14625141609,
+      "digest": "sha256:4ad09d16ff3a3faed28d3fc20db129562e0295f2a5d56cf8897c1b752c942339",
+      "bytes": 167197
+    },
+    {
+      "shard": 96,
+      "id": 14624004540,
+      "digest": "sha256:9322c879a39de5e8bafbf65bfb675c1f8e77a9c7fab0e2682d14e47fe68ef77f",
+      "bytes": 93205
+    }
+  ],
+  "selection": {
+    "method": "preselected systematic shard spacing, no outcome selection; one decision per quartile of eligible own-draw decisions per match, at most 48; deterministic SHA256 sort of public-only decision coordinates within quartile",
+    "first": [
+      1,
+      9,
+      17,
+      25,
+      33,
+      41,
+      49,
+      57,
+      65,
+      73,
+      81,
+      89
+    ],
+    "extra": [
+      2,
+      10,
+      18,
+      26,
+      34,
+      42,
+      50,
+      58,
+      66,
+      74,
+      82,
+      90
+    ]
+  },
+  "A": {
+    "maxPositions": 48,
+    "maxSecondsPerRun": 8,
+    "maxWallSeconds": 960,
+    "maxProcesses": 2,
+    "stopOnUnresolvedMaskOrCandidateMismatch": true,
+    "rawExternalOutputsPrivate": true,
+    "teacher": "existing independently audited physical tenpai and legal Ron only; exclude old 3 erroneous labels unless corrected audit applied; actual selected ron separate",
+    "noTraining": true
+  },
+  "C": {
+    "matches": 96,
+    "folds": 4,
+    "seed": 261124,
+    "models": [
+      "current rank/round empirical smoothed 24 permutation baseline",
+      "score-distance Plackett-Luce fitted scalar",
+      "regularized 24-way GRU 32 hidden, 40 epochs fixed"
+    ],
+    "metrics": [
+      "24-class logloss",
+      "marginal rank Brier",
+      "fourth-place Brier",
+      "fourth calibration bins",
+      "family support"
+    ],
+    "bootstrapUnit": "match",
+    "maxCpuMinutes": 10,
+    "developmentOnly": true,
+    "stopIfNoImprovement": "GRU not lower OOF fourth Brier and joint logloss than score baseline => no promotion"
+  },
+  "G": {
+    "maxNewMatches": 8,
+    "maxCpuMinutes": 10,
+    "scope": "boundary restart feasibility only; fixed standard CPU, independently drawn new wall; no candidate EV"
+  },
+  "D": {
+    "maxPositions": 8,
+    "maxCpuMinutes": 10,
+    "noTraining": true,
+    "scope": "source and runtime feature extraction, masked input; no Q probability"
+  },
+  "paidCalls": 0,
+  "mainUnchanged": true
+}
