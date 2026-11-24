@@ -1,0 +1,21 @@
+name: P2a-v46 structured condition offline prototype
+on:
+  push:
+    branches:
+      - feat/coach-p2a-v46-structured-condition-prototype
+    paths:
+      - src/coach/v14-structured-condition-v46.mjs
+      - tests/next/v14-structured-condition-v46.test.mjs
+      - .github/workflows/p2a-v46-structured-condition-prototype.yml
+permissions:
+  contents: read
+jobs:
+  synthetic:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.23.4'
+      - run: node --test tests/next/v14-structured-condition-v46.test.mjs
