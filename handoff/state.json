@@ -9,7 +9,7 @@
   },
   "active_task": {
     "phase": "P2a-v4.7 free-only known-case semantic diagnostic",
-    "status": "Q1_EXIT_LEARNING_REQUIREMENTS_RESET_Q2_PAUSED",
+    "status": "LEARNING_REQUIREMENTS_REVIEW_AND_CORPUS_BENCHMARK_PENDING",
     "branch": "feat/coach-p2a-v47-minimal-diagnostic",
     "commit": "7959435bfad0412e9cd94234f01395af05d84789",
     "pr": 71,
@@ -355,7 +355,7 @@
       }
     ],
     "decision": "v46 API-only Stage1 stopped after 2 paid calls, 1 contract pass and 1 incomplete output due to cap. No evidence of typed condition contract failure from pilot82; no semantic certification. Original manual Stage1 plan not performed. No new paid generation authorized.",
-    "next": "Define learning requirements for long-term positive Tenhou tok-jo/houou rank-point results before selecting engineering work; distinguish training skill acquisition from simulator output accuracy, review task taxonomy, quantitative evidence and human transfer validation. Claude Q1 technical review retained; attached Gemini is prior Q0 review. Audit aggregate artifact scope separately. No Q2 training/generation/paid API/main changes.",
+    "next": "Check PR74 run45499360122 completion, collect aggregate timing/failure/storage metrics and verify seed/legality scope. Decide sustained raw synthetic data storage privacy and free throughput limits before scaling; no automatic follow-on. Await independent requirements reviews. Q2 old technical design remains paused; no paid resources or new training.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -2871,6 +2871,36 @@
       "q2Approved": false,
       "paidCalls": 0,
       "oldGatesPreserved": true,
+      "mainUnchanged": true,
+      "requirementsReview": {
+        "status": "AWAIT_INDEPENDENT_CLAUDE_GEMINI",
+        "file": "mahjong_learning_requirements_review_20261125.txt",
+        "sha256": "94f4f29875dcdff70dd69a8cae741d8da4be6808a11cd7a9bf4650a9c26d947f",
+        "bytes": 11417,
+        "scope": "Tenhou skill taxonomy, necessary quantitative information, S42 data research design and teaching transfer; not a technology-first review"
+      }
+    },
+    "learningCorpus": {
+      "status": "BOUNDED_BENCHMARK_QUEUED",
+      "userAuthorized": "2026-11-25 user authorized parallel corpus generation, unpaid only",
+      "pr": 74,
+      "branch": "feat/learning-corpus-pilot-20261125",
+      "head": "6c12e8ce19667b4364c8b84da381e6ce9157e033",
+      "run": 45499360122,
+      "plannedMatches": 8,
+      "maxParallel": 4,
+      "jobTimeoutMinutes": 15,
+      "rawRetention": "ephemeral raw synthetic; only aggregate timing and size uploaded; public repo artifact visibility unresolved",
+      "oldCorpusReference": {
+        "run": 44726204303,
+        "matchArtifacts": 96,
+        "first": "2026-11-20T11:17:59Z",
+        "last": "2026-11-20T11:50:12Z",
+        "compressedBytes": 11733845,
+        "scope": "mixed policies, artifact creation span only, not actual S42x4 rate"
+      },
+      "noNewTraining": true,
+      "paidCalls": 0,
       "mainUnchanged": true
     }
   },
