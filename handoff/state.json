@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-24T15:10:00+09:00",
+  "checkpoint": "2026-11-24T16:28:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -9,7 +9,7 @@
   },
   "active_task": {
     "phase": "P2a-v4.7 free-only known-case semantic diagnostic",
-    "status": "V47_CONTROL_INTAKE_FOUR_MECHANICAL_PASS_TWO_SEMANTIC_DEFECTS_UNAMBIGUOUS_AWAIT_REGENERATION",
+    "status": "V47_FOUR_ADVERSARIAL_CONTROLS_LOCKED_AWAIT_FOUR_INDEPENDENT_GENUINE_REPLIES",
     "branch": "feat/coach-p2a-v47-minimal-diagnostic",
     "commit": "7959435bfad0412e9cd94234f01395af05d84789",
     "pr": 71,
@@ -355,7 +355,7 @@
       }
     ],
     "decision": "v46 API-only Stage1 stopped after 2 paid calls, 1 contract pass and 1 incomplete output due to cap. No evidence of typed condition contract failure from pilot82; no semantic certification. Original manual Stage1 plan not performed. No new paid generation authorized.",
-    "next": "Before collecting any genuine diagnostic answer, user obtains independent regeneration of two controls per preregistration and returns original JSON unread. Do not expose identities or content to raters. Then verify and freeze all four controls, collect genuine responses. Qualification materials prepared and sealed, deliver separately.",
+    "next": "User runs four frozen diagnostic questions in four separate temporary GPT-6 chats, no personalization, same available thinking setting, records observed model and time if possible, returns original JSON files unread. After receipt verify and preserve, qualify all three raters separately, construct common-renderer blinded diagnostic pair packet with sealed mapping. No paid API, no unseen certification.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -2514,13 +2514,26 @@
         "mechanicalPass": 4,
         "mechanicalMethod": "Independent local Python mirror against exact frozen request hashes, keys, references, scoped seat facts, explicit quantities and flips; original JS receipt not rerun.",
         "unambiguousMaterialDefectConfirmed": 2,
-        "regenerationRequired": 2,
+        "regenerationRequired": 0,
         "reason": "Two defects cannot be confidently separated from defensible tactical judgment; preregistered control-only regeneration before any genuine answers.",
         "privateIdentityMapNotPublished": true,
         "rawOriginalPreservedInConversation": true,
         "regenerationRequestSha256": "06b147d6073734458fa9dbaf6d4425dc9700164d947f9088ee82fe3fd5fa02f3",
         "genuineResponsesSeen": 0,
-        "paidCalls": 0
+        "paidCalls": 0,
+        "status": "ALL_FOUR_CONTROLS_LOCKED_BEFORE_GENUINE",
+        "retryRawSha256": "a9e5c0ad5e4c5c44923c2e4e3a4e118104525f832f54a9e67c0973c863f78d8e",
+        "retryRawBytes": 9027,
+        "retryReceived": 2,
+        "retryMechanicalPass": 2,
+        "retryUnambiguousMaterialDefectConfirmed": 2,
+        "finalControls": 4,
+        "finalMechanicalPass": 4,
+        "finalUnambiguousMaterialDefectConfirmed": 4,
+        "privateLockFileSha256": "5b48645a48f1328084ae2b1c2e10272bd75cddeb410ac4ad33c8678a322cc53f",
+        "privateLockFileName": "v47_private_control_lock.json",
+        "privateLockMethod": "Raw control uploads retained in conversation; local private composite, SHA-256 only in GitHub; no contents, identity or flaw descriptions published. Prior two rejected controls retained in original upload.",
+        "finalMechanicalMethod": "Local Python mirror against frozen public request hashes, exact response fields, legal action keys, fact IDs, same-seat scope, quantity check and flips; JS receipt not executed on real controls."
       },
       "qualification": {
         "syntheticAnchors": 4,
@@ -2529,7 +2542,14 @@
         "status": "PREPARED_NOT_DELIVERED",
         "ratersQualified": 0,
         "privateKeyNotPublished": true
-      }
+      },
+      "controlAttemptsTotal": 6,
+      "diagnosticPublicFileHashes": [
+        "64cf97e34f4fab00d124a82f1f4a7d07bbf1fd79d421713d972f0d6bea6805c5",
+        "375206496399ff2edda8917165316954c647aa0dc14a5f5dfc7a7a3692d43b8b",
+        "827bd13b439dbb3194f4e2df7367d45e16200bef5b4072213e5c31eefab2cc72",
+        "32f28b7ed97a8dd06910b10b24f336c3d41e7f14a861f3229196f2684b7193fa"
+      ]
     }
   },
   "previous_runs": [
