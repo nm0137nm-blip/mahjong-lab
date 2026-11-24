@@ -1,5 +1,5 @@
 // Mahjong LAB PWA — v2.5.8: evidence-based coaching preview.
-const CACHE='mahjong-lab-iphone-v258';
+const CACHE='mahjong-lab-iphone-tenhou-v1';
 const SHELL=['./','./index.html'];
 const RESOURCES=[
  './src/coach/phoenix-coach.mjs?v=258',
