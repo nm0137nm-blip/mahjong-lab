@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-24T16:38:00+09:00",
+  "checkpoint": "2026-11-24T16:49:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -9,7 +9,7 @@
   },
   "active_task": {
     "phase": "P2a-v4.7 free-only known-case semantic diagnostic",
-    "status": "V47_KNOWN_CASE_CONTRACT_3_OF_4_FROZEN_SEMANTIC_DIAGNOSTIC_PENDING_RATER_QUALIFICATION",
+    "status": "V47_RATER_QUALIFICATION_V2_VOID_AMBIGUOUS_ANCHOR_V3_REAL_PUBLIC_CASES_FROZEN",
     "branch": "feat/coach-p2a-v47-minimal-diagnostic",
     "commit": "7959435bfad0412e9cd94234f01395af05d84789",
     "pr": 71,
@@ -355,7 +355,7 @@
       }
     ],
     "decision": "v46 API-only Stage1 stopped after 2 paid calls, 1 contract pass and 1 incomplete output due to cap. No evidence of typed condition contract failure from pilot82; no semantic certification. Original manual Stage1 plan not performed. No new paid generation authorized.",
-    "next": "Collect independent qualification ratings on v2 synthetic four-anchor packet from human-user, Claude, Gemini. Only if all three qualify deliver sealed blinded paired diagnostic. Retain 3/4 mechanical result; exploratory semantic diagnosis cannot reverse failure. Review both assessors after diagnostic or stop; no unseen certification or paid calls.",
+    "next": "All three raters independently assess four v3 qualification anchors using common human-readable source file. Qualification requires both verifiable material defects identified and neither source-consistent anchor falsely flagged. User may answer in plain text; external raters return original JSON. Do not disclose key until all lock. Diagnostic four genuine/controls frozen unchanged; mechanical 3/4 result remains. No paid calls.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -2539,14 +2539,41 @@
         "syntheticAnchors": 4,
         "publicFileSha256": "8f4ef09b1e4946450dd611a382fea3d0a87c7a240bef9b09a67647fd4c4898b2",
         "sealedPrivateKeySha256": "2df3a12a7ac67c50c5e39bed2fb3d3a0c97076b912eabb59fffcca0e3438399d",
-        "status": "V2_FROZEN_BEFORE_DELIVERY",
+        "status": "V2_INVALIDATED_BY_AMBIGUOUS_ANCHOR_V3_FROZEN_BEFORE_DELIVERY",
         "ratersQualified": 0,
         "privateKeyNotPublished": true,
         "priorUndeliveredAnchorHashesRetained": {
           "public": "15a3c57682f12b5ceb9d795179c0132cd56b7c4d052d6eb7f0ccd192e51febd4",
           "key": "8538eabaeaf3cdf1028a2a9ba754c5b777f3fbb36a90fc37566624ba17e55e18"
         },
-        "reason": "Prior undelivered anchor files not present in current runtime; new independent synthetic set generated and frozen before presentation, no rater has seen prior set."
+        "reason": "Prior undelivered anchor files not present in current runtime; new independent synthetic set generated and frozen before presentation, no rater has seen prior set.",
+        "v2Outcome": {
+          "status": "VOID_ALL_RATERS_NO_QUALIFICATION",
+          "reason": "First synthetic anchor omitted cross-player timing; human noted post-riichi passed tile could be safe, both external raters used own-river-only inference. Second anchor human initially missed reverse-rank claim, then acknowledged. Retain responses; no retrospective qualification or blame. Correctness-only anchors do not demonstrate teaching quality.",
+          "claudeRawSha256": "a222e38e8d2b85e6e1edd6771b5d2261c2eb7245d0dee1d99cc8153f8e935b8b",
+          "geminiRawSha256": "435236f89d8c444a29b3e8c6445e6a9aba31b12d466ddff06200010cc247f17e",
+          "bothMatchedIntendedKey": 4,
+          "firstAnchorNotUniquelyJustified": true
+        },
+        "v3": {
+          "sourceArtifact": 14780434054,
+          "sourceHash": "271b4a304ed86dc41be2e72766e2b5cc496966bdf8a0ce5a8d5a5d0334e6103a",
+          "sourceCases": [
+            "pilot-55",
+            "pilot-43",
+            "pilot-46",
+            "pilot-63"
+          ],
+          "publicFile": "mahjong_v47_rater_qualification_v3.txt",
+          "publicFileSha256": "625d99a95886ed53bb086ac32f7db5b8a8ac600e103332c4eba7d36e094bca56",
+          "privateKeySha256": "0df5b7324e9f7c75f53ae5c0d7c81afb59850ce5135a9f7f787df89bfd5db8ea",
+          "fullPublicHandRiversMeldsScoreHistory": true,
+          "diagnosticCasesDisjoint": true,
+          "materialErrorQualificationCriteriaUnchanged": true,
+          "teachingUsefulnessSeparatelyRecorded": true,
+          "ratersQualified": 0,
+          "privateKeyNotPublished": true
+        }
       },
       "controlAttemptsTotal": 6,
       "diagnosticPublicFileHashes": [
