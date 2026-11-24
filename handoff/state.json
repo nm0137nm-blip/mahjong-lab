@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-24T09:44:31+09:00",
+  "checkpoint": "2026-11-24T09:54:15+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -9,7 +9,7 @@
   },
   "active_task": {
     "phase": "P2a-v4.5 separate prospective version, manual independent GPT-6 Stage1 frozen eight source-only packets and original verifier fully prepared",
-    "status": "V45_MANUAL_STAGE1_7_OF_8_PUBLIC_CONTRACT_PASS_AWAIT_PILOT76",
+    "status": "V45_MANUAL_STAGE1_8_OF_8_PASS_STABILITY_NEXT_API_APPROVAL_REQUIRED",
     "branch": "feat/coach-p2a-v45-japanese-reversal-lexemes",
     "commit": "f92239ad355d069d43ead0cbe6951ade9a07ae3a",
     "pr": 70,
@@ -354,8 +354,8 @@
         "phaseCompleted": false
       }
     ],
-    "decision": "v45 Stage1 7/8 PASS, no semantic certification. v44 closed NO-GO unchanged.",
-    "next": "対応依頼: New independent GPT-6 chat with unchanged pilot-76 question JSON, return original UTF-8 JSON response file. First fatal stop, no paid API.",
+    "decision": "v45 Stage1 8/8 PASS with original frozen verifier, strict JSON no correction, no semantic certification. v44 closed NO-GO unchanged.",
+    "next": "Stage1 PASS. Next preregistered Stability 8 additional independent replies (two replicates each of pilot-41,45,54,55); choose manual or separately authorized API transport before collecting. No paid calls until approval. Stage2, L3.5, L4 pending.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -2028,8 +2028,8 @@
       "firstQuestionByteLength": 28131,
       "firstQuestionFileSHA256": "e8b3d275540888b9fef3ac1a5f2e056f0fbd40282ac65a5b904b60",
       "firstExpectedAnswerFile": "mahjong_P2a_v45_stage1_pilot-41_response.json",
-      "originalStage1Responses": 7,
-      "originalStage1ContractPass": 7,
+      "originalStage1Responses": 8,
+      "originalStage1ContractPass": 8,
       "frozenWeakControlsDigest": "405559e17cd7e5f3711c172c4a17c7d3ad82819498e707584c71e1e51be531ba",
       "publicQuestionArtifactId": 14869490546,
       "freeCIrun": 45280357883,
@@ -2149,13 +2149,41 @@
           "transportOnlyCorrections": [],
           "semanticGrade": "NOT_ASSESSED_BY_MACHINE",
           "privateVerification": "Frozen assessV45FirstRealStage1 run locally; original source SHA verified; all seven receipts recomputed; raw answer private"
+        },
+        {
+          "caseId": "pilot-76",
+          "orderedIndex": 7,
+          "verdict": "CONTRACT_AND_PUBLIC_FACT_GATE_PASS",
+          "rawReplySha256": "30af5028ea325878ae94681a441c564503846d51fc8aa90bd5e383f8d72d9950",
+          "packetHash": "bb1367d23a409a8c6f84bbeaeb7a67c7222a3f3f7422385742258e877bc536bc",
+          "originalBytes": 7333,
+          "firstReceived": "2026-11-24T09:54:15+09:00",
+          "provider": "GPT-6 user-reported; isolated chat provenance not independently verified",
+          "replySubmittedAsJsonFile": true,
+          "transportMode": "strict_json",
+          "transportOnlyCorrections": [],
+          "semanticGrade": "NOT_ASSESSED_BY_MACHINE",
+          "privateVerification": "Frozen assessV45FirstRealStage1 executed locally on all 8 original files; source SHA verified; raw byte hashes matched receipt SHA; raw answers private"
         }
       ],
-      "nextCase": "pilot-76",
-      "nextQuestionFile": "mahjong_P2a_v45_stage1_pilot-76_question.json",
-      "nextQuestionFileSHA256": "8852c797b4044d8efe1143b2d884de28b0ab81c85cf4086aa5960abae00a112b",
-      "nextExpectedAnswerFile": "mahjong_P2a_v45_stage1_pilot-76_response.json",
-      "nextQuestionByteLength": 23004
+      "nextCase": null,
+      "nextQuestionFile": null,
+      "nextQuestionFileSHA256": null,
+      "nextExpectedAnswerFile": null,
+      "nextQuestionByteLength": null,
+      "stage1Summary": {
+        "originalPlannedCases": 8,
+        "actualAttempts": 8,
+        "missing": 0,
+        "contractPass": 8,
+        "failed": 0,
+        "fatal": false,
+        "canExpand": true,
+        "verdict": "STAGE1_NUMERIC_CONTRACT_PASS_L4_AND_L35_PENDING",
+        "noDroppingFailures": true,
+        "probabilityAndExpertise": "NOT_CERTIFIED"
+      },
+      "apiAuthorizationForNextStage": "Requires fresh user approval under latest decision; none granted yet"
     }
   },
   "previous_runs": [
@@ -4023,6 +4051,19 @@
       "additionalCostUSD": 0,
       "semanticCertified": false,
       "mainUnchanged": true
+    },
+    {
+      "phase": "P2a-v4.5 manual Stage1",
+      "status": "STAGE1_NUMERIC_CONTRACT_PASS_L4_AND_L35_PENDING",
+      "attempts": 8,
+      "contractPass": 8,
+      "failed": 0,
+      "rawReplySha256": "30af5028ea325878ae94681a441c564503846d51fc8aa90bd5e383f8d72d9950",
+      "apiCalls": 0,
+      "additionalCostUSD": 0,
+      "semanticCertified": false,
+      "mainUnchanged": true,
+      "overallPhaseComplete": false
     }
   ],
   "roadmap": {
