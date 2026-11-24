@@ -9,7 +9,7 @@
   },
   "active_task": {
     "phase": "P2a-v4.5 separate prospective version, manual independent GPT-6 Stage1 frozen eight source-only packets and original verifier fully prepared",
-    "status": "V46_STAGE1_API_ONLY_ONE_TIME_RUN_STARTED",
+    "status": "V46_STAGE1_API_ONLY_NO_GO_OUTPUT_CAP_PILOT82",
     "branch": "feat/coach-p2a-v45-japanese-reversal-lexemes",
     "commit": "f92239ad355d069d43ead0cbe6951ade9a07ae3a",
     "pr": 70,
@@ -354,8 +354,8 @@
         "phaseCompleted": false
       }
     ],
-    "decision": "Preserve v45 manual Stage1 8/8, failed Stability 4/5 and no overall GO. No more API calls on this authorization.",
-    "next": "Inspect existing run 45319407857 and encrypted result; never rerun or add another marker. First fatal stops; no new paid calls beyond existing run.",
+    "decision": "v46 API-only Stage1 stopped after 2 paid calls, 1 contract pass and 1 incomplete output due to cap. No evidence of typed condition contract failure from pilot82; no semantic certification. Original manual Stage1 plan not performed. No new paid generation authorized.",
+    "next": "Preserve results. Prospective offline transport design: reduce redundant public-packet representation and/or reasoning allocation without changing facts or frozen verifier; benchmark cap feasibility before requesting new approval. Do not silently retry pilot82 or count incomplete as PASS. Manual option remains separate.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -2362,15 +2362,54 @@
       "stopOnFirstFatal": true,
       "branch": "feat/coach-p2a-v46-stage1-capped-api",
       "protocolPath": "research/p2a-v46-api/PROTOCOL.md",
-      "status": "ONE_TIME_WORKFLOW_TRIGGERED_RESULTS_PENDING",
+      "status": "CLOSED_FIRST_FATAL_INCOMPLETE_OUTPUT_NO_RETRY",
       "manualResponsesAtAmendment": 0,
       "originalManualPlanPreserved": true,
-      "paidPostsUsed": null,
+      "paidPostsUsed": 2,
       "actualSpendUSD": null,
       "priorV45NoGoUnchanged": true,
       "scope": "v46 Stage1 pilot-81..88 only, not Stability or Stage2/L3.5",
       "liveRunId": 45319407857,
-      "markerCommit": "9ca7f45ea2bd335568462416efaa0ed7bac1e658"
+      "markerCommit": "9ca7f45ea2bd335568462416efaa0ed7bac1e658",
+      "completedContractPass": 1,
+      "failedIncomplete": 1,
+      "unattemptedPosts": 6,
+      "unattemptedAuthorizationReusable": false,
+      "estimatedSpendUSD": 0.0893945,
+      "usageConservativeUpperUSD": 0.089398,
+      "preflightUpperUSD": 0.095998,
+      "invoiceVerified": false,
+      "encryptedArtifactId": 14886223134,
+      "disarmedCommit": "52a6867f97968312e923f33c6f7bb7bcda6bc451",
+      "rawEncryptedOriginalsDecryptedAndHashVerified": true,
+      "results": [
+        {
+          "caseId": "pilot-81",
+          "verdict": "CONTRACT_AND_PUBLIC_FACT_GATE_PASS",
+          "inputTokens": 7267,
+          "outputTokens": 2476,
+          "reasoningTokens": 1034,
+          "cacheWriteTokens": 7264,
+          "outputCap": 2828,
+          "estimatedUSD": 0.042926,
+          "rawSha256": "ea9d280a5aa0532a281bf0288d59cfc584dddaee742899b6220ce900cad0e3ac",
+          "localVerification": "MATCH"
+        },
+        {
+          "caseId": "pilot-82",
+          "verdict": "UNREADABLE_OR_INCOMPLETE",
+          "apiStatus": "incomplete",
+          "reason": "max_output_tokens",
+          "inputTokens": 7116,
+          "outputTokens": 2868,
+          "reasoningTokens": 1552,
+          "cacheWriteTokens": 7113,
+          "outputCap": 2868,
+          "estimatedUSD": 0.0464685,
+          "rawExtraction": "Incomplete response; partial output retained in full encrypted original, not repaired or graded."
+        }
+      ],
+      "semanticCertified": false
     }
   },
   "previous_runs": [
@@ -4264,6 +4303,19 @@
       "actualInvoiceVerified": false,
       "semanticCertified": false,
       "overallPhaseComplete": false,
+      "mainUnchanged": true
+    },
+    {
+      "phase": "P2a-v4.6 Stage1 API-only",
+      "status": "NO_GO_FIRST_FATAL_OUTPUT_CAP",
+      "runId": 45319407857,
+      "apiCalls": 2,
+      "contractPass": 1,
+      "failed": 1,
+      "unattempted": 6,
+      "estimatedUSD": 0.0893945,
+      "actualInvoiceVerified": false,
+      "semanticCertified": false,
       "mainUnchanged": true
     }
   ],
