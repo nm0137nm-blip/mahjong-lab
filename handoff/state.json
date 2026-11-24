@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-24T12:19:04+09:00",
+  "checkpoint": "2026-11-24T14:42:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -9,7 +9,7 @@
   },
   "active_task": {
     "phase": "P2a-v4.5 separate prospective version, manual independent GPT-6 Stage1 frozen eight source-only packets and original verifier fully prepared",
-    "status": "V46_STAGE1_API_ONLY_NO_GO_OUTPUT_CAP_PILOT82",
+    "status": "V47_DESIGN_DIRECTION_RECORDED_IMPLEMENTATION_AND_DIAGNOSTIC_PREPARATION_PENDING",
     "branch": "feat/coach-p2a-v45-japanese-reversal-lexemes",
     "commit": "f92239ad355d069d43ead0cbe6951ade9a07ae3a",
     "pr": 70,
@@ -355,7 +355,7 @@
       }
     ],
     "decision": "v46 API-only Stage1 stopped after 2 paid calls, 1 contract pass and 1 incomplete output due to cap. No evidence of typed condition contract failure from pilot82; no semantic certification. Original manual Stage1 plan not performed. No new paid generation authorized.",
-    "next": "Await independent design review responses from Claude and Gemini; compare conclusions and resolve material disagreements before new version implementation or paid inference. No new paid calls. Existing v46 API-only NO-GO and v45 results unchanged.",
+    "next": "Implement separate v47 research version, free regression and token/panel audits, free-first known-case diagnostic and blind review before any new certification spending. Keep old decisions and main unchanged.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -2412,15 +2412,44 @@
       "semanticCertified": false
     },
     "design_review_after_v46": {
-      "status": "REVIEW_REQUEST_PREPARED_AWAIT_INDEPENDENT_CLAUDE_GEMINI",
+      "status": "BOTH_REVIEWS_RECEIVED_INTEGRATED_CONDITIONAL_DESIGN_GO_NO_PAID_TRIAL",
       "requestedAt": "2026-11-24T12:37:59+09:00",
       "scope": "prospective separation of deterministic public facts and natural-language semantic evaluation, minimal structured response, cost and gating design",
       "reviewRound": 1,
-      "reviewersReceived": [],
+      "reviewersReceived": [
+        "Claude Opus 5.5",
+        "Gemini"
+      ],
       "paidCallsAuthorized": 0,
       "oldResultsUnchanged": true,
       "notL4BlindRating": true,
-      "decisionPending": true
+      "decisionPending": false,
+      "reviewRoundsUsed": 1,
+      "secondRoundNeeded": false,
+      "decisionRecord": "handoff/p2a-v47-integrated-design-review-20261124.md",
+      "decisionCommit": "05a05bfea2a3cb56c37bf9cece504ae6d7364a7e",
+      "sourceLimit": "Both reviewers used request only, no direct code or raw reply audit."
+    },
+    "v47_design": {
+      "status": "DESIGN_ONLY",
+      "paidCallsAuthorized": 0,
+      "paidCallsExecuted": 0,
+      "semanticCertified": false,
+      "provisionalOutputCap": 6000,
+      "diagnostic": "3–4 previously exposed cases, free-first, independent blind semantic evaluation",
+      "stage1": "separate unseen eight after diagnostic and review",
+      "isolatedOldPanel": [
+        "pilot-81",
+        "pilot-82",
+        "pilot-83",
+        "pilot-84",
+        "pilot-85",
+        "pilot-86",
+        "pilot-87",
+        "pilot-88"
+      ],
+      "nextReview": "after diagnostic or diagnostic stop; also after Stage1 and early L4",
+      "implementationPending": true
     }
   },
   "previous_runs": [
