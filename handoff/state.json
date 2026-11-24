@@ -9,7 +9,7 @@
   },
   "active_task": {
     "phase": "P2a-v4.7 free-only known-case semantic diagnostic",
-    "status": "V47_RATER_QUALIFICATION_V2_VOID_AMBIGUOUS_ANCHOR_V3_REAL_PUBLIC_CASES_FROZEN",
+    "status": "V47_QUALIFICATION_V3_HOLD_ADDITIONAL_SOURCE_AUDIT",
     "branch": "feat/coach-p2a-v47-minimal-diagnostic",
     "commit": "7959435bfad0412e9cd94234f01395af05d84789",
     "pr": 71,
@@ -355,7 +355,7 @@
       }
     ],
     "decision": "v46 API-only Stage1 stopped after 2 paid calls, 1 contract pass and 1 incomplete output due to cap. No evidence of typed condition contract failure from pilot82; no semantic certification. Original manual Stage1 plan not performed. No new paid generation authorized.",
-    "next": "All three raters independently assess four v3 qualification anchors using common human-readable source file. Qualification requires both verifiable material defects identified and neither source-consistent anchor falsely flagged. User may answer in plain text; external raters return original JSON. Do not disclose key until all lock. Diagnostic four genuine/controls frozen unchanged; mechanical 3/4 result remains. No paid calls.",
+    "next": "Preserve original user feedback; receive any already-requested independent external v3 ratings without hints; assess anchor validity before qualification. Avoid repeated elementary quizzes; consider explicitly separate exploratory teaching-value review of the frozen genuine/control responses, without claiming qualification, diagnostic pass or certification. No paid calls.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -2572,7 +2572,11 @@
           "materialErrorQualificationCriteriaUnchanged": true,
           "teachingUsefulnessSeparatelyRecorded": true,
           "ratersQualified": 0,
-          "privateKeyNotPublished": true
+          "privateKeyNotPublished": true,
+          "humanResponseReceived": true,
+          "humanResponseInterpretation": "Explicit defects/observation on Q2–Q4, Q1 not explicitly rated. User finds explanations somewhat improved but obvious and low educational value. Preserve original chat; no inferential completion of missing rating.",
+          "additionalSourceAudit": "Post-delivery audit flags an intended anchor's public discard timing as a potential contradictory safety rationale, and distinction between shape waits and physically available winning tiles. Qualification decision held; do not modify key or retroactively score, do not publish case-specific key before external ratings lock.",
+          "status": "HUMAN_FEEDBACK_RECEIVED_QUALIFICATION_HOLD_SOURCE_AUDIT"
         }
       },
       "controlAttemptsTotal": 6,
