@@ -1,0 +1,52 @@
+name: P2a-v46 Stage1 authorized eight GPT6 Sol API max 5 cents each
+on:
+  push:
+    branches: [feat/coach-p2a-v46-stage1-api-capped]
+    paths:
+      - research/approvals/p2a-v46-stage1-eight-20261124.run
+concurrency:
+  group: mahjong-v46-stage1-single-approved-marker
+  cancel-in-progress: false
+permissions:
+  contents: read
+  actions: read
+jobs:
+  eight:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    env:
+      V46_SOURCE: /tmp/v46-verifier/independent-requests.json
+      V46_QUESTIONS: /tmp/v46-public/questions
+      V46_STAGE1_OUT: /tmp/v46-stage1-encrypted
+      V46_STAGE1_APPROVAL: EIGHT_MAX_40_CENTS_20261124
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.23.4'
+      - uses: actions/download-artifact@v4
+        with:
+          name: v46-frozen-eight-public-only
+          run-id: 45304796606
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/v46-public
+      - uses: actions/download-artifact@v4
+        with:
+          name: v46-frozen-eight-verifier-only
+          run-id: 45304796606
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/v46-verifier
+      - name: Offline frozen prompt and one-time cap tests
+        run: node --test tests/next/v14-v46-frozen-receipt.test.mjs tests/next/v14-v46-stage1-api-capped.test.mjs
+      - name: Free token count all eight first, then capped independent generation, no retries
+        run: node tests/next/v14-v46-stage1-api-capped.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v46-stage1-api-encrypted-evidence
+          path: /tmp/v46-stage1-encrypted
+          retention-days: 7
+          if-no-files-found: ignore
