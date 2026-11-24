@@ -355,7 +355,7 @@
       }
     ],
     "decision": "v46 API-only Stage1 stopped after 2 paid calls, 1 contract pass and 1 incomplete output due to cap. No evidence of typed condition contract failure from pilot82; no semantic certification. Original manual Stage1 plan not performed. No new paid generation authorized.",
-    "next": "Obtain independent exploratory reviews by user, Claude, Gemini on same human-readable comparison file. No need for further elementary qualification quiz. User may submit simple usefulness, actual learning, concrete errors and A/B preference; formal scores optional for user and kept separate if missing. Review all ratings after lock, no formal qualification/phase GO; compare weaknesses and decide whether to redesign coach or halt. Preserve original responses and private mapping. No paid calls.",
+    "next": "Continue human review one case at a time; preserve independent external reviews when received. No label reveal before all lock. After remaining feedback, evaluate quantitative coach redesign versus prompt-only tuning; retain prior 3/4 mechanical gate and no formal certification. No paid calls.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -2640,7 +2640,15 @@
         "sourceArchiveHashesVerified": true,
         "allFourRequestHashesVerified": true,
         "ratersQualified": 0,
-        "privateMappingPublished": false
+        "privateMappingPublished": false,
+        "humanProgress": {
+          "reviewedCases": 1,
+          "totalCases": 4,
+          "qualitativeUsefulness": "low",
+          "feedback": "User already understands qualitative tradeoffs and favors folding under last-place avoidance. Wants calibrated per-opponent tile-specific deal-in probability, dealer tenpai probability from public information and incentives, alternative action effect on own win/deal-in, opponent resolution, bust/terminal rank and expected score. Qualitative advantages alone cannot persuade. No numeric estimates were produced by current coach. Distinguish original raw-point objective from user's last-place-avoidance counterfactual; preserve both. No inferred formal per-answer scores, no labels disclosed, remaining three cases pending.",
+          "assessmentStatus": "PARTIAL_HUMAN_REVIEW_NOT_LOCKED",
+          "nextDesignHypothesis": "Separate calibrated quantitative state inference and paired continuation evaluation from language explanation; do not interpret S42 Q values as probabilities. Assess on disjoint games with calibration, policy sensitivity, uncertainty and public-information-only input. No implementation or new gate authorized yet."
+        }
       }
     }
   },
