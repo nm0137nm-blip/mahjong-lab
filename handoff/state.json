@@ -9,7 +9,7 @@
   },
   "active_task": {
     "phase": "P2a-v4.7 free-only known-case semantic diagnostic",
-    "status": "Q1_BOUNDED_EXIT_AWAIT_INDEPENDENT_REVIEW",
+    "status": "Q1_EXIT_LEARNING_REQUIREMENTS_RESET_Q2_PAUSED",
     "branch": "feat/coach-p2a-v47-minimal-diagnostic",
     "commit": "7959435bfad0412e9cd94234f01395af05d84789",
     "pr": 71,
@@ -355,7 +355,7 @@
       }
     ],
     "decision": "v46 API-only Stage1 stopped after 2 paid calls, 1 contract pass and 1 incomplete output due to cap. No evidence of typed condition contract failure from pilot82; no semantic certification. Original manual Stage1 plan not performed. No new paid generation authorized.",
-    "next": "Q1 bounded trials ended with partial success. Independent Claude/Gemini exit review before Q2. Preserve failed GRP and A incomplete coverage/timeout results; no claim of akochan probability accuracy; D frozen features extraction smoke and G standard boundary restart smoke only. Consider bounded D supervised head feasibility and G same-policy boundary distribution comparisons; no Q2 runs or paid resources before review and decision.",
+    "next": "Define learning requirements for long-term positive Tenhou tok-jo/houou rank-point results before selecting engineering work; distinguish training skill acquisition from simulator output accuracy, review task taxonomy, quantitative evidence and human transfer validation. Claude Q1 technical review retained; attached Gemini is prior Q0 review. Audit aggregate artifact scope separately. No Q2 training/generation/paid API/main changes.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -2860,6 +2860,18 @@
         "oldGatesPreserved": true,
         "exitReview": "REQUIRED_BEFORE_Q2"
       }
+    },
+    "learningObjectiveReset": {
+      "status": "OBJECTIVE_CLARIFIED_REQUIREMENTS_DESIGN_PENDING",
+      "userGoal": "長期的に天鳳の特上卓や鳳凰卓でプラスを稼げる打ち方・考え方・確率を身につけること。そのために必要な定量情報を先に定義する。局収支・4着率は例であり最終目的ではない。",
+      "record": "handoff/q1-learning-objective-reset-20261125.md",
+      "commit": "13e0ebcb5496ef6a7ff7ea8fbfa7bdbc7d3ab6f2",
+      "claudeQ1ReviewSHA256": "2a8d899c3c800309965d4ee8f751d5f4e7354f4e742346f50aca33930a26eddc",
+      "geminiAttachment": "Identical to already received Q0 supplement SHA256 152cc40107dd0f24189fd704dfd90c33f8089f041879069c5be8f3eb25900e99; no new Q1 review",
+      "q2Approved": false,
+      "paidCalls": 0,
+      "oldGatesPreserved": true,
+      "mainUnchanged": true
     }
   },
   "previous_runs": [
