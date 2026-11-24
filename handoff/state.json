@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-24T09:54:15+09:00",
+  "checkpoint": "2026-11-24T12:12:47+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -9,7 +9,7 @@
   },
   "active_task": {
     "phase": "P2a-v4.5 separate prospective version, manual independent GPT-6 Stage1 frozen eight source-only packets and original verifier fully prepared",
-    "status": "V46_TYPED_CONTRACT_INTEGRATED_20_PASS_NATURAL_SOURCE_ACQUISITION_STARTED",
+    "status": "V46_MANUAL_STAGE1_READY_0_OF_8_AWAIT_PILOT81",
     "branch": "feat/coach-p2a-v45-japanese-reversal-lexemes",
     "commit": "f92239ad355d069d43ead0cbe6951ade9a07ae3a",
     "pr": 70,
@@ -355,7 +355,7 @@
       }
     ],
     "decision": "Preserve v45 manual Stage1 8/8, failed Stability 4/5 and no overall GO. No more API calls on this authorization.",
-    "next": "Check already started natural-source run 45304796606. Do not deliver any question until source panel and independent audits succeed and exact source and prompt hashes are committed. v46 first 8 manual; no paid API.",
+    "next": "対応依頼: First frozen v46 question pilot-81 in new independent GPT-6 temporary chat; original UTF-8 JSON response file. No paid API. First fatal stops.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -2274,7 +2274,7 @@
       "semanticCertified": false
     },
     "v46_structured_condition_prototype": {
-      "status": "INTEGRATED_OFFLINE_20_TESTS_PASS_NEW_NATURAL_PANEL_PENDING",
+      "status": "INTEGRATED_20_PASS_NATURAL_PANEL_AND_RECEIPT_PASS_READY",
       "branch": "feat/coach-p2a-v46-structured-condition-prototype",
       "runId": 45303446142,
       "commit": "f6a4cba46036b7c10d3bbc698381d5235e3d0b9a",
@@ -2282,7 +2282,7 @@
       "apiCalls": 0,
       "additionalCostUSD": 0,
       "oldV45Unchanged": true,
-      "remainingWork": "Finish natural source acquisition/audits, freeze prompt hashes and exact receipt, then first of 8 manual GPT-6 questions. No v45 retroactive change.",
+      "remainingWork": "First eight manual original responses, first fatal stop, semantic and Stability later.",
       "integrated": true,
       "contractRunId": 45304188028,
       "contractTestsPass": 20,
@@ -2298,7 +2298,59 @@
       "originalAcquisitionRunId": 45304572133,
       "acquisitionRepair": "fully completed matches with zero eligible decisions retained as empty; no seed substitution",
       "acquisitionRunId": 45304796606,
-      "sourceFreeze": "PENDING"
+      "sourceFreeze": "AUDITED_AND_LOCKED",
+      "collectionCompleted": 16,
+      "naturalIndependentMatches": 8,
+      "publicSourceArtifact": 14881055452,
+      "verifierOnlySourceArtifact": 14880910823,
+      "sourceSHA256": "529102d7db69fca9bef26d04adee2240a3b3cd20d6085238133b8934beda310c",
+      "publicPacketSetHash": "8ab5abc673ab04cb092726d582002c7696973d686fadd8204aea01b120baf528",
+      "weakControlDigest": "07eadf7d88cd53e985c33de2cc5862c540b330dc24d240068f85ce4363fee09d",
+      "fixedOrder": [
+        "pilot-81",
+        "pilot-82",
+        "pilot-83",
+        "pilot-84",
+        "pilot-85",
+        "pilot-86",
+        "pilot-87",
+        "pilot-88"
+      ],
+      "packetHashes": [
+        "5aa6e8a6549327524d31f477cbc4d6b30e6e12c354f75d883966c1afacb434b2",
+        "1f91d400019f7b859f9af960bb5020842598f6568edef5d814a439b7ecceda7d",
+        "75885c1da5079b588cc0cb83eca681d3fb6f815e94b74654d981167d6847742b",
+        "2b2190a1382193c2b6a1095c197d51286728bf62387f237f90aa586f29ee7184",
+        "520072930ac2555276ad7a58f37e0f66d8505655af471fed61494ce36f74be37",
+        "02dd3ad054dbe69c04e1d857e22e898c30dd63bfef42de6349f27dbe86708069",
+        "7e871befcdb1e6e041f37749b634fb3228af21e2b22556c7e60fd1d7a492acf8",
+        "f0fb658cb59c382f05ccf6bbe159389b3a5e1ec08ac899f0d8e8621139f0c867"
+      ],
+      "receiptRunId": 45318122119,
+      "receiptTest": "PASS all eight synthetic fixtures, no real models",
+      "receiptCodeArtifact": 14885927603,
+      "receiptCodeTarSHA256": "612bc9eabc4f482af35c1ec289f18ccaacaee7462555d63006649750083f0244",
+      "receiptCommit": "2dc781876eecd9c66b8b31daa09a667dc31c912b",
+      "numericAudit": {
+        "cases": 8,
+        "shapeRows": 85,
+        "scoreValues": 27,
+        "failures": 0
+      },
+      "legalSubsetAudit": {
+        "cases": 8,
+        "options": 63,
+        "failures": 0,
+        "unsupported": 0,
+        "notCompleteLegalMaskProof": true
+      },
+      "originalStage1ContractPass": 0,
+      "receipts": [],
+      "nextCase": "pilot-81",
+      "nextQuestionFile": "mahjong_P2a_v46_stage1_pilot-81_question.json",
+      "nextQuestionFileSHA256": "96425f083fae7845e07d2bc754f65b77725a8c6cad6e5456ee962ea27e953e77",
+      "nextQuestionByteLength": 35999,
+      "nextExpectedAnswerFile": "mahjong_P2a_v46_stage1_pilot-81_response.json"
     }
   },
   "previous_runs": [
