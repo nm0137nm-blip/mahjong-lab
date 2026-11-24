@@ -561,3 +561,9 @@ ChatGPTが実際に独立して解いた回答を得る前に、採点・中止�
 - 第1問：`pilot-41` 出題JSON `mahjong_P2a_v45_stage1_pilot-41_question.json`（28,131bytes、file SHA256 `e8b3d275540888b9fef3ac1a5f2e056f0fbd40282ac65a5b904b60`）。GPTの回答ファイル名は`mahjong_P2a_v45_stage1_pilot-41_response.json`。質問`requestHash`は`deb876c26140d1b74fd0f11bc0ccb78f8d10c952c514541d66b6c5e3405fe338`。
 - 研究ブランチ`feat/coach-p2a-v45-japanese-reversal-lexemes` Draft PR#70。**まだ正式Phase完了ではなく、Stage1の実モデル回答は0/8**、後続Stability/Stage2/L3.5/本人・Claude・Gemini匿名L4も未実施。mainやS42製品方針変更なし。
 - 詳細ソース・8件ハッシュ表・次の手順：`handoff/p2a-v45-eight-manual-freeze-ready-20261124.md`。ユーザー本人の作業が必要なのは第1問へのGPT-6独立回答だけ。
+
+
+## 2026-11-24 09:08 JST：v4.5手動Stage1 第1問pilot-41 PASS、次はpilot-45
+- ユーザー提出の `mahjong_P2a_v45_stage1_pilot-41_response.json` を固定済み `assessV45FirstRealStage1` で元公開36局面ソースと照合し、**CONTRACT_AND_PUBLIC_FACT_GATE_PASS**。原本SHA256 `0679a928be7937897a5b3a72de1e6179be48709aeeca45cd7147e564aca6730d`、7,291 bytes。再添付の`response(1).json`は同一バイトのため重複計上しない。初回受領08:53:07 JST。原回答・選択内容は公開GitHubに載せない。モデルGPT-6はユーザー申告、独立一時チャットの出所は未検証。
+- 凍結済み判定器をローカルで動作させるためのsource-only取得workflow run **45293417909**成功。評価器の挙動・出題ハッシュの変更なし。実モデル回答 **1/8 PASS、0 FAIL、7未実施**、Stage1未完。戦術的品質/S42一致/L4は認定していない。API追加実行0回、追加費用0。
+- 次問 **pilot-45**。質問ファイル `mahjong_P2a_v45_stage1_pilot-45_question.json`、29,204 bytes、file SHA256 `270725c2a8751b49e62785451dc7e7582031ffeb2421283d467105e44355427e`、固定requestHash `08da20db1dd1db951dddec2685c0c65144c467cb890f0f525bd0870c1e5a8f9c`。回答期待ファイル名 `mahjong_P2a_v45_stage1_pilot-45_response.json`。別の独立GPT-6一時チャットでそのまま回答ファイルを作成し添付。初回8問の手動運用、first fatal停止、旧版NO-GO維持。
