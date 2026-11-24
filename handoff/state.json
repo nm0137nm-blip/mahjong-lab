@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-24T15:04:00+09:00",
+  "checkpoint": "2026-11-24T15:10:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -9,7 +9,7 @@
   },
   "active_task": {
     "phase": "P2a-v4.7 free-only known-case semantic diagnostic",
-    "status": "V47_FREE_OFFLINE_QA_PASS_AWAIT_INDEPENDENT_CONTROL_GENERATION",
+    "status": "V47_CONTROL_INTAKE_FOUR_MECHANICAL_PASS_TWO_SEMANTIC_DEFECTS_UNAMBIGUOUS_AWAIT_REGENERATION",
     "branch": "feat/coach-p2a-v47-minimal-diagnostic",
     "commit": "7959435bfad0412e9cd94234f01395af05d84789",
     "pr": 71,
@@ -355,7 +355,7 @@
       }
     ],
     "decision": "v46 API-only Stage1 stopped after 2 paid calls, 1 contract pass and 1 incomplete output due to cap. No evidence of typed condition contract failure from pilot82; no semantic certification. Original manual Stage1 plan not performed. No new paid generation authorized.",
-    "next": "User independently generates four matched adversarial controls in one fresh GPT-6 session using control-generation request; submit original JSON unread. Developer audits controls and freezes private mapping before four independent genuine diagnostic replies. No paid generation. Qualification anchors and anonymous grading pending; no unseen certification.",
+    "next": "Before collecting any genuine diagnostic answer, user obtains independent regeneration of two controls per preregistration and returns original JSON unread. Do not expose identities or content to raters. Then verify and freeze all four controls, collect genuine responses. Qualification materials prepared and sealed, deliver separately.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -2482,9 +2482,9 @@
       ],
       "controlRequestSha256": "d0059580797db4d61106dc7037adecd75cfed8cde4c15ef9ae5adbb746aaba20",
       "genuineReplies": 0,
-      "controlReplies": 0,
+      "controlReplies": 4,
       "semanticGrades": 0,
-      "qualificationAnchorsPending": true,
+      "qualificationAnchorsPending": false,
       "sourceInventory": {
         "collectedMatches": 16,
         "retainedCandidatePositions": 153,
@@ -2506,6 +2506,29 @@
         "maintainedClusters": 4,
         "actualModelEvaluation": 0,
         "repackagePending": true
+      },
+      "controlIntake": {
+        "received": 4,
+        "rawFileSha256": "9c0020d34bb27423bdb8ae0346c7d428582beed2c7c2b474735bfa8199f94458",
+        "rawBytes": 16924,
+        "mechanicalPass": 4,
+        "mechanicalMethod": "Independent local Python mirror against exact frozen request hashes, keys, references, scoped seat facts, explicit quantities and flips; original JS receipt not rerun.",
+        "unambiguousMaterialDefectConfirmed": 2,
+        "regenerationRequired": 2,
+        "reason": "Two defects cannot be confidently separated from defensible tactical judgment; preregistered control-only regeneration before any genuine answers.",
+        "privateIdentityMapNotPublished": true,
+        "rawOriginalPreservedInConversation": true,
+        "regenerationRequestSha256": "06b147d6073734458fa9dbaf6d4425dc9700164d947f9088ee82fe3fd5fa02f3",
+        "genuineResponsesSeen": 0,
+        "paidCalls": 0
+      },
+      "qualification": {
+        "syntheticAnchors": 4,
+        "publicFileSha256": "15a3c57682f12b5ceb9d795179c0132cd56b7c4d052d6eb7f0ccd192e51febd4",
+        "sealedPrivateKeySha256": "8538eabaeaf3cdf1028a2a9ba754c5b777f3fbb36a90fc37566624ba17e55e18",
+        "status": "PREPARED_NOT_DELIVERED",
+        "ratersQualified": 0,
+        "privateKeyNotPublished": true
       }
     }
   },
