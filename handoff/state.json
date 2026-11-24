@@ -9,7 +9,7 @@
   },
   "active_task": {
     "phase": "P2a-v4.7 free-only known-case semantic diagnostic",
-    "status": "Q0_EXIT_AWAIT_CLAUDE_GEMINI_REVIEW",
+    "status": "Q0_COMPLETE_Q1_CONDITIONAL_GO_AWAIT_USER_DIRECTION",
     "branch": "feat/coach-p2a-v47-minimal-diagnostic",
     "commit": "7959435bfad0412e9cd94234f01395af05d84789",
     "pr": 71,
@@ -355,7 +355,7 @@
       }
     ],
     "decision": "v46 API-only Stage1 stopped after 2 paid calls, 1 contract pass and 1 incomplete output due to cap. No evidence of typed condition contract failure from pilot82; no semantic certification. Original manual Stage1 plan not performed. No new paid generation authorized.",
-    "next": "Await independent Q0 exit and Q1 choice reviews. No further training, formal tests, paid calls or main changes; preserve previous frozen gates. Compare strength evidence vs calibrated prediction, then choose bounded experiment.",
+    "next": "Await user Q1 start confirmation. Before execution preregister time/compute caps, seeds, public selection, teachers, metric/stop criteria and independent grouping; prioritize exact masked akochan audit, F+C+G boundary feasibility, D no-training feature extraction. No paid calls, no large generation, no formal evaluation, no main change. Old freezes remain.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -2678,7 +2678,7 @@
       "akochanLicenseChecked": true,
       "akochanExecuted": true,
       "q0": {
-        "status": "FEASIBILITY_EXIT_EXTERNAL_RUNTIME_BLOCKER_CLEARED",
+        "status": "Q0_EXIT_REVIEW_COMPLETE",
         "report": "handoff/q0-feasibility-exit-20261124.md",
         "reportCommit": "9c38478907070d46114a2ccd1c3b1ec74089588d",
         "auditScript": "handoff/q0/audit_boundaries.py",
@@ -2733,7 +2733,7 @@
         "formalCertification": false,
         "mainUnchanged": true,
         "exitReview": {
-          "status": "AWAIT_TWO_INDEPENDENT_REVIEWS",
+          "status": "TWO_REVISED_REVIEWS_INTEGRATED_Q0_EXIT_Q1_CONDITIONAL_GO_PROPOSAL",
           "requestFile": "mahjong_Q0_exit_review_20261124.txt",
           "requestSha256": "e29aa781591e4e93fa1c8919d75241fba0ba1d732b3367e1a83f343c5818db38",
           "requestBytes": 14275,
@@ -2750,7 +2750,18 @@
             "Mortal 3.1 official 1v3 duplicate benchmark 13152 matches: akochan avg rank 2.567670 vs 2.477443, fourth 0.279197 vs 0.240268; not S42 comparison or calibration proof"
           ],
           "maxRounds": 2,
-          "paidCalls": 0
+          "paidCalls": 0,
+          "geminiSHA256": "152cc40107dd0f24189fd704dfd90c33f8089f041879069c5be8f3eb25900e99",
+          "claudeSHA256": "ea0e4b242dc9621e8b529816c2663eda0cbf110df1c3d4cf2aef2fa814616c49",
+          "integratedRecord": "handoff/q0-exit-review-integrated-20261124.md",
+          "integratedCommit": "617f0cb938e527296d38cc001b7d37907c167d7a",
+          "additionalRoundRequired": false,
+          "decision": "A limited unmodified external reference only; B no-go pending rights permission; F exact facts and sensitivity common foundation; C LAB boundary rank model with G fixed-policy remaining-game simulation reference; D frozen S42 feature extraction feasibility only; E candidate-value development deferred. No existing gates reopened. Q1 bounded proposal not execution approval.",
+          "q1Priority": [
+            "A masked/poison/legality/coverage runtime audit up to 50 preselected positions from 12 development matches; conditional max24 matches and separate compute cap fixed before execution",
+            "F+C+G existing96 boundary audit, exact settlement, small grouped development rank forecast and fixed-rule boundary simulation feasibility",
+            "D S42 frozen visible feature extraction smoke and compute feasibility, no new D training"
+          ]
         }
       }
     }
