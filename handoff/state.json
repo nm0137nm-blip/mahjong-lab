@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-24T12:12:47+09:00",
+  "checkpoint": "2026-11-24T12:19:04+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -9,7 +9,7 @@
   },
   "active_task": {
     "phase": "P2a-v4.5 separate prospective version, manual independent GPT-6 Stage1 frozen eight source-only packets and original verifier fully prepared",
-    "status": "V46_MANUAL_STAGE1_READY_0_OF_8_AWAIT_PILOT81",
+    "status": "V46_STAGE1_API_ONLY_EIGHT_AUTHORIZED_PREFLIGHT",
     "branch": "feat/coach-p2a-v45-japanese-reversal-lexemes",
     "commit": "f92239ad355d069d43ead0cbe6951ade9a07ae3a",
     "pr": 70,
@@ -355,7 +355,7 @@
       }
     ],
     "decision": "Preserve v45 manual Stage1 8/8, failed Stability 4/5 and no overall GO. No more API calls on this authorization.",
-    "next": "対応依頼: First frozen v46 question pilot-81 in new independent GPT-6 temporary chat; original UTF-8 JSON response file. No paid API. First fatal stops.",
+    "next": "Execute user-approved one-shot API-only Stage1 with original eight, exact count before all inference, strict first-fatal stop; no further paid calls beyond scope.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -2351,6 +2351,24 @@
       "nextQuestionFileSHA256": "96425f083fae7845e07d2bc754f65b77725a8c6cad6e5456ee962ea27e953e77",
       "nextQuestionByteLength": 35999,
       "nextExpectedAnswerFile": "mahjong_P2a_v46_stage1_pilot-81_response.json"
+    },
+    "v46_stage1_api_approval": {
+      "authorizedAt": "2026-11-24T12:19:04+09:00",
+      "userMessage": "自動で8問進めてみてください 0.05ドル以下なら承認します",
+      "maximumPaidPosts": 8,
+      "maximumPerPostUSD": 0.05,
+      "maximumTotalUSD": 0.4,
+      "noRetries": true,
+      "stopOnFirstFatal": true,
+      "branch": "feat/coach-p2a-v46-stage1-capped-api",
+      "protocolPath": "research/p2a-v46-api/PROTOCOL.md",
+      "status": "PREPARED_NO_GENERATION_YET",
+      "manualResponsesAtAmendment": 0,
+      "originalManualPlanPreserved": true,
+      "paidPostsUsed": 0,
+      "actualSpendUSD": 0,
+      "priorV45NoGoUnchanged": true,
+      "scope": "v46 Stage1 pilot-81..88 only, not Stability or Stage2/L3.5"
     }
   },
   "previous_runs": [
