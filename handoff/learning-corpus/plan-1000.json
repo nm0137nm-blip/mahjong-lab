@@ -1,0 +1,17 @@
+{
+  "version": "learning-corpus-1000-v1",
+  "purpose": "1000 new synthetic full S42-adapter selfplay hanchan, development-only reusable research archive; no claim of Tenhou population",
+  "count": 1000,
+  "pilot": 8,
+  "bulkBatches": 31,
+  "batchSize": 32,
+  "bulkParallel": 8,
+  "seedNamespace": "mahjong-lab:learning-corpus-1000:20261125:v1",
+  "sourceRef": "75c87e621b85bc411ef92152f84918a1802dbd2b",
+  "modelSha256": "30381bf21389e2d25d3edf48fed11bf772336ef3daeee67d1bdae7fb9dd30cb4",
+  "certSha256": "1debc2c919b3279acb0281e625b4fdb355454e713e45ca2357b9492a213cfd7a",
+  "scope": "Existing LAB rules, four S42 adapters, rotating starting dealer; complete game log, original walls, optional unaudited focal public/reference/oracle captures; no new training. No raw public artifact. AES-256-GCM CMS envelopes encrypted to user-held key; 90 day artifact retention, download and backup before expiry. Seed domain distinct, exclude known v2 and pilot seeds and locked outer seed IDs only; other historical overlap not exhaustively audited, not independent test.",
+  "gates": "All pilot eight must pass, then bulk 31 batches of 32. No fallback; CPU model+forced equals decisions, shared worker, 3 opponent seats; focal capture coverage; valid final score/rank, wall count and tile multiset; matching deterministic wall hashes; no raw console logs. Timeout per game 300s, failure stops affected batch, retain successful prefixes encrypted. No automatic retry.",
+  "paidCalls": 0,
+  "mainUnchanged": true
+}
