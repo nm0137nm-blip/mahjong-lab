@@ -1,10 +1,7 @@
 name: P2a-v45 Stability authorized eight GPT6 Sol API at most 5 cents per call
+# Authorization closed after first fatal, run 45302765123.
 on:
-  push:
-    branches:
-      - feat/coach-p2a-v45-stability-capped
-    paths:
-      - research/approvals/p2a-v45-stability-eight-20261124.run
+  workflow_dispatch:
 permissions:
   contents: read
   actions: read
@@ -19,7 +16,7 @@ jobs:
       V14_FOLLOWUP_PUBLIC: /tmp/v45-stability-original/independent-requests.json
       V45_QUESTIONS: /tmp/v45-stability-questions/questions
       V45_STABILITY_OUT: /tmp/v45-stability-encrypted
-      V45_STABILITY_APPROVAL: EIGHT_MAX_40_CENTS_20261124
+      V45_STABILITY_APPROVAL: EXPIRED_AFTER_FIRST_FATAL_PILOT54_R1
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
     steps:
       - uses: actions/checkout@v4
