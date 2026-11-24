@@ -639,3 +639,10 @@ ChatGPTが実際に独立して解いた回答を得る前に、採点・中止�
 - public artifact 14881055452、verifier-only artifact 14880910823。弱対照の事前digest `07eadf7d88cd53e985c33de2cc5862c540b330dc24d240068f85ce4363fee09d`。モデル回答0件のまま固定。
 - 新受領判定器 `src/coach/v14-v46-stage1-receipt.mjs`。研究branch `feat/coach-p2a-v46-structured-condition-prototype` の commit 2dc781876eecd9c66b8b31daa09a667dc31c912b、run 45318122119 PASS（8問全件の合成回答・厳密JSON・改ざん拒否・停止規則）。コードのみartifact 14885927603。tar SHA `612bc9eabc4f482af35c1ec289f18ccaacaee7462555d63006649750083f0244`。ローカルで同一source・8packetハッシュ一致を確認。
 - 次問 pilot-81：`mahjong_P2a_v46_stage1_pilot-81_question.json`（35,999 bytes）、file SHA `96425f083fae7845e07d2bc754f65b77725a8c6cad6e5456ee962ea27e953e77`、requestHash `5aa6e8a6549327524d31f477cbc4d6b30e6e12c354f75d883966c1afacb434b2`。新規独立GPT-6一時チャットで原回答 `mahjong_P2a_v46_stage1_pilot-81_response.json` を添付する。初回8問は手動、first fatal停止、API課金0、旧v45 NO-GO保持。Phase全体未完。
+
+
+## 2026-11-24 12:19 JST承認：v4.6 Stage1 API自動8問・第2問出力上限停止
+- ユーザーは「自動で8問進めてみてください 0.05ドル以下なら承認します」と指示。1回$0.05、最大8回/$0.40、初回重大FAIL停止、retry 0。手動回答0件の段階でAPI-only transportに前向き変更。固定81..88の元問題と判定器・元v45結果は変更しない。別フェーズのAPI承認なし。
+- 研究branch `feat/coach-p2a-v46-stage1-capped-api`、事前protocol `research/p2a-v46-api/PROTOCOL.md`、承認marker commit 9ca7f45ea2bd335568462416efaa0ed7bac1e658。run **45319407857**、job 138194026189。offline 5/5 PASS、全8件無料token count preflight通過。実際の有料POSTは2回。pilot-81はCONTRACT_AND_PUBLIC_FACT_GATE_PASS、pilot-82はAPI status incomplete/reason max_output_tokensで停止。後者の出力上限2868、実出力2868（うち推論1552）でJSON途中まで。未完原本を勝手に修復・判定しない。pilot-83..88未実施。手動Stage1計画は未実施、API-only Stage1はNO-GO、意味評価未認定。
+- 暗号化原本 artifact 14886223134 をローカル復号、pilot-81 rawSHA `ea9d280a5aa0532a281bf0288d59cfc584dddaee742899b6220ce900cad0e3ac` と固定v46検証器のPASSを再確認。pilot-82は全API原本に途中テキスト保全、抽出済みrawは空（不合格を隠さない）。消費推計：81 $0.042926、82 $0.0464685、計 **$0.0893945**（cache write実測tokensと単価、実請求未照合）。全入力cache-write扱い保守使用量$0.089398、事前予算上限合計$0.095998。1回$0.05以下。停止後残6回を転用しない。
+- workflow disarm 52a6867f97968312e923f33c6f7bb7bcda6bc451。次は固定情報・判定器を変えないAPI輸送効率改善、冗長入力の削減、推論量/回答長の適切な配分を無料検討。新規課金は別承認。main変更なし。
