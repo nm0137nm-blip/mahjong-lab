@@ -2890,6 +2890,13 @@
           "L2 class-level paired interventions and sensitivity",
           "L3 learner pre/post/retention and unseen transfer"
         ]
+      },
+      "researchProtocol": {
+        "status": "USER_AGILE_METRIC_DESIGN_DIRECTION_RECORDED",
+        "record": "handoff/learning-research-protocol-20261125.md",
+        "commit": "6acefec386a6cbd98e368a27a37039fa42310562",
+        "method": "For each theme define learning question, falsifiable hypothesis, operational primary/secondary metrics, denominators, conditions, comparison, data provenance, uncertainty, decision and teaching criteria before test. Iterate via versioned hypotheses; distinguish exploratory and confirmatory results. Metric candidates not fixed gates.",
+        "newExecutionAuthorized": false
       }
     },
     "learningCorpus": {
