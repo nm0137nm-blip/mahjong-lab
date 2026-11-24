@@ -9,7 +9,7 @@
   },
   "active_task": {
     "phase": "P2a-v4.7 free-only known-case semantic diagnostic",
-    "status": "Q0_AKOCHAN_RUNTIME_SMOKE_PASS_Q1_PLAN_REVIEW",
+    "status": "Q0_EXIT_AWAIT_CLAUDE_GEMINI_REVIEW",
     "branch": "feat/coach-p2a-v47-minimal-diagnostic",
     "commit": "7959435bfad0412e9cd94234f01395af05d84789",
     "pr": 71,
@@ -355,7 +355,7 @@
       }
     ],
     "decision": "v46 API-only Stage1 stopped after 2 paid calls, 1 contract pass and 1 incomplete output due to cap. No evidence of typed condition contract failure from pilot82; no semantic certification. Original manual Stage1 plan not performed. No new paid generation authorized.",
-    "next": "Q0 addendum: unmodified akochan private execution now confirmed. Prioritize akochan extraction/semantics and development-only calibration/coverage feasibility alongside Mortal-type GRP, before training new P1 models. Need independent phase checkpoint and bounded Q1 plan; exact pilot41 historical own draws not yet retrieved, no calibrated probabilities, no source/raw external output in public repo, no paid calls or main change.",
+    "next": "Await independent Q0 exit and Q1 choice reviews. No further training, formal tests, paid calls or main changes; preserve previous frozen gates. Compare strength evidence vs calibrated prediction, then choose bounded experiment.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -2731,7 +2731,27 @@
         "newGames": 0,
         "paidCalls": 0,
         "formalCertification": false,
-        "mainUnchanged": true
+        "mainUnchanged": true,
+        "exitReview": {
+          "status": "AWAIT_TWO_INDEPENDENT_REVIEWS",
+          "requestFile": "mahjong_Q0_exit_review_20261124.txt",
+          "requestSha256": "e29aa781591e4e93fa1c8919d75241fba0ba1d732b3367e1a83f343c5818db38",
+          "requestBytes": 14275,
+          "options": [
+            "unmodified akochan calibration",
+            "akochan fixed features or recalibration",
+            "round-boundary GRP",
+            "frozen S42 features",
+            "paired action-conditioned value learning",
+            "conditional sensitivity only or stop"
+          ],
+          "strengthEvidence": [
+            "UEC thesis section 4.1 reports developer-estimated stable dan 7, not confirmed human ladder results",
+            "Mortal 3.1 official 1v3 duplicate benchmark 13152 matches: akochan avg rank 2.567670 vs 2.477443, fourth 0.279197 vs 0.240268; not S42 comparison or calibration proof"
+          ],
+          "maxRounds": 2,
+          "paidCalls": 0
+        }
       }
     }
   },
