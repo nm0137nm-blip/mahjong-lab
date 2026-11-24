@@ -9,7 +9,7 @@
   },
   "active_task": {
     "phase": "P2a-v4.5 separate prospective version, manual independent GPT-6 Stage1 frozen eight source-only packets and original verifier fully prepared",
-    "status": "V45_CLOSED_NO_GO_STABILITY_CROSS_TRANSPORT_FIRST_FATAL_PILOT54_R1",
+    "status": "V46_TYPED_CONTRACT_INTEGRATED_20_PASS_NATURAL_SOURCE_ACQUISITION_STARTED",
     "branch": "feat/coach-p2a-v45-japanese-reversal-lexemes",
     "commit": "f92239ad355d069d43ead0cbe6951ade9a07ae3a",
     "pr": 70,
@@ -355,7 +355,7 @@
       }
     ],
     "decision": "Preserve v45 manual Stage1 8/8, failed Stability 4/5 and no overall GO. No more API calls on this authorization.",
-    "next": "v46 structured condition prototype passed offline 4/4. Integrate only in separate prospective version, expand unused source pool, freeze new evaluation before any real answers. v45 Stability NO-GO preserved. No paid generation authorized.",
+    "next": "Check already started natural-source run 45304796606. Do not deliver any question until source panel and independent audits succeed and exact source and prompt hashes are committed. v46 first 8 manual; no paid API.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -2274,7 +2274,7 @@
       "semanticCertified": false
     },
     "v46_structured_condition_prototype": {
-      "status": "OFFLINE_PROTOTYPE_4_TESTS_PASS_NOT_INTEGRATED",
+      "status": "INTEGRATED_OFFLINE_20_TESTS_PASS_NEW_NATURAL_PANEL_PENDING",
       "branch": "feat/coach-p2a-v46-structured-condition-prototype",
       "runId": 45303446142,
       "commit": "f6a4cba46036b7c10d3bbc698381d5235e3d0b9a",
@@ -2282,7 +2282,23 @@
       "apiCalls": 0,
       "additionalCostUSD": 0,
       "oldV45Unchanged": true,
-      "remainingWork": "Full contract integration, adversarial tests, fresh source expansion and prospective evaluation freeze before real responses. Seven unused cases in prior 36 pool insufficient for another independent eight if all prior panels excluded."
+      "remainingWork": "Finish natural source acquisition/audits, freeze prompt hashes and exact receipt, then first of 8 manual GPT-6 questions. No v45 retroactive change.",
+      "integrated": true,
+      "contractRunId": 45304188028,
+      "contractTestsPass": 20,
+      "contractTestsFail": 0,
+      "old36SyntheticFixturesPass": 36,
+      "realV46Responses": 0,
+      "preregPath": "research/p2a-v46/PREREG.md",
+      "seedAudit": {
+        "priorSeeds": 1638,
+        "newSeeds": 16,
+        "overlap": 0
+      },
+      "originalAcquisitionRunId": 45304572133,
+      "acquisitionRepair": "fully completed matches with zero eligible decisions retained as empty; no seed substitution",
+      "acquisitionRunId": 45304796606,
+      "sourceFreeze": "PENDING"
     }
   },
   "previous_runs": [
