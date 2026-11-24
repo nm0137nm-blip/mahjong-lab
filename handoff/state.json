@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-24T07:02:00+09:00",
+  "checkpoint": "2026-11-24T09:08:21+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -9,7 +9,7 @@
   },
   "active_task": {
     "phase": "P2a-v4.5 separate prospective version, manual independent GPT-6 Stage1 frozen eight source-only packets and original verifier fully prepared",
-    "status": "V45_MANUAL_STAGE1_READY_11_OF_11_NO_MODEL_ANSWERS_0_OF_8_PILOT41_USER_ACTION",
+    "status": "V45_MANUAL_STAGE1_1_OF_8_PUBLIC_CONTRACT_PASS_AWAIT_PILOT45",
     "branch": "feat/coach-p2a-v45-japanese-reversal-lexemes",
     "commit": "f92239ad355d069d43ead0cbe6951ade9a07ae3a",
     "pr": 70,
@@ -354,8 +354,8 @@
         "phaseCompleted": false
       }
     ],
-    "decision": "P2a-v4.4 closed NO-GO and never retrospectively regraded; new P2a-v4.5 Stage1 manually awaited (0/8), no free-form post-freeze tweaks or paid API.",
-    "next": "対応依頼: attach mahjong_P2a_v45_stage1_pilot-41_question.json to a fresh isolated GPT-6 chat, obtain exact UTF-8 JSON FILE mahjong_P2a_v45_stage1_pilot-41_response.json, return original file here. No API calls; strict v45 original-source verifier on each response; first fatal closes v45 NO-GO.",
+    "decision": "v45 Stage1 1/8 PASS, no semantic certification. v44 closed NO-GO unchanged.",
+    "next": "対応依頼: New independent GPT-6 chat with unchanged pilot-45 question JSON, return original UTF-8 JSON response file. First fatal stop, no paid API.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -2028,8 +2028,8 @@
       "firstQuestionByteLength": 28131,
       "firstQuestionFileSHA256": "e8b3d275540888b9fef3ac1a5f2e056f0fbd40282ac65a5b904b60",
       "firstExpectedAnswerFile": "mahjong_P2a_v45_stage1_pilot-41_response.json",
-      "originalStage1Responses": 0,
-      "originalStage1ContractPass": 0,
+      "originalStage1Responses": 1,
+      "originalStage1ContractPass": 1,
       "frozenWeakControlsDigest": "405559e17cd7e5f3711c172c4a17c7d3ad82819498e707584c71e1e51be531ba",
       "publicQuestionArtifactId": 14869490546,
       "freeCIrun": 45280357883,
@@ -2043,7 +2043,29 @@
       "cannotClaimPhaseComplete": true,
       "planSourceFile": "src/coach/v14-v45-evaluation-plan.mjs",
       "handoffReport": "handoff/p2a-v45-eight-manual-freeze-ready-20261124.md",
-      "afterEightComplete": "Only then revisit API with user authorization; Stability/Stage2/source-disjoint L3.5/3 blinded reviewers remain independent"
+      "afterEightComplete": "Only then revisit API with user authorization; Stability/Stage2/source-disjoint L3.5/3 blinded reviewers remain independent",
+      "receipts": [
+        {
+          "caseId": "pilot-41",
+          "orderedIndex": 0,
+          "verdict": "CONTRACT_AND_PUBLIC_FACT_GATE_PASS",
+          "rawReplySha256": "0679a928be7937897a5b3a72de1e6179be48709aeeca45cd7147e564aca6730d",
+          "packetHash": "deb876c26140d1b74fd0f11bc0ccb78f8d10c952c514541d66b6c5e3405fe338",
+          "originalBytes": 7291,
+          "firstReceived": "2026-11-24T08:53:07+09:00",
+          "duplicateUploadSameBytes": true,
+          "duplicateCounted": false,
+          "provider": "GPT-6 user-reported; isolated chat provenance not independently verified",
+          "replySubmittedAsJsonFile": true,
+          "semanticGrade": "NOT_ASSESSED_BY_MACHINE",
+          "privateVerification": "Frozen original assessV45FirstRealStage1 run locally using source-only bundle from Actions run 45293417909; raw response retained in conversation, not public GitHub"
+        }
+      ],
+      "nextCase": "pilot-45",
+      "nextQuestionFile": "mahjong_P2a_v45_stage1_pilot-45_question.json",
+      "nextQuestionFileSHA256": "270725c2a8751b49e62785451dc7e7582031ffeb2421283d467105e44355427e",
+      "nextExpectedAnswerFile": "mahjong_P2a_v45_stage1_pilot-45_response.json",
+      "nextQuestionByteLength": 29204
     }
   },
   "previous_runs": [
@@ -3833,6 +3855,18 @@
       "nextUserAction": "first independent GPT-6 JSON response for pilot-41",
       "mainUnchanged": true,
       "overallPhaseComplete": false
+    },
+    {
+      "phase": "P2a-v4.5 manual Stage1 pilot-41",
+      "status": "ORIGINAL_FROZEN_VERIFIER_CONTRACT_AND_PUBLIC_FACT_GATE_PASS",
+      "attempts": 1,
+      "contractPass": 1,
+      "rawReplySha256": "0679a928be7937897a5b3a72de1e6179be48709aeeca45cd7147e564aca6730d",
+      "duplicateNotCounted": true,
+      "apiCalls": 0,
+      "additionalCostUSD": 0,
+      "semanticCertified": false,
+      "mainUnchanged": true
     }
   ],
   "roadmap": {
