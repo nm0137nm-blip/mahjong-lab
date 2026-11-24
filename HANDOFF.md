@@ -585,3 +585,9 @@ ChatGPTが実際に独立して解いた回答を得る前に、採点・中止�
 - ユーザー提出の `mahjong_P2a_v45_stage1_pilot-55_response.json` を元公開36局面のSHA照合済みローカル環境で、凍結済み `assessV45FirstRealStage1` により採点。**CONTRACT_AND_PUBLIC_FACT_GATE_PASS**。原本SHA256 `15bff43b3492e6412c0bab09d2ec2bd424895f8bc9bb1c0ac09ceb70af9e18a2`、6,736 bytes。strict_json、補正なし。原回答は公開GitHubに載せない。GPT-6/独立一時チャットはユーザー申告・独立検証なし。
 - 固定順で全4件を再検証し、累計4/8 PASS、FAIL 0、残4。判定器・出題・旧版のNO-GOを変更せず。戦術的品質/S42一致/L4は未認定。API追加実行0回、追加費用0。
 - 次問 **pilot-60**。質問ファイル `mahjong_P2a_v45_stage1_pilot-60_question.json`、15,800 bytes、file SHA256 `9b22f5d19f7b9ba195ca810f6cba7e7edcf9940dd29659a46828c1f307dad430`、固定requestHash `fc3311daf029b6361bfc28e9c84d33ed3acad48760cf697c02fcbfdf0087a434`。期待回答 `mahjong_P2a_v45_stage1_pilot-60_response.json`。新規独立GPT-6一時チャットで原本JSONを取得・提出。first fatal停止、初回8問手動を維持。
+
+
+## 2026-11-24 09:33 JST：v4.5手動Stage1 第5問pilot-60 PASS、次はpilot-66
+- ユーザー提出の `mahjong_P2a_v45_stage1_pilot-60_response.json` を元公開36局面のSHA照合済みローカル環境で、凍結済み `assessV45FirstRealStage1` により採点。**CONTRACT_AND_PUBLIC_FACT_GATE_PASS**。原本SHA256 `cc2bcb5962c65c23985f7137c069d07d838ef25527d5293f2308858c5809b99d`、7,255 bytes。strict_json、補正なし。原回答は公開GitHubに載せない。GPT-6/独立一時チャットはユーザー申告・独立検証なし。
+- 固定順で全5件を再検証し、累計5/8 PASS、FAIL 0、残3（打牌判断）。判定器・出題・旧版のNO-GOを変更せず。戦術的品質/S42一致/L4は未認定。API追加実行0回、追加費用0。
+- 次問 **pilot-66**。質問ファイル `mahjong_P2a_v45_stage1_pilot-66_question.json`、27,151 bytes、file SHA256 `ac15f2ac81c8a3df9f3f6e503cbf584398802e10c74e0437b8049c31b71c131a`、固定requestHash `0081c165244f071802db6efea6e22022156151cfdc341e4a57be1951b3ee653b`。期待回答 `mahjong_P2a_v45_stage1_pilot-66_response.json`。新規独立GPT-6一時チャットで原本JSONを取得・提出。first fatal停止、初回8問手動を維持。
