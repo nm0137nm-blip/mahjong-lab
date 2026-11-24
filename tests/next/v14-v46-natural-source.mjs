@@ -117,7 +117,9 @@ export function collectNatural(entry){
  const focal=new Focal(),rule=M.rule({'配給原点':25000,'赤牌':{m:1,p:1,s:1},'場数':2,'延長戦方式':0,'オーラス止めあり':true,'オーラス単独トップ止め':true,'トビ終了あり':true,'順位点':['0.0','0.0','0.0','0.0']});
  let complete=false;
  new M.Game([focal,new AI(),new AI(),new AI()],()=>{complete=true;},rule,'v46 natural development').do_sync();
- if(!complete||!rows.length)fail('match incomplete');
+ if(!complete)fail('match incomplete');
+ // A fully completed match may legitimately have zero eligible decisions (e.g. early bust).
+ // Preserve that seed as an empty stratum; do not substitute any seed or relax selection.
  // Fixed public-only ordering. Retain up to four valid public source packets per stratum.
  const accepted=[],rejects=[];
  for(const group of ['reach','reaction','discard']){
@@ -131,7 +133,7 @@ export function collectNatural(entry){
    }catch(e){rejects.push({group,decisionId:x.raw.id,reason:String(e).slice(0,200)});}
   }
  }
- if(!accepted.length)fail('no legal accepted public sources');
+ if(rows.length&& !accepted.length)fail('eligible rows exist but all public projections rejected');
  return {version:'v46-natural-source-public-1',entry,bundleHash,counts:Object.fromEntries(['reach','reaction','discard'].map(g=>[g,rows.filter(x=>x.group===g).length])),accepted,rejects,privateHandsRead:false,modelCalls:0};
 }
 if(process.argv[1]?.endsWith('v14-v46-natural-source.mjs')){
