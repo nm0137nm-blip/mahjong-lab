@@ -9,7 +9,7 @@
   },
   "active_task": {
     "phase": "P2a-v4.7 free-only known-case semantic diagnostic",
-    "status": "Q0_COMPLETE_Q1_CONDITIONAL_GO_AWAIT_USER_DIRECTION",
+    "status": "Q1_BOUNDED_EXIT_AWAIT_INDEPENDENT_REVIEW",
     "branch": "feat/coach-p2a-v47-minimal-diagnostic",
     "commit": "7959435bfad0412e9cd94234f01395af05d84789",
     "pr": 71,
@@ -355,7 +355,7 @@
       }
     ],
     "decision": "v46 API-only Stage1 stopped after 2 paid calls, 1 contract pass and 1 incomplete output due to cap. No evidence of typed condition contract failure from pilot82; no semantic certification. Original manual Stage1 plan not performed. No new paid generation authorized.",
-    "next": "Await user Q1 start confirmation. Before execution preregister time/compute caps, seeds, public selection, teachers, metric/stop criteria and independent grouping; prioritize exact masked akochan audit, F+C+G boundary feasibility, D no-training feature extraction. No paid calls, no large generation, no formal evaluation, no main change. Old freezes remain.",
+    "next": "Q1 bounded trials ended with partial success. Independent Claude/Gemini exit review before Q2. Preserve failed GRP and A incomplete coverage/timeout results; no claim of akochan probability accuracy; D frozen features extraction smoke and G standard boundary restart smoke only. Consider bounded D supervised head feasibility and G same-policy boundary distribution comparisons; no Q2 runs or paid resources before review and decision.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -2763,6 +2763,102 @@
             "D S42 frozen visible feature extraction smoke and compute feasibility, no new D training"
           ]
         }
+      },
+      "q1": {
+        "status": "BOUNDED_DEVELOPMENT_EXIT_PARTIAL_SUCCESS_NOT_CERTIFIED",
+        "report": "handoff/q1-development-exit-20261124.md",
+        "reportCommit": "15abda0edf51daa3b5fb8d94b96dba5a82fdd405",
+        "prereg": "handoff/q1/prereg-dev-20261124.json",
+        "preregCommit": "1c85dd0cc7a07dd4d34f996bd833f2e74dc22028",
+        "A": {
+          "status": "LIMITED_INPUT_AUDIT_COMPLETE_COVERAGE_AND_TIMEOUT_GATE_UNMET_NO_CALIBRATION",
+          "initialAttempted": 6,
+          "initialCompleted": 5,
+          "initialVoidReason": "river representation mismatch led to first draw biased sample",
+          "correctionCommit": "8cc23620112228b97e69c73aee44e5f56ca29b35",
+          "correctedAttempted": 42,
+          "correctedCompleted": 36,
+          "timeout": 6,
+          "rawMaskIdentical": 36,
+          "poisonBoundaryIdentical": 42,
+          "allCandidateCoverage": 33,
+          "candidateCovered": 370,
+          "candidateExpected": 406,
+          "illegalDiscard": 0,
+          "invalidReturnedRisk": 0,
+          "medianSeconds": 1.6405,
+          "independentMatches": 11,
+          "aggregateSHA256": "1345ecf01232614e1e5968f8cdc6876deade385ec74f0542837b1375bf53c4fc",
+          "scriptSHA256": "c81c7c3ce83ec9a85d850ab89916ec69ba2d9c901afb144b724d9ef9f131501d",
+          "calibrationExecuted": false,
+          "externalRawPublished": false
+        },
+        "FC": {
+          "status": "BOUNDARY_RECORDED_SETTLEMENT_PASS_SMALL_GRP_FAIL",
+          "pr": 72,
+          "run": 45409445121,
+          "artifact": 14927825230,
+          "artifactSHA256": "8fe964659aa1c7e73b23f3f104f09be3ab399caf3b33b36d817be607c3bdae79",
+          "matches": 96,
+          "hands": 964,
+          "errors": 0,
+          "acceptedRiichi": 945,
+          "models": {
+            "empirical": {
+              "logloss": 3.1638175309846392,
+              "fourthBrier": 0.17274509683584566
+            },
+            "plackettLuce": {
+              "logloss": 2.618316802778256,
+              "fourthBrier": 0.14220958422916852
+            },
+            "grp": {
+              "logloss": 3.942223681364034,
+              "fourthBrier": 0.17478249372357887
+            }
+          },
+          "grpGate": false,
+          "plBaselineDevelopmentOnly": true
+        },
+        "G": {
+          "status": "SYNTHETIC_STANDARD_CPU_BOUNDARY_RESTART_SMOKE_PASS",
+          "pr": 73,
+          "run": 45410225048,
+          "artifact": 14926284987,
+          "artifactSHA256": "74e41a145ca1d3f95d845a2af87d83b47e9bc21cc4c7c046f09d502b2132851f",
+          "attempted": 8,
+          "completed": 8,
+          "hands": 9,
+          "minSeconds": 0.6903,
+          "maxSeconds": 4.5917,
+          "calibration": false,
+          "s42Continuation": false
+        },
+        "D": {
+          "status": "FROZEN_1024_FEATURE_EXTRACTION_SYNTHETIC_SMOKE_PASS",
+          "pr": 73,
+          "run": 45410225048,
+          "artifact": 14927575756,
+          "artifactSHA256": "7effa8f07154e1bcaa011fac5bf919f08a9ce4ee963d3ceec4e4d27537fcbee4",
+          "cases": 8,
+          "deterministic": 8,
+          "maxQDiff": 0,
+          "scoreOnlyPairsChanged": 4,
+          "featureTensor": "/brain/actv/Mul_output_0",
+          "featureDim": 1024,
+          "secondsRange": [
+            0.01073,
+            0.01152
+          ],
+          "peakRssKiB": 305052,
+          "naturalCases": 0,
+          "training": false,
+          "probabilityAccuracy": false
+        },
+        "mainUnchanged": true,
+        "paidCalls": 0,
+        "oldGatesPreserved": true,
+        "exitReview": "REQUIRED_BEFORE_Q2"
       }
     }
   },
