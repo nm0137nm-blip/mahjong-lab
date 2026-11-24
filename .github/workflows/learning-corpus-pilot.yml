@@ -1,0 +1,99 @@
+name: Learning corpus S42x4 bounded feasibility
+on:
+  pull_request:
+    branches: [project-handoff]
+    paths: ['handoff/learning-corpus/**','.github/workflows/learning-corpus-pilot.yml']
+permissions:
+  contents: read
+  actions: read
+jobs:
+  pilot:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        shard: [1,2,3,4,5,6,7,8]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          ref: 75c87e621b85bc411ef92152f84918a1802dbd2b
+          path: lab
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.23.4'
+      - uses: actions/download-artifact@v4
+        with:
+          name: corrected-encoder
+          run-id: 44673093075
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/fixed-encoder
+      - name: Prepare existing audited runner
+        env:
+          SHARD: ${{ matrix.shard }}
+        run: |
+          set -euo pipefail
+          cp /tmp/fixed-encoder/encoder-pkg/encoder* lab/assets/mortal/
+          echo '886cb7abb09034dcdf348039d651d63a83cd7edb87d3337a452722c960b9d97a  lab/assets/mortal/encoder.js' | sha256sum -c -
+          echo '0e9dcc57545afb5769d42f372bbd82be5c26941d1e352245b225d62ce0c611bf  lab/assets/mortal/encoder_bg.wasm' | sha256sum -c -
+          mv lab /tmp/lab
+          python3 - <<'PY'
+          import os, json, hashlib
+          from pathlib import Path
+          plan=json.loads(Path('handoff/learning-corpus/pilot-plan.json').read_text())
+          def seed(s): return int.from_bytes(hashlib.sha256(s.encode()).digest()[:4],'little') or 1
+          entries=[dict(shard=i,seed=seed(plan['seedNamespace']+':'+str(i)),family='s42',policy='s42',dealer=(i-1)%4) for i in range(1,9)]
+          old={seed('coach-v11-20261120:p1-v2-development-v1:'+str(i)) for i in range(1,97)}
+          assert len({e['seed'] for e in entries})==8 and not old.intersection(e['seed'] for e in entries)
+          Path('/tmp/v2-dev-seeds.json').write_text(json.dumps(dict(status='locked_v2_development_only',codeSha=os.environ['GITHUB_SHA'],entries=entries)))
+          p=Path('/tmp/lab/tests/next/run-p1-v2-dev.cjs')
+          s=p.read_text()
+          # No learned-policy RPC is necessary for S42x4. Preserve native action resolver and capture path.
+          a='for(let i=0;i<4;i++){\n const child=spawn('
+          assert s.count(a)==1
+          s=s.replace(a,'for(let i=0;i<0;i++){\n const child=spawn(')
+          # Suppress raw individual match console output; aggregate only.
+          a="console.log('ARENA_MATCH='+JSON.stringify(rows.at(-1)));"
+          assert s.count(a)==1
+          s=s.replace(a,"console.log('S42 synthetic match finished');")
+          p.write_text(s)
+          PY
+          node --check /tmp/lab/tests/next/run-p1-v2-dev.cjs
+          node --test /tmp/lab/tests/mortal-cpu.test.mjs
+          curl --fail --location --retry 1 --silent --show-error --max-time 160 'https://huggingface.co/xzhe121/Mortal-S42-onnx/resolve/main/model.onnx' -o /tmp/lab/tests/mortal/model.onnx
+          echo '30381bf21389e2d25d3edf48fed11bf772336ef3daeee67d1bdae7fb9dd30cb4  /tmp/lab/tests/mortal/model.onnx' | sha256sum -c -
+          mkdir -p /tmp/probe
+          cd /tmp/probe
+          npm init -y >/dev/null
+          npm install --ignore-scripts --no-audit --no-fund playwright@1.57.0 >/dev/null
+          npx playwright install chromium
+      - name: Generate one S42x4 synthetic match
+        env:
+          COACH_ARENA_QA: '1'
+          ARENA_PAIR: ${{ matrix.shard }}
+        run: |
+          set -euo pipefail
+          (cd /tmp/lab && python3 -m http.server 8788 --bind 127.0.0.1 >/tmp/http-log 2>&1) &
+          sleep 2
+          start=$(date +%s)
+          node /tmp/lab/tests/next/run-p1-v2-dev.cjs > /tmp/corpus-run.log 2>&1 || { echo 'Generation failed; private diagnostic log not uploaded'; exit 1; }
+          export ELAPSED=$(($(date +%s)-start))
+          python3 - <<'PY'
+          import json, os, hashlib, gzip
+          from pathlib import Path
+          base=Path('/tmp/development')
+          m=json.loads((base/'manifest.json').read_text()); r,=m['rows']; p=json.loads((base/'paipu.json').read_text())
+          assert r['opponentFamily']=='s42' and r['policy']=='s42' and r['cpuAudit']['fallbacks']==0 and r['cpuAudit']['invalid']==0
+          assert p['rank']==r['allRanks'] and p['score']==r['allScores'] and sum(p['score'])==100000 and sorted(p['rank'])==[1,2,3,4]
+          assert len(p['log'])==r['hands'] and len(p['log'])==len(r['wallHashes'])
+          out=dict(shard=m['shard'],seed=m['seed'],dealer=r['dealer'],hands=r['hands'],focalDecisions=r['decisions'],opponentDecisions=r['cpuAudit']['decisions'],fallbacks=r['cpuAudit']['fallbacks'],invalid=r['cpuAudit']['invalid'],generationSeconds=int(os.environ['ELAPSED']),paipuBytes=(base/'paipu.json').stat().st_size,paipuGzipBytes=len(gzip.compress((base/'paipu.json').read_bytes())),captureBytes=sum(f.stat().st_size for f in base.glob('*.json')),logHash=r['logHash'],scoreConservation=True,scope='synthetic development feasibility only; raw data not retained')
+          Path('pilot-result.json').write_text(json.dumps(out,indent=2));print(json.dumps(out))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: learning-corpus-pilot-${{ matrix.shard }}
+          path: pilot-result.json
+          if-no-files-found: error
+          retention-days: 30

@@ -1,0 +1,15 @@
+{
+  "purpose": "development-only S42 x4 synthetic corpus generation feasibility, not learning efficacy",
+  "count": 8,
+  "maxParallel": 4,
+  "jobTimeoutMinutes": 15,
+  "seedNamespace": "mahjong-lab:learning-corpus-pilot:20261125:v1",
+  "initialDealer": "(shard-1)%4",
+  "sourceRef": "75c87e621b85bc411ef92152f84918a1802dbd2b",
+  "modelSha256": "30381bf21389e2d25d3edf48fed11bf772336ef3daeee67d1bdae7fb9dd30cb4",
+  "rules": "historical LAB hanchan rules; no assumption Tenhou exact parity",
+  "storage": "ephemeral raw synthetic paipu, public CI aggregate only; no raw logs, labels or weights uploaded until storage policy settled",
+  "stop": "no automatic retry, no new training, no follow-on bulk generation before benchmark/review; no paid resources",
+  "priorSeeds": "exclude 96 v2 seeds via known namespace; historical exhaustive collision audit pending, development only",
+  "metrics": "elapsed wall seconds incl setup from CI jobs; per match generation seconds, bytes all capture and paipu only, number hands, decisions, errors, ranks/score sum, masked policy guard audit"
+}
