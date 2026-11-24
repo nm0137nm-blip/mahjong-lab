@@ -632,3 +632,10 @@ ChatGPTが実際に独立して解いた回答を得る前に、採点・中止�
 - 事前登録 `research/p2a-v46/PREREG.md`。過去記録1,638シードと重複しない固定16シード、新しい自然半荘を標準CPUで生成し、焦点席の公開イベントと自手だけから出題する。旧36・旧30・L3.5保留原型を再利用しない。固定選定は立直2/副露3/打牌3、各カテゴリに他家立直あり1件以上、8別対局、salted SHA順位。独立Python公開計算・合法手の物理的実現可能性の部分監査を必須とする。
 - 初回収集run 45304572133でshard16の「match incomplete」エラー。終了済み・適格局面ゼロと未完了を区別する修正commit `7b6a39059c509c2b3859d5cb298f5e1c91c77ee3`、同一16シード・同一選抜条件で再実行run **45304796606**。出題凍結・監査成功・固定ハッシュの確認まではモデルに回答させない。再実行は無課金収集に限る。
 - 次は上記runの結果確認、公開・verifier別artifactの監査、8問の固定ハッシュと受領判定器をコミット後に第1問を手動出題。新規API課金承認なし、main未変更。
+
+
+## 2026-11-24 12:12 JST：v4.6自然8問の監査・固定完了、第1問出題
+- 収集再実行run 45304796606：16/16対局完了、異なる8対局を固定選抜（立直2、副露3、打牌3、各分類で他家立直1件）。公開source SHA `529102d7db69fca9bef26d04adee2240a3b3cd20d6085238133b8934beda310c`。独立Python監査：63合法選択肢の物理的実現可能性の部分監査不一致0、85形状、27点数値の計算監査不一致0。完全な合法手網羅性・戦術品質の保証ではない。
+- public artifact 14881055452、verifier-only artifact 14880910823。弱対照の事前digest `07eadf7d88cd53e985c33de2cc5862c540b330dc24d240068f85ce4363fee09d`。モデル回答0件のまま固定。
+- 新受領判定器 `src/coach/v14-v46-stage1-receipt.mjs`。研究branch `feat/coach-p2a-v46-structured-condition-prototype` の commit 2dc781876eecd9c66b8b31daa09a667dc31c912b、run 45318122119 PASS（8問全件の合成回答・厳密JSON・改ざん拒否・停止規則）。コードのみartifact 14885927603。tar SHA `612bc9eabc4f482af35c1ec289f18ccaacaee7462555d63006649750083f0244`。ローカルで同一source・8packetハッシュ一致を確認。
+- 次問 pilot-81：`mahjong_P2a_v46_stage1_pilot-81_question.json`（35,999 bytes）、file SHA `96425f083fae7845e07d2bc754f65b77725a8c6cad6e5456ee962ea27e953e77`、requestHash `5aa6e8a6549327524d31f477cbc4d6b30e6e12c354f75d883966c1afacb434b2`。新規独立GPT-6一時チャットで原回答 `mahjong_P2a_v46_stage1_pilot-81_response.json` を添付する。初回8問は手動、first fatal停止、API課金0、旧v45 NO-GO保持。Phase全体未完。
