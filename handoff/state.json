@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-24T16:49:00+09:00",
+  "checkpoint": "2026-11-24T18:01:05+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -9,7 +9,7 @@
   },
   "active_task": {
     "phase": "P2a-v4.7 free-only known-case semantic diagnostic",
-    "status": "V47_QUALIFICATION_V3_HOLD_ADDITIONAL_SOURCE_AUDIT",
+    "status": "V47_EXPLORATORY_BLIND_TEACHING_REVIEW_READY_AWAIT_RATINGS",
     "branch": "feat/coach-p2a-v47-minimal-diagnostic",
     "commit": "7959435bfad0412e9cd94234f01395af05d84789",
     "pr": 71,
@@ -355,7 +355,7 @@
       }
     ],
     "decision": "v46 API-only Stage1 stopped after 2 paid calls, 1 contract pass and 1 incomplete output due to cap. No evidence of typed condition contract failure from pilot82; no semantic certification. Original manual Stage1 plan not performed. No new paid generation authorized.",
-    "next": "Preserve original user feedback; receive any already-requested independent external v3 ratings without hints; assess anchor validity before qualification. Avoid repeated elementary quizzes; consider explicitly separate exploratory teaching-value review of the frozen genuine/control responses, without claiming qualification, diagnostic pass or certification. No paid calls.",
+    "next": "Obtain independent exploratory reviews by user, Claude, Gemini on same human-readable comparison file. No need for further elementary qualification quiz. User may submit simple usefulness, actual learning, concrete errors and A/B preference; formal scores optional for user and kept separate if missing. Review all ratings after lock, no formal qualification/phase GO; compare weaknesses and decide whether to redesign coach or halt. Preserve original responses and private mapping. No paid calls.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -2539,7 +2539,7 @@
         "syntheticAnchors": 4,
         "publicFileSha256": "8f4ef09b1e4946450dd611a382fea3d0a87c7a240bef9b09a67647fd4c4898b2",
         "sealedPrivateKeySha256": "2df3a12a7ac67c50c5e39bed2fb3d3a0c97076b912eabb59fffcca0e3438399d",
-        "status": "V2_INVALIDATED_BY_AMBIGUOUS_ANCHOR_V3_FROZEN_BEFORE_DELIVERY",
+        "status": "FORMAL_QUALIFICATION_NOT_ESTABLISHED_NO_FURTHER_ELEMENTARY_QUIZ_PLANNED",
         "ratersQualified": 0,
         "privateKeyNotPublished": true,
         "priorUndeliveredAnchorHashesRetained": {
@@ -2576,7 +2576,16 @@
           "humanResponseReceived": true,
           "humanResponseInterpretation": "Explicit defects/observation on Q2–Q4, Q1 not explicitly rated. User finds explanations somewhat improved but obvious and low educational value. Preserve original chat; no inferential completion of missing rating.",
           "additionalSourceAudit": "Post-delivery audit flags an intended anchor's public discard timing as a potential contradictory safety rationale, and distinction between shape waits and physically available winning tiles. Qualification decision held; do not modify key or retroactively score, do not publish case-specific key before external ratings lock.",
-          "status": "HUMAN_FEEDBACK_RECEIVED_QUALIFICATION_HOLD_SOURCE_AUDIT"
+          "status": "VOID_FOR_FORMAL_QUALIFICATION_SOURCE_DEFECT_CONFIRMED",
+          "externalRatings": {
+            "geminiSha256": "37c547f52e664d53ca5c2212452e53d3944aafc4541e11b923788f0d1ed5b3ae",
+            "claudeSha256": "cef4b7827d11bbf860e2f69d05c87c105dd27c0f5f2dfd2b4f26218a9e453f4d",
+            "received": 2,
+            "agreement": 3,
+            "disagreement": "Q3-107e: Gemini correctly identified post-riichi passed north tile by north seat; Claude overlooked the timing. User identified Q2/Q4 material flaws and 1m/4m shape wait distinction in Q3; user Q1 not explicitly rated.",
+            "allRatersFormalQualification": false,
+            "educationalUsefulness": "Neither external reviewer gave any high rating; user finds explanations obvious."
+          }
         }
       },
       "controlAttemptsTotal": 6,
@@ -2613,16 +2622,25 @@
         "caseIdentityAndDetailsPrivateUntilBlindLock": true
       },
       "blindDiagnostic": {
-        "status": "PACKET_AND_MAPPING_SEALED_NOT_DELIVERED",
+        "status": "EXPLORATORY_TEACHING_COMPARISON_READY",
         "pairs": 4,
         "answers": 8,
-        "publicPacketSha256": "1c23cfdd2d7f33848e989442cb6f65ba95d650c4d7aa8c28c6c39078c6d45318",
-        "privateMappingSha256": "87e71ec88fc9a88e64c7960db131cb4cdba79d57187f6a1c2ce74bc66c0fec63",
+        "publicPacketSha256": "5edc13e2ed3cfcccd656f77e7344c4d0f8ccb0a0be8fa24e6aefc80b9a2a7d4a",
+        "privateMappingSha256": "9792b57622934dd2ffa1cf0e3158d96cfdf70bacea92d3ee45ec55d91674dd00",
         "randomizedOpaqueIds": true,
         "commonRenderer": true,
         "rawAnswersUnchanged": true,
         "semanticRatings": 0,
-        "scope": "Exploratory semantic diagnosis of all four available original replies; NOT a mechanical gate pass, NOT certification. No regrading, no new unseen cases, no patched answers."
+        "scope": "Exploratory only; no formal L4 pass, no reversal of 3/4 mechanical gate; focus absolute educational value and concrete new insight, compare paired answers. No unseen source consumed or paid API.",
+        "formalGate": false,
+        "previousUndeliveredPacketSha256": "1c23cfdd2d7f33848e989442cb6f65ba95d650c4d7aa8c28c6c39078c6d45318",
+        "previousUndeliveredMappingSha256": "87e71ec88fc9a88e64c7960db131cb4cdba79d57187f6a1c2ce74bc66c0fec63",
+        "publicFileName": "mahjong_v47_blind_teaching_review.txt",
+        "reasonNewPresentation": "Prior undelivered packet/mapping not present in current runtime; re-rendered identical original answers with full source public history and independently shuffled A/B labels before delivery. Old hashes preserved. No tactical prose modified. All graders use same readable file. Integrated timeline is supplementary context unavailable in original model compact prompt; mark history-dependent limitations separately.",
+        "sourceArchiveHashesVerified": true,
+        "allFourRequestHashesVerified": true,
+        "ratersQualified": 0,
+        "privateMappingPublished": false
       }
     }
   },
