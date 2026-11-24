@@ -1,0 +1,16 @@
+name: Stop superseded LAB rules corpus
+on:
+  pull_request:
+    branches: [project-handoff]
+    paths: ['handoff/learning-corpus/**','.github/workflows/learning-corpus-1000.yml']
+permissions:
+  contents: read
+concurrency:
+  group: learning-corpus-1000-v1
+  cancel-in-progress: true
+jobs:
+  stop:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 2
+    steps:
+      - run: echo "Superseded LAB rules corpus; no further generation. Tenhou rules audit required."
