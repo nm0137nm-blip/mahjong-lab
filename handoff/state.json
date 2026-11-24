@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-24T14:42:00+09:00",
+  "checkpoint": "2026-11-24T15:04:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -8,12 +8,12 @@
     "coach_candidate_promoted": false
   },
   "active_task": {
-    "phase": "P2a-v4.5 separate prospective version, manual independent GPT-6 Stage1 frozen eight source-only packets and original verifier fully prepared",
-    "status": "V47_DESIGN_DIRECTION_RECORDED_IMPLEMENTATION_AND_DIAGNOSTIC_PREPARATION_PENDING",
-    "branch": "feat/coach-p2a-v45-japanese-reversal-lexemes",
-    "commit": "f92239ad355d069d43ead0cbe6951ade9a07ae3a",
-    "pr": 70,
-    "run_id": 45280357883,
+    "phase": "P2a-v4.7 free-only known-case semantic diagnostic",
+    "status": "V47_FREE_OFFLINE_QA_PASS_AWAIT_INDEPENDENT_CONTROL_GENERATION",
+    "branch": "feat/coach-p2a-v47-minimal-diagnostic",
+    "commit": "7959435bfad0412e9cd94234f01395af05d84789",
+    "pr": 71,
+    "run_id": 45337430438,
     "prior_runs": [
       {
         "run_id": 44754324733,
@@ -355,7 +355,7 @@
       }
     ],
     "decision": "v46 API-only Stage1 stopped after 2 paid calls, 1 contract pass and 1 incomplete output due to cap. No evidence of typed condition contract failure from pilot82; no semantic certification. Original manual Stage1 plan not performed. No new paid generation authorized.",
-    "next": "Continue v47 separate research implementation, regression, source audits and free-only known-case diagnostics using existing access/manual independent GPT-6 chats. No new paid execution; no certification until required diagnostic gates.",
+    "next": "User independently generates four matched adversarial controls in one fresh GPT-6 session using control-generation request; submit original JSON unread. Developer audits controls and freezes private mapping before four independent genuine diagnostic replies. No paid generation. Qualification anchors and anonymous grading pending; no unseen certification.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -2431,7 +2431,7 @@
       "sourceLimit": "Both reviewers used request only, no direct code or raw reply audit."
     },
     "v47_design": {
-      "status": "DESIGN_ONLY",
+      "status": "FREE_OFFLINE_QA_PASS",
       "paidCallsAuthorized": 0,
       "paidCallsExecuted": 0,
       "semanticCertified": false,
@@ -2449,7 +2449,64 @@
         "pilot-88"
       ],
       "nextReview": "after diagnostic or diagnostic stop; also after Stage1 and early L4",
-      "implementationPending": true
+      "implementationPending": false,
+      "implementationCommit": "bcacd880a9b3b96762f014ea1ac3596c2c78cb4d",
+      "pr": 71,
+      "runId": 45337430438,
+      "testsPass": 17,
+      "testsFail": 0,
+      "publicCasesQA": 44,
+      "byteAudit": {
+        "before": 871485,
+        "after": 432106
+      },
+      "characterAudit": {
+        "before": 748609,
+        "after": 342958
+      },
+      "tokenCountsMeasured": false,
+      "diagnosticPrereg": "research/p2a-v47/DIAGNOSTIC-PREREG.md",
+      "preregCommit": "7959435bfad0412e9cd94234f01395af05d84789",
+      "publicDiagnosticArtifactId": 14894447472,
+      "diagnosticCases": [
+        "pilot-41",
+        "pilot-45",
+        "pilot-54",
+        "pilot-81"
+      ],
+      "diagnosticPacketHashes": [
+        "036d5c810a3ae23636f5f2daef558540feae88f2def6b548b550207e6620155a",
+        "ce2504575df858b9314fcf5f5b287270f639dda8203c7418aa212f9e20b6d321",
+        "616f25b55e2a55972449a2ea6149cd45777e613bd84f267c4fca57d7324ae4af",
+        "0067f6c6f4708ace8020de120659a504837f3859010066a5fd13121f19e830ff"
+      ],
+      "controlRequestSha256": "d0059580797db4d61106dc7037adecd75cfed8cde4c15ef9ae5adbb746aaba20",
+      "genuineReplies": 0,
+      "controlReplies": 0,
+      "semanticGrades": 0,
+      "qualificationAnchorsPending": true,
+      "sourceInventory": {
+        "collectedMatches": 16,
+        "retainedCandidatePositions": 153,
+        "quarantinedMatches": 8,
+        "remainingNonemptyMatches": 7,
+        "remainingEmptyMatches": 1,
+        "remainingRetainedCandidates": 69,
+        "minimumNewMatchesNeeded": 1,
+        "categoryQuotasAudited": false,
+        "sourceLineageArtifact": 14880910823
+      },
+      "l35": {
+        "materialOnly": true,
+        "priorRun": 45127192278,
+        "availablePublicArtifact": 14795433930,
+        "availableSealedMap": 14795823044,
+        "physicalReplays": 104,
+        "changedClusters": 4,
+        "maintainedClusters": 4,
+        "actualModelEvaluation": 0,
+        "repackagePending": true
+      }
     }
   },
   "previous_runs": [
