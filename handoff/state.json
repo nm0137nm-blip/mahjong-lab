@@ -9,7 +9,7 @@
   },
   "active_task": {
     "phase": "P2a-v4.5 separate prospective version, manual independent GPT-6 Stage1 frozen eight source-only packets and original verifier fully prepared",
-    "status": "V46_STAGE1_API_ONLY_EIGHT_AUTHORIZED_PREFLIGHT",
+    "status": "V46_STAGE1_API_ONLY_ONE_TIME_RUN_STARTED",
     "branch": "feat/coach-p2a-v45-japanese-reversal-lexemes",
     "commit": "f92239ad355d069d43ead0cbe6951ade9a07ae3a",
     "pr": 70,
@@ -355,7 +355,7 @@
       }
     ],
     "decision": "Preserve v45 manual Stage1 8/8, failed Stability 4/5 and no overall GO. No more API calls on this authorization.",
-    "next": "Execute user-approved one-shot API-only Stage1 with original eight, exact count before all inference, strict first-fatal stop; no further paid calls beyond scope.",
+    "next": "Inspect existing run 45319407857 and encrypted result; never rerun or add another marker. First fatal stops; no new paid calls beyond existing run.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -2362,13 +2362,15 @@
       "stopOnFirstFatal": true,
       "branch": "feat/coach-p2a-v46-stage1-capped-api",
       "protocolPath": "research/p2a-v46-api/PROTOCOL.md",
-      "status": "PREPARED_NO_GENERATION_YET",
+      "status": "ONE_TIME_WORKFLOW_TRIGGERED_RESULTS_PENDING",
       "manualResponsesAtAmendment": 0,
       "originalManualPlanPreserved": true,
-      "paidPostsUsed": 0,
-      "actualSpendUSD": 0,
+      "paidPostsUsed": null,
+      "actualSpendUSD": null,
       "priorV45NoGoUnchanged": true,
-      "scope": "v46 Stage1 pilot-81..88 only, not Stability or Stage2/L3.5"
+      "scope": "v46 Stage1 pilot-81..88 only, not Stability or Stage2/L3.5",
+      "liveRunId": 45319407857,
+      "markerCommit": "9ca7f45ea2bd335568462416efaa0ed7bac1e658"
     }
   },
   "previous_runs": [
