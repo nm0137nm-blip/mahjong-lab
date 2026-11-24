@@ -355,7 +355,7 @@
       }
     ],
     "decision": "v46 API-only Stage1 stopped after 2 paid calls, 1 contract pass and 1 incomplete output due to cap. No evidence of typed condition contract failure from pilot82; no semantic certification. Original manual Stage1 plan not performed. No new paid generation authorized.",
-    "next": "Check run45502831152 after 11:00 JST. All 8 pilots passed, 992 bulk running; verify unique complete encrypted archives, decrypt and audit before L0 close. Evaluate sample support by theme before deciding 10000. No paid compute or new model training.",
+    "next": "Monitor 1000 Tenhou corpus run45502831152 and LAB PR77 validation. One batch runner failure, 31 missing, investigate and supplement without duplicates. Audit before L0 exit. LAB branch independent, do not merge until verified. No paid resources or old frozen data.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -3012,7 +3012,30 @@
       "pilotArtifactBytes": 993264,
       "bulkParallel": 8,
       "archiveIntegrity": "8 pilot games passed in-run checks and encrypted artifacts exist; decryption and cross-corpus audit pending",
-      "scaleDecision": "Keep current 1000; examine support and precision by theme before expanding to 10000; no further bulk launch yet."
+      "scaleDecision": "Keep current 1000; examine support and precision by theme before expanding to 10000; no further bulk launch yet.",
+      "latestStatus": {
+        "observed": "2026-11-25 morning",
+        "inRunSaved": 393,
+        "verifiedAfterDecryption": 0,
+        "failedBatch": "425-456",
+        "savedInFailedBatch": 1,
+        "unproducedInFailedBatch": 31,
+        "firstFailedShard": 426,
+        "reason": "runner exit, private log not uploaded; root cause unknown",
+        "action": "investigate 426 bounded, preserve existing archive, fill only missing after root cause; no blind full retry; other batches continue"
+      }
+    },
+    "labTenhou": {
+      "status": "DRAFT_IMPLEMENTED_VALIDATION_PENDING",
+      "userAuthorized": "2026-11-25 user approved interactive LAB Tenhou-target rules",
+      "pr": 77,
+      "branch": "feat/lab-tenhou-rules-20261125",
+      "head": "16e2aea648e9eff936c6c7271ea4441b92743f30",
+      "rules": "Both east and hanchan, 30k renchan-priority extension, start-seat ties, pao/kan corrections from research profile. Rule parity not certified.",
+      "rankPt": "Official Tenhou fixed-room/rank points, tok-jo 4–10 dan, houou 7–10 dan, no simulated promotion, default tok-jo 6 dan. CPU policy unchanged; no Q utility retargeting.",
+      "legacy": "New storage key, legacy untouched, no mixing. PWA cache updated.",
+      "gates": "Unit and browser CI, complete-match validation pending; no main merge until verified. Existing frozen old research gates preserved.",
+      "paidCalls": 0
     }
   },
   "previous_runs": [
