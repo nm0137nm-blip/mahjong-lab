@@ -9,7 +9,7 @@
   },
   "active_task": {
     "phase": "P2a-v4.7 free-only known-case semantic diagnostic",
-    "status": "AWAIT_QUANTITATIVE_COACH_DIRECTION_REVIEW",
+    "status": "QUANTITATIVE_DIRECTION_CONDITIONAL_GO_FEASIBILITY_ONLY",
     "branch": "feat/coach-p2a-v47-minimal-diagnostic",
     "commit": "7959435bfad0412e9cd94234f01395af05d84789",
     "pr": 71,
@@ -355,7 +355,7 @@
       }
     ],
     "decision": "v46 API-only Stage1 stopped after 2 paid calls, 1 contract pass and 1 incomplete output due to cap. No evidence of typed condition contract failure from pilot82; no semantic certification. Original manual Stage1 plan not performed. No new paid generation authorized.",
-    "next": "Receive Claude/Gemini independent design reviews of quantitative evaluation direction; no further P2a prompting or formal certification pending direction decision; existing exploratory review remains incomplete, no requirement to finish it before design review. Preserve prior failed gates and frozen models. No paid calls or new training until reviewed decision.",
+    "next": "Investigate existing engines (akochan private unmodified use, Mortal GRP), source output semantics and rule parity; audit access to permitted datasets and development-only assets, runtime/cost before bounded pilot; keep all old gates and main unchanged. No paid resources, no new training, no second review round at this stage.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -2652,13 +2652,13 @@
       }
     },
     "quantitativeDirectionReview": {
-      "status": "AWAIT_INDEPENDENT_DESIGN_REVIEWS",
+      "status": "TWO_REVIEWS_INTEGRATED_CONDITIONAL_GO_FEASIBILITY_ONLY",
       "date": "2026-11-24",
       "userGoal": "Quantitatively test intuitive mahjong judgments using candidate-conditioned expected round net score and terminal fourth-place probability; LLM not necessary if quantitative output is useful.",
       "requestFile": "mahjong_quantitative_strategy_review_20261124.txt",
       "requestSHA256": "c42b8020531c2173751a3b98d8e77d3e248681721d1206fb7283fa43c8e0acee",
       "requestBytes": 18589,
-      "scope": "Claude and Gemini independent review, max two rounds, prior P1/R1/B4 failures, alternatives, feasibility, free bounded pilot; no existing answer/control labels included; previous exploratory blind review not completed, external test not sent per user.",
+      "scope": "Read-only feasibility, existing assets, rule audit, nonpublic unmodified execution feasibility, bounded free smoke design. No training or full pilot execution authorized yet.",
       "sourceRecords": [
         "HANDOFF.md",
         "handoff/roadmap-v1.2-20261120.md",
@@ -2669,7 +2669,14 @@
       "oldGatesPreserved": true,
       "mainUnchanged": true,
       "paidCalls": 0,
-      "newTrainingAuthorized": false
+      "newTrainingAuthorized": false,
+      "claudeSHA256": "40d137afd15578ddff3bc357f876e39b8a1ce9a8cded2e4409c9f2dec9c53ebf",
+      "geminiSHA256": "9f3de1d62e48e83aa81f523ab94ed97dfe1c5169ab3beaad361687769b5bebed",
+      "integratedRecord": "handoff/quantitative-direction-integrated-review-20261124.md",
+      "integratedCommit": "30a910b1dcc80c7b4ea635b7a21f7523b741780f",
+      "secondRoundRequired": false,
+      "akochanLicenseChecked": true,
+      "akochanExecuted": false
     }
   },
   "previous_runs": [
