@@ -1,0 +1,41 @@
+name: P2a-v45 Stability offline cost and transport preflight
+on:
+  push:
+    branches:
+      - feat/coach-p2a-v45-stability-capped
+    paths:
+      - tests/next/v14-v45-stability-capped*
+      - research/p2a-v45-stability/**
+      - .github/workflows/p2a-v45-stability-preflight.yml
+permissions:
+  contents: read
+  actions: read
+jobs:
+  preflight:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      V14_FOLLOWUP_PUBLIC: /tmp/v45-stability-original/independent-requests.json
+      V45_QUESTIONS: /tmp/v45-stability-questions/questions
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.23.4'
+      - uses: actions/download-artifact@v4
+        with:
+          name: p2a-v2-36-public-development-only
+          run-id: 45089922993
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/v45-stability-original
+      - uses: actions/download-artifact@v4
+        with:
+          name: p2a-v45-manual-eight-frozen-public-only-json
+          run-id: 45280357883
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/v45-stability-questions
+      - name: Offline exact-source and one-shot safeguards
+        run: |
+          set -euo pipefail
+          node --test tests/next/v14-v45-japanese-condition.test.mjs tests/next/v14-v45-stage1-freeze.test.mjs tests/next/v14-v45-stage1-receipt.test.mjs tests/next/v14-v45-stability-capped.test.mjs
+      - run: echo 'No API key exposed or model generation performed.'
