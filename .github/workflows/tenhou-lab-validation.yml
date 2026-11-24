@@ -1,0 +1,32 @@
+name: Tenhou LAB rule and UI validation
+on:
+  pull_request:
+    branches: [main]
+    paths: ['index.html','tests/**','service-worker.js','.github/workflows/tenhou-lab-validation.yml']
+permissions:
+  contents: read
+jobs:
+  unit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --test tests/*.test.mjs tests/mortal/*.test.mjs
+  browser:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: |
+          npm install --no-save --ignore-scripts --no-audit --no-fund playwright@1.57.0
+          npx playwright install chromium
+          python3 -m http.server 8765 --bind 127.0.0.1 >/tmp/lab-http.log 2>&1 &
+          sleep 2
+          BROWSER=chromium node tests/mobile-smoke.mjs
+          node tests/tenhou-profile-browser.mjs
