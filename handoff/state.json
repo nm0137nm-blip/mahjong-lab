@@ -9,7 +9,7 @@
   },
   "active_task": {
     "phase": "P2a-v4.7 free-only known-case semantic diagnostic",
-    "status": "QUANTITATIVE_DIRECTION_CONDITIONAL_GO_FEASIBILITY_ONLY",
+    "status": "Q0_LIMITED_EXIT_AWAIT_Q1_REVIEW_OR_APPROVAL",
     "branch": "feat/coach-p2a-v47-minimal-diagnostic",
     "commit": "7959435bfad0412e9cd94234f01395af05d84789",
     "pr": 71,
@@ -355,7 +355,7 @@
       }
     ],
     "decision": "v46 API-only Stage1 stopped after 2 paid calls, 1 contract pass and 1 incomplete output due to cap. No evidence of typed condition contract failure from pilot82; no semantic certification. Original manual Stage1 plan not performed. No new paid generation authorized.",
-    "next": "Investigate existing engines (akochan private unmodified use, Mortal GRP), source output semantics and rule parity; audit access to permitted datasets and development-only assets, runtime/cost before bounded pilot; keep all old gates and main unchanged. No paid resources, no new training, no second review round at this stage.",
+    "next": "Q0 ended as scoped feasibility audit, not external engine execution certification. Review Q1 bounded development GRP trial using audited existing 96 development matches; no old outer or sealed data, no new match generation or paid compute. Retain all previous gates and frozen models. Need phase-exit third-party checkpoint per standing protocol before Q1 formal execution; no new training until direction approval.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -2676,7 +2676,42 @@
       "integratedCommit": "30a910b1dcc80c7b4ea635b7a21f7523b741780f",
       "secondRoundRequired": false,
       "akochanLicenseChecked": true,
-      "akochanExecuted": false
+      "akochanExecuted": false,
+      "q0": {
+        "status": "LIMITED_FEASIBILITY_EXIT_CONDITIONAL_Q1_PROPOSAL",
+        "report": "handoff/q0-feasibility-exit-20261124.md",
+        "reportCommit": "9c38478907070d46114a2ccd1c3b1ec74089588d",
+        "auditScript": "handoff/q0/audit_boundaries.py",
+        "auditCommit": "80265717460a298556a28667ea46ec10c6646271",
+        "auditScriptSHA256": "d0d8bcca6c1eaa4467c085667cfebaededa605b56593cf34d8b6750add15e6d8",
+        "auditResultSHA256": "c3b954521c5ca7f926ec9248854d3bfac16379043062850a3ce635bad01f271f",
+        "developmentArtifacts": 96,
+        "listedUnexpired": true,
+        "sampledMatches": 4,
+        "checkedHands": 43,
+        "continuing": 39,
+        "terminal": 4,
+        "acceptedRiichi": 39,
+        "mismatches": 0,
+        "syntheticChecks": 8,
+        "akochan": {
+          "sourceCommit": "53188a0b926fbab38177f88c3cd87d554cf412af",
+          "status": "SOURCE_CONFIRMED_RUNTIME_BLOCKED",
+          "blocker": "Local DNS unavailable; archive access failed; license scope and rule mismatch prohibit treating public CI or external output as certified.",
+          "reviewOutput": "Immediate approximate aggregated deal-in and expected rank utility, not actual net score or candidate rank distribution."
+        },
+        "mortal": {
+          "sourceCommit": "0cff2b52982be5b1163aa9a62fb01f03ce91e0d2",
+          "grp": "7-feature history GRU→24 permutations→rank marginal distributions; weights not confirmed",
+          "s42": "inference-only public weights; no Q to probability conversion"
+        },
+        "humanData": "Not authorized, no acquisition; primary usage scope uncertain.",
+        "trainingRuns": 0,
+        "newGames": 0,
+        "paidCalls": 0,
+        "formalCertification": false,
+        "mainUnchanged": true
+      }
     }
   },
   "previous_runs": [
