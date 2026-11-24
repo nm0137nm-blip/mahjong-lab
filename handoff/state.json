@@ -2918,6 +2918,20 @@
         "agileMetrics": true,
         "allSeatLegalActionsDirectCapture": false,
         "executionScopeUnchanged": true
+      },
+      "priorityAmendment": {
+        "status": "CLAUDE_CORRECTIONS_AND_USER_NONBLOCKING_DIRECTION_INTEGRATED",
+        "record": "handoff/learning-research-priority-amendment-20261125.md",
+        "commit": "aceb6a64f85e7e5029c9eb1000670edd8400807a",
+        "first": "deterministic settlement/termination/score conditions; target zero mismatches",
+        "parallel": [
+          "S42 descriptive riichi risk and first-riichi outcomes plus comparable external manual check",
+          "S42-only open-hand descriptive frequencies"
+        ],
+        "deferredIfBlocked": "natural-state paired forced-action branches and rank prediction; no global halt unless shared integrity issue",
+        "evaluationProfile": "Tenhou generation profile already authorized; distinct rank-point evaluation profile proposed, no main rule changes or unapproved product integration",
+        "preserveWorkingAssumption": true,
+        "executionScopeUnchanged": true
       }
     },
     "learningCorpus": {
