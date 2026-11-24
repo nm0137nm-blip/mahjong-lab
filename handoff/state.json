@@ -9,7 +9,7 @@
   },
   "active_task": {
     "phase": "P2a-v4.5 separate prospective version, manual independent GPT-6 Stage1 frozen eight source-only packets and original verifier fully prepared",
-    "status": "V45_STABILITY_ONE_TIME_APPROVED_WORKFLOW_TRIGGERED",
+    "status": "V45_CLOSED_NO_GO_STABILITY_CROSS_TRANSPORT_FIRST_FATAL_PILOT54_R1",
     "branch": "feat/coach-p2a-v45-japanese-reversal-lexemes",
     "commit": "f92239ad355d069d43ead0cbe6951ade9a07ae3a",
     "pr": 70,
@@ -354,8 +354,8 @@
         "phaseCompleted": false
       }
     ],
-    "decision": "v45 Stage1 8/8 PASS with original frozen verifier, strict JSON no correction, no semantic certification. v44 closed NO-GO unchanged.",
-    "next": "Inspect existing live run 45302765123 and encrypted receipt artifact; do not issue another approval marker or rerun. Adjudicate semantic and unique top-opponent agreement separately. Stage2/L3.5 not authorized.",
+    "decision": "Preserve v45 manual Stage1 8/8, failed Stability 4/5 and no overall GO. No more API calls on this authorization.",
+    "next": "No-cost prospective redesign of conditional judgments: replace fragile Japanese keyword gate with structured fact-bound conditional policy/action change, retain semantic independent evaluation; new version and new unseen source material required before real responses. No Stage2 or L3.5 generation under old approval.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -2194,9 +2194,9 @@
       "maximumTotalUSD": 0.4,
       "retries": 0,
       "stopOnFirstCriticalFailure": true,
-      "paidPostsUsed": null,
+      "paidPostsUsed": 5,
       "actualSpendUSD": null,
-      "status": "ONE_TIME_WORKFLOW_TRIGGERED_RESULTS_PENDING",
+      "status": "CLOSED_FIRST_FATAL_NO_GO_NO_FURTHER_PAID_POSTS",
       "noFurtherStageAuthorization": true,
       "manualStage1Unchanged": true,
       "transportDistinction": "API stateless GPT-6 Sol vs manual ChatGPT user-reported GPT-6; record distinct provenance, no assertion same model/sampling conditions",
@@ -2218,7 +2218,60 @@
         "pilot-55-r1",
         "pilot-55-r2"
       ],
-      "costSafety": "free exact input token count, 30m TTL all padded input priced at $2.50/M, max output 3600 including reasoning, $0.048 planned per-call bound, total cap $0.40; no tools or retry"
+      "costSafety": "free exact input token count, 30m TTL all padded input priced at $2.50/M, max output 3600 including reasoning, $0.048 planned per-call bound, total cap $0.40; no tools or retry",
+      "unattemptedPosts": 3,
+      "unattemptedAuthorizationReusable": false,
+      "estimatedSpendUSD": 0.1689656,
+      "usageConservativeUpperUSD": 0.195145,
+      "preflightUpperUSD": 0.237738,
+      "invoiceVerified": false,
+      "contractPass": 4,
+      "contractFail": 1,
+      "encryptedArtifactId": 14878908873,
+      "disarmedCommit": "255880e69676363cb2ac1a79ccbe9e3660c2d126",
+      "failure": {
+        "id": "pilot-54-r1",
+        "seat": 0,
+        "verdict": "STAGE1_NO_GO_INVALID_PUBLIC_CONTRACT",
+        "message": "opponent change condition needs a cited public seat and explicit conditional reversal",
+        "diagnosis": "Existing conditional regex does not recognize decision wording 判断を傾ける. Clear conditional preference shift in language but not proof of semantic quality. No retrospective regrade.",
+        "rawReplySHA256": "df7dec0daa21fb021be42cb6ef0ad57ba0a55295d0ae49dc944d59479e9b2d03"
+      },
+      "results": [
+        {
+          "id": "pilot-41-r1",
+          "verdict": "PASS",
+          "estimatedUSD": 0.041951,
+          "rawSHA256": "18041198709a10fa0f3da9a0be32dc897a92df30c9882828faba8c783db698e2"
+        },
+        {
+          "id": "pilot-41-r2",
+          "verdict": "PASS",
+          "estimatedUSD": 0.0264392,
+          "rawSHA256": "6e270abef0d24fa81e5cd1f7c56ebcca190c815c25350aa2706aca4f630b6fd7"
+        },
+        {
+          "id": "pilot-45-r1",
+          "verdict": "PASS",
+          "estimatedUSD": 0.041856,
+          "rawSHA256": "916388e9289b0c004b2c3c890ae4b4c61ac990fd92fd6675b18dea65da561bfb"
+        },
+        {
+          "id": "pilot-45-r2",
+          "verdict": "PASS",
+          "estimatedUSD": 0.0272484,
+          "rawSHA256": "a9828c3ecc7464871413caaf4754486622e4a0bc683b45b86b6d132df33cabb5"
+        },
+        {
+          "id": "pilot-54-r1",
+          "verdict": "FAIL",
+          "estimatedUSD": 0.031471,
+          "rawSHA256": "df7dec0daa21fb021be42cb6ef0ad57ba0a55295d0ae49dc944d59479e9b2d03"
+        }
+      ],
+      "rawEncryptedOriginalsDecryptedAndHashVerified": true,
+      "localOriginalVerifierRecomputed": true,
+      "semanticCertified": false
     }
   },
   "previous_runs": [
@@ -4099,6 +4152,20 @@
       "semanticCertified": false,
       "mainUnchanged": true,
       "overallPhaseComplete": false
+    },
+    {
+      "phase": "P2a-v4.5 Stability cross-transport",
+      "status": "CLOSED_NO_GO_FIRST_FATAL",
+      "run_id": 45302765123,
+      "apiCalls": 5,
+      "contractPass": 4,
+      "contractFail": 1,
+      "unattempted": 3,
+      "estimatedUSD": 0.1689656,
+      "actualInvoiceVerified": false,
+      "semanticCertified": false,
+      "overallPhaseComplete": false,
+      "mainUnchanged": true
     }
   ],
   "roadmap": {
