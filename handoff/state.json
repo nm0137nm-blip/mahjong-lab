@@ -9,7 +9,7 @@
   },
   "active_task": {
     "phase": "P2a-v4.7 free-only known-case semantic diagnostic",
-    "status": "LEARNING_REQUIREMENTS_REVIEW_AND_TENHOU_CORPUS_RULE_GATE_RUNNING",
+    "status": "LEARNING_REVIEWS_INTEGRATED_L0_CORPUS_RUNNING",
     "branch": "feat/coach-p2a-v47-minimal-diagnostic",
     "commit": "7959435bfad0412e9cd94234f01395af05d84789",
     "pr": 71,
@@ -355,7 +355,7 @@
       }
     ],
     "decision": "v46 API-only Stage1 stopped after 2 paid calls, 1 contract pass and 1 incomplete output due to cap. No evidence of typed condition contract failure from pilot82; no semantic certification. Original manual Stage1 plan not performed. No new paid generation authorized.",
-    "next": "Verify run45502831152 rule_qa and West encoder, all 8 fresh pilot audits, then automatic 992 only on success. On failure fix technical or rule discrepancy without mixing old LAB rules. Superseded run45500191977 cancelled, only 8 old pilot archived, excluded. Check remaining unverified rare Tenhou differences, no exhaustive certification or human extrapolation; no paid resources or new model training. Keep requirements review pending.",
+    "next": "Review integration complete; no second round. Monitor run45502831152, rule_qa success, 8 pilot ongoing. On all successful pilot auto 992; verify archive integrity, exact rules and counts. L1-L3 proposal awaits decision, no new model training, no additional paid resources or corpus beyond 1000. Old Q2 and failed gates remain.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -2873,15 +2873,27 @@
       "oldGatesPreserved": true,
       "mainUnchanged": true,
       "requirementsReview": {
-        "status": "AWAIT_INDEPENDENT_CLAUDE_GEMINI",
+        "status": "TWO_INDEPENDENT_REVIEWS_INTEGRATED",
         "file": "mahjong_learning_requirements_review_20261125.txt",
         "sha256": "94f4f29875dcdff70dd69a8cae741d8da4be6808a11cd7a9bf4650a9c26d947f",
         "bytes": 11417,
-        "scope": "Tenhou skill taxonomy, necessary quantitative information, S42 data research design and teaching transfer; not a technology-first review"
+        "scope": "Tenhou skill taxonomy, necessary quantitative information, S42 data research design and teaching transfer; not a technology-first review",
+        "geminiSHA256": "5bf6105747e9e6e0343c8c5b21b0fc412e8c759914452b602f818af025bead60",
+        "claudeSHA256": "74844b970eb7e93bbb71da78d8b7bb3b6a34e425d1433af21e0175e9ef633ef4",
+        "integratedRecord": "handoff/learning-requirements-integrated-20261125.md",
+        "integratedCommit": "a4cffbbbbbce4bf4134bfee9969bb9ab0a5d74b8",
+        "secondRoundRequired": false,
+        "decision": "Both support objective and conditionally S42 corpus; adopt broad descriptive research with policy limits and class-level paired interventions; no high precision per-position ML/LLM until educational need demonstrated. L0 corpus authorized, L1-L3 proposals pending, early drills as evidence permits; no human extrapolation, no new training or paid resources.",
+        "roadmap": [
+          "L0 Tenhou targeted corpus 1000 and data audit",
+          "L1 deterministic settlement and descriptive statistics, simple boundary baseline, early drills",
+          "L2 class-level paired interventions and sensitivity",
+          "L3 learner pre/post/retention and unseen transfer"
+        ]
       }
     },
     "learningCorpus": {
-      "status": "TENHOU_TARGET_RULE_GATE_RUNNING",
+      "status": "TENHOU_RULE_QA_PASS_PILOT_RUNNING",
       "userAuthorized": "2026-11-25 07:19 JST user asked for 1,000 additional hanchan; unpaid only",
       "pr": 76,
       "branch": "feat/learning-corpus-tenhou-20261125",
@@ -2935,7 +2947,8 @@
       "ruleSource": "https://tenhou.net/man/#RULE",
       "ruleProfile": "tenhou-ranked-4p-red-hanchan-v1",
       "ruleScope": "25000/30000, uma10-20, 0 continues, negative bust, renchan-priority West extension, last W4, top dealer >=30k stop, starting-seat ties, final kyotaku top, single special yakuman; patch compound pao, consecutive kakan dora timing, triple chankan. Actual Tenhou server exhaustive parity not certified. Native Mortal also documented triple-ron discrepancy; retain research profile and targeted gates.",
-      "countVerifiedTenhou": 0
+      "countVerifiedTenhou": 0,
+      "ruleQAPassed": true
     }
   },
   "previous_runs": [
