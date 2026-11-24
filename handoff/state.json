@@ -355,7 +355,7 @@
       }
     ],
     "decision": "v46 API-only Stage1 stopped after 2 paid calls, 1 contract pass and 1 incomplete output due to cap. No evidence of typed condition contract failure from pilot82; no semantic certification. Original manual Stage1 plan not performed. No new paid generation authorized.",
-    "next": "Review integration complete; no second round. Monitor run45502831152, rule_qa success, 8 pilot ongoing. On all successful pilot auto 992; verify archive integrity, exact rules and counts. L1-L3 proposal awaits decision, no new model training, no additional paid resources or corpus beyond 1000. Old Q2 and failed gates remain.",
+    "next": "Check run45502831152 after 11:00 JST. All 8 pilots passed, 992 bulk running; verify unique complete encrypted archives, decrypt and audit before L0 close. Evaluate sample support by theme before deciding 10000. No paid compute or new model training.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -2900,7 +2900,7 @@
       }
     },
     "learningCorpus": {
-      "status": "TENHOU_RULE_QA_PASS_PILOT_RUNNING",
+      "status": "TENHOU_PILOT_PASS_BULK_RUNNING",
       "userAuthorized": "2026-11-25 07:19 JST user asked for 1,000 additional hanchan; unpaid only",
       "pr": 76,
       "branch": "feat/learning-corpus-tenhou-20261125",
@@ -2935,7 +2935,7 @@
       "publicCertificateSha256": "1debc2c919b3279acb0281e625b4fdb355454e713e45ca2357b9492a213cfd7a",
       "recoveryKeyArchiveSHA256": "ae3de298f224f6adad7b024c296ef97445a5b773ba0d2f0c37a97a52c00dfbe5",
       "previousPilotCorrection": "Explicit model+forced==decisions, fallback==0, sharedWorker and activeSeats; no invented invalid field. Validate score/rank, complete wall order and 34 types ×4, red 1 per suit, hash and capture counts; stop batch on failure, save successful prefixes.",
-      "eta": "Old ETA suspended pending new rule gate and pilot; after gate 2–4 hours conditional rough estimate, West extension may increase duration.",
+      "eta": "2026-11-25 JST 09:30–11:00 conditional generation, 11:00–12:00 suggested user check; bulk queue/failure/recovery may delay",
       "supersededLabRules": {
         "run": 45500191977,
         "conclusion": "cancelled",
@@ -2955,7 +2955,29 @@
       "ruleProfile": "tenhou-ranked-4p-red-hanchan-v1",
       "ruleScope": "25000/30000, uma10-20, 0 continues, negative bust, renchan-priority West extension, last W4, top dealer >=30k stop, starting-seat ties, final kyotaku top, single special yakuman; patch compound pao, consecutive kakan dora timing, triple chankan. Actual Tenhou server exhaustive parity not certified. Native Mortal also documented triple-ron discrepancy; retain research profile and targeted gates.",
       "countVerifiedTenhou": 0,
-      "ruleQAPassed": true
+      "ruleQAPassed": true,
+      "pilotSaved": 8,
+      "pilotArtifacts": [
+        14972775190,
+        14972715804,
+        14971951565,
+        14971366545
+      ],
+      "pilotHands": 78,
+      "pilotGenerationSeconds": [
+        46.031,
+        24.851,
+        38.162,
+        66.253,
+        42.417,
+        40.05,
+        44.028,
+        56.129
+      ],
+      "pilotArtifactBytes": 993264,
+      "bulkParallel": 8,
+      "archiveIntegrity": "8 pilot games passed in-run checks and encrypted artifacts exist; decryption and cross-corpus audit pending",
+      "scaleDecision": "Keep current 1000; examine support and precision by theme before expanding to 10000; no further bulk launch yet."
     }
   },
   "previous_runs": [
