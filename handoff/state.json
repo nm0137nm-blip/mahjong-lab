@@ -9,7 +9,7 @@
   },
   "active_task": {
     "phase": "P2a-v4.5 separate prospective version, manual independent GPT-6 Stage1 frozen eight source-only packets and original verifier fully prepared",
-    "status": "V45_MANUAL_STAGE1_8_OF_8_PASS_STABILITY_NEXT_API_APPROVAL_REQUIRED",
+    "status": "V45_STAGE1_8_OF_8_PASS_STABILITY_API_AUTHORIZED_PREFLIGHT_PENDING",
     "branch": "feat/coach-p2a-v45-japanese-reversal-lexemes",
     "commit": "f92239ad355d069d43ead0cbe6951ade9a07ae3a",
     "pr": 70,
@@ -355,7 +355,7 @@
       }
     ],
     "decision": "v45 Stage1 8/8 PASS with original frozen verifier, strict JSON no correction, no semantic certification. v44 closed NO-GO unchanged.",
-    "next": "Stage1 PASS. Next preregistered Stability 8 additional independent replies (two replicates each of pilot-41,45,54,55); choose manual or separately authorized API transport before collecting. No paid calls until approval. Stage2, L3.5, L4 pending.",
+    "next": "Prepare prospective mixed-transport Stability protocol, freeze eight ordered independent API attempts and cost safeguards before paid requests; retain original manual Stage1 and original criterion. Stage2/L3.5 paid calls require separate approval.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -2184,6 +2184,22 @@
         "probabilityAndExpertise": "NOT_CERTIFIED"
       },
       "apiAuthorizationForNextStage": "Requires fresh user approval under latest decision; none granted yet"
+    },
+    "v45_stability_api_approval": {
+      "authorizedAt": "2026-11-24T10:03:48+09:00",
+      "userMessage": "承認します",
+      "scope": "Stability only, 4 original scenes × 2 additional independent API replies",
+      "maximumPaidPosts": 8,
+      "maximumPerPostUSD": 0.05,
+      "maximumTotalUSD": 0.4,
+      "retries": 0,
+      "stopOnFirstCriticalFailure": true,
+      "paidPostsUsed": 0,
+      "actualSpendUSD": 0,
+      "status": "APPROVED_PREPARATION_ONLY_NO_PAID_POST_YET",
+      "noFurtherStageAuthorization": true,
+      "manualStage1Unchanged": true,
+      "transportDistinction": "API stateless GPT-6 Sol vs manual ChatGPT user-reported GPT-6; record distinct provenance, no assertion same model/sampling conditions"
     }
   },
   "previous_runs": [
