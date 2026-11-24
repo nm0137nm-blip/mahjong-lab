@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checkpoint": "2026-11-24T16:28:00+09:00",
+  "checkpoint": "2026-11-24T16:38:00+09:00",
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
@@ -9,7 +9,7 @@
   },
   "active_task": {
     "phase": "P2a-v4.7 free-only known-case semantic diagnostic",
-    "status": "V47_FOUR_ADVERSARIAL_CONTROLS_LOCKED_AWAIT_FOUR_INDEPENDENT_GENUINE_REPLIES",
+    "status": "V47_KNOWN_CASE_CONTRACT_3_OF_4_FROZEN_SEMANTIC_DIAGNOSTIC_PENDING_RATER_QUALIFICATION",
     "branch": "feat/coach-p2a-v47-minimal-diagnostic",
     "commit": "7959435bfad0412e9cd94234f01395af05d84789",
     "pr": 71,
@@ -355,7 +355,7 @@
       }
     ],
     "decision": "v46 API-only Stage1 stopped after 2 paid calls, 1 contract pass and 1 incomplete output due to cap. No evidence of typed condition contract failure from pilot82; no semantic certification. Original manual Stage1 plan not performed. No new paid generation authorized.",
-    "next": "User runs four frozen diagnostic questions in four separate temporary GPT-6 chats, no personalization, same available thinking setting, records observed model and time if possible, returns original JSON files unread. After receipt verify and preserve, qualify all three raters separately, construct common-renderer blinded diagnostic pair packet with sealed mapping. No paid API, no unseen certification.",
+    "next": "Collect independent qualification ratings on v2 synthetic four-anchor packet from human-user, Claude, Gemini. Only if all three qualify deliver sealed blinded paired diagnostic. Retain 3/4 mechanical result; exploratory semantic diagnosis cannot reverse failure. Review both assessors after diagnostic or stop; no unseen certification or paid calls.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -2481,7 +2481,7 @@
         "0067f6c6f4708ace8020de120659a504837f3859010066a5fd13121f19e830ff"
       ],
       "controlRequestSha256": "d0059580797db4d61106dc7037adecd75cfed8cde4c15ef9ae5adbb746aaba20",
-      "genuineReplies": 0,
+      "genuineReplies": 4,
       "controlReplies": 4,
       "semanticGrades": 0,
       "qualificationAnchorsPending": false,
@@ -2537,11 +2537,16 @@
       },
       "qualification": {
         "syntheticAnchors": 4,
-        "publicFileSha256": "15a3c57682f12b5ceb9d795179c0132cd56b7c4d052d6eb7f0ccd192e51febd4",
-        "sealedPrivateKeySha256": "8538eabaeaf3cdf1028a2a9ba754c5b777f3fbb36a90fc37566624ba17e55e18",
-        "status": "PREPARED_NOT_DELIVERED",
+        "publicFileSha256": "8f4ef09b1e4946450dd611a382fea3d0a87c7a240bef9b09a67647fd4c4898b2",
+        "sealedPrivateKeySha256": "2df3a12a7ac67c50c5e39bed2fb3d3a0c97076b912eabb59fffcca0e3438399d",
+        "status": "V2_FROZEN_BEFORE_DELIVERY",
         "ratersQualified": 0,
-        "privateKeyNotPublished": true
+        "privateKeyNotPublished": true,
+        "priorUndeliveredAnchorHashesRetained": {
+          "public": "15a3c57682f12b5ceb9d795179c0132cd56b7c4d052d6eb7f0ccd192e51febd4",
+          "key": "8538eabaeaf3cdf1028a2a9ba754c5b777f3fbb36a90fc37566624ba17e55e18"
+        },
+        "reason": "Prior undelivered anchor files not present in current runtime; new independent synthetic set generated and frozen before presentation, no rater has seen prior set."
       },
       "controlAttemptsTotal": 6,
       "diagnosticPublicFileHashes": [
@@ -2549,7 +2554,45 @@
         "375206496399ff2edda8917165316954c647aa0dc14a5f5dfc7a7a3692d43b8b",
         "827bd13b439dbb3194f4e2df7367d45e16200bef5b4072213e5c31eefab2cc72",
         "32f28b7ed97a8dd06910b10b24f336c3d41e7f14a861f3229196f2684b7193fa"
-      ]
+      ],
+      "genuineIntake": {
+        "received": 4,
+        "completed": 4,
+        "contractPass": 3,
+        "contractFail": 1,
+        "allLegalKeysAndKnownFactIds": true,
+        "method": "Local Node v22 exact-packet verifier logic mirror; all four compact request hashes and control-lock file hash verified. Full source-envelope verifier not re-executed.",
+        "rawFileSha256": [
+          "5de12d258c9b95f1d13b5b99b2b0cf50bc3305e8b33974f752e03a8da21e1c56",
+          "085eb1d4cd0f7462d1def3cd891ddabfd371478d55de1d2c842fef5f3e35be01",
+          "93135954dc29487d4e470c5cbbfeb5b876366f58ee8b10ae4d1d4b1ce4418af7",
+          "9e5812ce1913c22cee87a6d03f9dd3fad4a3d4266d57a15c6ca0216520d4a692"
+        ],
+        "rawBytes": [
+          4870,
+          5768,
+          4103,
+          4391
+        ],
+        "failureCategory": "cross-seat fact guard in a multi-opponent counterfactual; scope collision not proof of false tactical reasoning",
+        "rawUnmodified": true,
+        "modelProvenance": "user-submitted independent GPT-6 files, precise settings/time not separately confirmed",
+        "paidCalls": 0,
+        "mechanicalVerdictFrozen": true,
+        "caseIdentityAndDetailsPrivateUntilBlindLock": true
+      },
+      "blindDiagnostic": {
+        "status": "PACKET_AND_MAPPING_SEALED_NOT_DELIVERED",
+        "pairs": 4,
+        "answers": 8,
+        "publicPacketSha256": "1c23cfdd2d7f33848e989442cb6f65ba95d650c4d7aa8c28c6c39078c6d45318",
+        "privateMappingSha256": "87e71ec88fc9a88e64c7960db131cb4cdba79d57187f6a1c2ce74bc66c0fec63",
+        "randomizedOpaqueIds": true,
+        "commonRenderer": true,
+        "rawAnswersUnchanged": true,
+        "semanticRatings": 0,
+        "scope": "Exploratory semantic diagnosis of all four available original replies; NOT a mechanical gate pass, NOT certification. No regrading, no new unseen cases, no patched answers."
+      }
     }
   },
   "previous_runs": [
