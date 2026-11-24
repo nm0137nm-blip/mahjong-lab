@@ -9,7 +9,7 @@
   },
   "active_task": {
     "phase": "P2a-v4.7 free-only known-case semantic diagnostic",
-    "status": "Q0_LIMITED_EXIT_AWAIT_Q1_REVIEW_OR_APPROVAL",
+    "status": "Q0_AKOCHAN_RUNTIME_SMOKE_PASS_Q1_PLAN_REVIEW",
     "branch": "feat/coach-p2a-v47-minimal-diagnostic",
     "commit": "7959435bfad0412e9cd94234f01395af05d84789",
     "pr": 71,
@@ -355,7 +355,7 @@
       }
     ],
     "decision": "v46 API-only Stage1 stopped after 2 paid calls, 1 contract pass and 1 incomplete output due to cap. No evidence of typed condition contract failure from pilot82; no semantic certification. Original manual Stage1 plan not performed. No new paid generation authorized.",
-    "next": "Q0 ended as scoped feasibility audit, not external engine execution certification. Review Q1 bounded development GRP trial using audited existing 96 development matches; no old outer or sealed data, no new match generation or paid compute. Retain all previous gates and frozen models. Need phase-exit third-party checkpoint per standing protocol before Q1 formal execution; no new training until direction approval.",
+    "next": "Q0 addendum: unmodified akochan private execution now confirmed. Prioritize akochan extraction/semantics and development-only calibration/coverage feasibility alongside Mortal-type GRP, before training new P1 models. Need independent phase checkpoint and bounded Q1 plan; exact pilot41 historical own draws not yet retrieved, no calibrated probabilities, no source/raw external output in public repo, no paid calls or main change.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -2676,9 +2676,9 @@
       "integratedCommit": "30a910b1dcc80c7b4ea635b7a21f7523b741780f",
       "secondRoundRequired": false,
       "akochanLicenseChecked": true,
-      "akochanExecuted": false,
+      "akochanExecuted": true,
       "q0": {
-        "status": "LIMITED_FEASIBILITY_EXIT_CONDITIONAL_Q1_PROPOSAL",
+        "status": "FEASIBILITY_EXIT_EXTERNAL_RUNTIME_BLOCKER_CLEARED",
         "report": "handoff/q0-feasibility-exit-20261124.md",
         "reportCommit": "9c38478907070d46114a2ccd1c3b1ec74089588d",
         "auditScript": "handoff/q0/audit_boundaries.py",
@@ -2696,9 +2696,30 @@
         "syntheticChecks": 8,
         "akochan": {
           "sourceCommit": "53188a0b926fbab38177f88c3cd87d554cf412af",
-          "status": "SOURCE_CONFIRMED_RUNTIME_BLOCKED",
-          "blocker": "Local DNS unavailable; archive access failed; license scope and rule mismatch prohibit treating public CI or external output as certified.",
-          "reviewOutput": "Immediate approximate aggregated deal-in and expected rank utility, not actual net score or candidate rank distribution."
+          "status": "UNMODIFIED_PRIVATE_LOCAL_SMOKE_PASS",
+          "blocker": null,
+          "reviewOutput": "Immediate approximate aggregated deal-in and expected rank utility, not actual net score or candidate rank distribution.",
+          "archiveSHA256": "96e47d1389c223c3dd4d79178c390e1841a16a5efc53534da0875bb8b37a35da",
+          "archiveFilesUnchanged": 806,
+          "build": "C++11 OpenMP 4 threads, header-only Boost.System 1.83; O2 partial build then O1 remainder after timeout; no source or parameter edits",
+          "visibleInputCases": 2,
+          "reviewCandidateCounts": [
+            9,
+            8
+          ],
+          "runSeconds": [
+            3.65,
+            0.89
+          ],
+          "repeatSeconds": 2,
+          "repeatExact": true,
+          "debugSeconds": 1.46,
+          "debugFields": "tenpai_prob, conditional tile risk tables, approximate total immediate deal-in probability, expected rank utility",
+          "report": "handoff/q0-akochan-local-smoke-20261124.md",
+          "reportCommit": "b02fb5c79a84af7bf1322a303f094534a2be3454",
+          "calibrationVerified": false,
+          "ruleParityVerified": false,
+          "candidateScoreEVAndRankDistributionVerified": false
         },
         "mortal": {
           "sourceCommit": "0cff2b52982be5b1163aa9a62fb01f03ce91e0d2",
