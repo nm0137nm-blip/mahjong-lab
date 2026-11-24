@@ -9,7 +9,7 @@
   },
   "active_task": {
     "phase": "P2a-v4.5 separate prospective version, manual independent GPT-6 Stage1 frozen eight source-only packets and original verifier fully prepared",
-    "status": "V45_STAGE1_8_OF_8_PASS_STABILITY_API_AUTHORIZED_PREFLIGHT_PENDING",
+    "status": "V45_STABILITY_ONE_TIME_APPROVED_WORKFLOW_TRIGGERED",
     "branch": "feat/coach-p2a-v45-japanese-reversal-lexemes",
     "commit": "f92239ad355d069d43ead0cbe6951ade9a07ae3a",
     "pr": 70,
@@ -355,7 +355,7 @@
       }
     ],
     "decision": "v45 Stage1 8/8 PASS with original frozen verifier, strict JSON no correction, no semantic certification. v44 closed NO-GO unchanged.",
-    "next": "Prepare prospective mixed-transport Stability protocol, freeze eight ordered independent API attempts and cost safeguards before paid requests; retain original manual Stage1 and original criterion. Stage2/L3.5 paid calls require separate approval.",
+    "next": "Inspect existing live run 45302765123 and encrypted receipt artifact; do not issue another approval marker or rerun. Adjudicate semantic and unique top-opponent agreement separately. Stage2/L3.5 not authorized.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -2194,12 +2194,31 @@
       "maximumTotalUSD": 0.4,
       "retries": 0,
       "stopOnFirstCriticalFailure": true,
-      "paidPostsUsed": 0,
-      "actualSpendUSD": 0,
-      "status": "APPROVED_PREPARATION_ONLY_NO_PAID_POST_YET",
+      "paidPostsUsed": null,
+      "actualSpendUSD": null,
+      "status": "ONE_TIME_WORKFLOW_TRIGGERED_RESULTS_PENDING",
       "noFurtherStageAuthorization": true,
       "manualStage1Unchanged": true,
-      "transportDistinction": "API stateless GPT-6 Sol vs manual ChatGPT user-reported GPT-6; record distinct provenance, no assertion same model/sampling conditions"
+      "transportDistinction": "API stateless GPT-6 Sol vs manual ChatGPT user-reported GPT-6; record distinct provenance, no assertion same model/sampling conditions",
+      "researchBranch": "feat/coach-p2a-v45-stability-capped",
+      "protocolPath": "research/p2a-v45-stability/PROTOCOL.md",
+      "preflightRunId": 45302652120,
+      "preflightTestsPass": 16,
+      "preflightTestsFail": 0,
+      "authorizedMarkerCommit": "82f5f5c46847cad97ad7deeab681c037621c01cc",
+      "liveRunId": 45302765123,
+      "warning": "Unknown until live run receipts verified; do not launch new generation or rerun",
+      "fixedOrder": [
+        "pilot-41-r1",
+        "pilot-41-r2",
+        "pilot-45-r1",
+        "pilot-45-r2",
+        "pilot-54-r1",
+        "pilot-54-r2",
+        "pilot-55-r1",
+        "pilot-55-r2"
+      ],
+      "costSafety": "free exact input token count, 30m TTL all padded input priced at $2.50/M, max output 3600 including reasoning, $0.048 planned per-call bound, total cap $0.40; no tools or retry"
     }
   },
   "previous_runs": [
