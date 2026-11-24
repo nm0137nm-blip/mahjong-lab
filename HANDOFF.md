@@ -603,3 +603,10 @@ ChatGPTが実際に独立して解いた回答を得る前に、採点・中止�
 - 元公開36局面SHA照合済みローカル環境で、凍結済み `assessV45FirstRealStage1` により原回答を採点。**CONTRACT_AND_PUBLIC_FACT_GATE_PASS**。原本SHA256 `33ffa7ac17b7df3cb7ca33e9790d34c8d82c098a5e318b9a698f6a12cf2a310f`、7,839 bytes。strict_json、補正なし。原回答は公開GitHubに載せない。GPT-6/独立一時チャットはユーザー申告・独立検証なし。
 - 固定順で全7件を再検証し、累計7/8 PASS、FAIL 0、残1。判定器・出題・旧版のNO-GOを変更せず。戦術的品質/S42一致/L4は未認定。API追加実行0回、追加費用0。
 - 最終問 **pilot-76**。質問ファイル `mahjong_P2a_v45_stage1_pilot-76_question.json`、23,004 bytes、file SHA256 `8852c797b4044d8efe1143b2d884de28b0ab81c85cf4086aa5960abae00a112b`、固定requestHash `bb1367d23a409a8c6f84bbeaeb7a67c7222a3f3f7422385742258e877bc536bc`。期待回答 `mahjong_P2a_v45_stage1_pilot-76_response.json`。新規独立GPT-6一時チャットで原本JSONを取得・提出。first fatal停止、初回8問手動を維持。8/8達成後もStability・Stage2・L3.5・L4は別ゲート。API再開は別途承認。
+
+
+## 2026-11-24 09:54 JST：v4.5 手動Stage1 8/8 PASS（Phase全体は未完）
+- pilot-76 原回答SHA256 `30af5028ea325878ae94681a441c564503846d51fc8aa90bd5e383f8d72d9950`、7,333 bytes。strict_json、補正なし。固定済み `assessV45FirstRealStage1` を元36公開ソースSHA一致のローカル環境で**全8原回答に再実行**し、全件 `CONTRACT_AND_PUBLIC_FACT_GATE_PASS`。原バイトSHAと判定器の原文SHAも一致。回答ファイルは会話内に保全、公開GitHubに掲載しない。
+- `summarizeV45Stage1Receipts` 結果：8試行、8合格、0失敗、0欠損、canExpand=true、`STAGE1_NUMERIC_CONTRACT_PASS_L4_AND_L35_PENDING`。判定器・出題・回答を変更せず。API追加0回・0ドル。GPT-6出所はユーザー申告、署名等による独立検証なし。v4.4 NO-GOは維持。S42一致・戦術の専門性・Phase全体の合格は未認定。
+- 次は事前固定のStability：pilot-41/45/54/55各2独立追加回答、計8。全8追加回答の契約合格かつ重大な公開事実誤りなし、4局面中3以上で3回答中2以上の合法行動グループと最重要他家が一致。複数の重要他家の扱い等、元ルールの曖昧さを事後に有利に解釈しない。新規回答前に採点手順・APIと手動の異なる実行条件の扱いを明確化する。
+- 初回8問手動条件は達成したが、次段階の有料API実行は新たなユーザー承認を得てから。Stability, Stage2, 独立L3.5, 3者匿名L4は未実施。main変更なし。
