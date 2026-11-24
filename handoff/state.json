@@ -9,7 +9,7 @@
   },
   "active_task": {
     "phase": "P2a-v4.7 free-only known-case semantic diagnostic",
-    "status": "LEARNING_REQUIREMENTS_REVIEW_AND_1000_CORPUS_RUNNING",
+    "status": "LEARNING_REQUIREMENTS_REVIEW_AND_TENHOU_CORPUS_RULE_GATE_RUNNING",
     "branch": "feat/coach-p2a-v47-minimal-diagnostic",
     "commit": "7959435bfad0412e9cd94234f01395af05d84789",
     "pr": 71,
@@ -355,7 +355,7 @@
       }
     ],
     "decision": "v46 API-only Stage1 stopped after 2 paid calls, 1 contract pass and 1 incomplete output due to cap. No evidence of typed condition contract failure from pilot82; no semantic certification. Original manual Stage1 plan not performed. No new paid generation authorized.",
-    "next": "Monitor run45500191977: pilot all 8 gate; collect encrypted artifact summaries, verify unique complete matches and decrypt/verify hashes before counting durable corpus; do not retry blindly or expose key. Remaining 992 auto-run only after successful pilot. Report failure, completion ETA and saved count; old Q2 training paused, await learning requirements reviews.",
+    "next": "Verify run45502831152 rule_qa and West encoder, all 8 fresh pilot audits, then automatic 992 only on success. On failure fix technical or rule discrepancy without mixing old LAB rules. Superseded run45500191977 cancelled, only 8 old pilot archived, excluded. Check remaining unverified rare Tenhou differences, no exhaustive certification or human extrapolation; no paid resources or new model training. Keep requirements review pending.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -2881,16 +2881,16 @@
       }
     },
     "learningCorpus": {
-      "status": "GATED_1000_NEW_SELFPLAY_RUNNING",
+      "status": "TENHOU_TARGET_RULE_GATE_RUNNING",
       "userAuthorized": "2026-11-25 07:19 JST user asked for 1,000 additional hanchan; unpaid only",
-      "pr": 75,
-      "branch": "feat/learning-corpus-1000-20261125",
-      "head": "4789978affb7c30d487ff2b96fc28bd768770a9e",
-      "run": 45500191977,
+      "pr": 76,
+      "branch": "feat/learning-corpus-tenhou-20261125",
+      "head": "ec66466a127f2aca6a9b46e81d504c8f3e9f692d",
+      "run": 45502831152,
       "plannedMatches": 1000,
       "maxParallel": 8,
       "jobTimeoutMinutes": 15,
-      "rawRetention": "Complete synthetic paipu and original wall order, provenance, provisional focal public/reference/oracle; only AES-256-GCM CMS encrypted batch ZIP plus summaries uploaded, 90-day expiry; public cert only; private key sent to user in recovery ZIP, never in repo. Download & verify before expiry; no human data.",
+      "rawRetention": "Same encryption certificate and existing user key; 90-day expiry, exact profile and independent boundary check in manifests. No old LAB data mixed.",
       "oldCorpusReference": {
         "run": 44726204303,
         "matchArtifacts": 96,
@@ -2912,11 +2912,30 @@
       "bulkMatches": 992,
       "bulkBatches": 31,
       "batchSize": 32,
-      "initialGate": "all 4 pilot jobs and 8 retained matches must succeed before bulk",
+      "initialGate": "17 end/continue regression cases plus compound pao and consecutive kakan/chankan tests, West WASM observation fixtures; actual-rule manifest, independent recorded settlement/endgame and final point verification per game. All 8 pilot must pass before bulk. Full parity not claimed.",
       "publicCertificateSha256": "1debc2c919b3279acb0281e625b4fdb355454e713e45ca2357b9492a213cfd7a",
       "recoveryKeyArchiveSHA256": "ae3de298f224f6adad7b024c296ef97445a5b773ba0d2f0c37a97a52c00dfbe5",
       "previousPilotCorrection": "Explicit model+forced==decisions, fallback==0, sharedWorker and activeSeats; no invented invalid field. Validate score/rank, complete wall order and 34 types ×4, red 1 per suit, hash and capture counts; stop batch on failure, save successful prefixes.",
-      "eta": "2–4 hours rough conditional on pilot and available eight standard CPU runners; may be longer. No exact completion guarantee."
+      "eta": "Old ETA suspended pending new rule gate and pilot; after gate 2–4 hours conditional rough estimate, West extension may increase duration.",
+      "supersededLabRules": {
+        "run": 45500191977,
+        "conclusion": "cancelled",
+        "stopCommit": "ca9820d57f0ec5d0eca772b0a537e63d81a8e336",
+        "pilotSaved": 8,
+        "artifactIds": [
+          14971241289,
+          14970064099,
+          14969707912,
+          14969558159
+        ],
+        "countTowardTenhou": 0,
+        "bulkRetainedArtifacts": 0
+      },
+      "userRuleRequirement": "2026-11-25 07:34 JST: user requires future hanchan corpus standardized to Tenhou rules, particularly extension. Red open-tanyao ranked 4p hanchan selected; main game settings unchanged.",
+      "ruleSource": "https://tenhou.net/man/#RULE",
+      "ruleProfile": "tenhou-ranked-4p-red-hanchan-v1",
+      "ruleScope": "25000/30000, uma10-20, 0 continues, negative bust, renchan-priority West extension, last W4, top dealer >=30k stop, starting-seat ties, final kyotaku top, single special yakuman; patch compound pao, consecutive kakan dora timing, triple chankan. Actual Tenhou server exhaustive parity not certified. Native Mortal also documented triple-ron discrepancy; retain research profile and targeted gates.",
+      "countVerifiedTenhou": 0
     }
   },
   "previous_runs": [
