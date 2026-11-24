@@ -355,7 +355,7 @@
       }
     ],
     "decision": "v46 API-only Stage1 stopped after 2 paid calls, 1 contract pass and 1 incomplete output due to cap. No evidence of typed condition contract failure from pilot82; no semantic certification. Original manual Stage1 plan not performed. No new paid generation authorized.",
-    "next": "Implement separate v47 research version, free regression and token/panel audits, free-first known-case diagnostic and blind review before any new certification spending. Keep old decisions and main unchanged.",
+    "next": "Continue v47 separate research implementation, regression, source audits and free-only known-case diagnostics using existing access/manual independent GPT-6 chats. No new paid execution; no certification until required diagnostic gates.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -2436,7 +2436,7 @@
       "paidCallsExecuted": 0,
       "semanticCertified": false,
       "provisionalOutputCap": 6000,
-      "diagnostic": "3–4 previously exposed cases, free-first, independent blind semantic evaluation",
+      "diagnostic": "3–4 previously exposed cases, free-only for now, independent blind semantic evaluation",
       "stage1": "separate unseen eight after diagnostic and review",
       "isolatedOldPanel": [
         "pilot-81",
@@ -4532,6 +4532,14 @@
       "activeNext": "Prepare prospective v4.5 full verifier and new frozen 8 never-GPT-answered source-only questions for manual testing; present first JSON question file",
       "security": "Existing paid API workflows remain disabled; no API POST while 8/8 manual gate pending",
       "constraints": "Independent blind L4, Stability, Stage2 and L3.5 remain separate; 8/8 contract pass alone not Phase overall GO"
+    },
+    "free_first_v47": {
+      "decision": "FREE_ONLY_FOR_NOW",
+      "userMessage": "分かりました　しばらく無料で対応しましょう",
+      "scope": "v4.7 preparation, known-case diagnostics and blind evaluation; no new paid API or paid compute unless user explicitly changes policy and approves specific scope",
+      "manualExistingChatGPTAllowed": true,
+      "paidAuthorization": 0,
+      "preferFreeLocalAndExistingAccess": true
     }
   }
 }
