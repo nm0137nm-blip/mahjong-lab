@@ -1,9 +1,7 @@
 name: P2a-v46 Stage1 authorized eight GPT6 Sol API max 5 cents each
+# Closed after the single authorized run 45319407857 stopped at pilot-82.
 on:
-  push:
-    branches: [feat/coach-p2a-v46-stage1-api-capped]
-    paths:
-      - research/approvals/p2a-v46-stage1-eight-20261124.run
+  workflow_dispatch:
 concurrency:
   group: mahjong-v46-stage1-single-approved-marker
   cancel-in-progress: false
@@ -18,7 +16,7 @@ jobs:
       V46_SOURCE: /tmp/v46-verifier/independent-requests.json
       V46_QUESTIONS: /tmp/v46-public/questions
       V46_STAGE1_OUT: /tmp/v46-stage1-encrypted
-      V46_STAGE1_APPROVAL: EIGHT_MAX_40_CENTS_20261124
+      V46_STAGE1_APPROVAL: EXPIRED_V46_FIRST_FATAL_PILOT82
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
     steps:
       - uses: actions/checkout@v4
