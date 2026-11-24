@@ -9,7 +9,7 @@
   },
   "active_task": {
     "phase": "P2a-v4.7 free-only known-case semantic diagnostic",
-    "status": "V47_EXPLORATORY_BLIND_TEACHING_REVIEW_READY_AWAIT_RATINGS",
+    "status": "AWAIT_QUANTITATIVE_COACH_DIRECTION_REVIEW",
     "branch": "feat/coach-p2a-v47-minimal-diagnostic",
     "commit": "7959435bfad0412e9cd94234f01395af05d84789",
     "pr": 71,
@@ -355,7 +355,7 @@
       }
     ],
     "decision": "v46 API-only Stage1 stopped after 2 paid calls, 1 contract pass and 1 incomplete output due to cap. No evidence of typed condition contract failure from pilot82; no semantic certification. Original manual Stage1 plan not performed. No new paid generation authorized.",
-    "next": "Continue human review one case at a time; preserve independent external reviews when received. No label reveal before all lock. After remaining feedback, evaluate quantitative coach redesign versus prompt-only tuning; retain prior 3/4 mechanical gate and no formal certification. No paid calls.",
+    "next": "Receive Claude/Gemini independent design reviews of quantitative evaluation direction; no further P2a prompting or formal certification pending direction decision; existing exploratory review remains incomplete, no requirement to finish it before design review. Preserve prior failed gates and frozen models. No paid calls or new training until reviewed decision.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -2650,6 +2650,26 @@
           "nextDesignHypothesis": "Separate calibrated quantitative state inference and paired continuation evaluation from language explanation; do not interpret S42 Q values as probabilities. Assess on disjoint games with calibration, policy sensitivity, uncertainty and public-information-only input. No implementation or new gate authorized yet."
         }
       }
+    },
+    "quantitativeDirectionReview": {
+      "status": "AWAIT_INDEPENDENT_DESIGN_REVIEWS",
+      "date": "2026-11-24",
+      "userGoal": "Quantitatively test intuitive mahjong judgments using candidate-conditioned expected round net score and terminal fourth-place probability; LLM not necessary if quantitative output is useful.",
+      "requestFile": "mahjong_quantitative_strategy_review_20261124.txt",
+      "requestSHA256": "c42b8020531c2173751a3b98d8e77d3e248681721d1206fb7283fa43c8e0acee",
+      "requestBytes": 18589,
+      "scope": "Claude and Gemini independent review, max two rounds, prior P1/R1/B4 failures, alternatives, feasibility, free bounded pilot; no existing answer/control labels included; previous exploratory blind review not completed, external test not sent per user.",
+      "sourceRecords": [
+        "HANDOFF.md",
+        "handoff/roadmap-v1.2-20261120.md",
+        "handoff/p1-evaluation-v1.1.json",
+        "archive/results/p1-v2-screen-20261120.json",
+        "handoff/p2a-v47-integrated-design-review-20261124.md"
+      ],
+      "oldGatesPreserved": true,
+      "mainUnchanged": true,
+      "paidCalls": 0,
+      "newTrainingAuthorized": false
     }
   },
   "previous_runs": [
