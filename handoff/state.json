@@ -2897,6 +2897,12 @@
         "commit": "6acefec386a6cbd98e368a27a37039fa42310562",
         "method": "For each theme define learning question, falsifiable hypothesis, operational primary/secondary metrics, denominators, conditions, comparison, data provenance, uncertainty, decision and teaching criteria before test. Iterate via versioned hypotheses; distinguish exploratory and confirmatory results. Metric candidates not fixed gates.",
         "newExecutionAuthorized": false
+      },
+      "s42WorkingAssumption": {
+        "status": "USER_ACCEPTED_WORKING_ASSUMPTION",
+        "assumption": "S42の最大Q値選択を、天鳳で長期的に勝つための有力な基準戦略として当面採用する。Mortalの既存の雀力評価を出発点とし、人間卓との完全一致の証明を研究着手の必須条件にしない。",
+        "limits": "個々の選択の最適性、段位別効用の一致、S42自己対局の確率と人間卓の確率の一致は実証済みと扱わない。具体的な反証・矛盾が出た場合に検証する。Q値を確率や期待点と解釈しない。",
+        "implication": "S42の貪欲自己対局を基礎研究の母集団とし、実戦に転用可能な判断条件と確率感覚の抽出を優先。既存の研究・費用・ルール・データ品質ゲートは維持。"
       }
     },
     "learningCorpus": {
