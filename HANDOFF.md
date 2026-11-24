@@ -646,3 +646,10 @@ ChatGPTが実際に独立して解いた回答を得る前に、採点・中止�
 - 研究branch `feat/coach-p2a-v46-stage1-capped-api`、事前protocol `research/p2a-v46-api/PROTOCOL.md`、承認marker commit 9ca7f45ea2bd335568462416efaa0ed7bac1e658。run **45319407857**、job 138194026189。offline 5/5 PASS、全8件無料token count preflight通過。実際の有料POSTは2回。pilot-81はCONTRACT_AND_PUBLIC_FACT_GATE_PASS、pilot-82はAPI status incomplete/reason max_output_tokensで停止。後者の出力上限2868、実出力2868（うち推論1552）でJSON途中まで。未完原本を勝手に修復・判定しない。pilot-83..88未実施。手動Stage1計画は未実施、API-only Stage1はNO-GO、意味評価未認定。
 - 暗号化原本 artifact 14886223134 をローカル復号、pilot-81 rawSHA `ea9d280a5aa0532a281bf0288d59cfc584dddaee742899b6220ce900cad0e3ac` と固定v46検証器のPASSを再確認。pilot-82は全API原本に途中テキスト保全、抽出済みrawは空（不合格を隠さない）。消費推計：81 $0.042926、82 $0.0464685、計 **$0.0893945**（cache write実測tokensと単価、実請求未照合）。全入力cache-write扱い保守使用量$0.089398、事前予算上限合計$0.095998。1回$0.05以下。停止後残6回を転用しない。
 - workflow disarm 52a6867f97968312e923f33c6f7bb7bcda6bc451。次は固定情報・判定器を変えないAPI輸送効率改善、冗長入力の削減、推論量/回答長の適切な配分を無料検討。新規課金は別承認。main変更なし。
+
+
+## 2026-11-24 14:42 JST：v4.7 第三者レビュー統合・設計着手条件付きGO
+- Claude Opus 5.5・Geminiの独立レビューを受領。共通方向性に重大な対立なし、第2往復不要。両者は依頼書のみを参照し直接コード・原本・CIを検証していない。v4.5/v4.6 NO-GO不変、main変更なし、課金承認なし。
+- 統合決定：`handoff/p2a-v47-integrated-design-review-20261124.md`（commit 05a05bfea2a3cb56c37bf9cece504ae6d7364a7e）。自然言語＋最小事実ゲート、合法具体行動key、確定数値はID展開、通信側hash。出力上限暫定6000・正確な上限は入力計測と単価確認後、予算で切り詰めない。打切りは運用失敗、過去結果は変更しない。既出3–4局面の無料優先診断・盲検→未見8問→早期L4→後続。v46固定8問全隔離、採点者資格・不一致監査・同一局面敵対的対照を追加。
+- 製品は既定の素点ルールを保持し、順位効用ベンチマークと区別、Mortal S42を初期製品の打牌基準として維持。順位配分の詳細は一次資料で確認し固定する。戦術品質は未認定。
+- 現段階は設計記録のみ。別研究版の実装、回帰テスト、圧縮/費用/素材残量監査、事前登録、独立対照と採点資格、L3.5合法対照作成は未完。次回レビューは既出診断終了/停止時、さらにStage1＋早期L4後。新規課金0、承認0。`handoff/state.json` に状態保存。
