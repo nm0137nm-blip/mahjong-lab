@@ -1,0 +1,59 @@
+name: Q1 bounded G and D feasibility
+on:
+  pull_request:
+    branches: [project-handoff]
+    paths: ['handoff/q1/g-smoke.cjs','handoff/q1/d-smoke.py','.github/workflows/q1-gd.yml']
+permissions:
+  contents: read
+  actions: read
+jobs:
+  g-boundary:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          ref: 4328f6099ba8438d94b51dbae034c16a9b0583de
+          path: lab
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node handoff/q1/g-smoke.cjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: q1-g-aggregate
+          path: q1-g-result.json
+  d-features:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          ref: 4328f6099ba8438d94b51dbae034c16a9b0583de
+          path: lab
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/download-artifact@v4
+        with:
+          name: corrected-encoder
+          run-id: 44673093075
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/fixed-encoder
+      - run: |
+          cp /tmp/fixed-encoder/encoder-pkg/encoder* lab/assets/mortal/
+          echo '886cb7abb09034dcdf348039d651d63a83cd7edb87d3337a452722c960b9d97a  lab/assets/mortal/encoder.js' | sha256sum -c -
+          echo '0e9dcc57545afb5769d42f372bbd82be5c26941d1e352245b225d62ce0c611bf  lab/assets/mortal/encoder_bg.wasm' | sha256sum -c -
+          node lab/tests/mortal/q-parity-fixtures.mjs /tmp/s42-scenes.json
+          python -m pip install numpy==2.2.6 onnx==1.17.0 onnxruntime==1.21.0
+          curl -fL --retry 1 --max-time 120 'https://huggingface.co/xzhe121/Mortal-S42-onnx/resolve/main/model.onnx' -o /tmp/s42.onnx
+          python handoff/q1/d-smoke.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: q1-d-aggregate
+          path: q1-d-result.json
