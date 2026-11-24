@@ -3,6 +3,9 @@
 // checkable; whether that hypothetical actually warrants the change is semantic.
 const fields=Object.freeze({riichi:'boolean',meldCount:'count',exposedDoraHan:'count',
  exposedYakuhaiHan:'count',discardCount:'count',points:'integer',pointGapFromOwn:'integer'});
+// Conservative logical domains for public counters; this is not physical replay.
+// Riichi is boolean. A threshold outside the observable domain is not a trigger.
+const countMax=Object.freeze({meldCount:4,exposedDoraHan:80,exposedYakuhaiHan:5,discardCount:70});
 const fail=x=>{throw Error('v46-structured-condition: '+x)};
 const exact=(x,keys)=>x&&typeof x==='object'&&!Array.isArray(x)&&
  Object.keys(x).sort().join('|')===keys.slice().sort().join('|');
@@ -35,7 +38,12 @@ export function verifyStructuredCondition(input,seat,condition){
   }else{
    if(!Number.isSafeInteger(current)||!Number.isSafeInteger(p.value)||
     !['eq','lt','lte','gt','gte'].includes(p.op))fail('integer type/operator');
-   if(kind==='count'&&(current<0||p.value<0))fail('negative count');
+   if(kind==='count'){
+    const max=countMax[field];
+    if(current<0||current>max||p.value<0||p.value>max||
+       ![0,max,p.value].some(v=>compare(v,p.op,p.value)))
+     fail('unreachable count predicate');
+   }
   }
   return {factId:p.factId,current,op:p.op,hypothetical:p.value,alreadyTrue:compare(current,p.op,p.value)};
  });
@@ -43,10 +51,10 @@ export function verifyStructuredCondition(input,seat,condition){
  if(witness.every(x=>x.alreadyTrue))fail('condition already holds');
  const e=condition.effect,roles=['recommendation','alternative'];
  if(e?.mode==='switch'){
-  if(!exact(e,['mode','from','to'])||!roles.includes(e.from)||!roles.includes(e.to)||e.from===e.to)fail('invalid switch');
+  if(!exact(e,['mode','from','to'])||e.from!=='recommendation'||e.to!=='alternative')fail('invalid switch');
  }else if(e?.mode==='reweight'){
   if(!exact(e,['mode','target','direction'])||!roles.includes(e.target)||!['increase','decrease'].includes(e.direction))fail('invalid reweight');
  }else fail('unknown effect mode');
- return {witness,effect:structuredClone(e),explicitSwitch:e.mode==='switch',
-  semanticCertification:false,version:'v46-prototype-not-integrated'};
+ return {seat,witness,effect:structuredClone(e),explicitSwitch:e.mode==='switch',
+  semanticCertification:false,version:'p2a-v46-typed-public-condition-1'};
 }
