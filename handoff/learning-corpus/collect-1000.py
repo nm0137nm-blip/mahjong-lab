@@ -1,5 +1,11 @@
 import os, sys, json, hashlib, shutil, subprocess, time, zipfile, collections
 from pathlib import Path
+import importlib.util
+def load_module(name,file):
+ spec=importlib.util.spec_from_file_location(name,Path(__file__).parent/file)
+ m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+profile=load_module('tenhou_profile','tenhou-profile.py')
+boundary=load_module('tenhou_boundary','tenhou-boundary-audit.py')
 ROOT=Path.cwd()
 D=ROOT/'handoff/learning-corpus'
 plan=json.loads((D/'plan-1000.json').read_text())
@@ -8,6 +14,7 @@ assert hashlib.sha256(cert.read_bytes()).hexdigest()==plan['certSha256']
 def seed(s): return int.from_bytes(hashlib.sha256(s.encode()).digest()[:4],'little') or 1
 used={seed('coach-v11-20261120:p1-v2-development-v1:'+str(i)) for i in range(1,97)}
 used.update(seed('mahjong-lab:learning-corpus-pilot:20261125:v1:'+str(i)) for i in range(1,9))
+used.update(seed('mahjong-lab:learning-corpus-1000:20261125:v1:'+str(i)) for i in range(1,1001))
 outer=json.loads(Path('/tmp/prior-outer/outer-seeds.json').read_text()); assert outer['status']=='locked_before_outer_acquisition' and len(outer['entries'])==160
 used.update(e['seed'] for e in outer['entries'])
 entries=[dict(shard=i,seed=seed(plan['seedNamespace']+':'+str(i)),family='s42',policy='s42',dealer=(i-1)%4) for i in range(1,1001)]
@@ -22,10 +29,13 @@ patch('shard>96','shard>1000')
 patch('for(let i=0;i<4;i++){\n const child=spawn(', 'for(let i=0;i<0;i++){\n const child=spawn(')
 patch("console.log('ARENA_MATCH='+JSON.stringify(rows.at(-1)));","console.log('S42 synthetic match finished');")
 patch("fs.writeFileSync('/tmp/development/paipu.json',JSON.stringify(outcome.game));","fs.writeFileSync('/tmp/development/paipu.json',JSON.stringify(outcome.game));\n   fs.writeFileSync('/tmp/development/wallOrder.json',JSON.stringify(outcome.walls));")
+patch('return {rank:game._paipu.rank,score:game._paipu.defen,qijia:game._paipu.qijia,log:game._paipu.log};','return {rank:game._paipu.rank,score:game._paipu.defen,qijia:game._paipu.qijia,log:game._paipu.log,rule:game._rule,point:game._paipu.point};')
 runner.write_text(s)
 subprocess.run(['node','--check',str(runner)],check=True)
 Path('/tmp/v2-dev-seeds.json').write_text(json.dumps(dict(status='locked_v2_development_only',codeSha=os.environ['GITHUB_SHA'],entries=entries)))
-html=lab/'index.html'; coach=lab/'src/coach/phoenix-coach.mjs'; originals={p:p.read_bytes() for p in (html,coach)}
+html=lab/'index.html'; coach=lab/'src/coach/phoenix-coach.mjs'
+profile.apply(html)
+originals={p:p.read_bytes() for p in (html,coach)}
 first,last=map(int,sys.argv[1:3]); assert 1<=first<=last<=1000 and last-first<32
 out=ROOT/'corpus-output'; out.mkdir(exist_ok=True)
 stage=Path('/tmp/corpus-stage'); stage.mkdir(exist_ok=True)
@@ -54,9 +64,16 @@ try:
    assert all(ts.count(s+'0')==1 for s in 'mps')
   assert sha(js(p['log']))==r['logHash']
   assert len(json.loads((base/'public.json').read_text()))==r['publicDecisions'] and len(json.loads((base/'oracle.json').read_text()))==r['teacherTurns']
+  assert p['rule']==profile.RULE, 'wrong actual rule'
+  ba=boundary.audit(p)
+  expected_points=[p['score'][k]-30000+([40000,10000,-10000,-20000][p['rank'][k]-1]) for k in range(4)]
+  from decimal import Decimal
+  assert [int(Decimal(v)*1000) for v in p['point']]==expected_points, 'uma/oka/rounding mismatch'
+  m.update(ruleProfile=profile.PROFILE_ID,ruleSource=plan['ruleSource'],actualRule=p['rule'],boundaryAudit=ba,patchedEngineSha256=sha(originals[html]),collectorSha256=sha(Path(__file__).read_bytes()))
+  (base/'manifest.json').write_text(json.dumps(m,ensure_ascii=False,indent=2)+'\n')
   target=stage/str(i);shutil.copytree(base,target)
   rows={f.name:sha(f.read_bytes()) for f in target.glob('*.json')}
-  info=dict(shard=i,seed=m['seed'],hands=r['hands'],seconds=round(time.monotonic()-t,3),focalDecisions=r['decisions'],opponentDecisions=a['decisions'],fallbacks=0,files=rows,paipuBytes=(target/'paipu.json').stat().st_size,rawBytes=sum(f.stat().st_size for f in target.glob('*.json')),logHash=r['logHash'])
+  info=dict(shard=i,seed=m['seed'],hands=r['hands'],ruleProfile=profile.PROFILE_ID,westEntered=ba['westEntered'],terminalReason=ba['terminalReason'],lastRound=ba['lastRound'],seconds=round(time.monotonic()-t,3),focalDecisions=r['decisions'],opponentDecisions=a['decisions'],fallbacks=0,files=rows,paipuBytes=(target/'paipu.json').stat().st_size,rawBytes=sum(f.stat().st_size for f in target.glob('*.json')),logHash=r['logHash'])
   summaries.append(info)
   print('completed',i,'hands',r['hands'],'seconds',info['seconds'],flush=True)
 except Exception as e:
@@ -73,6 +90,6 @@ finally:
   subprocess.run(['openssl','cms','-encrypt','-binary','-aes-256-gcm','-in',str(archive),'-out',str(dest),'-outform','DER',str(cert)],check=True)
   encryptedSha=sha(dest.read_bytes())
  else:encryptedSha=None
- result=dict(first=first,last=last,planned=last-first+1,completed=len(summaries),failed=failure,seconds=round(time.monotonic()-start,3),encryptedSha256=encryptedSha,rows=summaries,scope='synthetic development only; oracle labels not independently reaudited; full wall/paipu encrypted')
+ result=dict(first=first,last=last,planned=last-first+1,completed=len(summaries),failed=failure,seconds=round(time.monotonic()-start,3),encryptedSha256=encryptedSha,rows=summaries,scope='Tenhou-targeted research profile; audited recorded-payment boundaries; not full server certification; oracle labels provisional; encrypted full walls/paipu',ruleProfile=profile.PROFILE_ID)
  (out/'summary.json').write_text(json.dumps(result,indent=2)+'\n')
 if failure or len(summaries)!=last-first+1:sys.exit(1)
