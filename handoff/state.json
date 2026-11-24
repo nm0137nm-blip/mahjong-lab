@@ -355,7 +355,7 @@
       }
     ],
     "decision": "Preserve v45 manual Stage1 8/8, failed Stability 4/5 and no overall GO. No more API calls on this authorization.",
-    "next": "No-cost prospective redesign of conditional judgments: replace fragile Japanese keyword gate with structured fact-bound conditional policy/action change, retain semantic independent evaluation; new version and new unseen source material required before real responses. No Stage2 or L3.5 generation under old approval.",
+    "next": "v46 structured condition prototype passed offline 4/4. Integrate only in separate prospective version, expand unused source pool, freeze new evaluation before any real answers. v45 Stability NO-GO preserved. No paid generation authorized.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -2272,6 +2272,17 @@
       "rawEncryptedOriginalsDecryptedAndHashVerified": true,
       "localOriginalVerifierRecomputed": true,
       "semanticCertified": false
+    },
+    "v46_structured_condition_prototype": {
+      "status": "OFFLINE_PROTOTYPE_4_TESTS_PASS_NOT_INTEGRATED",
+      "branch": "feat/coach-p2a-v46-structured-condition-prototype",
+      "runId": 45303446142,
+      "commit": "f6a4cba46036b7c10d3bbc698381d5235e3d0b9a",
+      "purpose": "Replace fragile Japanese lexeme gate with typed public-source predicate plus explicit switch or reweight distinction; semantic correctness remains independently assessed.",
+      "apiCalls": 0,
+      "additionalCostUSD": 0,
+      "oldV45Unchanged": true,
+      "remainingWork": "Full contract integration, adversarial tests, fresh source expansion and prospective evaluation freeze before real responses. Seven unused cases in prior 36 pool insufficient for another independent eight if all prior panels excluded."
     }
   },
   "previous_runs": [
