@@ -1,0 +1,33 @@
+name: Unseen wait research browser QA
+on:
+  pull_request:
+    branches: [feat/learning-d1-training-core-20261125]
+    paths: ['tests/next/unseen-wait-ui.cjs','src/research/unseen-wait-query.mjs','src/research/research-panel.mjs','.github/workflows/learning-unseen-wait-ui.yml']
+permissions:
+  contents: read
+concurrency:
+  group: learning-unseen-wait-browser
+  cancel-in-progress: false
+jobs:
+  browser:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.23.4'
+      - name: Install pinned browser test runtime
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/probe
+          cd /tmp/probe
+          npm init -y >/dev/null
+          npm install --ignore-scripts --no-audit --no-fund playwright@1.57.0 >/dev/null
+          npx playwright install --with-deps chromium webkit
+      - name: Verify live app with synthetic data only
+        run: |
+          set -euo pipefail
+          python3 -m http.server 8788 --bind 127.0.0.1 >/tmp/research-http.log 2>&1 &
+          sleep 2
+          node tests/next/unseen-wait-ui.cjs
