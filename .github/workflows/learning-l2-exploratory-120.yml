@@ -1,0 +1,63 @@
+name: Learning L2 120 exploratory paired comparisons
+on:
+  pull_request:
+    branches: [feat/learning-l2-variance-pilot-20261125]
+    paths: ['handoff/learning-l2/run-exploratory-120.mjs','handoff/learning-l2/exploratory-120-plan.json','.github/workflows/learning-l2-exploratory-120.yml']
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: learning-l2-exploratory-120
+  cancel-in-progress: false
+jobs:
+  explore_cell:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        group: [0, 1, 2, 3, 4, 5]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          ref: 75c87e621b85bc411ef92152f84918a1802dbd2b
+          path: lab
+      - uses: actions/checkout@v4
+        with:
+          ref: ec66466a127f2aca6a9b46e81d504c8f3e9f692d
+          path: source-profile
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.23.4'
+      - uses: actions/download-artifact@v4
+        with:
+          name: corrected-encoder
+          run-id: 44673093075
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/fixed-encoder
+      - name: Recreate exact initial corpus runtime
+        run: |
+          set -euo pipefail
+          cp /tmp/fixed-encoder/encoder-pkg/encoder* lab/assets/mortal/
+          echo '886cb7abb09034dcdf348039d651d63a83cd7edb87d3337a452722c960b9d97a  lab/assets/mortal/encoder.js' | sha256sum -c -
+          echo '0e9dcc57545afb5769d42f372bbd82be5c26941d1e352245b225d62ce0c611bf  lab/assets/mortal/encoder_bg.wasm' | sha256sum -c -
+          mv lab /tmp/lab
+          node --test /tmp/lab/tests/mortal-cpu.test.mjs
+          curl --fail --location --retry 1 --silent --show-error --max-time 160 'https://huggingface.co/xzhe121/Mortal-S42-onnx/resolve/main/model.onnx' -o /tmp/lab/tests/mortal/model.onnx
+          echo '30381bf21389e2d25d3edf48fed11bf772336ef3daeee67d1bdae7fb9dd30cb4  /tmp/lab/tests/mortal/model.onnx' | sha256sum -c -
+          python3 source-profile/handoff/learning-corpus/tenhou-profile.py /tmp/lab/index.html /tmp/tenhou-rule.json
+          mkdir -p /tmp/probe
+          cd /tmp/probe
+          npm init -y >/dev/null
+          npm install --ignore-scripts --no-audit --no-fund playwright@1.57.0 >/dev/null
+          npx playwright install chromium
+      - name: Run 20 committed paired replays for one cell; emit aggregate only
+        env:
+          L2_GROUP: ${{ matrix.group }}
+        run: |
+          set -euo pipefail
+          (cd /tmp/lab && python3 -m http.server 8788 --bind 127.0.0.1 >/tmp/l2-http-log 2>&1) &
+          sleep 2
+          node handoff/learning-l2/run-exploratory-120.mjs
