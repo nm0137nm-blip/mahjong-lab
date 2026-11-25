@@ -9,7 +9,7 @@
   },
   "active_task": {
     "phase": "P2a-v4.7 free-only known-case semantic diagnostic",
-    "status": "L1_V3_REAL_WAIT_STATS_COMPLETE_L2_PILOT_SELECTED_EXTENSION_RUNNING",
+    "status": "L1_V4_EXPLORATORY_AND_QUERY_PREVIEW_PASS_L2_FIRST_PAIR_RUNNING_EXTENSION_RUNNING",
     "branch": "feat/coach-p2a-v47-minimal-diagnostic",
     "commit": "7959435bfad0412e9cd94234f01395af05d84789",
     "pr": 71,
@@ -355,7 +355,7 @@
       }
     ],
     "decision": "v46 API-only Stage1 stopped after 2 paid calls, 1 contract pass and 1 incomplete output due to cap. No evidence of typed condition contract failure from pilot82; no semantic certification. Original manual Stage1 plan not performed. No new paid generation authorized.",
-    "next": "L1 v3 descriptive results saved; next prospective visible-score strata with independently checked scoring, external comparisons, and early supported-statistics learning UI/diagnostic. L2 implement focal intervention hook, baseline reproduction and actual pilot, using fixed S42 runner/model and five preselected first-riichi vs same-discard dama cases; no new paid computation. Continue existing extension run45530376491 observed 1492 saved first page, only initial 970 audited. Private input files supplied in conversation; restore locally as needed; no raw/key in repo. D1 optional, PR77 separate.",
+    "next": "Check run45543598334 first technical pair. If failure diagnose and patch, if pass independently verify policy boundary/poison and remaining four preselected cases within unpaid scope, then preregister grouped paired experiments. Research v4 artifact holds reproducible code and preview; external book definition/independent yaku-fu and application game integration unfinished; user baseline D1 optional. Continue existing extension run45530376491 (1812 saved, 970 fully audited). No paid API or main merge. Preserve four reporting categories; do not claim Phase completion before all gates.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -3085,10 +3085,38 @@
           "originalBackupSha256": "d6e000a2f1334ccf98f977a99ae983e0eddf1375dac44c7c501d7862ae8ce369",
           "priorV2ZipRecovered": false,
           "privateKeyNotPublished": true
+        },
+        "v4": {
+          "status": "EXPLORATORY_SCORE_STRATA_AND_QUERY_PREVIEW_PASS",
+          "record": "handoff/learning-l1-v4-l2-smoke-20261125.md",
+          "recordCommit": "84907081afb6478a685d6d6af1c8ed19c394a7b6",
+          "preregCommit": "ec593d495edb6467172db9245932081404588952",
+          "matches": 970,
+          "acceptedRiichi": 7711,
+          "scoreVariants": 15828,
+          "arithmeticMismatches": 0,
+          "priorRowsIdentical": true,
+          "crossBand": 2110,
+          "cells": 54,
+          "supportedRatioMetrics": 96,
+          "bootstrap": 2000,
+          "publicFilterNaturalCases": 1933,
+          "publicFilterMismatch": 0,
+          "unmatchedAcceptedRows": 90,
+          "nodeTests": 36,
+          "nodePassed": 36,
+          "browser": "Chromium 393x852 7 assertions no horizontal overflow or page errors; actual game and WebKit/iPhone not tested",
+          "artifact": {
+            "name": "mahjong_l1_v4_20261125.zip",
+            "sha256": "367a057a8b9d04d891abd2babcbf172f08c4e753d997510ac070179318e52ef7",
+            "bytes": 67831
+          },
+          "preview": "mahjong_research_preview_20261125.html",
+          "limitations": "S42 descriptive only, accepted-riichi conditioning, no external book source recovered in search, yaku/fu not independently scored, actual LAB connection pending, no independent heldout"
         }
       },
       "l2Prep": {
-        "status": "PILOT_FIVE_REAL_SOURCE_DECISIONS_SELECTED_REPLAY_NOT_RUN",
+        "status": "FIRST_PAIR_TECHNICAL_SMOKE_RUNNING",
         "branch": "feat/learning-l2-pair-audit-20261125",
         "code": "handoff/learning-l2/audit-pair.mjs",
         "codeCommit": "f6f0bf9a42db7118f093a4cae6641340317f69fb",
@@ -3098,7 +3126,7 @@
         "execution": "same function V8; retained Node tests not independently run",
         "actualPairedReplays": 0,
         "sourceHashVerificationAndLeakAttestationsIndependent": false,
-        "runnerHookPending": true,
+        "runnerHookPending": false,
         "mainUnchanged": true,
         "paidCalls": 0,
         "pilot": {
@@ -3113,7 +3141,23 @@
             "fileId": "file_00000000cdd08206ad86d93bb7f49b50"
           }
         },
-        "localModelRuntimeAvailable": false
+        "localModelRuntimeAvailable": false,
+        "sourcePreflightPassed": 5,
+        "liveRunnerHookVerified": false,
+        "independentPoisonAudit": false,
+        "patchCommit": "96efb500603959cb601848c1303b67c1cd29fb34",
+        "runnerCommit": "88ec8d50abb0065a3ae16246f5b445c6499c673c",
+        "pilotSmoke": {
+          "pr": 81,
+          "head": "8eadaf6dc8a6b2f6bc30b2c2d12c99372a63c1a9",
+          "run": 45543598334,
+          "status": "in_progress",
+          "pairs": 1,
+          "standardPublicRunner": true,
+          "timeoutMinutes": 20,
+          "rawUploads": false,
+          "paidApiCalls": 0
+        }
       }
     },
     "learningCorpus": {
@@ -3285,15 +3329,15 @@
         "eta": "16–24h or longer conditional on failures, queue and setup; next morning check",
         "paidCalls": 0,
         "latestObserved": {
-          "cumulativeSaved": 1492,
-          "additionalSaved": 522,
-          "artifacts": 13,
+          "cumulativeSaved": 1812,
+          "additionalSaved": 842,
+          "artifacts": 18,
           "pilotSuccess": 5,
-          "bulkSuccess": 8,
+          "bulkSuccess": 13,
           "firstPageJobs": 30,
-          "success": 14,
-          "inProgress": 8,
-          "queued": 8,
+          "success": 19,
+          "inProgress": 7,
+          "queued": 4,
           "observedFailure": 0,
           "initial970OnlyFullyAudited": true
         }
