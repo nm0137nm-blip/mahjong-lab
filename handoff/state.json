@@ -9,7 +9,7 @@
   },
   "active_task": {
     "phase": "P2a-v4.7 free-only known-case semantic diagnostic",
-    "status": "ROLLING_20000_STARTED_AND_ROUND_EV_DEVELOPMENT_RESUMED",
+    "status": "DEV_6990_ALLSEAT_BASELINE_AND_CANDIDATE_SMOKE_PASS_COUNTERFACTUAL_GATE_NOT_PASSED",
     "branch": "feat/coach-p2a-v47-minimal-diagnostic",
     "commit": "7959435bfad0412e9cd94234f01395af05d84789",
     "pr": 71,
@@ -355,7 +355,7 @@
       }
     ],
     "decision": "v46 API-only Stage1 stopped after 2 paid calls, 1 contract pass and 1 incomplete output due to cap. No evidence of typed condition contract failure from pilot82; no semantic certification. Original manual Stage1 plan not performed. No new paid generation authorized.",
-    "next": "Check run45709695837 actual bulk artifacts/repair/audit; continue private development from saved baseline ZIP, extract remaining 5595 dev-only data with fixed folds; candidate feature/label audit and model testing before holdout freeze. No unpaid-cost assumption beyond standard approved runners, no new paid API/main merge. Keep sealed holdout and recoverable original backups.",
+    "next": "Continue step 8-3 through 8-5 without intermediate approvals within existing free/private scope. Monitor new 80-pair diagnostic run45714942219, no promotion on partial or imprecise outcomes; complete missing feature groups, legal reach mask, Y08 and legal/policy ron label separation, calibrated nonlinear comparison, and new development-only branch evaluation. Keep existing confirmation 3000 sealed. Monitor additional corpus run45709695837; no new paid APIs/main merge.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -3847,7 +3847,7 @@
         "rules": "Distinguish observed human/Mortal rates, book model assumptions, counterfactual policies. Do not treat selected final dama as prospective comparison. Align exact denominator and timing; missing definitions provisional. Preserve 3000 confirmation split, no human grading of opponent open-hand tenpai from S42. User goal in-game research display before more isolated UI work; no public source text/table or paid calls."
       },
       "candidateRoundEVFirstGoal": {
-        "status": "DEVELOPMENT_1395_SELECTED_ACTION_CV_AND_PORTABLE_PROTOTYPE_PASS",
+        "status": "ALLSEAT_6990_OBSERVED_CV_PASS_CANDIDATE_PREDICTION_SMOKE_COUNTERFACTUAL_FAIL",
         "report": "handoff/learning-candidate-round-ev-first-goal-20261125.md",
         "reportCommit": "7b3086be263bf702e81b8ba8e9bac09b5f83b314",
         "goal": "In-game per legal concrete discard candidate display five mutually exclusive terminal outcome probabilities and conditional score changes (ten terms), expected round net points and uncertainty; no fabricated numbers.",
@@ -3905,7 +3905,7 @@
           "limits": "illustrative independent precision and binary shrinkage calculations, actual clustered model sample size not determined; no new paid API or model training"
         },
         "variablesV1": {
-          "status": "DEVELOPMENT_BASELINE_43_NUMERIC_COLUMNS_PARTIAL_FEATURE_GROUPS",
+          "status": "62_BASE_COLUMNS_18_INTERACTIONS_PARTIAL_49_FEATURE_GROUP_IMPLEMENTATION",
           "path": "handoff/learning-round-ev-variables-v1-20261125.md",
           "commit": "2bfc52ee14657df61d218b32bfcee3429f912536",
           "targets": 9,
@@ -3925,7 +3925,7 @@
           "scope": "predictive feature acquisition fixed, not coefficients or accuracy certified; advanced definitions and labels implementation pending"
         },
         "dataUseProtocol": {
-          "status": "FROZEN_6990_FOLD_MANIFEST_ENFORCED_1395_DEVELOPMENT_ONLY",
+          "status": "FIXED_6990_DEVELOPMENT_FIVEFOLD_ENFORCED_CONFIRMATION_AND_QA_UNTOUCHED",
           "path": "handoff/learning-round-ev-data-use-protocol-20261125.md",
           "commit": "68be2e518aec15163d9816dce54fd672922987a5",
           "development": 6990,
@@ -4048,6 +4048,127 @@
             "reportCommit": "6a658b6e46695437e4d3a98d302c9da4a6bf6528",
             "limits": "selected focal seat; exploratory CV; full all-seat and unselected candidate, Y08, final confirmation and independent interventions pending. CLI script syntax passed but independent rerun not done."
           }
+        },
+        "allseat6990": {
+          "report": "handoff/learning-round-ev-6990-allseat-20261126.md",
+          "reportCommit": "a3309829aa082fe2dfaf8e82123406187be3da08",
+          "matches": 6990,
+          "hands": 73012,
+          "discards": 3410893,
+          "forcedRiichiExcluded": 205195,
+          "selectedRows": 3205698,
+          "selectedRowsByLocalSeat": [
+            818149,
+            810192,
+            796181,
+            781176
+          ],
+          "ordinaryConcreteCandidates": 35435373,
+          "distinctPhysicalOptions": 34750154,
+          "candidateShantenValues": 34329411,
+          "features": 62,
+          "interactions": 18,
+          "folds": 5,
+          "matchesPerFold": 1398,
+          "rowsPerFold": [
+            634215,
+            638270,
+            642646,
+            642619,
+            647948
+          ],
+          "confirmationParsed": false,
+          "qaUsed": false,
+          "audit": {
+            "focalMatches": 264,
+            "focalRows": 30510,
+            "shantenUkeireDoraScoreMismatch": 0,
+            "oldRiverOnlyDefinitionDiff": 1336,
+            "newSafetyIndependentChecks": 91530,
+            "newSafetyMismatch": 0
+          },
+          "cv": {
+            "frequency": {
+              "logLoss": 1.57842095,
+              "brier": 0.78801343,
+              "immediateBrier": 0.00965875,
+              "rmse": 4503.565
+            },
+            "regression": {
+              "logLoss": 1.46512493,
+              "brier": 0.74140943,
+              "immediateBrier": 0.00919499,
+              "rmse": 4364.048,
+              "meanBias": -8.612314,
+              "clusterCI": [
+                -12.8018,
+                -4.4228
+              ]
+            },
+            "underfitV1Rejected": true,
+            "highRiskCalibrationProblem": true,
+            "fullLightGBMComparisonPending": true,
+            "scope": "exploratory observed selected-action CV reused for optimizer correction"
+          },
+          "candidateSmoke": {
+            "matches": 6990,
+            "oneDecisionPerMatch": true,
+            "ordinary": 77555,
+            "provisionalReach": 527,
+            "selectedFeatureMismatch": 0,
+            "reanchorMismatch": 0,
+            "maxProbabilitySumError": 4.44e-16,
+            "legalReachAuditPending": true
+          },
+          "counterfactual": {
+            "status": "OLD60_EARLY_REVERSED_NEW80_DIAGNOSTIC_QUEUED",
+            "previous60": {
+              "early": {
+                "pred": 578.8359,
+                "actual": -790,
+                "ci": [
+                  -1535.72,
+                  -44.28
+                ]
+              },
+              "mid": {
+                "pred": 326.8951,
+                "actual": -200
+              },
+              "late": {
+                "pred": 357.6072,
+                "actual": 785
+              }
+            },
+            "new80": {
+              "pr": 101,
+              "head": "84d7f6e6b024235617158a5e5c12fcd305a18007",
+              "run": 45714942219,
+              "status": "queued",
+              "frameMatches": 999,
+              "eligible": [
+                26,
+                382,
+                147
+              ],
+              "pairs": [
+                20,
+                40,
+                20
+              ],
+              "privatePlanSha256": "c0d6c4a252fb0f75823148242c42a16d4cd3beae2fdc71e4b9e732a22855cf94",
+              "scope": "new extension dev-only, one-step, OOF prediction frozen, standard runner max 2, no final causal certification"
+            }
+          },
+          "artifact": {
+            "name": "mahjong_round_ev_6990_development_20261126.zip",
+            "bytes": 944321,
+            "sha256": "56f2bb5ece83a4405e322c75c10e2b936ca70b22b5095f944d127f0fe72a1ae3",
+            "libraryId": "libfile_d2059eb82688819185bea75a0e86c2f5",
+            "fileId": "file_000000007ad48206925b79fca6c02a10",
+            "modelSha256": "468c20f0c591c017e04b05cf0ce1ee3d3e27cb66f956a651ddd3f044fae732d8"
+          },
+          "remaining": "Complete 49 feature groups, Y08, all-candidate strict reach/legal/policy ron, full nonlinear model comparison, calibration, causal difference validation. No production or holdout opening."
         }
       }
     },
