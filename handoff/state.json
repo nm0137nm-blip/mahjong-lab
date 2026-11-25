@@ -9,7 +9,7 @@
   },
   "active_task": {
     "phase": "P2a-v4.7 free-only known-case semantic diagnostic",
-    "status": "CORPUS_SECOND_REPAIR_TIMEOUT_ISOLATED_RETRY_AND_ARCHIVE_AUDIT_RUNNING",
+    "status": "CORPUS_10000_GENERATION_AND_SCOPED_CONTENT_AUDIT_PASS_DURABLE_BACKUP_PENDING",
     "branch": "feat/coach-p2a-v47-minimal-diagnostic",
     "commit": "7959435bfad0412e9cd94234f01395af05d84789",
     "pr": 71,
@@ -355,7 +355,7 @@
       }
     ],
     "decision": "v46 API-only Stage1 stopped after 2 paid calls, 1 contract pass and 1 incomplete output due to cap. No evidence of typed condition contract failure from pilot82; no semantic certification. Original manual Stage1 plan not performed. No new paid generation authorized.",
-    "next": "Check four isolated retry jobs run45704583778 and archive audit run45704680527; never count missing or failed summary-only artifacts; independently audit full decrypted development content and opaque confirmation hashes and durable backup after restoring previous private recovery key locally. Keep first-10000 gate, no rolling generation/model work/paid APIs/main changes.",
+    "next": "Complete durable private backup transfer of encrypted development/confirmation partitions (large upload blocked); no rolling generation/model work/paid APIs/main changes until gate disposition. Confirmation 3000 never opened for research; use only preregistered final verification.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -4098,7 +4098,7 @@
       },
       "userAccepted970": true,
       "extension": {
-        "status": "SECOND_REPAIR_TIMEOUT_FOUR_BATCH_RETRY_RUNNING",
+        "status": "GENERATED_9030_COMPLETE_10000_LOCAL_AUDIT_PASS_BACKUP_PENDING",
         "userAuthorized": "2026-11-25 user accepts 970 and authorizes cumulative 10000 if initial quality acceptable, unpaid",
         "targetCumulative": 10000,
         "additionalPlanned": 9030,
@@ -4118,15 +4118,15 @@
         "bulkBatches": 141,
         "maxParallel": 8,
         "namespace": "mahjong-lab:tenhou-corpus-extension-9030:20261125:v1",
-        "cumulativeSavedAtCheck": 980,
+        "cumulativeSavedAtCheck": 10000,
         "verifiedInitial": 970,
         "retentionDays": 30,
         "storage": "Encrypted CI temporary transport, separate private key; private backup before expiry, no plaintext or book material.",
         "eta": "16–24h or longer conditional on failures, queue and setup; next morning check",
         "paidCalls": 0,
         "latestObserved": {
-          "cumulativeSaved": 9986,
-          "additionalSaved": 9016,
+          "cumulativeSaved": 10000,
+          "additionalSaved": 9030,
           "nominalArtifactRangeCount": 10000,
           "artifacts": 146,
           "matchedSuccessArtifacts": 144,
@@ -4137,8 +4137,8 @@
           "observedFailure": 2,
           "partitionSaved": {
             "qa": 10,
-            "development": 6981,
-            "confirmation": 2995
+            "development": 6990,
+            "confirmation": 3000
           },
           "metadataAudit": {
             "pr": 89,
@@ -4154,14 +4154,14 @@
             ],
             "splitHashMatch": true
           },
-          "limitations": "9986 from successful job artifact ranges plus 55+9+50 verified partial/repaired archives; not full corpus content audit. Second repair 14 running.",
+          "limitations": "Complete local archive/content audit passed; durable private backup still pending for development/confirmation.",
           "latestNominalRangeCount": 6996,
           "latestArtifactCount": 99,
           "latestObservationScope": "artifact names only; repair reconciliation and full content audit pending; last full job/artifact verification 4052",
           "latestObservedAt": "2026-11-25T13:02:46Z"
         },
         "holdout": {
-          "status": "PARTIAL_274_CONFIRMATION_SEALED_SEPARATELY_NO_RESEARCH_ACCESS",
+          "status": "ALL_3000_OPAQUE_HASH_AND_LOCAL_SEPARATION_PASS",
           "document": "handoff/learning-extension-holdout-20261125.md",
           "documentCommit": "c7488e8ad480119395dd2d76d77f82377015c380",
           "codeCommit": "b2d761b4db57d5634ffefef8077802d4f19f8b94",
@@ -4173,11 +4173,11 @@
           "duplicates": 0,
           "missing": 0,
           "confirmationOpened": false,
-          "physicalIsolationDone": false,
-          "localSeparatedConfirmation": 274,
-          "localSeparatedDevelopment": 558,
+          "physicalIsolationDone": true,
+          "localSeparatedConfirmation": 3000,
+          "localSeparatedDevelopment": 6020,
           "localSeparatedQA": 10,
-          "limitations": "separate encrypted files but same recipient key; confirmation payloads were decrypted for opaque byte hashing and re-encryption, not JSON parsing or research; independent external key custody not done"
+          "limitations": "Separate encrypted files locally, same recipient key; confirmation decrypted for opaque byte hashing/re-encryption only, not parsed or researched; independent external key custody and durable separate backup not done."
         },
         "intake": {
           "status": "FIRST_842_SPLIT_HASH_ROUNDTRIP_PASS_568_CONTENT_MAIN_CHECKS_PASS",
@@ -4272,7 +4272,7 @@
           "limits": "content checks for 45, confirmation opaque; full legality/yaku not rerun"
         },
         "secondRepair": {
-          "status": "FIRST_RETRY_TIMEOUT_ZERO_SAVED_FOUR_BATCH_RETRY_RUNNING",
+          "status": "REPAIRED_ALL_14_VERIFIED",
           "failedOriginalJob": 138925887544,
           "failedRange": [
             7819,
@@ -4333,25 +4333,71 @@
                 7882
               ]
             ],
-            "status": "four_jobs_in_generation",
+            "status": "FOUR_JOBS_SUCCESS",
             "modelReadyTimeoutSeconds": 180,
             "oldTimeoutSeconds": 120,
             "paidCalls": 0
           }
         },
         "finalAudit": {
-          "status": "ENCRYPTED_ARCHIVE_AUDIT_RUNNING_CONTENT_AUDIT_PENDING",
+          "status": "10000_FULL_BYTE_HASH_AND_7000_SCOPED_CONTENT_AUDIT_PASS_DURABLE_BACKUP_PENDING",
           "report": "handoff/learning-corpus-final-audit-20261126.md",
-          "reportCommit": "a1e06ab6389b1b7386ee4ab3f34f89e9333ee437",
-          "locallyVerifiedUniqueSeedLogCount": 1876,
+          "reportCommit": "5c2aa970c9aa0add21c2a703e210ce2afcf80cb1",
+          "locallyVerifiedUniqueSeedLogCount": 10000,
           "archiveAudit": {
             "pr": 98,
             "head": "9977f8d7b9c7135f6ae1da4ce46a5d40a8d65a85",
             "run": 45704680527,
-            "status": "in_progress",
+            "status": "success",
             "scope": "9986 existing encrypted archives/summary commitments then exact 10000 with four repair archives; no decryption"
           },
-          "privateContentBlocker": "Prior private recovery key ZIP and local intake script not available in current chat runtime or Library search; restore previous private files without uploading private key to GitHub."
+          "privateContentBlocker": null,
+          "indexRun": 45705304472,
+          "archives": 187,
+          "matches": 10000,
+          "initial": 970,
+          "extension": 9030,
+          "development": 6990,
+          "confirmation": 3000,
+          "qa": 10,
+          "files": 60000,
+          "rawBytes": 38155058877,
+          "duplicateSeeds": 0,
+          "duplicateLogHashes": 0,
+          "duplicateShards": 0,
+          "extensionMissing": 0,
+          "contentAudit": {
+            "matches": 7000,
+            "hands": 73120,
+            "publicDecisions": 1038920,
+            "qChecks": 1038920,
+            "cpuDecisions": 3267110,
+            "focalForced": 50644,
+            "oracleRows": 811370,
+            "visibleTiles": 42966405,
+            "publicEvents": 53687435,
+            "west": 142,
+            "failures": 0
+          },
+          "confirmationJSONParsed": false,
+          "confirmationResearchAccess": false,
+          "localSealedFiles": 333,
+          "localSealedBytes": 3347663648,
+          "roundTripMismatch": 0,
+          "independentKeyCustody": false,
+          "durableBackup": {
+            "status": "PARTIAL_METADATA_AND_QA_SAVED_LARGE_FILES_TRANSFER_BLOCKED",
+            "libraryPath": "/麻雀LAB/10000半荘監査20261126",
+            "metadataLibraryId": "libfile_107ece1e25188191851a3da4885b576a",
+            "qaLibraryId": "libfile_4dac319cd84c81918727d01a69fb6a82",
+            "metadataSha256": "3d398695fc8c592bdab785a5234735f1580b8b2c635089eacfdf87baa82695cc",
+            "developmentConfirmationZipPartsLocal": 9,
+            "allPartsCRCAndHashVerifiedLocally": true,
+            "externalDurableSaveVerified": false
+          },
+          "scope": "All 10000 archive and inner hash/CRC; 7000 content checks including rules, recorded settlement, physical wall, visible counts, recorded Q argmax; 3000 confirmation opaque only. Not full independent legal/yaku/fu or tactical quality proof.",
+          "paidCalls": 0,
+          "mainChanged": false
         }
       },
       "rollingGeneration": {
