@@ -54,9 +54,9 @@ print("EXTENSION_FULL_METADATA="+json.dumps({"split_hash":split_hash,"expected_j
 # Final immutable archive audit: read encrypted transport + summaries, never decrypt.
 import io,zipfile,concurrent.futures,urllib.error
 root="https://api.github.com/repos/nm0137nm-blip/mahjong-lab"
-assert status=={"success":146,"failure":1}, dict(status)
-assert [j["id"] for j in jobs if j["conclusion"]=="failure"]==[138925873673]
-assert not missing and unmatched==["tenhou-corpus-extension-2763-2826"]
+assert status=={"success":145,"failure":2}, dict(status)
+assert {j["id"] for j in jobs if j["conclusion"]=="failure"}=={138925873673,138925887544}
+assert not missing and set(unmatched)=={"tenhou-corpus-extension-2763-2826","tenhou-corpus-extension-7819-7882"}
 assert len(arts)==146 and len(nominal)==9030
 def api(url):
  assert url.startswith(root+"/")
@@ -96,9 +96,13 @@ def download(a):
    assert all(re.fullmatch("[0-9a-f]{64}",h) for h in r["files"].values())
    assert re.fullmatch("[0-9a-f]{64}",r["logHash"])
   actual=[r["shard"] for r in rows]
+  if a["name"].startswith("tenhou-corpus-extension-"):
+   span=re.search(r"(\d+)-(\d+)$",a["name"]);assert span
+   assert (s["first"],s["last"])==tuple(map(int,span.groups()))
   assert actual==list(range(s["first"],s["first"]+s["completed"])) and s["planned"]==s["last"]-s["first"]+1
-  if a["id"] in (14975010585,15000888076):
-   assert s["failed"] and s["completed"]==(1 if a["id"]==14975010585 else 55)
+  if a["id"] in (14975010585,15000888076,15040921816):
+   expected_partial={14975010585:1,15000888076:55,15040921816:50}
+   assert s["failed"] and s["completed"]==expected_partial[a["id"]]
   else:assert s["failed"] is None and s["completed"]==s["planned"]
   return [(r["shard"],r["seed"],r["logHash"]) for r in rows],len(b)
 all_arts=initial+arts+repair
@@ -107,6 +111,25 @@ with concurrent.futures.ThreadPoolExecutor(max_workers=8) as pool:
 old=[r for rs,_ in res[:len(initial)] for r in rs]
 new=[r for rs,_ in res[len(initial):] for r in rs]
 assert sorted(r[0] for r in old)==[i for i in range(1,1001) if not 427<=i<=456]
+assert sorted(r[0] for r in new)==[i for i in range(1,9031) if not 7869<=i<=7882]
+pre=old+new
+assert len(pre)==9986 and len({r[1] for r in pre})==9986 and len({r[2] for r in pre})==9986
+print("EXISTING_9986_ENCRYPTED_ARCHIVE_AUDIT="+json.dumps({"matches":len(pre),"archives":len(all_arts),"archive_bytes":sum(n for _,n in res),"missing":14,"seed_duplicates":0,"loghash_duplicates":0,"recorded_files":59916,"scope":"encrypted transport plus summary commitments only; no decryption"}),flush=True)
+import time
+repair2_url=root+"/actions/runs/45704583778"
+for attempt in range(80):
+ run=api(repair2_url)
+ if run["status"]=="completed":break
+ time.sleep(15)
+else:raise RuntimeError("second repair not complete within audit wait limit")
+assert run["head_sha"]=="a9701894a27322e8c8521513fe75c9187039eee8"
+assert run["conclusion"]=="success"
+repair2=api(repair2_url+"/artifacts?per_page=100")["artifacts"]
+assert len(repair2)==4 and {a["name"] for a in repair2}=={f"tenhou-corpus-extension-repair-{a}-{b}" for a,b in [(7869,7872),(7873,7876),(7877,7880),(7881,7882)]}
+with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
+ res2=list(pool.map(download,repair2))
+new.extend(r for rs,_ in res2 for r in rs)
+all_arts.extend(repair2);res.extend(res2)
 assert sorted(r[0] for r in new)==list(range(1,9031))
 both=old+new
 assert len(both)==10000 and len({r[1] for r in both})==10000 and len({r[2] for r in both})==10000
