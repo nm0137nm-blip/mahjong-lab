@@ -164,7 +164,7 @@ function safeEvents(rows){
   return [];
  });
 }
-export function buildEvidence(entry,M){
+export function buildEvidence(entry,M,{twoDrawEnabled=true}={}){
  const v=entry?.scene;if(!v||!M?.Util)return null;
  const dora=(v.dora||[]).filter(valid).map(p=>M.Shan.zhenbaopai(p));
  const c=knownCounts(v);
@@ -183,7 +183,7 @@ export function buildEvidence(entry,M){
   if(!h)return {打牌:x.p,牌姿:null};
   const result={打牌:x.p,打牌後:h.toString(),...metric(M,h,c),保持ドラ翻:doraHan([...x.handTiles,...x.melds.flatMap(meldTiles)],dora),順子待ち形の幾何学的候補:sequenceWaitShapes(x.p.slice(0,2)),相手別現物:v.rivers.map((r,l)=>({席:l,現物:r.discards.some(d=>norm(d.tile)===norm(x.p))})).filter(x=>x.席!==v.ownSeat)};
   result.形と和了条件=shapeFacts(M,h,c,v,x.p);
-  if(selected.includes(x))result.二連続向聴改善=twoDraw(M,h,c);
+  if(twoDrawEnabled&&selected.includes(x))result.二連続向聴改善=twoDraw(M,h,c);
   return result;
  });
  if(entry.legalChoices?.phase==='reaction'){
