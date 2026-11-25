@@ -18,8 +18,20 @@ used.update(seed('mahjong-lab:learning-corpus-1000:20261125:v1:'+str(i)) for i i
 outer=json.loads(Path('/tmp/prior-outer/outer-seeds.json').read_text()); assert outer['status']=='locked_before_outer_acquisition' and len(outer['entries'])==160
 used.update(e['seed'] for e in outer['entries'])
 used.update(seed('mahjong-lab:tenhou-corpus-1000:20261125:v1:'+str(i)) for i in range(1,1001))
+# Reconstruct prior extension's actual allocation, including collisions.
+for i in range(1,9031):
+ attempt=0
+ while True:
+  value=seed('mahjong-lab:tenhou-corpus-extension-9030:20261125:v1:'+str(i)+(f':collision:{attempt}' if attempt else ''))
+  if value not in used:break
+  attempt+=1
+ used.add(value)
 entries=[]
 reserved=set(used)
+split=plan['split']
+ids=sorted(range(1,plan['count']+1),key=lambda i:(hashlib.sha256((split['salt']+':'+str(i)).encode()).hexdigest(),i))
+confirmation=set(ids[:split['confirmation']])
+assert len(confirmation)==split['confirmation'] and plan['count']-len(confirmation)==split['development']
 for i in range(1,plan['count']+1):
  attempt=0
  while True:
@@ -40,6 +52,7 @@ patch('for(let i=0;i<4;i++){\n const child=spawn(', 'for(let i=0;i<0;i++){\n con
 patch("console.log('ARENA_MATCH='+JSON.stringify(rows.at(-1)));","console.log('S42 synthetic match finished');")
 patch("fs.writeFileSync('/tmp/development/paipu.json',JSON.stringify(outcome.game));","fs.writeFileSync('/tmp/development/paipu.json',JSON.stringify(outcome.game));\n   fs.writeFileSync('/tmp/development/wallOrder.json',JSON.stringify(outcome.walls));")
 patch('return {rank:game._paipu.rank,score:game._paipu.defen,qijia:game._paipu.qijia,log:game._paipu.log};','return {rank:game._paipu.rank,score:game._paipu.defen,qijia:game._paipu.qijia,log:game._paipu.log,rule:game._rule,point:game._paipu.point};')
+patch('MahjongLabS42Debug().ready,null,{timeout:120000}', 'MahjongLabS42Debug().ready,null,{timeout:180000}')
 runner.write_text(s)
 subprocess.run(['node','--check',str(runner)],check=True)
 Path('/tmp/v2-dev-seeds.json').write_text(json.dumps(dict(status='locked_v2_development_only',codeSha=os.environ['GITHUB_SHA'],entries=entries)))
@@ -83,11 +96,11 @@ try:
   expected_points=[p['score'][k]-30000+([40000,10000,-10000,-20000][p['rank'][k]-1]) for k in range(4)]
   from decimal import Decimal
   assert [int(Decimal(v)*1000) for v in p['point']]==expected_points, 'uma/oka/rounding mismatch'
-  m.update(corpusNamespace=plan['seedNamespace'],ruleProfile=profile.PROFILE_ID,ruleSource=plan['ruleSource'],actualRule=p['rule'],boundaryAudit=ba,patchedEngineSha256=sha(originals[html]),collectorSha256=sha(Path(__file__).read_bytes()))
+  m.update(corpusPartition=('confirmation' if i in confirmation else 'development'),corpusNamespace=plan['seedNamespace'],ruleProfile=profile.PROFILE_ID,ruleSource=plan['ruleSource'],actualRule=p['rule'],boundaryAudit=ba,patchedEngineSha256=sha(originals[html]),collectorSha256=sha(Path(__file__).read_bytes()))
   (base/'manifest.json').write_text(json.dumps(m,ensure_ascii=False,indent=2)+'\n')
   target=stage/str(i);shutil.copytree(base,target)
   rows={f.name:sha(f.read_bytes()) for f in target.glob('*.json')}
-  info=dict(shard=i,seed=m['seed'],hands=r['hands'],ruleProfile=profile.PROFILE_ID,westEntered=ba['westEntered'],terminalReason=ba['terminalReason'],lastRound=ba['lastRound'],seconds=round(time.monotonic()-t,3),focalDecisions=r['decisions'],opponentDecisions=a['decisions'],fallbacks=0,files=rows,paipuBytes=(target/'paipu.json').stat().st_size,rawBytes=sum(f.stat().st_size for f in target.glob('*.json')),logHash=r['logHash'])
+  info=dict(shard=i,partition=('confirmation' if i in confirmation else 'development'),seed=m['seed'],hands=r['hands'],ruleProfile=profile.PROFILE_ID,westEntered=ba['westEntered'],terminalReason=ba['terminalReason'],lastRound=ba['lastRound'],seconds=round(time.monotonic()-t,3),focalDecisions=r['decisions'],opponentDecisions=a['decisions'],fallbacks=0,files=rows,paipuBytes=(target/'paipu.json').stat().st_size,rawBytes=sum(f.stat().st_size for f in target.glob('*.json')),logHash=r['logHash'])
   summaries.append(info)
   print('completed',i,'hands',r['hands'],'seconds',info['seconds'],flush=True)
 except Exception as e:
