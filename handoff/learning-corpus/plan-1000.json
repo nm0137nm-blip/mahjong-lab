@@ -1,0 +1,30 @@
+{
+  "version": "tenhou-ranked-4p-red-hanchan-v1",
+  "purpose": "Additional 9030 synthetic S42 x4 hanchan, cumulative 10000 including audited initial 970; no duplicate old seeds; development only",
+  "count": 9030,
+  "pilot": 10,
+  "bulkBatches": 141,
+  "batchSize": 64,
+  "bulkParallel": 8,
+  "seedNamespace": "mahjong-lab:tenhou-corpus-extension-9030:20261125:v1",
+  "sourceRef": "75c87e621b85bc411ef92152f84918a1802dbd2b",
+  "modelSha256": "30381bf21389e2d25d3edf48fed11bf772336ef3daeee67d1bdae7fb9dd30cb4",
+  "certSha256": "1debc2c919b3279acb0281e625b4fdb355454e713e45ca2357b9492a213cfd7a",
+  "scope": "Tenhou ranked four-player red open-tanyao hanchan target rules; research-only profile, 30k threshold, renchan-priority West extension through W4; raw synthetic full replays, original walls, provisional focal labels. Source implementation is not Tenhou server; targeted regression and all-match recorded-payment boundary audit, not proof of full rule parity. No old LAB rules match counted. Encrypted archives only.",
+  "gates": "Prior initial corpus integrity review plus rule QA, fresh 10-match pilot, all passed before bulk. Stop each failed batch, retain only successful prefixes; no extra retries or new seeds beyond 9030.",
+  "paidCalls": 0,
+  "mainUnchanged": true,
+  "ruleSource": "https://tenhou.net/man/#RULE",
+  "knownDifferenceCorrections": [
+    "extension mode 2",
+    "all-last dealer top >=30000, start-seat tie",
+    "10-20 uma, 30k return, decimal score",
+    "single yakuman for special forms, combined yakuman allowed",
+    "pao full compound and honba liable",
+    "prior dora in consecutive kakan after chankan response",
+    "triple chankan abort"
+  ],
+  "priorSeeds": "Exclude previous planned 1000 Tenhou and LAB seeds, previous pilot 8, v2 development 96, locked outer seed IDs; deterministic collision resolution in new namespace.",
+  "knownLimits": "Known engine rule differences targeted; full scoring/furiten/kan/pao parity with Tenhou server not independently certified; no human data. Ceiling threshold not separately confirmed by official ranked rules and no extra cap configured. All provisional teacher values not reaudited.",
+  "retention": "CMS AES256-GCM ciphertext only, existing recipient certificate, temporary 30 days; download to private archive before expiry. No raw replay, teacher or key in public artifacts/logs."
+}
