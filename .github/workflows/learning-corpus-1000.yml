@@ -1,0 +1,493 @@
+name: Tenhou corpus cumulative 20000 gated extension
+on:
+  pull_request:
+    branches: [project-handoff]
+    paths: ['handoff/learning-corpus/**','.github/workflows/learning-corpus-1000.yml']
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: learning-corpus-tenhou-rolling-20000-v1
+  cancel-in-progress: false
+jobs:
+  rule_qa:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          ref: 75c87e621b85bc411ef92152f84918a1802dbd2b
+          path: lab
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.23.4'
+      - uses: actions/download-artifact@v4
+        with:
+          name: corrected-encoder
+          run-id: 44673093075
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/fixed-encoder
+      - name: Test actual research rule engine and West encoder
+        run: |
+          set -euo pipefail
+          python3 handoff/learning-corpus/tenhou-profile.py lab/index.html /tmp/tenhou-rule.json
+          node handoff/learning-corpus/tenhou-rule-qa.cjs lab/index.html /tmp/tenhou-rule.json
+          cp /tmp/fixed-encoder/encoder-pkg/encoder* lab/assets/mortal/
+          echo '886cb7abb09034dcdf348039d651d63a83cd7edb87d3337a452722c960b9d97a  lab/assets/mortal/encoder.js' | sha256sum -c -
+          echo '0e9dcc57545afb5769d42f372bbd82be5c26941d1e352245b225d62ce0c611bf  lab/assets/mortal/encoder_bg.wasm' | sha256sum -c -
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('lab/tests/mortal/q-parity-fixtures.mjs');s=p.read_text()
+          assert s.count("bakaze:wind?'S':'E'")==1 and s.count('for(let wind=0;wind<2;wind++)')==1
+          p.write_text(s.replace("bakaze:wind?'S':'E'","bakaze:['E','S','W'][wind]").replace('for(let wind=0;wind<2;wind++)','for(let wind=2;wind<3;wind++)'))
+          PY
+          node lab/tests/mortal/q-parity-fixtures.mjs /tmp/west-synthetic-fixtures.json
+  pilot:
+    needs: rule_qa
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        include:
+          - first: 1
+            last: 2
+          - first: 3
+            last: 4
+          - first: 5
+            last: 6
+          - first: 7
+            last: 8
+          - first: 9
+            last: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          ref: 75c87e621b85bc411ef92152f84918a1802dbd2b
+          path: lab
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.23.4'
+      - uses: actions/download-artifact@v4
+        with:
+          name: corrected-encoder
+          run-id: 44673093075
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/fixed-encoder
+      - uses: actions/download-artifact@v4
+        with:
+          name: p1-outer-locked-manifest
+          run-id: 44717123756
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/prior-outer
+      - name: Prepare pinned development environment
+        run: |
+          set -euo pipefail
+          cp /tmp/fixed-encoder/encoder-pkg/encoder* lab/assets/mortal/
+          echo '886cb7abb09034dcdf348039d651d63a83cd7edb87d3337a452722c960b9d97a  lab/assets/mortal/encoder.js' | sha256sum -c -
+          echo '0e9dcc57545afb5769d42f372bbd82be5c26941d1e352245b225d62ce0c611bf  lab/assets/mortal/encoder_bg.wasm' | sha256sum -c -
+          mv lab /tmp/lab
+          node --test /tmp/lab/tests/mortal-cpu.test.mjs
+          curl --fail --location --retry 1 --silent --show-error --max-time 160 'https://huggingface.co/xzhe121/Mortal-S42-onnx/resolve/main/model.onnx' -o /tmp/lab/tests/mortal/model.onnx
+          echo '30381bf21389e2d25d3edf48fed11bf772336ef3daeee67d1bdae7fb9dd30cb4  /tmp/lab/tests/mortal/model.onnx' | sha256sum -c -
+          mkdir -p /tmp/probe
+          cd /tmp/probe
+          npm init -y >/dev/null
+          npm install --ignore-scripts --no-audit --no-fund playwright@1.57.0 >/dev/null
+          npx playwright install chromium
+      - name: Generate and encrypt batch
+        env:
+          FIRST: ${{ matrix.first }}
+          LAST: ${{ matrix.last }}
+        run: |
+          set -euo pipefail
+          (cd /tmp/lab && python3 -m http.server 8788 --bind 127.0.0.1 >/tmp/http-log 2>&1) &
+          sleep 2
+          python3 handoff/learning-corpus/collect-1000.py "$FIRST" "$LAST"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: tenhou-corpus-rolling-20000-${{ matrix.first }}-${{ matrix.last }}
+          path: corpus-output/
+          if-no-files-found: error
+          retention-days: 30
+
+  bulk:
+    needs: pilot
+    runs-on: ubuntu-24.04
+    timeout-minutes: 150
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        include:
+          - first: 11
+            last: 74
+          - first: 75
+            last: 138
+          - first: 139
+            last: 202
+          - first: 203
+            last: 266
+          - first: 267
+            last: 330
+          - first: 331
+            last: 394
+          - first: 395
+            last: 458
+          - first: 459
+            last: 522
+          - first: 523
+            last: 586
+          - first: 587
+            last: 650
+          - first: 651
+            last: 714
+          - first: 715
+            last: 778
+          - first: 779
+            last: 842
+          - first: 843
+            last: 906
+          - first: 907
+            last: 970
+          - first: 971
+            last: 1034
+          - first: 1035
+            last: 1098
+          - first: 1099
+            last: 1162
+          - first: 1163
+            last: 1226
+          - first: 1227
+            last: 1290
+          - first: 1291
+            last: 1354
+          - first: 1355
+            last: 1418
+          - first: 1419
+            last: 1482
+          - first: 1483
+            last: 1546
+          - first: 1547
+            last: 1610
+          - first: 1611
+            last: 1674
+          - first: 1675
+            last: 1738
+          - first: 1739
+            last: 1802
+          - first: 1803
+            last: 1866
+          - first: 1867
+            last: 1930
+          - first: 1931
+            last: 1994
+          - first: 1995
+            last: 2058
+          - first: 2059
+            last: 2122
+          - first: 2123
+            last: 2186
+          - first: 2187
+            last: 2250
+          - first: 2251
+            last: 2314
+          - first: 2315
+            last: 2378
+          - first: 2379
+            last: 2442
+          - first: 2443
+            last: 2506
+          - first: 2507
+            last: 2570
+          - first: 2571
+            last: 2634
+          - first: 2635
+            last: 2698
+          - first: 2699
+            last: 2762
+          - first: 2763
+            last: 2826
+          - first: 2827
+            last: 2890
+          - first: 2891
+            last: 2954
+          - first: 2955
+            last: 3018
+          - first: 3019
+            last: 3082
+          - first: 3083
+            last: 3146
+          - first: 3147
+            last: 3210
+          - first: 3211
+            last: 3274
+          - first: 3275
+            last: 3338
+          - first: 3339
+            last: 3402
+          - first: 3403
+            last: 3466
+          - first: 3467
+            last: 3530
+          - first: 3531
+            last: 3594
+          - first: 3595
+            last: 3658
+          - first: 3659
+            last: 3722
+          - first: 3723
+            last: 3786
+          - first: 3787
+            last: 3850
+          - first: 3851
+            last: 3914
+          - first: 3915
+            last: 3978
+          - first: 3979
+            last: 4042
+          - first: 4043
+            last: 4106
+          - first: 4107
+            last: 4170
+          - first: 4171
+            last: 4234
+          - first: 4235
+            last: 4298
+          - first: 4299
+            last: 4362
+          - first: 4363
+            last: 4426
+          - first: 4427
+            last: 4490
+          - first: 4491
+            last: 4554
+          - first: 4555
+            last: 4618
+          - first: 4619
+            last: 4682
+          - first: 4683
+            last: 4746
+          - first: 4747
+            last: 4810
+          - first: 4811
+            last: 4874
+          - first: 4875
+            last: 4938
+          - first: 4939
+            last: 5002
+          - first: 5003
+            last: 5066
+          - first: 5067
+            last: 5130
+          - first: 5131
+            last: 5194
+          - first: 5195
+            last: 5258
+          - first: 5259
+            last: 5322
+          - first: 5323
+            last: 5386
+          - first: 5387
+            last: 5450
+          - first: 5451
+            last: 5514
+          - first: 5515
+            last: 5578
+          - first: 5579
+            last: 5642
+          - first: 5643
+            last: 5706
+          - first: 5707
+            last: 5770
+          - first: 5771
+            last: 5834
+          - first: 5835
+            last: 5898
+          - first: 5899
+            last: 5962
+          - first: 5963
+            last: 6026
+          - first: 6027
+            last: 6090
+          - first: 6091
+            last: 6154
+          - first: 6155
+            last: 6218
+          - first: 6219
+            last: 6282
+          - first: 6283
+            last: 6346
+          - first: 6347
+            last: 6410
+          - first: 6411
+            last: 6474
+          - first: 6475
+            last: 6538
+          - first: 6539
+            last: 6602
+          - first: 6603
+            last: 6666
+          - first: 6667
+            last: 6730
+          - first: 6731
+            last: 6794
+          - first: 6795
+            last: 6858
+          - first: 6859
+            last: 6922
+          - first: 6923
+            last: 6986
+          - first: 6987
+            last: 7050
+          - first: 7051
+            last: 7114
+          - first: 7115
+            last: 7178
+          - first: 7179
+            last: 7242
+          - first: 7243
+            last: 7306
+          - first: 7307
+            last: 7370
+          - first: 7371
+            last: 7434
+          - first: 7435
+            last: 7498
+          - first: 7499
+            last: 7562
+          - first: 7563
+            last: 7626
+          - first: 7627
+            last: 7690
+          - first: 7691
+            last: 7754
+          - first: 7755
+            last: 7818
+          - first: 7819
+            last: 7882
+          - first: 7883
+            last: 7946
+          - first: 7947
+            last: 8010
+          - first: 8011
+            last: 8074
+          - first: 8075
+            last: 8138
+          - first: 8139
+            last: 8202
+          - first: 8203
+            last: 8266
+          - first: 8267
+            last: 8330
+          - first: 8331
+            last: 8394
+          - first: 8395
+            last: 8458
+          - first: 8459
+            last: 8522
+          - first: 8523
+            last: 8586
+          - first: 8587
+            last: 8650
+          - first: 8651
+            last: 8714
+          - first: 8715
+            last: 8778
+          - first: 8779
+            last: 8842
+          - first: 8843
+            last: 8906
+          - first: 8907
+            last: 8970
+          - first: 8971
+            last: 9034
+          - first: 9035
+            last: 9098
+          - first: 9099
+            last: 9162
+          - first: 9163
+            last: 9226
+          - first: 9227
+            last: 9290
+          - first: 9291
+            last: 9354
+          - first: 9355
+            last: 9418
+          - first: 9419
+            last: 9482
+          - first: 9483
+            last: 9546
+          - first: 9547
+            last: 9610
+          - first: 9611
+            last: 9674
+          - first: 9675
+            last: 9738
+          - first: 9739
+            last: 9802
+          - first: 9803
+            last: 9866
+          - first: 9867
+            last: 9930
+          - first: 9931
+            last: 9994
+          - first: 9995
+            last: 10000
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          ref: 75c87e621b85bc411ef92152f84918a1802dbd2b
+          path: lab
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.23.4'
+      - uses: actions/download-artifact@v4
+        with:
+          name: corrected-encoder
+          run-id: 44673093075
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/fixed-encoder
+      - uses: actions/download-artifact@v4
+        with:
+          name: p1-outer-locked-manifest
+          run-id: 44717123756
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/prior-outer
+      - name: Prepare pinned development environment
+        run: |
+          set -euo pipefail
+          cp /tmp/fixed-encoder/encoder-pkg/encoder* lab/assets/mortal/
+          echo '886cb7abb09034dcdf348039d651d63a83cd7edb87d3337a452722c960b9d97a  lab/assets/mortal/encoder.js' | sha256sum -c -
+          echo '0e9dcc57545afb5769d42f372bbd82be5c26941d1e352245b225d62ce0c611bf  lab/assets/mortal/encoder_bg.wasm' | sha256sum -c -
+          mv lab /tmp/lab
+          node --test /tmp/lab/tests/mortal-cpu.test.mjs
+          curl --fail --location --retry 1 --silent --show-error --max-time 160 'https://huggingface.co/xzhe121/Mortal-S42-onnx/resolve/main/model.onnx' -o /tmp/lab/tests/mortal/model.onnx
+          echo '30381bf21389e2d25d3edf48fed11bf772336ef3daeee67d1bdae7fb9dd30cb4  /tmp/lab/tests/mortal/model.onnx' | sha256sum -c -
+          mkdir -p /tmp/probe
+          cd /tmp/probe
+          npm init -y >/dev/null
+          npm install --ignore-scripts --no-audit --no-fund playwright@1.57.0 >/dev/null
+          npx playwright install chromium
+      - name: Generate and encrypt batch
+        env:
+          FIRST: ${{ matrix.first }}
+          LAST: ${{ matrix.last }}
+        run: |
+          set -euo pipefail
+          (cd /tmp/lab && python3 -m http.server 8788 --bind 127.0.0.1 >/tmp/http-log 2>&1) &
+          sleep 2
+          python3 handoff/learning-corpus/collect-1000.py "$FIRST" "$LAST"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: tenhou-corpus-rolling-20000-${{ matrix.first }}-${{ matrix.last }}
+          path: corpus-output/
+          if-no-files-found: error
+          retention-days: 30
+
