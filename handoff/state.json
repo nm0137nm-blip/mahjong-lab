@@ -4124,9 +4124,10 @@
             "splitHashMatch": true
           },
           "limitations": "4052 matched successful job/artifact ranges; 55 completed rows in failed partial artifact not included; local intake tracked separately",
-          "latestNominalRangeCount": 4628,
-          "latestArtifactCount": 62,
-          "latestObservationScope": "artifact names only including original incomplete 64-shard range; retry job successful but reconciliation pending, latest full all-job verification still 4052"
+          "latestNominalRangeCount": 5460,
+          "latestArtifactCount": 75,
+          "latestObservationScope": "artifact names only including failed original range; nine-shard repair job succeeded, coverage audit pending; full all-job verification still 4052",
+          "latestObservedAt": "2026-11-25T10:24:00Z"
         },
         "holdout": {
           "status": "PARTIAL_274_CONFIRMATION_SEALED_SEPARATELY_NO_RESEARCH_ACCESS",
