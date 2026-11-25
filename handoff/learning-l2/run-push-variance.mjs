@@ -1,0 +1,91 @@
+// Remaining four pre-selected technical smoke pairs. No publication of raw receipts, actions, or outcomes.
+import fs from 'node:fs';import path from 'node:path';import {spawnSync} from 'node:child_process';import {createHash} from 'node:crypto';import {patchPinnedRunner} from './patch-push-genbutsu-runner.mjs';
+const check=(v,m)=>{if(!v)throw Error(m)},sha=x=>createHash('sha256').update(JSON.stringify(x)).digest('hex'),same=(a,b)=>sha(a)===sha(b);
+const plan=JSON.parse(fs.readFileSync('handoff/learning-l2/push-variance-plan.json','utf8'));
+check(plan.schema==='push-variance-v1'&&plan.rows.length===24&&new Set(plan.rows.map(r=>r[0])).size===24,'invalid frozen plan');
+const remainingCases=plan.rows.map(row=>Object.fromEntries(['shard','seed','dealer','decisionIndex','actorSeat','band'].map((k,i)=>[k,row[i]])));
+const ruleHash='3acee28840a6c152702f49b136ce82e5afebcb90d6187b50a3f5b7eb052fa10f',sources=[];
+
+const lab='/tmp/lab',runner=path.join(lab,'tests/next/run-p1-v2-dev.cjs'),html=path.join(lab,'index.html'),coach=path.join(lab,'src/coach/phoenix-coach.mjs');
+function read(p){return JSON.parse(fs.readFileSync(p,'utf8'))}
+async function run(expected){
+ check(process.env.GITHUB_ACTIONS==='true','CI only');let s=patchPinnedRunner(fs.readFileSync(runner,'utf8'));
+ function patch(a,b){check(s.split(a).length===2,'runner anchor');s=s.replace(a,b)}
+ patch('for(let i=0;i<4;i++){\n const child=spawn(', 'for(let i=0;i<0;i++){\n const child=spawn(');
+ patch("console.log('ARENA_MATCH='+JSON.stringify(rows.at(-1)));","console.log('S42 technical smoke finished');");
+ patch("fs.writeFileSync('/tmp/development/paipu.json',JSON.stringify(outcome.game));","fs.writeFileSync('/tmp/development/paipu.json',JSON.stringify(outcome.game));\n   fs.writeFileSync('/tmp/development/wallOrder.json',JSON.stringify(outcome.walls));");
+ patch('return {rank:game._paipu.rank,score:game._paipu.defen,qijia:game._paipu.qijia,log:game._paipu.log};','return {rank:game._paipu.rank,score:game._paipu.defen,qijia:game._paipu.qijia,log:game._paipu.log,rule:game._rule,point:game._paipu.point};');
+ fs.writeFileSync(runner,s);check(spawnSync('node',['--check',runner],{stdio:'ignore'}).status===0,'runner syntax');
+ const originals=[html,coach].map(p=>[p,fs.readFileSync(p)]);
+ check(createHash('sha256').update(originals[0][1]).digest('hex')==='19d62e1acaa1d4334bf9828fbc14c3aca56734be0aff6b96ce749de4b18d34c5','patched engine drift');
+ fs.writeFileSync('/tmp/v2-dev-seeds.json',JSON.stringify({status:'locked_v2_development_only',codeSha:process.env.GITHUB_SHA,entries:[{shard:1,seed:expected.seed,dealer:expected.dealer,family:'s42',policy:'s42'}]}));
+ const result=[];
+ for(const mode of ['baseline','alternative']){
+   for(const [p,b] of originals)fs.writeFileSync(p,b);
+   fs.rmSync('/tmp/development',{recursive:true,force:true});
+   fs.writeFileSync('/tmp/l2-plan.json',JSON.stringify({mode,decisionIndex:expected.decisionIndex,band:expected.band}),{mode:0o600});
+   const fd=fs.openSync('/tmp/l2-private.log','w',0o600);
+   let proc;try{proc=spawnSync('node',[runner],{env:{...process.env,COACH_ARENA_QA:'1',ARENA_PAIR:'1',L2_PLAN_FILE:'/tmp/l2-plan.json'},stdio:['ignore',fd,fd],timeout:300000})}finally{fs.closeSync(fd)}
+   if(proc.status!==0){const log=fs.readFileSync('/tmp/l2-private.log','utf8');const cats=['L2 source action','L2 target not uniquely legal','L2 configuration','L2 receipt','L2 intervention','L2 not first riichi','reference mask mismatch','decision progression mismatch','CPU arena failure','arena stall','TimeoutError','page.evaluate','legal_mask_mismatch','private qipai contract','private draw contract'];console.log('RUNNER_DIAGNOSTIC='+JSON.stringify(cats.filter(c=>log.includes(c))));throw Error('private runner failed '+mode)}
+   const p=read('/tmp/development/paipu.json'),w=read('/tmp/development/wallOrder.json'),r=read('/tmp/development/l2-receipt.json'),m=read('/tmp/development/manifest.json'),a=m.rows[0].cpuAudit;
+   check(m.seed===expected.seed&&p.qijia===expected.dealer,'seed/dealer');check(sha(p.rule)===ruleHash&&sha(r.rule)===ruleHash,'rule drift');
+   check(r.decisionIndex===expected.decisionIndex&&r.actorSeat===expected.actorSeat&&r.mode===mode,'receipt identity');
+   check(r.legalPayloads.some(x=>same(x,r.policyOriginal))&&r.legalPayloads.some(x=>same(x,r.applied)),'legal set drift');
+   if(mode==='baseline')check(same(r.applied,r.policyOriginal),'baseline action drift');
+   else check(!same(r.applied,r.policyOriginal)&&same(r.publicRequest,result[0].r.publicRequest)&&same(r.prefix,result[0].r.prefix)&&same(r.policyOriginal,result[0].r.policyOriginal),'alternate source drift');
+   const round=r.prefix.length-1,index=r.prefix[round].length;check(same(p.log.slice(0,round).concat([p.log[round].slice(0,index)]),r.prefix),'output prefix drift');check(p.log[round][index]?.dapai?.l===r.actorSeat&&p.log[round][index].dapai.p===r.applied.dapai,'logged action drift');
+   check(a.fallbacks===0&&a.sharedWorker&&a.activeSeats===3&&a.model+a.forced===a.decisions,'CPU audit');
+   check(p.score.reduce((x,y)=>x+y,0)===100000&&same(p.rank.slice().sort(),[1,2,3,4]),'score/rank');const order=[0,1,2,3].sort((a,b)=>p.score[b]-p.score[a]||((a-p.qijia+4)%4)-((b-p.qijia+4)%4));check(order.every((id,i)=>p.rank[id]===i+1),'tie order');
+   check(w.length===p.log.length,'wall count');for(const wall of w){let tiles=wall.split(','),c={};for(const t of tiles){const k=t.replace('0','5');c[k]=(c[k]||0)+1}check(tiles.length===136&&Object.keys(c).length===34&&Object.values(c).every(x=>x===4)&&['m','p','s'].every(x=>tiles.filter(t=>t===x+'0').length===1),'wall physical');}
+   result.push({p,w,r});
+   console.log('BRANCH_TECHNICAL_PASS shard='+expected.shard+' mode='+mode);
+ }
+ const [a,b]=result;check(same(a.r.state,b.r.state)&&same(a.r.legalPayloads,b.r.legalPayloads),'prestate/legal divergence');
+ const wallMap=x=>{const seen={},o=new Map();x.p.log.forEach((es,i)=>{const q=es[0].qipai,k=[q.zhuangfeng,q.jushu,q.changbang].join(':'),n=seen[k]||0;seen[k]=n+1;o.set(k+':'+n,x.w[i])});return o};let common=0;const aw=wallMap(a),bw=wallMap(b);for(const [k,v] of aw)if(bw.has(k)){check(v===bw.get(k),'common wall mismatch');common++}check(common>=a.r.prefix.length,'shared wall undercoverage');
+ const counters=await auditPrivatePackets([a.p,b.p]);
+ sources.push({shard:expected.shard,seed:expected.seed,dealer:a.p.qijia,decisionIndex:a.r.decisionIndex,actorSeat:a.r.actorSeat,band:expected.band,publicHash:sha(a.r.publicRequest),prefixHash:sha(a.r.prefix),logHash:sha(a.p.log),wallHash:sha(a.w),ruleHash:sha(a.p.rule),originalActionHash:sha(a.r.policyOriginal),alternativeActionHash:sha(b.r.applied)});
+ const acc=spawnSync('python3',['handoff/learning-l2/variance-accounting.py'],{input:JSON.stringify({riichi:a.p,dama:b.p,roundIndex:a.r.prefix.length-1,actorId:0}),encoding:'utf8',maxBuffer:1048576});
+ check(acc.status===0,'independent settlement accounting failed');const values=JSON.parse(acc.stdout);
+ check(['riichiRound','damaRound','deltaRound','deltaFinal','deltaFourth'].every(k=>Number.isSafeInteger(values[k])),'invalid outcomes');
+ console.log('L2_PUSH_VARIANCE_PAIR_PASS shard='+expected.shard+' commonWallKeys='+common+' packetPoison='+JSON.stringify(counters));return values;
+}
+
+// Separate replay of sanitized actual-log events through pinned bridge and packet guard.
+// Tests known private fields rejected and extra fields ignored; not a full live inference proof.
+async function auditPrivatePackets(matches){
+ const {MortalMjaiBridge}=await import('/tmp/lab/src/mortal/mjai-bridge.mjs?v=2601');
+ const {assertPrivatePacket}=await import('/tmp/lab/src/mortal/mortal-cpu.mjs');
+ let packets=0,ignored=0,rejectedHands=0,rejectedDraws=0;
+ const mustReject=(packet,bridge)=>{let rejected=false;try{assertPrivatePacket(packet,bridge)}catch(e){rejected=true}check(rejected,'private packet accepted');};
+ for(const p of matches)for(const hand of p.log)for(let seat=0;seat<4;seat++){
+   const a=new MortalMjaiBridge(),b=new MortalMjaiBridge();
+   for(const raw of hand){
+     const packet=structuredClone(raw);
+     if(packet.qipai){
+       mustReject(packet,a);rejectedHands++;
+       packet.qipai.shoupai=packet.qipai.shoupai.map((x,i)=>i===seat?x:'');
+     }
+     const z=packet.zimo||packet.gangzimo;
+     if(z&&z.l!==seat){check(z.p!==''&&typeof z.p==='string','missing original draw');mustReject(packet,a);rejectedDraws++;z.p='';}
+     assertPrivatePacket(packet,a);assertPrivatePacket(packet,b);
+     const poisoned=structuredClone(packet);
+     const trap=()=>{throw Error('unexpected private-field read')};
+     for(const key of ['wall','hiddenOracle','opponentHands','privateState'])Object.defineProperty(poisoned,key,{get:trap});
+     const key=Object.keys(packet)[0];if(poisoned[key]&&typeof poisoned[key]==='object')for(const name of ['wall','hiddenOracle','opponentHands','privateState'])Object.defineProperty(poisoned[key],name,{get:trap});
+     const x=a.receive(packet),y=b.receive(poisoned);check(same(x,y),'bridge event changed under poison');packets++;ignored++;
+   }
+ }
+ check(packets>0&&rejectedHands>0&&rejectedDraws>0,'packet poison coverage');
+ return {packets,ignored,rejectedHands,rejectedDraws};
+}
+const pristine=fs.readFileSync(runner);
+const initialHtml=fs.readFileSync(html),initialCoach=fs.readFileSync(coach);
+const outcomes=[];
+const sd=xs=>{const m=xs.reduce((a,b)=>a+b,0)/xs.length;return Math.sqrt(xs.reduce((a,b)=>a+(b-m)**2,0)/(xs.length-1))};
+const variance=xs=>{const paired=sd(xs.map(x=>x.deltaRound)),independent=sd(xs.map(x=>x.riichiRound))**2+sd(xs.map(x=>x.damaRound))**2;return {n:xs.length,roundSDRounded100:Math.round(paired/100)*100,finalSDRounded100:Math.round(sd(xs.map(x=>x.deltaFinal))/100)*100,fourthSD:Math.round(sd(xs.map(x=>x.deltaFourth))*1000)/1000,pairedToIndependent:independent?Math.round(paired**2/independent*1000)/1000:null,illustrativeNFor1000PointCIWidth:Math.ceil((1.96*paired/500)**2)}};
+try{
+ for(const expected of remainingCases){fs.writeFileSync(runner,pristine);fs.writeFileSync(html,initialHtml);fs.writeFileSync(coach,initialCoach);outcomes.push(await run(expected))}
+ check(outcomes.length===24&&sha(sources)===plan.sourceCommitment,'whole pilot original source commitment mismatch');
+ console.log('L2_PUSH_VARIANCE_SUMMARY='+JSON.stringify({overall:variance(outcomes),byBand:Object.fromEntries(['early','mid','late'].map((b,i)=>[b,variance(outcomes.slice(i*8,i*8+8))])),scope:'variance planning only; one-step action, not full fold; no effect mean'}));
+}catch(e){console.log('L2_PUSH_VARIANCE_FAILED completed='+outcomes.length+' category='+String(e.message).slice(0,100));process.exitCode=1}
+finally{for(const p of ['/tmp/development','/tmp/l2-private.log','/tmp/l2-plan.json'])fs.rmSync(p,{recursive:true,force:true})}
