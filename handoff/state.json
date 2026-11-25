@@ -9,7 +9,7 @@
   },
   "active_task": {
     "phase": "P2a-v4.7 free-only known-case semantic diagnostic",
-    "status": "LEARNING_REVIEWS_INTEGRATED_L0_CORPUS_RUNNING",
+    "status": "L0_COMPLETE_L1_READY_CORPUS_EXTENSION_RUNNING",
     "branch": "feat/coach-p2a-v47-minimal-diagnostic",
     "commit": "7959435bfad0412e9cd94234f01395af05d84789",
     "pr": 71,
@@ -355,7 +355,7 @@
       }
     ],
     "decision": "v46 API-only Stage1 stopped after 2 paid calls, 1 contract pass and 1 incomplete output due to cap. No evidence of typed condition contract failure from pilot82; no semantic certification. Original manual Stage1 plan not performed. No new paid generation authorized.",
-    "next": "Finish missing 427–456 within existing authorized 1000 scope after bounded recovery decision; original shard426 failure not reproduced. Full archive audit and private retention plan, all-seat reconstruction checks and L1 research cards before L0 completion. PR77 complete-match CI passed, review before merge. No new spend or expansion.",
+    "next": "L1 ready: start independent A1 deterministic settlement, A2 minimal defensive constrained efficiency, B1/B2/C1 descriptive statistics under prereg cards; do not use provisional oracle before targeted verification. Parallel 9030 extension run45530376491 in progress, pilot10 passed; check artifacts, recover only missing in authorized scope, audit. PR77 final deployment review remains separate. No paid or extra training; 10000 cap.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -2948,10 +2948,18 @@
         "validation": "Calculation accuracy separate from strategic utility; paired branch comparison before asserting decision benefit; no S42 match rate as primary learning metric",
         "storage": "existing encrypted CI artifacts conflict with newly proposed no-CI-artifacts policy; private durable backup and next-run design needed; no plaintext or private book material public",
         "newExecutionAuthorization": false
+      },
+      "l0Exit": {
+        "status": "COMPLETE_L1_READY",
+        "record": "handoff/learning-l0-exit-20261125.md",
+        "commit": "d565043f283262bca529b680d20cb3a6485b0b6c",
+        "entryCards": "handoff/learning-l1-entry-cards-20261125.md",
+        "entryCardsCommit": "28e75fda5df591f5ffe6cfe11a0d61f4d1c76509",
+        "initialMatches": 970
       }
     },
     "learningCorpus": {
-      "status": "TENHOU_PILOT_PASS_BULK_RUNNING",
+      "status": "INITIAL_970_AUDITED_COMPLETE",
       "userAuthorized": "2026-11-25 07:19 JST user asked for 1,000 additional hanchan; unpaid only",
       "pr": 76,
       "branch": "feat/learning-corpus-tenhou-20261125",
@@ -3005,7 +3013,7 @@
       "ruleSource": "https://tenhou.net/man/#RULE",
       "ruleProfile": "tenhou-ranked-4p-red-hanchan-v1",
       "ruleScope": "25000/30000, uma10-20, 0 continues, negative bust, renchan-priority West extension, last W4, top dealer >=30k stop, starting-seat ties, final kyotaku top, single special yakuman; patch compound pao, consecutive kakan dora timing, triple chankan. Actual Tenhou server exhaustive parity not certified. Native Mortal also documented triple-ron discrepancy; retain research profile and targeted gates.",
-      "countVerifiedTenhou": 0,
+      "countVerifiedTenhou": 970,
       "ruleQAPassed": true,
       "pilotSaved": 8,
       "pilotArtifacts": [
@@ -3032,7 +3040,7 @@
       "latestStatus": {
         "observed": "2026-11-25 review check",
         "inRunSaved": 970,
-        "verifiedAfterDecryption": 2,
+        "verifiedAfterDecryption": 970,
         "artifactCount": 36,
         "totalArtifactBytes": 131024291,
         "failedBatch": "425-456",
@@ -3058,8 +3066,66 @@
           "cmsHashMatched": true,
           "allFileHashesMatched": true
         },
-        "remaining": "427–456; not yet generated",
-        "finalBatchArtifact": 14977909336
+        "remaining": "427–456 intentionally excluded by user; no backfill",
+        "finalBatchArtifact": 14977909336,
+        "audit": {
+          "matches": 970,
+          "hands": 10089,
+          "files": 5820,
+          "rawBytes": 3693246872,
+          "west": 22,
+          "seedDuplicates": 0,
+          "logDuplicates": 0,
+          "recordedBoundaryMismatch": 0,
+          "fallbacks": 0,
+          "physicalViewChecks": 3809288,
+          "physicalMismatch": 0,
+          "legalDiscards": 473152,
+          "legalRiichi": 8042,
+          "legalCalls": 17533,
+          "legalOwnKan": 802,
+          "legalRon": 5345,
+          "legalTsumo": 3452,
+          "legalAbort": 112,
+          "legalityMismatch": 0,
+          "focalPublic": 143864,
+          "focalForced": 7066,
+          "focalMaxQMismatch": 0,
+          "priorityCensored": 45573,
+          "meanSeconds": 49.495749484536084,
+          "medianSeconds": 47.693,
+          "privateBackupSha256": "d6e000a2f1334ccf98f977a99ae983e0eddf1375dac44c7c501d7862ae8ce369",
+          "limits": "Recorded payment and engine legality, not independent full Tenhou rule/server/scoring or oracle validation; no other-seat Q, suppressed actual replies not recoverable."
+        }
+      },
+      "userAccepted970": true,
+      "extension": {
+        "status": "PILOT_10_PASS_BULK_RUNNING",
+        "userAuthorized": "2026-11-25 user accepts 970 and authorizes cumulative 10000 if initial quality acceptable, unpaid",
+        "targetCumulative": 10000,
+        "additionalPlanned": 9030,
+        "pr": 79,
+        "branch": "feat/tenhou-corpus-10000-20261125",
+        "head": "4899af2abba1d7ba38ec6d21a4978b5e19117eb2",
+        "run": 45530376491,
+        "pilotSaved": 10,
+        "pilotArtifacts": [
+          14985265613,
+          14984911594,
+          14984831064,
+          14984711171,
+          14984636756
+        ],
+        "bulkMatches": 9020,
+        "bulkBatches": 141,
+        "maxParallel": 8,
+        "namespace": "mahjong-lab:tenhou-corpus-extension-9030:20261125:v1",
+        "cumulativeSavedAtCheck": 980,
+        "verifiedInitial": 970,
+        "retentionDays": 30,
+        "storage": "Encrypted CI temporary transport, separate private key; private backup before expiry, no plaintext or book material.",
+        "eta": "16–24h or longer conditional on failures, queue and setup; next morning check",
+        "paidCalls": 0
       }
     },
     "labTenhou": {
