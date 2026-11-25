@@ -438,6 +438,8 @@
  .phoenix-input,.phoenix-prompt{width:100%;box-sizing:border-box;font:inherit;font-size:16px;color:inherit;background:rgba(0,0,0,.15);border:1px solid #728a90;border-radius:8px;padding:8px;margin:6px 0;resize:vertical} .phoenix-prompt{font-size:13px;line-height:1.45} .phoenix-label{display:block;font-size:13px;font-weight:600} .phoenix-open{display:block;text-align:center;padding:12px;text-decoration:underline;color:inherit} .phoenix-details{margin-top:10px;border-top:1px solid #56727a;padding:10px 0} .phoenix-details summary{cursor:pointer;font-weight:600} .phoenix-open[aria-disabled=true]{opacity:.55} .phoenix-details li{margin:.5em 0}
 </style>
   <title>麻雀LAB — Phase 2.5.8 AI COACH</title>
+
+<style id="research-preview-style">#researchBody{overflow-wrap:anywhere;text-align:left}#researchBody select,#researchBody input[type=file]{max-width:100%;margin:6px 0}#researchBody fieldset{min-width:0;margin:8px 0;padding:8px;border:1px solid #888}#researchBody fieldset label{display:block;padding:4px 0}#researchBody p{margin:6px 0}#researchOverlay .modal{max-height:90dvh;overflow:auto}</style>
 </head>
 <body>
   <header class="site-header"><div class="logo"><span class="logo-mark">牌</span><span>麻雀<span class="logo-lab">LAB</span></span></div><span class="phase">PHASE 2.5.8 · AI COACH</span></header>
@@ -506,6 +508,7 @@
     <div id="gameToast" role="status" aria-live="polite" class="toast"></div>
   </main>
 
+  <div class="overlay hidden" id="researchOverlay" role="dialog" aria-modal="true" aria-labelledby="researchTitle"><div class="modal"><div class="modal-label">研究統計・開発版</div><h2 id="researchTitle">立直の研究統計</h2><div id="researchBody"></div><button class="primary" id="researchClose" type="button">対局に戻る</button></div></div>
   <div id="decisionOverlay" class="hidden" aria-hidden="true"></div>
   <div class="overlay coach-overlay hidden" id="coachOverlay" role="dialog" aria-modal="true" aria-label="牌効率の解説"><div class="modal coach-modal"><div class="modal-label">牌効率メモ</div><h2>直前の打牌を確認</h2><div id="coachModalBody"></div><button class="primary" id="closeCoachBtn" type="button">対局に戻る</button></div></div>
   <div class="overlay hidden" id="resultOverlay" role="dialog" aria-modal="true" aria-labelledby="resultTitle"><div class="modal"><div class="modal-label" id="resultTag">局の結果</div><h2 id="resultTitle">流局</h2><p id="resultDetails"></p><div id="resultHandDetail" class="result-detail"></div><div id="resultDecisionReview" class="result-choice-review" hidden></div><div id="resultScores" class="result-scores"></div><button id="continueBtn" class="primary" type="button">次の局へ →</button></div></div>
@@ -4704,6 +4707,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
   };
 
   let game = null, human = null, pending = null, mode = '1';
+  let researchPanel=null;
   let riichiMode = false, coachCollapsed = true, candidateInfo = [];
   let lastFeedback = null, decisionLog = [], gameEnded = false, matchSaved = false;
   let readyToNext = false, selectedRule = null, lastAction = '', recordedMatchId = null;
@@ -4945,6 +4949,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     $('statsHalf').setAttribute('aria-pressed',String(statsMode===2));
   }
   function initGame() {
+    researchPanel?.close();
     if (game && !gameEnded) { try { game.stop(()=>{}); } catch {} }
     mode = document.querySelector('input[name="length"]:checked')?.value || '1';
     recordMode = document.querySelector('input[name="recordMode"]:checked')?.value || 'practice';
@@ -5244,6 +5249,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     const holder=$('actionBar');holder.replaceChildren();
     if (!pending) {const txt=el('span','wall-message',gameEnded?'対局終了':readyToNext?'次の局へ進んでください':'対局が進行しています');holder.append(txt);return;}
     if (pending.type==='turn') {
+      if(researchPanel&&recordMode==='practice'&&Number(mode)===2)addAction('研究統計（立直）',()=>{if(researchPanel.open(pending))$('gameScreen').inert=true;});
       if(pending.win) addAction('ツモ',()=>answer({hule:'-'}),'important');
       if(pending.nine) addAction('九種九牌（流局）',()=>answer({daopai:'-'}),'nine-tiles');
       for(const m of pending.gang) addAction(`カン (${meldTiles(m).map(tileName).join(' ')})`,()=>answer({gang:m}));
@@ -5326,6 +5332,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
   }
   function answer(payload) {
     if(!pending || !human) return;
+    researchPanel?.close();
     if(pending.type==='reaction')recordReactionChoice(pending,payload);
     else if(pending.type==='turn'&&(payload.gang||payload.hule||payload.daopai))recordTurnAction(pending,payload);
     const cb=human._callback;pending=null;riichiMode=false;candidateInfo=[];
@@ -5548,7 +5555,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     body.innerHTML=html;
   }
   let redrawQueued=false;
-  function redrawSoon() { if(redrawQueued) return;redrawQueued=true;requestAnimationFrame(()=>{redrawQueued=false;if(!game||!$('gameScreen').classList.contains('hidden')){try{renderTable();renderHand();renderActions();renderReaction();renderCoach();fitBoard();}catch(e){notify('画面表示エラー: '+e.message);console.error(e);}}}); }
+  function redrawSoon() { if(redrawQueued) return;redrawQueued=true;requestAnimationFrame(()=>{redrawQueued=false;researchPanel?.sync();if(!game||!$('gameScreen').classList.contains('hidden')){try{renderTable();renderHand();renderActions();renderReaction();renderCoach();fitBoard();}catch(e){notify('画面表示エラー: '+e.message);console.error(e);}}}); }
   function notify(msg) {const t=$('gameToast');t.textContent=msg;if(toastTimer)clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.textContent='',3300);}
   function limitName(data) {
     const yakuman = (data.hupai||[]).reduce((s,y)=> s + (y.fanshu==='**'?2:y.fanshu==='*'?1:0), 0);
@@ -6125,6 +6132,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     $('endOverlay').classList.remove('hidden');
   }
   function goHome() {
+    researchPanel?.close();
     if(game && !gameEnded) {try{game.stop(()=>{});}catch{}}
     gameEnded=true;pending=null;readyToNext=false;
     $('gameScreen').classList.add('hidden');$('endOverlay').classList.add('hidden');$('resultOverlay').classList.add('hidden');
@@ -6135,6 +6143,15 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
   $('statsHalf').addEventListener('click',()=>{statsMode=2;renderStats();});
   $('tenhouRoom').addEventListener('change',()=>{refreshTenhouDan();renderStats();});
   $('tenhouDan').addEventListener('change',renderStats);
+  const researchCurrent=ctx=>recordMode==='practice'&&Number(mode)===2&&!!game&&!gameEnded&&pending===ctx&&pending?.type==='turn'&&!$('gameScreen').classList.contains('hidden');
+  import('./src/research/research-panel.mjs').then(({createResearchPanel})=>{
+    researchPanel=createResearchPanel({M,dialog:$('researchOverlay'),body:$('researchBody'),tileName,isCurrent:researchCurrent,onClose:()=>$('gameScreen').inert=false,readCurrent:ctx=>{
+      if(!researchCurrent(ctx))throw Error('stale research context');
+      const legalRiichiDiscards=captureCoachChoices(pending).riichiDiscards;
+      return {rule:game._rule,publicCase:{phase:'turn',scene:captureS42Scene(),actions:legalRiichiDiscards.length?[{action:37,details:['立直']}]:[]},legalRiichiDiscards};
+    }});
+    $('researchClose').addEventListener('click',()=>researchPanel.close());redrawSoon();
+  }).catch(e=>console.warn('研究統計モジュール未利用',e));
   $('startBtn').addEventListener('click',initGame);
   $('speedSelect').addEventListener('change',()=>{if(game)game.dwell=speedValue();});
   $('coachDetailBtn').addEventListener('click',openCoachDetails);
