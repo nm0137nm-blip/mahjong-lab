@@ -9,7 +9,7 @@
   },
   "active_task": {
     "phase": "P2a-v4.7 free-only known-case semantic diagnostic",
-    "status": "ALLLAST_APP_QA_PASS_CALCULATION_TRAINING_UNIT_PASS_BROWSER_RUNNING_L2_EXPLORATORY120_RUNNING",
+    "status": "CALCULATION_TRAINING_QA_PASS_PUSH_FRAME_COMPLETE_TECH3_RUNNING_EXPLORATORY120_RUNNING",
     "branch": "feat/coach-p2a-v47-minimal-diagnostic",
     "commit": "7959435bfad0412e9cd94234f01395af05d84789",
     "pr": 71,
@@ -355,7 +355,7 @@
       }
     ],
     "decision": "v46 API-only Stage1 stopped after 2 paid calls, 1 contract pass and 1 incomplete output due to cap. No evidence of typed condition contract failure from pilot82; no semantic certification. Original manual Stage1 plan not performed. No new paid generation authorized.",
-    "next": "Check training browser QA run45556501377 and 120 paired exploration run45551863303, fix failures and use effect aggregates only after all six cells pass. South4 UI pass synthetic pack, private pack local metadata check. D1 calculation prototype separate from existing v2 baseline/holdout; learner responses absent. 10k last full metadata confirmation2708, latest nominal2836; holdout split fixed, actual physical isolation/decryption pending. Book comparison, real pack app, iPhone, learning effect pending. No paid API/main change. Four report categories.",
+    "next": "Check L2 run45551863303 (all six exploratory cells, three completed, no partial effect read) and push-genbutsu technical run45558374939. If fail diagnose frozen candidates; if pass use all six first-riichi aggregates with precision limits, design push-genbutsu one-step variance study. Calculation training tests passed; real learner responses/learning effect absent. 10k last full metadata2708, latest nominal3028; physical holdout separation/decryption pending. External book comparisons, private pack browser/iPhone, no main changes or paid API. Four report categories.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -3280,7 +3280,7 @@
           }
         },
         "calculationTraining": {
-          "status": "INDEPENDENT_UNIT_QA_PASS_BROWSER_RUNNING",
+          "status": "CHROMIUM_WEBKIT_AND_INDEPENDENT_UNIT_PASS",
           "pr": 90,
           "branch": "feat/learning-d1-training-core-20261125",
           "head": "ff5b63225afebece610bac72d3ddb1d08e8ff965",
@@ -3291,7 +3291,19 @@
           "v8Validated": 24,
           "independentNodeTests": "success",
           "scope": "additional synthetic arithmetic exercises, separate from prior D1 v2. Fixed point transfers and hypothetical rank probability distributions, no legal hand score or strategic grading, full-set answer disclosure, confidence/time/reason and JSON export, standalone page, no proof of learning effect or anti-cheat; alternate not independent gameplay holdout",
-          "file": "calculation-training.html"
+          "file": "calculation-training.html",
+          "result": {
+            "nodePassed": 4,
+            "nodeFailed": 0,
+            "browsers": [
+              "Chromium",
+              "WebKit"
+            ],
+            "endOnlyReview": true,
+            "export": true,
+            "alternatePrompts": true
+          },
+          "limitations": "synthetic calculation only, no real learner responses, no strategic or learning-effect validation, standalone page not deployed or iPhone tested"
         }
       },
       "l2Prep": {
@@ -3438,12 +3450,56 @@
           "parallel": 3,
           "jobs": 6,
           "observedRunning": 3,
-          "observedQueued": 1,
-          "actualPairsVerified": 40,
+          "observedQueued": 0,
+          "actualPairsVerified": 60,
           "prereg": "handoff/learning-l2/exploratory-120-prereg.md",
           "scope": "exploratory S42-selected first riichi only, no efficacy certification; separate 240 replay hanchan not count toward 10k; use no partial efficacy results; standard public runner only",
-          "observedSuccess": 2,
+          "observedSuccess": 3,
           "partialEffectsRead": false
+        },
+        "pushGenbutsu": {
+          "status": "FRAME_COMPLETE_THREE_TECHNICAL_PAIRS_RUNNING",
+          "pr": 91,
+          "branch": "feat/learning-l2-push-genbutsu-20261125",
+          "head": "60d45a6f6f0c0ec23704166fb976e72595ccc00f",
+          "run": 45558374939,
+          "preregCommit": "f468afde5e62d48fb44e6237422a19076591cb85",
+          "patchCommit": "ada2b6c0de6e94eb6af7d92413df7dcb182714a2",
+          "matches": 970,
+          "batches": 36,
+          "publicDecisions": 143864,
+          "eligible": 1261,
+          "eligibleMatches": 512,
+          "cells": {
+            "0/late": {
+              "n": 21,
+              "matches": 21
+            },
+            "1/early": {
+              "n": 96,
+              "matches": 75
+            },
+            "1/mid": {
+              "n": 831,
+              "matches": 409
+            },
+            "1/late": {
+              "n": 313,
+              "matches": 199
+            }
+          },
+          "frameHash": "8f587ffb1c41f74cbea7425a69fa57a7cec0579b3b20d42f7755caed9dff80f8",
+          "preflightPassed": 3,
+          "selectedTechnicalPairs": 3,
+          "actualPairsVerified": 0,
+          "sourceCommitmentSha256": "b18f3ce390a9b10b0b23965b3c5e441f4780fe7ed032f3a14338e2f817ee277d",
+          "artifact": {
+            "name": "mahjong_l2_push_frame_20261125.zip",
+            "bytes": 5021,
+            "sha256": "05bd0f751af4f8d7780d692dfda6c0a77368536e28232c6b8d12950bcc5ba6cd",
+            "fileId": "file_000000004ed882069f56d5b34bf8e142"
+          },
+          "scope": "S42-selected non-genbutsu 0/1-shanten ordinary turn vs strict one-step genbutsu hand-break, one accepted threat, menzen/no kan, excludes special actions. Tenpai heavily selected, no whole-fold or generalization claim. No outcomes examined, no strategic certification. Shanten fixed core only. Standard free runner."
         }
       },
       "l2LatestReport": {
@@ -3451,8 +3507,8 @@
         "commit": "18364c8c19e24bd127aa7349a7e9bbd7e8ac1a24"
       },
       "latestReport": {
-        "path": "handoff/learning-alllast-pass-calculation-training-20261125.md",
-        "commit": "47365a9ae39685c4c0904a621bb14aa553d16956"
+        "path": "handoff/learning-push-frame-training-pass-20261125.md",
+        "commit": "bfbd739f723d09fa47294c16880e50ca6ca596b7"
       }
     },
     "learningCorpus": {
@@ -3650,10 +3706,10 @@
             "missingSuccessArtifact": 0,
             "artifactWithoutSuccess": 0
           },
-          "limitations": "full all-page verification 2708 at 05:38:13Z; later 34 artifact names nominal 2836; newest increment not matched to all job pages; initial970 only fully content-audited",
-          "latestNominalRangeCount": 2836,
-          "latestArtifactCount": 34,
-          "latestUnmatchedIncrement": 128
+          "limitations": "full all-page verification 2708 at 05:38:13Z; later 37 artifact names nominal 3028; newest increment not matched to all job pages; initial970 only fully content-audited",
+          "latestNominalRangeCount": 3028,
+          "latestArtifactCount": 37,
+          "latestUnmatchedIncrement": 320
         },
         "holdout": {
           "status": "PREREGISTERED_NOT_PHYSICALLY_ISOLATED",
