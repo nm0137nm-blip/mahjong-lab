@@ -9,7 +9,7 @@
   },
   "active_task": {
     "phase": "P2a-v4.7 free-only known-case semantic diagnostic",
-    "status": "L0_COMPLETE_L1_READY_CORPUS_EXTENSION_RUNNING",
+    "status": "L1_INITIAL_RESULTS_VALIDATED_EXTENSION_RUNNING",
     "branch": "feat/coach-p2a-v47-minimal-diagnostic",
     "commit": "7959435bfad0412e9cd94234f01395af05d84789",
     "pr": 71,
@@ -355,7 +355,7 @@
       }
     ],
     "decision": "v46 API-only Stage1 stopped after 2 paid calls, 1 contract pass and 1 incomplete output due to cap. No evidence of typed condition contract failure from pilot82; no semantic certification. Original manual Stage1 plan not performed. No new paid generation authorized.",
-    "next": "L1 ready: start independent A1 deterministic settlement, A2 minimal defensive constrained efficiency, B1/B2/C1 descriptive statistics under prereg cards; do not use provisional oracle before targeted verification. Parallel 9030 extension run45530376491 in progress, pilot10 passed; check artifacts, recover only missing in authorized scope, audit. PR77 final deployment review remains separate. No paid or extra training; 10000 cap.",
+    "next": "Continue L1 independent tracks: exact required-score enumeration, A2 scope fixtures/pass-after-riichi category, B1 same-definition book comparison, B2 wait/first/chase, C1 role-ready/non-genbutsu opportunities, D1 private diagnostic/original drills. Use prior 970 only for development, no unsupported external extrapolation. Parallel extension45530376491; initial 8 bulk running, 980 stored cumulative. PR77 deployment review separate; no paid or new training.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -2956,6 +2956,46 @@
         "entryCards": "handoff/learning-l1-entry-cards-20261125.md",
         "entryCardsCommit": "28e75fda5df591f5ffe6cfe11a0d61f4d1c76509",
         "initialMatches": 970
+      },
+      "l1": {
+        "status": "IN_PROGRESS_INITIAL_RESULTS",
+        "record": "handoff/learning-l1-initial-results-20261125.md",
+        "commit": "b1636fd221683a3496c30d113a92eea6d1a248bc",
+        "operationalCard": "handoff/learning-l1-bc-operational-v1-20261125.md",
+        "matches": 970,
+        "hands": 10089,
+        "statCells": 189,
+        "supportedCells": 169,
+        "bootstrap": 2000,
+        "A1": {
+          "status": "MINIMAL_EXPLICIT_PAYMENT_BOUNDARY_PASS",
+          "synthetic": 76,
+          "observed": 10089,
+          "mismatches": 0,
+          "limits": "known recorded payments, not independent scoring; needed-score enumeration pending"
+        },
+        "A2": {
+          "status": "INITIAL_ENUMERATION_SMOKE_PASS",
+          "cases": 250,
+          "mismatches": 0,
+          "limits": "same shanten core, strategic benefit not verified; through-riichi pass and independent coverage pending"
+        },
+        "BC": {
+          "status": "INITIAL_DESCRIPTIVE_AGGREGATES_COMPLETE",
+          "firstRiichiN": 6147,
+          "riichiActualN": 81521,
+          "riichiCandidateN": 773653,
+          "limits": "S42-only; roles/fine conditions and direct human matching pending"
+        },
+        "external": "book page reviewed, mismatched granularity/denominator not confirmed, no direct comparison",
+        "D1": "NOT_STARTED",
+        "privateZip": {
+          "name": "mahjong_l1_initial_research_20261125.zip",
+          "sha256": "c268a1cd4e602fcd7ad3441c677858309f1d4688bb60bbf8d94e2852583044fe",
+          "bytes": 22126,
+          "includes": "aggregate + own code, no raw logs, keys, book content",
+          "fileId": "file_00000000412082069cbd0042f1292dc2"
+        }
       }
     },
     "learningCorpus": {
@@ -3125,7 +3165,15 @@
         "retentionDays": 30,
         "storage": "Encrypted CI temporary transport, separate private key; private backup before expiry, no plaintext or book material.",
         "eta": "16–24h or longer conditional on failures, queue and setup; next morning check",
-        "paidCalls": 0
+        "paidCalls": 0,
+        "latestObserved": {
+          "savedCumulative": 980,
+          "pilot10": "pass",
+          "bulkActive": 8,
+          "bulkArtifactsConfirmed": 0,
+          "failedObserved": 0,
+          "scope": "first 100 jobs inspected"
+        }
       }
     },
     "labTenhou": {
