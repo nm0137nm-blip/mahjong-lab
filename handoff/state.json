@@ -9,7 +9,7 @@
   },
   "active_task": {
     "phase": "P2a-v4.7 free-only known-case semantic diagnostic",
-    "status": "DEV_6990_ALLSEAT_BASELINE_AND_CANDIDATE_SMOKE_PASS_COUNTERFACTUAL_GATE_NOT_PASSED",
+    "status": "FEATURE_CONTRACT_COMPLETION_PRIORITY_SELECTED_FEATURE_EXPANSION_PASS",
     "branch": "feat/coach-p2a-v47-minimal-diagnostic",
     "commit": "7959435bfad0412e9cd94234f01395af05d84789",
     "pr": 71,
@@ -355,7 +355,7 @@
       }
     ],
     "decision": "v46 API-only Stage1 stopped after 2 paid calls, 1 contract pass and 1 incomplete output due to cap. No evidence of typed condition contract failure from pilot82; no semantic certification. Original manual Stage1 plan not performed. No new paid generation authorized.",
-    "next": "Continue step 8-3 through 8-5 without intermediate approvals within existing free/private scope. Monitor new 80-pair diagnostic run45714942219, no promotion on partial or imprecise outcomes; complete missing feature groups, legal reach mask, Y08 and legal/policy ron label separation, calibrated nonlinear comparison, and new development-only branch evaluation. Keep existing confirmation 3000 sealed. Monitor additional corpus run45709695837; no new paid APIs/main merge.",
+    "next": "Complete exact 49-feature-group contract per registry before substantive model comparison/promotion; finish B04/B05/C04 and remaining groups, all-candidate legal/public audit and opponent-specific outcome labels. Existing model exploratory only. Keep confirmation 3000 sealed, additional generation continues, no unapproved paid work/main changes.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -3847,7 +3847,7 @@
         "rules": "Distinguish observed human/Mortal rates, book model assumptions, counterfactual policies. Do not treat selected final dama as prospective comparison. Align exact denominator and timing; missing definitions provisional. Preserve 3000 confirmation split, no human grading of opponent open-hand tenpai from S42. User goal in-game research display before more isolated UI work; no public source text/table or paid calls."
       },
       "candidateRoundEVFirstGoal": {
-        "status": "ALLSEAT_6990_OBSERVED_CV_PASS_CANDIDATE_PREDICTION_SMOKE_COUNTERFACTUAL_FAIL",
+        "status": "BASELINE_EXPLORATORY_FEATURE_CONTRACT_COMPLETION_IN_PROGRESS",
         "report": "handoff/learning-candidate-round-ev-first-goal-20261125.md",
         "reportCommit": "7b3086be263bf702e81b8ba8e9bac09b5f83b314",
         "goal": "In-game per legal concrete discard candidate display five mutually exclusive terminal outcome probabilities and conditional score changes (ten terms), expected round net points and uncertainty; no fabricated numbers.",
@@ -4169,6 +4169,43 @@
             "modelSha256": "468c20f0c591c017e04b05cf0ce1ee3d3e27cb66f956a651ddd3f044fae732d8"
           },
           "remaining": "Complete 49 feature groups, Y08, all-candidate strict reach/legal/policy ron, full nonlinear model comparison, calibration, causal difference validation. No production or holdout opening."
+        },
+        "featureCompletion": {
+          "status": "ALL49_CONTRACT_REGISTRY_CREATED_PARTIAL_EXTRACTION",
+          "report": "handoff/learning-feature-completion-gate-20261126.md",
+          "reportCommit": "bbd8b362cd437d7875f336c9a1aae65b776f9d9d",
+          "contractBlobSHA": "15778762afa0093057c4122e18228684291cd589",
+          "counts": {
+            "completeSelected": 21,
+            "partial": 16,
+            "missing": 12,
+            "fullCandidateIndependentCertified": 0
+          },
+          "matches": 6990,
+          "selectedRows": 3205698,
+          "publicSupplement": {
+            "columns": 125,
+            "samplePhysicalOptions": 63166,
+            "mismatches": 0
+          },
+          "waitSupplement": {
+            "columns": 19,
+            "tenpaiRows": 358449,
+            "zeroPhysicalWait": 2,
+            "samplePhysicalOptions": 31423,
+            "fixtures": 6,
+            "mismatches": 0
+          },
+          "artifact": {
+            "name": "mahjong_feature_completion_20261126.zip",
+            "bytes": 19157,
+            "sha256": "2803869bdda5e743d9126b6c877cd08ce28b2fc289a6f4bc4dae6c29cc5f7c84"
+          },
+          "confirmationParsed": false,
+          "qaUsed": false,
+          "newTraining": false,
+          "gate": "all required groups exact implementation, all candidate coverage and independent audit before substantive final selection; explicit per-Y ablation before exclusions; no holdout or production promotion",
+          "opponentTargets": "relative opponent joint outcomes and score transfers; design pending"
         }
       }
     },
