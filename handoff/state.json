@@ -3883,6 +3883,26 @@
           "localBuild": "/tmp/mlab_current/roundev/build.py",
           "report": "handoff/learning-round-ev-prototype-1068-20261125.md",
           "reportCommit": "4f53a95cb6319b87feee59c06a888c903cbb515c"
+        },
+        "regressionDesignProposal": {
+          "status": "PROPOSED_0_1_2_USER_REVIEW_PENDING",
+          "report": "handoff/learning-round-ev-regression-design-proposal-20261125.md",
+          "commit": "c74e1c6dc1567964c4c54187868d530b718dab89",
+          "pilot": {
+            "matches": 100,
+            "hands": 1068,
+            "unit": "one focal seat per round",
+            "counts": [
+              216,
+              130,
+              270,
+              315,
+              137
+            ],
+            "netSD": 4388
+          },
+          "split": "existing development6990 confirmation3000 QA10",
+          "limits": "illustrative independent precision and binary shrinkage calculations, actual clustered model sample size not determined; no new paid API or model training"
         }
       }
     },
