@@ -9,7 +9,7 @@
   },
   "active_task": {
     "phase": "P2a-v4.7 free-only known-case semantic diagnostic",
-    "status": "CORPUS_FINAL_AUDIT_FOUND_14_MISSING_REPAIR_RUNNING",
+    "status": "CORPUS_SECOND_REPAIR_TIMEOUT_ISOLATED_RETRY_AND_ARCHIVE_AUDIT_RUNNING",
     "branch": "feat/coach-p2a-v47-minimal-diagnostic",
     "commit": "7959435bfad0412e9cd94234f01395af05d84789",
     "pr": 71,
@@ -355,7 +355,7 @@
       }
     ],
     "decision": "v46 API-only Stage1 stopped after 2 paid calls, 1 contract pass and 1 incomplete output due to cap. No evidence of typed condition contract failure from pilot82; no semantic certification. Original manual Stage1 plan not performed. No new paid generation authorized.",
-    "next": "Complete targeted 14 repair run45704082840; audit exact coverage+both repaired ranges, all encrypted archives/seed/log commitments, content of development and opaque confirmation split/private backups. Prior full archive script stopped on single-failure assumption; correct to handle both. No model work or rolling generation until verified first 10000. No paid API/main changes.",
+    "next": "Check four isolated retry jobs run45704583778 and archive audit run45704680527; never count missing or failed summary-only artifacts; independently audit full decrypted development content and opaque confirmation hashes and durable backup after restoring previous private recovery key locally. Keep first-10000 gate, no rolling generation/model work/paid APIs/main changes.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -4098,7 +4098,7 @@
       },
       "userAccepted970": true,
       "extension": {
-        "status": "ORIGINAL_RUN_COMPLETE_SECOND_14_MISSING_REPAIR_RUNNING",
+        "status": "SECOND_REPAIR_TIMEOUT_FOUR_BATCH_RETRY_RUNNING",
         "userAuthorized": "2026-11-25 user accepts 970 and authorizes cumulative 10000 if initial quality acceptable, unpaid",
         "targetCumulative": 10000,
         "additionalPlanned": 9030,
@@ -4272,7 +4272,7 @@
           "limits": "content checks for 45, confirmation opaque; full legality/yaku not rerun"
         },
         "secondRepair": {
-          "status": "MISSING_14_RETRY_RUNNING",
+          "status": "FIRST_RETRY_TIMEOUT_ZERO_SAVED_FOUR_BATCH_RETRY_RUNNING",
           "failedOriginalJob": 138925887544,
           "failedRange": [
             7819,
@@ -4302,13 +4302,56 @@
           "pr": 97,
           "branch": "fix/tenhou-extension-7869-7882-20261126",
           "head": "76a002ec3b1b76dcad3e51b174442c56c559aeb3",
-          "run": 45704082840
+          "run": 45704082840,
+          "failedRetry": {
+            "run": 45704082840,
+            "job": 139521407969,
+            "artifact": 15065375279,
+            "bytes": 417,
+            "completed": 0,
+            "reason": "TimeoutError; model-ready stage probable but not proven"
+          },
+          "isolatedRetry": {
+            "pr": 97,
+            "head": "a9701894a27322e8c8521513fe75c9187039eee8",
+            "run": 45704583778,
+            "ranges": [
+              [
+                7869,
+                7872
+              ],
+              [
+                7873,
+                7876
+              ],
+              [
+                7877,
+                7880
+              ],
+              [
+                7881,
+                7882
+              ]
+            ],
+            "status": "four_jobs_in_generation",
+            "modelReadyTimeoutSeconds": 180,
+            "oldTimeoutSeconds": 120,
+            "paidCalls": 0
+          }
         },
         "finalAudit": {
-          "status": "INCOMPLETE_14_MISSING_FULL_CONTENT_PENDING",
+          "status": "ENCRYPTED_ARCHIVE_AUDIT_RUNNING_CONTENT_AUDIT_PENDING",
           "report": "handoff/learning-corpus-final-audit-20261126.md",
-          "reportCommit": "0231fa1603ff4309bd49383ce288b4d12fa61f5a",
-          "locallyVerifiedUniqueSeedLogCount": 1876
+          "reportCommit": "a1e06ab6389b1b7386ee4ab3f34f89e9333ee437",
+          "locallyVerifiedUniqueSeedLogCount": 1876,
+          "archiveAudit": {
+            "pr": 98,
+            "head": "9977f8d7b9c7135f6ae1da4ce46a5d40a8d65a85",
+            "run": 45704680527,
+            "status": "in_progress",
+            "scope": "9986 existing encrypted archives/summary commitments then exact 10000 with four repair archives; no decryption"
+          },
+          "privateContentBlocker": "Prior private recovery key ZIP and local intake script not available in current chat runtime or Library search; restore previous private files without uploading private key to GitHub."
         }
       },
       "rollingGeneration": {
