@@ -4718,6 +4718,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
 
   let game = null, human = null, pending = null, mode = '1';
   let researchPanel=null,allLastPanel=null,allLastStart=null,allLastFirstHand=false;
+  let roundEVModule=null,roundEVQuery=null,roundEVDialog=null,roundEVPending=null;
   let riichiMode = false, coachCollapsed = true, candidateInfo = [];
   let lastFeedback = null, decisionLog = [], gameEnded = false, matchSaved = false;
   let readyToNext = false, selectedRule = null, lastAction = '', recordedMatchId = null;
@@ -4965,7 +4966,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     $('statsHalf').setAttribute('aria-pressed',String(statsMode===2));
   }
   function initGame() {
-    researchPanel?.close();allLastPanel?.close();allLastStart=null;allLastFirstHand=false;
+    closeRoundEV();researchPanel?.close();allLastPanel?.close();allLastStart=null;allLastFirstHand=false;
     if (game && !gameEnded) { try { game.stop(()=>{}); } catch {} }
     mode = document.querySelector('input[name="length"]:checked')?.value || '1';
     recordMode = document.querySelector('input[name="recordMode"]:checked')?.value || 'practice';
@@ -5282,6 +5283,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     if (pending.type==='turn') {
       if(allLastPanel&&allLastFirstHand&&allLastStart&&duringResearchAllowed())addAction('研究統計（南4開始）',()=>{const ctx={kind:'during',pending,snapshot:allLastStart,matchId:recordedMatchId};if(allLastPanel.open(ctx))$('gameScreen').inert=true;});
       if(researchPanel&&duringResearchAllowed()&&Number(mode)===2)addAction('研究統計（立直）',()=>{if(researchPanel.open(pending))$('gameScreen').inert=true;});
+      if(roundEVModule&&phoenixV4&&duringResearchAllowed()&&Number(mode)===2&&!captureS42Scene()?.rivers[ownSeat()]?.riichi)addAction('局収支（試作）',openRoundEV);
       if(pending.win) addAction('ツモ',()=>answer({hule:'-'}),'important');
       if(pending.nine) addAction('九種九牌（流局）',()=>answer({daopai:'-'}),'nine-tiles');
       for(const m of pending.gang) addAction(`カン (${meldTiles(m).map(tileName).join(' ')})`,()=>answer({gang:m}));
@@ -5364,7 +5366,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
   }
   function answer(payload) {
     if(!pending || !human) return;
-    researchPanel?.close();allLastPanel?.close();
+    closeRoundEV();researchPanel?.close();allLastPanel?.close();
     if(pending.type==='reaction')recordReactionChoice(pending,payload);
     else if(pending.type==='turn'&&(payload.gang||payload.hule||payload.daopai))recordTurnAction(pending,payload);
     const cb=human._callback;pending=null;riichiMode=false;candidateInfo=[];
@@ -5590,7 +5592,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     body.innerHTML=html;
   }
   let redrawQueued=false;
-  function redrawSoon() { if(redrawQueued) return;redrawQueued=true;requestAnimationFrame(()=>{redrawQueued=false;researchPanel?.sync();allLastPanel?.sync();if(!game||!$('gameScreen').classList.contains('hidden')){try{renderTable();renderHand();renderActions();renderReaction();renderCoach();fitBoard();}catch(e){notify('画面表示エラー: '+e.message);console.error(e);}}}); }
+  function redrawSoon() { if(redrawQueued) return;redrawQueued=true;requestAnimationFrame(()=>{redrawQueued=false;if(roundEVPending&&(roundEVPending!==pending||!duringResearchAllowed()))closeRoundEV();researchPanel?.sync();allLastPanel?.sync();if(!game||!$('gameScreen').classList.contains('hidden')){try{renderTable();renderHand();renderActions();renderReaction();renderCoach();fitBoard();}catch(e){notify('画面表示エラー: '+e.message);console.error(e);}}}); }
   function notify(msg) {const t=$('gameToast');t.textContent=msg;if(toastTimer)clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.textContent='',3300);}
   function limitName(data) {
     const yakuman = (data.hupai||[]).reduce((s,y)=> s + (y.fanshu==='**'?2:y.fanshu==='*'?1:0), 0);
@@ -6178,7 +6180,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     $('endOverlay').classList.remove('hidden');
   }
   function goHome() {
-    researchPanel?.close();allLastPanel?.close();$('s42ReviewOverlay').classList.add('hidden');
+    closeRoundEV();researchPanel?.close();allLastPanel?.close();$('s42ReviewOverlay').classList.add('hidden');
     if(game && !gameEnded) {try{game.stop(()=>{});}catch{}}
     gameEnded=true;pending=null;readyToNext=false;
     $('gameScreen').classList.add('hidden');$('endOverlay').classList.add('hidden');$('resultOverlay').classList.add('hidden');
@@ -6200,6 +6202,36 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
       !$('s42ReviewOverlay').classList.contains('hidden')&&s42ReviewRows[s42ReviewCursor]===ctx.entry;
     return duringResearchAllowed()&&Number(mode)===2&&!!game&&!gameEnded&&pending===ctx&&pending?.type==='turn'&&!$('gameScreen').classList.contains('hidden');
   };
+  function closeRoundEV(){if(roundEVDialog?.open)roundEVDialog.close();roundEVPending=null;}
+  function openRoundEV(){
+    if(!roundEVModule||!phoenixV4||!game||pending?.type!=='turn'||!duringResearchAllowed()||Number(mode)!==2)return;
+    const key=pending,scene=captureS42Scene();
+    if(!scene||scene.pendingReach||scene.rivers[scene.ownSeat].riichi)return;
+    closeRoundEV();roundEVPending=key;
+    if(!roundEVDialog){
+      roundEVDialog=document.createElement('dialog');roundEVDialog.id='roundEVPrototype';roundEVDialog.style.cssText='width:min(90vw,520px);max-height:80vh;overflow:auto;border-radius:12px;padding:14px;color:#17232b;background:#f8fafc';
+      roundEVDialog.addEventListener('close',()=>{roundEVPending=null;});
+      document.body.append(roundEVDialog);
+    }
+    roundEVDialog.replaceChildren();
+    const title=document.createElement('h2');title.textContent='打牌別 局収支（試作）';
+    const close=document.createElement('button');close.type='button';close.textContent='閉じる';close.onclick=closeRoundEV;
+    const body=document.createElement('div');roundEVDialog.append(title,close,body);
+    const draw=()=>{
+      if(pending!==key||roundEVPending!==key||!roundEVDialog.open||!duringResearchAllowed())return;
+      if(!roundEVQuery){body.textContent='試作集計JSONを読み込んでください。';const input=document.createElement('input');input.type='file';input.accept='.json,application/json';body.append(input);
+        input.onchange=async()=>{try{const file=input.files?.[0];if(!file||file.size>500000)throw Error('ファイルサイズ');const q=roundEVModule.makeRoundEVQuery(JSON.parse(await file.text()));if(pending!==key||roundEVPending!==key||!roundEVDialog.open||!duringResearchAllowed())return;roundEVQuery=q;draw();}catch(e){if(roundEVPending===key)body.append(document.createTextNode(' 読込不可：'+e.message));}};
+        return;
+      }
+      try{
+        const choices=captureCoachChoices(key);
+        const ev=phoenixV4.buildEvidence({scene,candidates:candidateInfo,legalChoices:choices},M,{twoDrawEnabled:false});
+        roundEVModule.showRoundEV({scene,candidates:ev?.候補別牌姿||[],legalChoices:choices,query:roundEVQuery,root:body,tileName});
+      }catch(e){body.textContent='候補計算を取得できません：'+e.message;}
+    };
+    roundEVDialog.showModal();draw();
+  }
+  import('./src/research/round-ev-prototype.mjs').then(m=>{roundEVModule=m;redrawSoon();}).catch(e=>console.warn('局収支試作を利用できません',e));
   import('./src/research/research-panel.mjs').then(({createResearchPanel})=>{
     researchPanel=createResearchPanel({M,dialog:$('researchOverlay'),body:$('researchBody'),tileName,isCurrent:researchCurrent,onClose:()=>{
       for(const id of ['gameScreen','s42ReviewOverlay','endOverlay'])$(id).inert=false;
