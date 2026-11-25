@@ -1,0 +1,36 @@
+name: Corpus artifact index for private audit
+on:
+  pull_request:
+    branches: [project-handoff]
+    paths: ['.github/workflows/learning-corpus-artifact-index.yml']
+permissions:
+  contents: read
+  actions: read
+jobs:
+  index:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    steps:
+      - name: List immutable encrypted artifact metadata only
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python3 - <<'PY'
+          import json,os,urllib.request
+          root='https://api.github.com/repos/nm0137nm-blip/mahjong-lab/actions/runs/'
+          ids={14971366545,14971399453,14971649913,14971951565,14972624707,14972715804,14972775190,14973544851,14973736153,14973742025,14974245227,14974368683,14974429594,14974549341,14974792896,14974948260,14975010585,14975253194,14975256115,14975556946,14976101238,14976103514,14976479124,14976569071,14976858806,14977378284,14977491525,14977530021,14977637945,14977854742,14977909336,14977935465,14978990467,14979273901,14979394486,14979396507}
+          out=[]
+          for run in [45502831152,45519978000,45530376491,45571397958,45704583778]:
+           page=1
+           while True:
+            req=urllib.request.Request(root+str(run)+'/artifacts?per_page=100&page='+str(page),headers={'Authorization':'Bearer '+os.environ['GH_TOKEN'],'Accept':'application/vnd.github+json'})
+            with urllib.request.urlopen(req,timeout=30) as f:a=json.load(f)['artifacts']
+            for v in a:
+             if run in [45502831152,45519978000] and v['id'] not in ids:continue
+             assert not v['expired'] and v['digest'].startswith('sha256:')
+             out.append([run,v['id'],v['name'],v['digest'][7:],v['size_in_bytes']])
+            if len(a)<100:break
+            page+=1
+          assert len(out)==187 and len({v[1] for v in out})==187
+          for v in sorted(out):print('CORPUS_INDEX='+json.dumps(v,separators=(',',':')))
+          PY
