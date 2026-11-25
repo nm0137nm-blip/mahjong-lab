@@ -30,3 +30,25 @@ jobs:
           sleep 2
           BROWSER=chromium node tests/mobile-smoke.mjs
           node tests/tenhou-profile-browser.mjs
+  complete_match:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 16
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: lab
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run real model through complete East and Hanchan, offline restoration
+        run: |
+          set -euo pipefail
+          mv lab /tmp/lab
+          curl --fail --location --retry 1 --silent --show-error --max-time 160 'https://huggingface.co/xzhe121/Mortal-S42-onnx/resolve/main/model.onnx' -o /tmp/lab/tests/mortal/model.onnx
+          echo '30381bf21389e2d25d3edf48fed11bf772336ef3daeee67d1bdae7fb9dd30cb4  /tmp/lab/tests/mortal/model.onnx' | sha256sum -c -
+          mkdir -p /tmp/probe && cd /tmp/probe
+          npm init -y >/dev/null
+          npm install --ignore-scripts --no-audit --no-fund playwright-core@1.57.0 >/dev/null
+          (cd /tmp/lab && python3 -m http.server 8788 --bind 127.0.0.1 >/tmp/http.log 2>&1) &
+          sleep 2
+          node /tmp/lab/tests/mortal/run-full-match-probe.cjs
