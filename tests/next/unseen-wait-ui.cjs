@@ -83,6 +83,7 @@ async function blindComplete(p){
 }
 async function loadUnseen(p,live){
  const section=p.locator('#unseenWaitSection');
+ if(!await p.locator('#unseenPackInput').count())throw Error('unseen section not ready ('+(live?'live':'review')+'): '+(await section.innerText()).slice(0,200));
  await p.locator('#unseenPackInput').waitFor({state:'visible'});
  if(live){
   const v=await p.locator('#researchCandidate').inputValue(),expected=await p.evaluate(v=>__unseenQA(v),v);
@@ -112,6 +113,7 @@ async function run(engine,name){
  assert.match(await p.locator('#researchResult').innerText(),/集計はありません/);
  for(const k of ['shape','dealer','band','scoreBand'])await p.locator('#researchBody input[value="'+k+'"]').check();
  const text=await p.locator('#researchResult').innerText();assert.match(text,/95% CI/);assert.match(text,/被ツモ率：標本不足/);
+ await loadUnseen(p,true);
  assert.equal(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
  await p.waitForTimeout(200);assert.deepEqual(await p.evaluate(()=>MahjongLabDebug.state()),before);
  await p.locator('#researchClose').click();assert.equal(await p.locator('#researchOverlay').isVisible(),false);assert.equal(await p.locator('#gameScreen').evaluate(e=>e.inert),false);
@@ -151,7 +153,6 @@ async function run(engine,name){
  assert.match(await p.locator('#researchBody').innerText(),/判断当時の公開情報/);
  for(const k of ['shape','dealer','band','scoreBand'])await p.locator('#researchBody input[value="'+k+'"]').check();
  assert.match(await p.locator('#researchResult').innerText(),/95% CI/);
- await loadUnseen(p,true);
  await p.keyboard.press('Escape');
  assert.equal(await p.locator('#researchOverlay').isVisible(),false);
  assert.equal(await p.locator('#s42ReviewOverlay').evaluate(e=>e.inert),false);
