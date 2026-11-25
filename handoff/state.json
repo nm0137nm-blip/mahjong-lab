@@ -355,7 +355,7 @@
       }
     ],
     "decision": "v46 API-only Stage1 stopped after 2 paid calls, 1 contract pass and 1 incomplete output due to cap. No evidence of typed condition contract failure from pilot82; no semantic certification. Original manual Stage1 plan not performed. No new paid generation authorized.",
-    "next": "Use attached book as primary research roadmap: first verify theme13 definitions/fold costs, theme20/21 risk denominator and turn index, theme29 expected loss, theme0 accounting. Reproduce exact observable definitions or label approximate. Continue already-approved extension intake/repair run45571397958 and holdout separation; do not use confirmation contents. Previous 120/60 exploration precision unmet. No production change or new paid calls. Report practical research question, finding, limits, and in-game display use.",
+    "next": "First product goal now candidate-by-candidate 10-term round EV in LAB. Begin theme0 outcome partition and exact settlement decomposition using initial970 and verified development data, then book-aligned risk/payoff definitions and public candidate model with paired validation. Freeze accuracy/coverage gates before independent confirmation. Continue approved 10k generation, targeted repair and private split audit separately; no new paid APIs/main change.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -3845,6 +3845,20 @@
           19
         ],
         "rules": "Distinguish observed human/Mortal rates, book model assumptions, counterfactual policies. Do not treat selected final dama as prospective comparison. Align exact denominator and timing; missing definitions provisional. Preserve 3000 confirmation split, no human grading of opponent open-hand tenpai from S42. User goal in-game research display before more isolated UI work; no public source text/table or paid calls."
+      },
+      "candidateRoundEVFirstGoal": {
+        "status": "PRODUCT_GOAL_AND_RESEARCH_SEQUENCE_DEFINED_NOT_IMPLEMENTED",
+        "report": "handoff/learning-candidate-round-ev-first-goal-20261125.md",
+        "reportCommit": "7b3086be263bf702e81b8ba8e9bac09b5f83b314",
+        "goal": "In-game per legal concrete discard candidate display five mutually exclusive terminal outcome probabilities and conditional score changes (ten terms), expected round net points and uncertainty; no fabricated numbers.",
+        "stages": [
+          "theme0 settlement accounting and exact decomposition",
+          "book-aligned observed conditional aggregates",
+          "candidate-specific model and paired intervention validation with public-only features",
+          "actual app integration, independent calibration/accuracy/coverage and device QA"
+        ],
+        "limitations": "Observed S42 choices are not counterfactual effects; future policy must be explicit, unsupported candidates must abstain, exact book accounting to align, no human external validity claim or rank-pt equivalence.",
+        "firstPriority": true
       }
     },
     "learningCorpus": {
