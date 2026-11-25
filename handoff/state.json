@@ -9,7 +9,7 @@
   },
   "active_task": {
     "phase": "P2a-v4.7 free-only known-case semantic diagnostic",
-    "status": "POSTMATCH_QA_PASS_ALLLAST_QA_RUNNING_EXTENSION_HOLDOUT_PREREG_AND_FULL_METADATA_PASS_L2_EXPLORATORY120_RUNNING",
+    "status": "ALLLAST_APP_QA_PASS_CALCULATION_TRAINING_UNIT_PASS_BROWSER_RUNNING_L2_EXPLORATORY120_RUNNING",
     "branch": "feat/coach-p2a-v47-minimal-diagnostic",
     "commit": "7959435bfad0412e9cd94234f01395af05d84789",
     "pr": 71,
@@ -355,7 +355,7 @@
       }
     ],
     "decision": "v46 API-only Stage1 stopped after 2 paid calls, 1 contract pass and 1 incomplete output due to cap. No evidence of typed condition contract failure from pilot82; no semantic certification. Original manual Stage1 plan not performed. No new paid generation authorized.",
-    "next": "Check PR88 first-South4 browser QA run45554781404 and 120-pair run45551863303, diagnose any failures and use only all six complete cell results. Extension full metadata run45554930744 passed at 05:38:13Z, 2708 saved, 970 fully audited; split defined not physically isolated, holdout unexamined. Preserve raw/key locally and separate holdout before research. Real private pack app and iPhone, external book comparisons, L3 learning-effect gates pending. No paid API/main change. Four report categories.",
+    "next": "Check training browser QA run45556501377 and 120 paired exploration run45551863303, fix failures and use effect aggregates only after all six cells pass. South4 UI pass synthetic pack, private pack local metadata check. D1 calculation prototype separate from existing v2 baseline/holdout; learner responses absent. 10k last full metadata confirmation2708, latest nominal2836; holdout split fixed, actual physical isolation/decryption pending. Book comparison, real pack app, iPhone, learning effect pending. No paid API/main change. Four report categories.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -3246,7 +3246,7 @@
           },
           "scope": "initial first South4 start conditional S42 descriptive development; no causal inference or human calibration; pt reference only, no app integration yet",
           "app": {
-            "status": "IMPLEMENTED_BROWSER_QA_RUNNING",
+            "status": "CHROMIUM_WEBKIT_PASS_SYNTHETIC_PACK",
             "pr": 88,
             "branch": "feat/learning-alllast-research-20261125",
             "head": "3d81d4f0374a3446989e6e7d527af88a406a81ec",
@@ -3257,8 +3257,41 @@
               "sha256": "0e3f0dd2ed26d571a6a74154658a22bad71cae574a228e494913273a59be91f5",
               "bytes": 27505
             },
-            "scope": "first South4 immutable public point snapshot; practice coach/self during first hand only; any mode after completed hanchan; no live assessment; synthetic CI, real pack and iPhone untested"
+            "scope": "first South4 immutable public point snapshot; practice coach/self during first hand only; any mode after completed hanchan; no live assessment; synthetic CI, real pack and iPhone untested",
+            "result": {
+              "browsers": [
+                "Chromium",
+                "WebKit"
+              ],
+              "naturalStart": true,
+              "rawLogPublicAudit": true,
+              "assessmentHidden": true,
+              "completedMatch": true,
+              "nativeCrypto": true,
+              "syntheticPack": true,
+              "privatePackRealBrowser": false,
+              "privatePackLocalValidation": {
+                "sha256Match": true,
+                "cells": 24,
+                "partitionCountsMatch": true,
+                "percentagesMatch": true
+              }
+            }
           }
+        },
+        "calculationTraining": {
+          "status": "INDEPENDENT_UNIT_QA_PASS_BROWSER_RUNNING",
+          "pr": 90,
+          "branch": "feat/learning-d1-training-core-20261125",
+          "head": "ff5b63225afebece610bac72d3ddb1d08e8ff965",
+          "run": 45556501377,
+          "job": 139009710910,
+          "baseline": 12,
+          "alternate": 12,
+          "v8Validated": 24,
+          "independentNodeTests": "success",
+          "scope": "additional synthetic arithmetic exercises, separate from prior D1 v2. Fixed point transfers and hypothetical rank probability distributions, no legal hand score or strategic grading, full-set answer disclosure, confidence/time/reason and JSON export, standalone page, no proof of learning effect or anti-cheat; alternate not independent gameplay holdout",
+          "file": "calculation-training.html"
         }
       },
       "l2Prep": {
@@ -3405,10 +3438,12 @@
           "parallel": 3,
           "jobs": 6,
           "observedRunning": 3,
-          "observedQueued": 3,
-          "actualPairsVerified": 0,
+          "observedQueued": 1,
+          "actualPairsVerified": 40,
           "prereg": "handoff/learning-l2/exploratory-120-prereg.md",
-          "scope": "exploratory S42-selected first riichi only, no efficacy certification; separate 240 replay hanchan not count toward 10k; use no partial efficacy results; standard public runner only"
+          "scope": "exploratory S42-selected first riichi only, no efficacy certification; separate 240 replay hanchan not count toward 10k; use no partial efficacy results; standard public runner only",
+          "observedSuccess": 2,
+          "partialEffectsRead": false
         }
       },
       "l2LatestReport": {
@@ -3416,8 +3451,8 @@
         "commit": "18364c8c19e24bd127aa7349a7e9bbd7e8ac1a24"
       },
       "latestReport": {
-        "path": "handoff/learning-alllast-ui-extension-split-20261125.md",
-        "commit": "664ea37383d3fdf6120eec3951c210daa96ec6ee"
+        "path": "handoff/learning-alllast-pass-calculation-training-20261125.md",
+        "commit": "47365a9ae39685c4c0904a621bb14aa553d16956"
       }
     },
     "learningCorpus": {
@@ -3615,7 +3650,10 @@
             "missingSuccessArtifact": 0,
             "artifactWithoutSuccess": 0
           },
-          "limitations": "all-page job and artifact metadata only; extension contents not decrypted/audited"
+          "limitations": "full all-page verification 2708 at 05:38:13Z; later 34 artifact names nominal 2836; newest increment not matched to all job pages; initial970 only fully content-audited",
+          "latestNominalRangeCount": 2836,
+          "latestArtifactCount": 34,
+          "latestUnmatchedIncrement": 128
         },
         "holdout": {
           "status": "PREREGISTERED_NOT_PHYSICALLY_ISOLATED",
