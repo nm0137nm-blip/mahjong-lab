@@ -9,7 +9,7 @@
   },
   "active_task": {
     "phase": "P2a-v4.7 free-only known-case semantic diagnostic",
-    "status": "L2_VARIANCE24_REAL_MODEL_POISON_PASS_EXPLORATORY120_AND_STUDY_MODE_QA_RUNNING",
+    "status": "STUDY_MODES_PASS_POSTMATCH_QA_RUNNING_L1_V5_ALLLAST_AUDIT_PASS_L2_EXPLORATORY120_RUNNING",
     "branch": "feat/coach-p2a-v47-minimal-diagnostic",
     "commit": "7959435bfad0412e9cd94234f01395af05d84789",
     "pr": 71,
@@ -355,7 +355,7 @@
       }
     ],
     "decision": "v46 API-only Stage1 stopped after 2 paid calls, 1 contract pass and 1 incomplete output due to cap. No evidence of typed condition contract failure from pilot82; no semantic certification. Original manual Stage1 plan not performed. No new paid generation authorized.",
-    "next": "Check study mode browser QA run45552035287 first (Chromium/WebKit, synthetic pack), diagnose failures and verify full results. Check 120 exploratory run45551863303 all six cell aggregates; do not use partial outcomes; no efficacy claims and plan precision/independent holdout. L2 actual isolated poison and 24 variance pilot success. Book original title/name search returned no results; external verification unavailable. Private pack real app and iPhone untested, post-match research linkage and D1 pending. 10k extension lower bound2388, nominal2452. Main/PR77 unchanged. No paid API/runner. Four report categories.",
+    "next": "Check postmatch research browser QA run45553398496 and 120 paired exploration run45551863303; fix failed gates, use only all six complete cell results. L1 v5 all-last research aggregate ready, not app-connected, later independent holdout. External book definitions unavailable; actual private pack and iPhone tests, L3 learning effectiveness remain. Extension lower2452 nominal2644, initial970 only fully audited. No new paid calls, main/PR77 unchanged. Four report categories.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -3172,7 +3172,7 @@
           "mainUnchanged": true
         },
         "studyModes": {
-          "status": "IMPLEMENTED_BROWSER_QA_RUNNING",
+          "status": "CHROMIUM_WEBKIT_PASS_SYNTHETIC_PACK",
           "pr": 86,
           "run": 45552035287,
           "job": 138995211405,
@@ -3187,7 +3187,52 @@
           "recordHistorySeparated": true,
           "legacyHistoryMappedTo": "coach",
           "selfReviewTiming": "after full match, not immediate",
-          "scope": "UI only, no devtools anti-cheat; research during self hanchan, no during assessment; actual private pack and iPhone untested; after-match research integration not implemented"
+          "scope": "UI only, no devtools anti-cheat; research during self hanchan, no during assessment; actual private pack and iPhone untested; after-match research integration not implemented",
+          "result": {
+            "browsers": [
+              "Chromium",
+              "WebKit"
+            ],
+            "coachRegression": true,
+            "selfResearch": true,
+            "selfCoachHidden": true,
+            "assessmentHidden": true,
+            "roundReviewHidden": true,
+            "endReview": true,
+            "historySeparated": true
+          }
+        },
+        "postmatchResearch": {
+          "status": "IMPLEMENTED_BROWSER_QA_RUNNING",
+          "pr": 87,
+          "branch": "feat/learning-postmatch-research-20261125",
+          "head": "3ac03397359247348907d3eb2f05cf6abff0a82f",
+          "run": 45553398496,
+          "job": 138999625451,
+          "scope": "current completed hanchan, recorded public snapshot and concrete legal riichi options, no later information, no live assessment, no old saved games, synthetic pack browser test running; native iPhone and private pack not tested"
+        },
+        "v5AllLast": {
+          "status": "EXPLORATORY_AGGREGATES_AND_INDEPENDENT_COUNT_AUDIT_PASS",
+          "preregCommit": "210b8132f5c2a2e05ccc4ff424adac441dbdcf52",
+          "matches": 970,
+          "reachedS4": 710,
+          "notReached": 260,
+          "westAfter": 22,
+          "observations": 2840,
+          "cells": 24,
+          "outcomeCountAudit": 96,
+          "outcomeCountMismatch": 0,
+          "supportedMetrics": 41,
+          "allSupportedCells": 7,
+          "bootstrap": 2000,
+          "aggregateSha256": "0e3f0dd2ed26d571a6a74154658a22bad71cae574a228e494913273a59be91f5",
+          "artifact": {
+            "name": "mahjong_l1_v5_alllast_20261125.zip",
+            "bytes": 7483,
+            "sha256": "159d4b1650d266d9b98395db2a886e911706a6ac04d279f7738b16f8bbecc124",
+            "fileId": "file_0000000079748206871100bd17b59734"
+          },
+          "scope": "initial first South4 start conditional S42 descriptive development; no causal inference or human calibration; pt reference only, no app integration yet"
         }
       },
       "l2Prep": {
@@ -3345,8 +3390,8 @@
         "commit": "18364c8c19e24bd127aa7349a7e9bbd7e8ac1a24"
       },
       "latestReport": {
-        "path": "handoff/learning-l2-variance-pass-explore120-study-modes-20261125.md",
-        "commit": "f99e9c10dca8ecc7028cfba5bf5b561abd175e70"
+        "path": "handoff/learning-l1-v5-alllast-postmatch-20261125.md",
+        "commit": "ba6f3e8fdfa57a9714a9d13526653cad9371cdd3"
       }
     },
     "learningCorpus": {
@@ -3518,18 +3563,22 @@
         "eta": "16–24h or longer conditional on failures, queue and setup; next morning check",
         "paidCalls": 0,
         "latestObserved": {
-          "cumulativeSaved": 2388,
-          "additionalSaved": 1418,
-          "nominalArtifactRangeCount": 2452,
-          "artifacts": 28,
-          "matchedSuccessArtifacts": 27,
-          "unmatchedArtifact": "tenhou-corpus-extension-1227-1290",
+          "cumulativeSaved": 2452,
+          "additionalSaved": 1482,
+          "nominalArtifactRangeCount": 2644,
+          "artifacts": 31,
+          "matchedSuccessArtifacts": 28,
+          "unmatchedArtifacts": [
+            "tenhou-corpus-extension-1675-1738",
+            "tenhou-corpus-extension-1739-1802",
+            "tenhou-corpus-extension-1227-1290"
+          ],
           "firstPageJobs": 30,
-          "success": 28,
-          "inProgress": 2,
+          "success": 29,
+          "inProgress": 1,
           "observedFailure": 0,
           "initial970OnlyFullyAudited": true,
-          "limitations": "conservative matched successful jobs; first-page API cannot guarantee full run count"
+          "limitations": "matched lower bound; first-page job limit, actual whole run unknown"
         }
       }
     },
