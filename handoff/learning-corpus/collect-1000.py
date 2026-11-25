@@ -49,7 +49,13 @@ try:
   t=time.monotonic()
   with open('/tmp/corpus-run.log','wb') as log:
    proc=subprocess.run(['node',str(runner)],env={**os.environ,'COACH_ARENA_QA':'1','ARENA_PAIR':str(i)},stdout=log,stderr=log,timeout=300)
-  assert proc.returncode==0,'runner exit'
+  if proc.returncode!=0:
+   # Publish only allowlisted diagnostic categories, never raw log or replay.
+   logtext=Path('/tmp/corpus-run.log').read_text(errors='replace')
+   categories=['legal_mask_mismatch','private qipai contract','private draw contract','focal native encoder not ready','reference mask mismatch','decision progression mismatch','CPU arena failure','arena stall','invalid arena result','development coverage audit','teacher turn owner','oracle own hand alignment','unstable opponent hand','honba score regression','legal ron without positive payment','visible tile overflow','TimeoutError','page.evaluate','out of memory']
+   found=[c for c in categories if c.lower() in logtext.lower()]
+   print('diagnostic categories:',json.dumps(found),flush=True)
+   assert False,'runner exit (classified diagnostic only)'
   m=json.loads((base/'manifest.json').read_text()); r,=m['rows']; p=json.loads((base/'paipu.json').read_text()); walls=json.loads((base/'wallOrder.json').read_text())
   a=r['cpuAudit']
   assert m['seed']==entries[i-1]['seed'] and m['shard']==i and p['qijia']==r['dealer']==entries[i-1]['dealer']
