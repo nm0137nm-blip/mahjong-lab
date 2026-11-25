@@ -355,7 +355,7 @@
       }
     ],
     "decision": "v46 API-only Stage1 stopped after 2 paid calls, 1 contract pass and 1 incomplete output due to cap. No evidence of typed condition contract failure from pilot82; no semantic certification. Original manual Stage1 plan not performed. No new paid generation authorized.",
-    "next": "User pause until full 10000 remains. Continue only approved generation, repair and data storage/audit. Upon complete unique corpus, implement frozen data-use protocol (5 grouped development folds, locked 3000 final holdout, QA excluded, allowlist and per-fold preprocessing) before feature dataset creation and fitting. No paid API/main change.",
+    "next": "User pause until full 10000 remains. Continue only approved generation, repair and data storage/audit. Upon complete unique corpus, implement frozen data-use protocol (5 grouped development folds, locked 3000 final holdout, QA excluded, allowlist and per-fold preprocessing) before feature dataset creation and fitting. No paid API/main change. After verified first 10000, parallelize development and rolling corpus batches under recorded plan and constraints; first review at 100000.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -4255,6 +4255,20 @@
             }
           ]
         }
+      },
+      "rollingGeneration": {
+        "status": "PLAN_RECORDED_AWAITING_FIRST_10000_VERIFIED",
+        "plan": "handoff/learning-rolling-corpus-plan-20261125.md",
+        "commit": "c49cb19238271a2e118bea6aee3a6fb78d237e92",
+        "dailyTarget": 10000,
+        "batchSize": 10000,
+        "reviewAtCumulative": 100000,
+        "provisionalSplitAt100k": {
+          "development": 84990,
+          "confirmation": 15000,
+          "qa": 10
+        },
+        "constraints": "verified unique first10000; no unapproved paid compute/API; fixed pre-content partition; private durable backup and capacity; no overlapping duplicate batches; immutable training snapshots; additional batch not yet implemented or started"
       }
     },
     "labTenhou": {
