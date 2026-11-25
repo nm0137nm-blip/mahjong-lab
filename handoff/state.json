@@ -9,7 +9,7 @@
   },
   "active_task": {
     "phase": "P2a-v4.7 free-only known-case semantic diagnostic",
-    "status": "PUSH_TECH3_INDEPENDENT_SHANTEN_PASS_VARIANCE24_RUNNING_EXPLORATORY120_LAST_CELL_RUNNING_METADATA_REFRESH",
+    "status": "RIICHI_EXPLORATORY120_COMPLETE_PRECISION_UNMET_V6_UNSEEN_WAIT_STATS_PASS_PUSH_VARIANCE24_RUNNING",
     "branch": "feat/coach-p2a-v47-minimal-diagnostic",
     "commit": "7959435bfad0412e9cd94234f01395af05d84789",
     "pr": 71,
@@ -355,7 +355,7 @@
       }
     ],
     "decision": "v46 API-only Stage1 stopped after 2 paid calls, 1 contract pass and 1 incomplete output due to cap. No evidence of typed condition contract failure from pilot82; no semantic certification. Original manual Stage1 plan not performed. No new paid generation authorized.",
-    "next": "Check L2 run45551863303 all six first-riichi cells and use effects only after all pass; check push variance run45559977167 and metadata refresh run45560361480; fix failed gates without changing frozen selections. Push technical3 and independent 970/1261 candidate audit passed. L1 book comparisons, real pack app/iPhone, learning effect and extension decryption/physical holdout separation pending. No paid API/main change. Four report categories.",
+    "next": "Check push variance run45559977167. Riichi exploration120 complete with 0/6 precision gate, do not convert to recommended strategy; fixed-scope next sample planning after development extension and holdout physical separation. L1 v6 public unseen wait statistics complete exploratory; real app connection not done. 10k all-page confirmation3156 at06:24:37Z, later nominal3220. External book source missing, real private pack and iPhone, learning effect remain. No paid calls or production changes. Four report categories.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -3304,6 +3304,30 @@
             "alternatePrompts": true
           },
           "limitations": "synthetic calculation only, no real learner responses, no strategic or learning-effect validation, standalone page not deployed or iPhone tested"
+        },
+        "v6UnseenWaits": {
+          "status": "EXPLORATORY_AGGREGATES_AND_PUBLIC_COUNT_RECONSTRUCTION_PASS",
+          "preregCommit": "81211c7eb03ae4b20a7f0aa3eaa2f1ac4ef22d87",
+          "matches": 970,
+          "hands": 10089,
+          "acceptedRiichi": 7711,
+          "first": 6147,
+          "chase": 1564,
+          "publicTileComparisons": 262174,
+          "countMismatch": 0,
+          "priorRowsMatched": 7711,
+          "waitKinds": 14092,
+          "zeroUnseen": 0,
+          "cells": 54,
+          "supportedProportions": 70,
+          "bootstrap": 2000,
+          "artifact": {
+            "name": "mahjong_l1_v6_unseen_waits_20261125.zip",
+            "bytes": 12583,
+            "sha256": "119bd714bc639a682c9bbe1d18d338380d1782a6cabea72411a5a887fa45ca3f",
+            "fileId": "file_0000000030ac820694feb11c5f5fdf19"
+          },
+          "scope": "S42 accepted riichi, public unseen count, not actual live wall, event and current public reconstruction share tile parser; original row consistency, no independent holdout, no app integration"
         }
       },
       "l2Prep": {
@@ -3427,7 +3451,7 @@
           "limitations": "actual isolated encoder/ONNX inputs and legal Q/best, not whole game sandbox proof"
         },
         "exploratory120": {
-          "status": "in_progress",
+          "status": "TECHNICAL_120_PASS_PRECISION_0_OF_6_EXPLORATORY_ONLY",
           "pr": 85,
           "run": 45551863303,
           "branch": "feat/learning-l2-exploratory-120-20261125",
@@ -3449,13 +3473,69 @@
           "preflightPassed": 120,
           "parallel": 3,
           "jobs": 6,
-          "observedRunning": 1,
+          "observedRunning": 0,
           "observedQueued": 0,
-          "actualPairsVerified": 100,
+          "actualPairsVerified": 120,
           "prereg": "handoff/learning-l2/exploratory-120-prereg.md",
-          "scope": "exploratory S42-selected first riichi only, no efficacy certification; separate 240 replay hanchan not count toward 10k; use no partial efficacy results; standard public runner only",
-          "observedSuccess": 5,
-          "partialEffectsRead": false
+          "scope": "120 exploratory S42-selected first riichi, no precision gate success or causal transfer to humans, no strategic certification; next sample design requires extension, no additional large replay started",
+          "observedSuccess": 6,
+          "partialEffectsRead": false,
+          "completeEffectsRead": true,
+          "technical": {
+            "commonWallKeys": 1136,
+            "packets": 975540,
+            "unchanged": 975540,
+            "rejectedHands": 10088,
+            "rejectedDraws": 346089
+          },
+          "primaryPrecisionPassedCells": 0,
+          "primaryPrecisionTotalCells": 6,
+          "allPrimaryIntervalsCrossZero": true,
+          "planning": [
+            {
+              "cell": "contains_ryanmen/low",
+              "mean": 590,
+              "sd": 3338.751736486967,
+              "n1000": 172,
+              "n2000": 43
+            },
+            {
+              "cell": "contains_ryanmen/mid",
+              "mean": 2335,
+              "sd": 5751.089141700854,
+              "n1000": 509,
+              "n2000": 128
+            },
+            {
+              "cell": "contains_ryanmen/high",
+              "mean": 1455,
+              "sd": 5107.525407619005,
+              "n1000": 401,
+              "n2000": 101
+            },
+            {
+              "cell": "no_ryanmen/low",
+              "mean": -60,
+              "sd": 5160.824087600535,
+              "n1000": 410,
+              "n2000": 103
+            },
+            {
+              "cell": "no_ryanmen/mid",
+              "mean": -1460,
+              "sd": 6761.921246758825,
+              "n1000": 703,
+              "n2000": 176
+            },
+            {
+              "cell": "no_ryanmen/high",
+              "mean": -710,
+              "sd": 7768.011328519031,
+              "n1000": 928,
+              "n2000": 232
+            }
+          ],
+          "illustrativeN1000Total": 3123
         },
         "pushGenbutsu": {
           "status": "THREE_TECHNICAL_PAIRS_AND_INDEPENDENT_SHANTEN_PASS_VARIANCE24_RUNNING",
@@ -3550,8 +3630,8 @@
         "commit": "18364c8c19e24bd127aa7349a7e9bbd7e8ac1a24"
       },
       "latestReport": {
-        "path": "handoff/learning-push-independent-variance-start-20261125.md",
-        "commit": "bb60e0646d0640348664af0c042e8fa6758271a7"
+        "path": "handoff/learning-riichi-explore120-v6-unseen-20261125.md",
+        "commit": "5e9bf98286b539f756d7537a2471f57a7d09a336"
       }
     },
     "learningCorpus": {
@@ -3723,43 +3803,37 @@
         "eta": "16–24h or longer conditional on failures, queue and setup; next morning check",
         "paidCalls": 0,
         "latestObserved": {
-          "cumulativeSaved": 2708,
-          "additionalSaved": 1738,
-          "nominalArtifactRangeCount": 2708,
-          "artifacts": 32,
-          "matchedSuccessArtifacts": 32,
+          "cumulativeSaved": 3156,
+          "additionalSaved": 2186,
+          "nominalArtifactRangeCount": 3156,
+          "artifacts": 39,
+          "matchedSuccessArtifacts": 39,
           "allJobs": 147,
-          "success": 33,
+          "success": 40,
           "inProgress": 8,
-          "queued": 106,
+          "queued": 99,
           "observedFailure": 0,
           "initial970OnlyFullyAudited": true,
           "partitionSaved": {
             "qa": 10,
-            "development": 1155,
-            "confirmation": 573
+            "development": 1451,
+            "confirmation": 725
           },
           "metadataAudit": {
             "pr": 89,
-            "run": 45554930744,
-            "job": 139004581059,
-            "head": "c5667131c61cf3f1dd256536b5fa428a32f75f7e",
-            "status": "success",
-            "observedAt": "2026-11-25T05:38:13Z",
-            "missingSuccessArtifact": 0,
-            "artifactWithoutSuccess": 0
-          },
-          "limitations": "previous all-page verification 2708 at 05:38:13Z; later 39 artifacts nominal3156; refreshed metadata audit running; initial970 fully content-audited",
-          "latestNominalRangeCount": 3156,
-          "latestArtifactCount": 39,
-          "latestUnmatchedIncrement": 448,
-          "metadataRefresh": {
-            "status": "in_progress",
-            "pr": 89,
-            "head": "b234fdf073b2513cf14ad26a37d7029a4d235368",
             "run": 45560361480,
-            "job": 139022328451
-          }
+            "job": 139022328451,
+            "head": "b234fdf073b2513cf14ad26a37d7029a4d235368",
+            "status": "success",
+            "observedAt": "2026-11-25T06:24:37Z",
+            "missingSuccessArtifact": 0,
+            "artifactWithoutSuccess": 0,
+            "splitHashMatch": true
+          },
+          "latestNominalRangeCount": 3220,
+          "latestArtifactCount": 40,
+          "latestUnmatchedIncrement": 64,
+          "limitations": "all-page matched metadata 3156, latest nominal3220, only initial970 fully content audited"
         },
         "holdout": {
           "status": "PREREGISTERED_NOT_PHYSICALLY_ISOLATED",
