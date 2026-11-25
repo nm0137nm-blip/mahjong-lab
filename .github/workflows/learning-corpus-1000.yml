@@ -1,4 +1,4 @@
-name: Tenhou corpus cumulative 10000 gated extension
+name: Tenhou corpus cumulative 20000 gated extension
 on:
   pull_request:
     branches: [project-handoff]
@@ -7,7 +7,7 @@ permissions:
   contents: read
   actions: read
 concurrency:
-  group: learning-corpus-tenhou-extension-9030-v1
+  group: learning-corpus-tenhou-rolling-20000-v1
   cancel-in-progress: false
 jobs:
   rule_qa:
@@ -110,7 +110,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: tenhou-corpus-extension-${{ matrix.first }}-${{ matrix.last }}
+          name: tenhou-corpus-rolling-20000-${{ matrix.first }}-${{ matrix.last }}
           path: corpus-output/
           if-no-files-found: error
           retention-days: 30
@@ -405,7 +405,39 @@ jobs:
           - first: 8907
             last: 8970
           - first: 8971
-            last: 9030
+            last: 9034
+          - first: 9035
+            last: 9098
+          - first: 9099
+            last: 9162
+          - first: 9163
+            last: 9226
+          - first: 9227
+            last: 9290
+          - first: 9291
+            last: 9354
+          - first: 9355
+            last: 9418
+          - first: 9419
+            last: 9482
+          - first: 9483
+            last: 9546
+          - first: 9547
+            last: 9610
+          - first: 9611
+            last: 9674
+          - first: 9675
+            last: 9738
+          - first: 9739
+            last: 9802
+          - first: 9803
+            last: 9866
+          - first: 9867
+            last: 9930
+          - first: 9931
+            last: 9994
+          - first: 9995
+            last: 10000
     steps:
       - uses: actions/checkout@v4
       - uses: actions/checkout@v4
@@ -454,7 +486,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: tenhou-corpus-extension-${{ matrix.first }}-${{ matrix.last }}
+          name: tenhou-corpus-rolling-20000-${{ matrix.first }}-${{ matrix.last }}
           path: corpus-output/
           if-no-files-found: error
           retention-days: 30
