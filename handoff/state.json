@@ -355,7 +355,7 @@
       }
     ],
     "decision": "v46 API-only Stage1 stopped after 2 paid calls, 1 contract pass and 1 incomplete output due to cap. No evidence of typed condition contract failure from pilot82; no semantic certification. Original manual Stage1 plan not performed. No new paid generation authorized.",
-    "next": "Monitor 1000 Tenhou corpus run45502831152 and LAB PR77 validation. One batch runner failure, 31 missing, investigate and supplement without duplicates. Audit before L0 exit. LAB branch independent, do not merge until verified. No paid resources or old frozen data.",
+    "next": "Check final original bulk and diagnostic run45519978000; repair confirmed cause and generate only missing 426–456. Sample decryption successful 2/2; audit all archived data before L0 completion. LAB PR77 unit72/72 browser both passed; end-to-end real-model both modes/offline check started on head01686894, no merge yet. Next user check around 11–12 JST conditional on results. No paid or further corpus beyond 1000.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -3014,28 +3014,58 @@
       "archiveIntegrity": "8 pilot games passed in-run checks and encrypted artifacts exist; decryption and cross-corpus audit pending",
       "scaleDecision": "Keep current 1000; examine support and precision by theme before expanding to 10000; no further bulk launch yet.",
       "latestStatus": {
-        "observed": "2026-11-25 morning",
-        "inRunSaved": 393,
-        "verifiedAfterDecryption": 0,
+        "observed": "2026-11-25 09:39 JST check",
+        "inRunSaved": 937,
+        "verifiedAfterDecryption": 2,
+        "artifactCount": 34,
+        "totalArtifactBytes": 131024291,
         "failedBatch": "425-456",
         "savedInFailedBatch": 1,
         "unproducedInFailedBatch": 31,
         "firstFailedShard": 426,
-        "reason": "runner exit, private log not uploaded; root cause unknown",
-        "action": "investigate 426 bounded, preserve existing archive, fill only missing after root cause; no blind full retry; other batches continue"
+        "remainingFinalBatch": 32,
+        "reason": "runner exit, private log suppressed; cause not yet known",
+        "diagnostic": {
+          "pr": 78,
+          "head": "a25861b4876f0838afd83dce6a75684196b4cd6c",
+          "run": 45519978000,
+          "scope": "426 only, original seed, allowlisted categories, no full rerun"
+        },
+        "sampleAudit": {
+          "artifact": 14971366545,
+          "artifactSHA256": "3dd3147eb35ef4a6703820182e1e2eb12202a26849255a652abab43121fb1ccb",
+          "matches": 2,
+          "hands": 17,
+          "keyHashMatched": true,
+          "cmsHashMatched": true,
+          "allFileHashesMatched": true
+        }
       }
     },
     "labTenhou": {
-      "status": "DRAFT_IMPLEMENTED_VALIDATION_PENDING",
+      "status": "UNIT_AND_BROWSER_PASS_COMPLETE_MATCH_PENDING",
       "userAuthorized": "2026-11-25 user approved interactive LAB Tenhou-target rules",
       "pr": 77,
       "branch": "feat/lab-tenhou-rules-20261125",
-      "head": "16e2aea648e9eff936c6c7271ea4441b92743f30",
+      "head": "01686894afa47037f496b17b7292110136a4542a",
       "rules": "Both east and hanchan, 30k renchan-priority extension, start-seat ties, pao/kan corrections from research profile. Rule parity not certified.",
       "rankPt": "Official Tenhou fixed-room/rank points, tok-jo 4–10 dan, houou 7–10 dan, no simulated promotion, default tok-jo 6 dan. CPU policy unchanged; no Q utility retargeting.",
       "legacy": "New storage key, legacy untouched, no mixing. PWA cache updated.",
       "gates": "Unit and browser CI, complete-match validation pending; no main merge until verified. Existing frozen old research gates preserved.",
-      "paidCalls": 0
+      "paidCalls": 0,
+      "unitTests": 72,
+      "unitPassed": 72,
+      "browserChromiumPassed": true,
+      "browserWebKitPassed": true,
+      "previousRuns": [
+        45511445549,
+        45511445306
+      ],
+      "fullMatchValidationHead": "01686894afa47037f496b17b7292110136a4542a",
+      "fullMatchRuns": [
+        45520060496,
+        45520060433
+      ]
     }
   },
   "previous_runs": [
