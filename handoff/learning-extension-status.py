@@ -18,7 +18,10 @@ def all_pages(endpoint,key):
  # Counts may change while a run is active; refuse inconsistent snapshot.
  assert len(out)==data["total_count"]
  return out
+# Artifact creation may cross a pagination boundary. Require an identical artifact snapshot twice, or fail closed.
 jobs=all_pages("jobs","jobs");arts=all_pages("artifacts","artifacts")
+arts_check=all_pages("artifacts","artifacts")
+assert sorted((a["id"],a["name"],a["expired"],a.get("digest")) for a in arts)==sorted((a["id"],a["name"],a["expired"],a.get("digest")) for a in arts_check)
 ranges=[(n,n+1) for n in range(1,11,2)]+[(n,min(n+63,9030)) for n in range(11,9031,64)]
 expected={f'{"pilot" if a<=10 else "bulk"} ({a}, {b})':(a,b) for a,b in ranges}
 assert len(expected)==146
@@ -46,4 +49,4 @@ import hashlib
 split_hash=hashlib.sha256(json.dumps(parts,sort_keys=True,separators=(",",":"),ensure_ascii=False).encode("utf-8")).hexdigest()
 assert split_hash=="04d92496cfec64cbc02fe971ab4cdebff2c81859716b1ad2e865da05f5bd6d06"
 status=collections.Counter((j.get("conclusion") or j["status"]) for j in jobs)
-print("EXTENSION_FULL_METADATA="+json.dumps({"split_hash":split_hash,"expected_jobs":147,"returned_jobs":len(jobs),"job_status":status,"active_artifacts":sum(map(len,artifact_names.values())),"confirmed_extension_range":len(confirmed),"cumulative_saved_lower":970+len(confirmed),"nominal_range":970+len(nominal),"missing_success_artifact":missing,"artifact_without_success":unmatched,"partition_saved":{k:len(confirmed.intersection(parts[k])) for k in ("qa","development","confirmation")},"scope":"metadata only; initial 970 fully audited; extension not decrypted or independently audited"},ensure_ascii=False,sort_keys=True))
+print("EXTENSION_FULL_METADATA="+json.dumps({"split_hash":split_hash,"expected_jobs":147,"returned_jobs":len(jobs),"job_status":status,"active_artifacts":sum(map(len,artifact_names.values())),"confirmed_extension_range":len(confirmed),"cumulative_saved_lower":970+len(confirmed),"nominal_range":970+len(nominal),"missing_success_artifact":missing,"artifact_without_success":unmatched,"partition_saved":{k:len(confirmed.intersection(parts[k])) for k in ("qa","development","confirmation")},"scope":"metadata only; local content intake is tracked separately"},ensure_ascii=False,sort_keys=True))
