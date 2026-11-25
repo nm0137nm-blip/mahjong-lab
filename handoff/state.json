@@ -9,7 +9,7 @@
   },
   "active_task": {
     "phase": "P2a-v4.7 free-only known-case semantic diagnostic",
-    "status": "STUDY_MODES_PASS_POSTMATCH_QA_RUNNING_L1_V5_ALLLAST_AUDIT_PASS_L2_EXPLORATORY120_RUNNING",
+    "status": "POSTMATCH_QA_PASS_ALLLAST_QA_RUNNING_EXTENSION_HOLDOUT_PREREG_AND_FULL_METADATA_PASS_L2_EXPLORATORY120_RUNNING",
     "branch": "feat/coach-p2a-v47-minimal-diagnostic",
     "commit": "7959435bfad0412e9cd94234f01395af05d84789",
     "pr": 71,
@@ -355,7 +355,7 @@
       }
     ],
     "decision": "v46 API-only Stage1 stopped after 2 paid calls, 1 contract pass and 1 incomplete output due to cap. No evidence of typed condition contract failure from pilot82; no semantic certification. Original manual Stage1 plan not performed. No new paid generation authorized.",
-    "next": "Check postmatch research browser QA run45553398496 and 120 paired exploration run45551863303; fix failed gates, use only all six complete cell results. L1 v5 all-last research aggregate ready, not app-connected, later independent holdout. External book definitions unavailable; actual private pack and iPhone tests, L3 learning effectiveness remain. Extension lower2452 nominal2644, initial970 only fully audited. No new paid calls, main/PR77 unchanged. Four report categories.",
+    "next": "Check PR88 first-South4 browser QA run45554781404 and 120-pair run45551863303, diagnose any failures and use only all six complete cell results. Extension full metadata run45554930744 passed at 05:38:13Z, 2708 saved, 970 fully audited; split defined not physically isolated, holdout unexamined. Preserve raw/key locally and separate holdout before research. Real private pack app and iPhone, external book comparisons, L3 learning-effect gates pending. No paid API/main change. Four report categories.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -3203,13 +3203,25 @@
           }
         },
         "postmatchResearch": {
-          "status": "IMPLEMENTED_BROWSER_QA_RUNNING",
+          "status": "CHROMIUM_WEBKIT_PASS_SYNTHETIC_PACK",
           "pr": 87,
           "branch": "feat/learning-postmatch-research-20261125",
           "head": "3ac03397359247348907d3eb2f05cf6abff0a82f",
           "run": 45553398496,
           "job": 138999625451,
-          "scope": "current completed hanchan, recorded public snapshot and concrete legal riichi options, no later information, no live assessment, no old saved games, synthetic pack browser test running; native iPhone and private pack not tested"
+          "scope": "current completed hanchan, recorded public snapshot and concrete legal riichi options, no later information, no live assessment, no old saved games, synthetic pack browser test running; native iPhone and private pack not tested",
+          "result": {
+            "browsers": [
+              "Chromium",
+              "WebKit"
+            ],
+            "nativeCrypto": true,
+            "completedMatch": true,
+            "originalLegalCandidates": true,
+            "assessmentDuringHidden": true,
+            "syntheticPack": true,
+            "privatePackRealApp": false
+          }
         },
         "v5AllLast": {
           "status": "EXPLORATORY_AGGREGATES_AND_INDEPENDENT_COUNT_AUDIT_PASS",
@@ -3232,7 +3244,21 @@
             "sha256": "159d4b1650d266d9b98395db2a886e911706a6ac04d279f7738b16f8bbecc124",
             "fileId": "file_0000000079748206871100bd17b59734"
           },
-          "scope": "initial first South4 start conditional S42 descriptive development; no causal inference or human calibration; pt reference only, no app integration yet"
+          "scope": "initial first South4 start conditional S42 descriptive development; no causal inference or human calibration; pt reference only, no app integration yet",
+          "app": {
+            "status": "IMPLEMENTED_BROWSER_QA_RUNNING",
+            "pr": 88,
+            "branch": "feat/learning-alllast-research-20261125",
+            "head": "3d81d4f0374a3446989e6e7d527af88a406a81ec",
+            "run": 45554781404,
+            "job": 139004093425,
+            "pack": {
+              "name": "mahjong_alllast_pack_20261125.json",
+              "sha256": "0e3f0dd2ed26d571a6a74154658a22bad71cae574a228e494913273a59be91f5",
+              "bytes": 27505
+            },
+            "scope": "first South4 immutable public point snapshot; practice coach/self during first hand only; any mode after completed hanchan; no live assessment; synthetic CI, real pack and iPhone untested"
+          }
         }
       },
       "l2Prep": {
@@ -3390,8 +3416,8 @@
         "commit": "18364c8c19e24bd127aa7349a7e9bbd7e8ac1a24"
       },
       "latestReport": {
-        "path": "handoff/learning-l1-v5-alllast-postmatch-20261125.md",
-        "commit": "ba6f3e8fdfa57a9714a9d13526653cad9371cdd3"
+        "path": "handoff/learning-alllast-ui-extension-split-20261125.md",
+        "commit": "664ea37383d3fdf6120eec3951c210daa96ec6ee"
       }
     },
     "learningCorpus": {
@@ -3563,22 +3589,48 @@
         "eta": "16–24h or longer conditional on failures, queue and setup; next morning check",
         "paidCalls": 0,
         "latestObserved": {
-          "cumulativeSaved": 2452,
-          "additionalSaved": 1482,
-          "nominalArtifactRangeCount": 2644,
-          "artifacts": 31,
-          "matchedSuccessArtifacts": 28,
-          "unmatchedArtifacts": [
-            "tenhou-corpus-extension-1675-1738",
-            "tenhou-corpus-extension-1739-1802",
-            "tenhou-corpus-extension-1227-1290"
-          ],
-          "firstPageJobs": 30,
-          "success": 29,
-          "inProgress": 1,
+          "cumulativeSaved": 2708,
+          "additionalSaved": 1738,
+          "nominalArtifactRangeCount": 2708,
+          "artifacts": 32,
+          "matchedSuccessArtifacts": 32,
+          "allJobs": 147,
+          "success": 33,
+          "inProgress": 8,
+          "queued": 106,
           "observedFailure": 0,
           "initial970OnlyFullyAudited": true,
-          "limitations": "matched lower bound; first-page job limit, actual whole run unknown"
+          "partitionSaved": {
+            "qa": 10,
+            "development": 1155,
+            "confirmation": 573
+          },
+          "metadataAudit": {
+            "pr": 89,
+            "run": 45554930744,
+            "job": 139004581059,
+            "head": "c5667131c61cf3f1dd256536b5fa428a32f75f7e",
+            "status": "success",
+            "observedAt": "2026-11-25T05:38:13Z",
+            "missingSuccessArtifact": 0,
+            "artifactWithoutSuccess": 0
+          },
+          "limitations": "all-page job and artifact metadata only; extension contents not decrypted/audited"
+        },
+        "holdout": {
+          "status": "PREREGISTERED_NOT_PHYSICALLY_ISOLATED",
+          "document": "handoff/learning-extension-holdout-20261125.md",
+          "documentCommit": "c7488e8ad480119395dd2d76d77f82377015c380",
+          "codeCommit": "b2d761b4db57d5634ffefef8077802d4f19f8b94",
+          "salt": "mahjong-lab:learning-holdout-s42-extension:20261125:v1",
+          "qa": 10,
+          "development": 6020,
+          "confirmation": 3000,
+          "canonicalSha256": "04d92496cfec64cbc02fe971ab4cdebff2c81859716b1ad2e865da05f5bd6d06",
+          "duplicates": 0,
+          "missing": 0,
+          "confirmationOpened": false,
+          "physicalIsolationDone": false
         }
       }
     },
