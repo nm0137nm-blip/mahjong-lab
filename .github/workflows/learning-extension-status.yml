@@ -9,10 +9,10 @@ permissions:
 jobs:
   metadata:
     runs-on: ubuntu-24.04
-    timeout-minutes: 5
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
-      - name: Read all paginated metadata (no artifact download)
+      - name: Audit existing archives and all repair artifacts (no decryption)
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python3 handoff/learning-extension-status.py
