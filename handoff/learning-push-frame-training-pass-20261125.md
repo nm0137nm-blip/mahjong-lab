@@ -1,0 +1,11 @@
+# 2026-11-25 計算教材合格・対立直一向聴の現物手崩し技術試験開始
+## 計算教材
+PR90 run45556501377 job139009710910 success。ログ Node tests4/pass4/fail0、TRAINING_BROWSER_PASS Chromium/WebKit 両方 endOnlyReview/export/alternatePrompts=1。合成24問の端末内計算教材、実利用者の回答や学習効果は未測定、公開コード上の正解、旧D1別。スタンドアロン開発版、ホーム入口・実機・配布なし。
+## 対単独立直の一手比較
+PR91 branch feat/learning-l2-push-genbutsu-20261125。事前カード commit f468afde5e62d48fb44e6237422a19076591cb85。焦点席公開turn判断、門前・非立直・他家立直1・通常打牌のみ・元S42非現物打牌後0/1向聴・現物代替の最小向聴が厳密に悪化。現物=対象者の河の既出牌34種、赤5統合、通過牌は未使用。他家に対する安全保証なし。候補は合法具体打牌、現物向聴最小→ASCII順。Q値・秘密手牌・山・結果で選定しない。元の打牌後のみ一手を変更、その後同じS42、完全ベタオリとは異なる。
+970半荘36バッチ、公開判断143864を走査、public/referenceのSHA256照合、全件排他的分類・半荘×判断ID重複0。初回時間上限で中断、バッチごと再開可能に修正し全36完了。 eligible1261/512半荘。0向聴終盤21(21半荘)、1向聴序盤96(75)、中盤831(409)、終盤313(199)。0向聴序中盤0は通常打牌のみ（立直等可能な局面を除外）の選定で強く限定、一般聴牌押し引きに外挿しない。除外 outside_threat_scope77223, outside_public_scope52759, no_genbutsu2728, source_is_genbutsu6078, genbutsu_no_hand_break536, source_shanten_other1869, special_action_available1410。フレームSHA256 8f587ffb1c41f74cbea7425a69fa57a7cec0579b3b20d42f7755caed9dff80f8。向聴は既存固定コア、独立向聴実装の認定ではない。
+私的成果物 mahjong_l2_push_frame_20261125.zip 5021 bytes SHA256 05bd0f751af4f8d7780d692dfda6c0a77368536e28232c6b8d12950bcc5ba6cd fileId file_000000004ed882069f56d5b34bf8e142。公開/記録選択の抽出・集計再現コードと集計のみ、生データ/鍵/個別フレームなし。
+技術3例は1向聴の各巡目帯1件、salt mahjong-lab:push-genbutsu-tech-v1:shard:decisionIndex のSHA256最小、別半荘。source preflight 3/3（公開候補、合法打牌、元のログ/壁hash、局内prefix、焦点ID一致）。ソースcommitment全体SHA256 b18f3ce390a9b10b0b23965b3c5e441f4780fe7ed032f3a14338e2f817ee277d。パッチ ada2b6c0de6e94eb6af7d92413df7dcb182714a2、pinned runnerと注入JS構文検証。実モデル分岐は未完。PR91 head60d45a6f6f0c0ec23704166fb976e72595ccc00f、run45558374939 in_progress、1公開標準runner/35分上限。3ペア(6再対局)のみ、集計効果/個別結果を公開しない。以前の立直/ダマ技術基盤を再使用し、今回の合法性/事前状態/壁/元行動再現を別に検証。追加有料APIなし。
+## 並行状況
+L2探索120 run45551863303: 3/6セルsuccess（60ペア技術成功）、3in_progress、全セル完了前に効果閲覧なし。10k extension run45530376491:37有効artifact名義累計3028、前回全ページ照合2708(05:38:13Z)から名義320追加、最新全ページ照合未実施、完全内容監査970のみ。独立確認は未開封。
+書籍外部照合、実pack本体、iPhone、学習効果、拡張復号/物理隔離は未達。main/PR77未変更。
