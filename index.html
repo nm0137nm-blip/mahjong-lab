@@ -439,7 +439,7 @@
 </style>
   <title>麻雀LAB — Phase 2.5.8 AI COACH</title>
 
-<style id="research-preview-style">#researchBody{overflow-wrap:anywhere;text-align:left}#researchBody select,#researchBody input[type=file]{max-width:100%;margin:6px 0}#researchBody fieldset{min-width:0;margin:8px 0;padding:8px;border:1px solid #888}#researchBody fieldset label{display:block;padding:4px 0}#researchBody p{margin:6px 0}#researchOverlay .modal{max-height:90dvh;overflow:auto}</style>
+<style id="research-preview-style">#researchBody{overflow-wrap:anywhere;text-align:left}#researchBody select,#researchBody input[type=file]{max-width:100%;margin:6px 0}#researchBody fieldset{min-width:0;margin:8px 0;padding:8px;border:1px solid #888}#researchBody fieldset label{display:block;padding:4px 0}#researchBody p{margin:6px 0}#researchOverlay{z-index:1000}#researchOverlay .modal{max-height:90dvh;overflow:auto}</style>
 </head>
 <body>
   <header class="site-header"><div class="logo"><span class="logo-mark">牌</span><span>麻雀<span class="logo-lab">LAB</span></span></div><span class="phase">PHASE 2.5.8 · AI COACH</span></header>
@@ -6092,6 +6092,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     return node;
   }
   function renderS42Replay(){
+    researchPanel?.close();
     const body=$('s42ReviewBody');body.replaceChildren();
     if(!s42ReviewRows.length){body.textContent='振り返る局面はありません';return;}
     s42ReviewCursor=Math.max(0,Math.min(s42ReviewRows.length-1,s42ReviewCursor));
@@ -6099,6 +6100,13 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     body.append(el('div','s42-replay-title',(s42ReviewCursor+1)+' / '+s42ReviewRows.length+' · '+(x.round||'対局中')+' · '+(x.type==='discard'?'打牌判断':'行動判断')+' · S42推奨度 '+recommendationText(score?.recommendation)+' · 最良Qとの差 '+(score?.gap||0).toFixed(2)));
     const choices=el('div','s42-info','あなた：'+(x.choiceLabel||'打 '+tileName(x.discard))+' ／ S42：'+(x.mortalOpinion?.label||'未取得')+'。S42の合法手順位 '+(score?.rank||'—')+' / '+(score?.legal||'—')+'。');
     body.append(choices);
+    if(researchPanel&&reviewResearchEligible(x)){
+      const research=el('button','secondary','この判断の研究統計');
+      research.type='button';research.addEventListener('click',()=>{
+        const ctx={kind:'review',entry:x,matchId:recordedMatchId};
+        if(researchPanel.open(ctx)){$('s42ReviewOverlay').inert=true;$('endOverlay').inert=true;}
+      });body.append(research);
+    }
     if(s42ReplayAll){const jump=el('select','phoenix-input');jump.setAttribute('aria-label','振り返る判断を選択');s42ReviewRows.forEach((d,i)=>{const option=el('option','',(i+1)+' · '+d.round+' · '+d.choiceLabel);option.value=String(i);jump.append(option);});jump.value=String(s42ReviewCursor);jump.addEventListener('change',()=>{s42ReviewCursor=Number(jump.value);renderS42Replay();});body.append(jump);}
     if(view){
       body.append(el('h3','','判断時点の自分の手牌'));
@@ -6170,14 +6178,31 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
   $('tenhouRoom').addEventListener('change',()=>{refreshTenhouDan();renderStats();});
   $('tenhouDan').addEventListener('change',renderStats);
   $('statsSupport').addEventListener('change',renderStats);
-  const researchCurrent=ctx=>duringResearchAllowed()&&Number(mode)===2&&!!game&&!gameEnded&&pending===ctx&&pending?.type==='turn'&&!$('gameScreen').classList.contains('hidden');
+  function reviewResearchEligible(entry){
+    return !!game&&gameEnded&&matchSaved&&Number(mode)===2&&!$('endOverlay').classList.contains('hidden')&&
+      decisionLog.includes(entry)&&entry?.scene?.mode==='半荘'&&entry.legalChoices?.phase==='turn'&&
+      Array.isArray(entry.legalChoices.riichiDiscards)&&entry.legalChoices.riichiDiscards.length>0;
+  }
+  const researchCurrent=ctx=>{
+    if(ctx?.kind==='review')return ctx.matchId===recordedMatchId&&reviewResearchEligible(ctx.entry)&&
+      !$('s42ReviewOverlay').classList.contains('hidden')&&s42ReviewRows[s42ReviewCursor]===ctx.entry;
+    return duringResearchAllowed()&&Number(mode)===2&&!!game&&!gameEnded&&pending===ctx&&pending?.type==='turn'&&!$('gameScreen').classList.contains('hidden');
+  };
   import('./src/research/research-panel.mjs').then(({createResearchPanel})=>{
-    researchPanel=createResearchPanel({M,dialog:$('researchOverlay'),body:$('researchBody'),tileName,isCurrent:researchCurrent,onClose:()=>$('gameScreen').inert=false,readCurrent:ctx=>{
+    researchPanel=createResearchPanel({M,dialog:$('researchOverlay'),body:$('researchBody'),tileName,isCurrent:researchCurrent,onClose:()=>{
+      for(const id of ['gameScreen','s42ReviewOverlay','endOverlay'])$(id).inert=false;
+    },readCurrent:ctx=>{
       if(!researchCurrent(ctx))throw Error('stale research context');
+      if(ctx.kind==='review'){
+        const entry=ctx.entry,legalRiichiDiscards=entry.legalChoices.riichiDiscards.slice();
+        return {rule:game._rule,mode:supportMode,timing:'after',chosenDiscard:entry.discard,
+          publicCase:{phase:'turn',scene:entry.scene,actions:[{action:37,details:['立直']}]},legalRiichiDiscards};
+      }
       const legalRiichiDiscards=captureCoachChoices(pending).riichiDiscards;
-      return {rule:game._rule,publicCase:{phase:'turn',scene:captureS42Scene(),actions:legalRiichiDiscards.length?[{action:37,details:['立直']}]:[]},legalRiichiDiscards};
+      return {rule:game._rule,mode:supportMode,timing:'during',publicCase:{phase:'turn',scene:captureS42Scene(),actions:legalRiichiDiscards.length?[{action:37,details:['立直']}]:[]},legalRiichiDiscards};
     }});
-    $('researchClose').addEventListener('click',()=>researchPanel.close());redrawSoon();
+    $('researchClose').addEventListener('click',()=>researchPanel.close());
+    document.addEventListener('keydown',e=>{if(e.key==='Escape'&&researchPanel?.isOpen()){e.preventDefault();researchPanel.close();}});redrawSoon();
   }).catch(e=>console.warn('研究統計モジュール未利用',e));
   $('startBtn').addEventListener('click',initGame);
   $('speedSelect').addEventListener('change',()=>{if(game)game.dwell=speedValue();});
@@ -6190,7 +6215,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
   $('allReviewBtn').addEventListener('click',()=>openS42Replay(true));
   $('s42ReviewPrev').addEventListener('click',()=>{s42ReviewCursor--;renderS42Replay();});
   $('s42ReviewNext').addEventListener('click',()=>{s42ReviewCursor++;renderS42Replay();});
-  $('s42ReviewClose').addEventListener('click',()=>{$('s42ReviewOverlay').classList.add('hidden');});
+  $('s42ReviewClose').addEventListener('click',()=>{researchPanel?.close();$('s42ReviewOverlay').classList.add('hidden');});
   $('restartBtn').addEventListener('click',initGame);
   $('homeBtn').addEventListener('click',goHome);
   renderStats();
