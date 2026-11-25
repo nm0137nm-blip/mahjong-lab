@@ -1,0 +1,223 @@
+{
+  "schema": "l2-variance-pilot-v1",
+  "privatePlanSha256": "1f77d1552c969dd3b16f61e043a0bfe542aa355011ef98739fe1aa47c22dcfcd",
+  "frameHash": "7b958efb22f5cd25bee2eba864e92a4c156b5b04ac528ee97dc8523fc2210f5a",
+  "cases": [
+    {
+      "shard": 840,
+      "seed": 3045761526,
+      "dealer": 3,
+      "decisionIndex": 45,
+      "actorSeat": 1,
+      "commitment": "690ea10a64a7008de0edbd1a2be105a2d32eacfb44a8db5b0cf93ab489b73f90",
+      "cell": "no_ryanmen/low"
+    },
+    {
+      "shard": 837,
+      "seed": 281472376,
+      "dealer": 0,
+      "decisionIndex": 73,
+      "actorSeat": 2,
+      "commitment": "f6a85b223feaa095f26b1900bdfd3544a26e05bd11ca1e2257327e214f95a6e3",
+      "cell": "no_ryanmen/low"
+    },
+    {
+      "shard": 273,
+      "seed": 2672983090,
+      "dealer": 0,
+      "decisionIndex": 107,
+      "actorSeat": 1,
+      "commitment": "6dc494782c763c0209da6a3acb387d5b0d9266aad9c8840fd6d5ddf20fcfd4b4",
+      "cell": "no_ryanmen/low"
+    },
+    {
+      "shard": 124,
+      "seed": 1808284562,
+      "dealer": 3,
+      "decisionIndex": 70,
+      "actorSeat": 2,
+      "commitment": "0ad894bcdb4928599240a6a9b1aaae8cb2bb208ec14e2962d36944b003837782",
+      "cell": "no_ryanmen/low"
+    },
+    {
+      "shard": 395,
+      "seed": 2008065138,
+      "dealer": 2,
+      "decisionIndex": 179,
+      "actorSeat": 3,
+      "commitment": "7e2c1355366af7927eaa5e4694e5836c8e1a1072999fe78a93170834d2a5f95e",
+      "cell": "no_ryanmen/mid"
+    },
+    {
+      "shard": 852,
+      "seed": 2618632072,
+      "dealer": 3,
+      "decisionIndex": 177,
+      "actorSeat": 0,
+      "commitment": "5bd1961b1311c28170158b97dcdfaa3b6d8fd7f350d65968204fa87251566813",
+      "cell": "no_ryanmen/mid"
+    },
+    {
+      "shard": 234,
+      "seed": 1996303015,
+      "dealer": 1,
+      "decisionIndex": 92,
+      "actorSeat": 1,
+      "commitment": "95cb8c2ee5c8731df0f0b87b33d782cd588cac5c5f1b14f3bdde3c05d5431d87",
+      "cell": "no_ryanmen/mid"
+    },
+    {
+      "shard": 887,
+      "seed": 1186354593,
+      "dealer": 2,
+      "decisionIndex": 15,
+      "actorSeat": 2,
+      "commitment": "99ed6023e79b48261ea946deaa88f975449d2b17fa5646aac0545d287f13c76c",
+      "cell": "no_ryanmen/mid"
+    },
+    {
+      "shard": 785,
+      "seed": 2284794640,
+      "dealer": 0,
+      "decisionIndex": 105,
+      "actorSeat": 1,
+      "commitment": "8fe7e874bc244b43228facc75bfc4a18d12f12a1f5ad0eeeb5b30a525e577efd",
+      "cell": "no_ryanmen/high"
+    },
+    {
+      "shard": 425,
+      "seed": 1902657066,
+      "dealer": 0,
+      "decisionIndex": 84,
+      "actorSeat": 0,
+      "commitment": "4d169cb29d86443eb1d404177b6d20e2e9ac9f81020f8d773c2b2a33e52af65a",
+      "cell": "no_ryanmen/high"
+    },
+    {
+      "shard": 832,
+      "seed": 311576016,
+      "dealer": 3,
+      "decisionIndex": 52,
+      "actorSeat": 2,
+      "commitment": "36260933d6ecdb81844f37bfde39f82544aa089a2d9f2e11d988bcfe97082d66",
+      "cell": "no_ryanmen/high"
+    },
+    {
+      "shard": 955,
+      "seed": 1681586842,
+      "dealer": 2,
+      "decisionIndex": 38,
+      "actorSeat": 1,
+      "commitment": "b5c90da4fca06981cbb171d8e1a119b9e6626911bf1923374a64239327aa4014",
+      "cell": "no_ryanmen/high"
+    },
+    {
+      "shard": 648,
+      "seed": 3995443564,
+      "dealer": 3,
+      "decisionIndex": 66,
+      "actorSeat": 0,
+      "commitment": "ddb3a8a339e7e0b6c17c980a2bde806dad8ea59dc5a0af6c65eb49df545ab668",
+      "cell": "contains_ryanmen/low"
+    },
+    {
+      "shard": 627,
+      "seed": 2527369224,
+      "dealer": 2,
+      "decisionIndex": 43,
+      "actorSeat": 1,
+      "commitment": "7ee0dd9ea7e6f742379c49a9b5ea45af74b501d8713f84fe9a687e076573c227",
+      "cell": "contains_ryanmen/low"
+    },
+    {
+      "shard": 91,
+      "seed": 2413062353,
+      "dealer": 2,
+      "decisionIndex": 29,
+      "actorSeat": 0,
+      "commitment": "8a34db185ef9a7ae175d48f3a70729b1265210c9352352b657ca87f493401718",
+      "cell": "contains_ryanmen/low"
+    },
+    {
+      "shard": 542,
+      "seed": 4243562851,
+      "dealer": 1,
+      "decisionIndex": 61,
+      "actorSeat": 0,
+      "commitment": "4d9f85dfe8b78490d04980ade4fec98c583fcd45522cbd540b7c4436ccda299d",
+      "cell": "contains_ryanmen/low"
+    },
+    {
+      "shard": 905,
+      "seed": 1117116281,
+      "dealer": 0,
+      "decisionIndex": 27,
+      "actorSeat": 3,
+      "commitment": "9c9ee00b9c5e4d96bff5d4e80297f4a22ec6467b8d571fa07e90199f50478d90",
+      "cell": "contains_ryanmen/mid"
+    },
+    {
+      "shard": 626,
+      "seed": 3143861810,
+      "dealer": 1,
+      "decisionIndex": 68,
+      "actorSeat": 0,
+      "commitment": "66e7bf77ea5c39a39a1bfbfdddb010ef35152801364b157ce6d80c9fa42f6a6c",
+      "cell": "contains_ryanmen/mid"
+    },
+    {
+      "shard": 844,
+      "seed": 1115895164,
+      "dealer": 3,
+      "decisionIndex": 146,
+      "actorSeat": 0,
+      "commitment": "5269ade4b98e349ae0ca656bf9b2b891f86792169b3375cda45db28ba9efcd52",
+      "cell": "contains_ryanmen/mid"
+    },
+    {
+      "shard": 263,
+      "seed": 2538330466,
+      "dealer": 2,
+      "decisionIndex": 165,
+      "actorSeat": 3,
+      "commitment": "f39b00611866bcc01c49f1a510ba2a8b671a4bb3495e40aa8fe6a6dbb07feae8",
+      "cell": "contains_ryanmen/mid"
+    },
+    {
+      "shard": 119,
+      "seed": 3669421096,
+      "dealer": 2,
+      "decisionIndex": 77,
+      "actorSeat": 0,
+      "commitment": "d77fdf2d499e20658ec84bf090c0179e7aef4a8eceb631a9c6c5b902fce2c118",
+      "cell": "contains_ryanmen/high"
+    },
+    {
+      "shard": 107,
+      "seed": 4068813310,
+      "dealer": 2,
+      "decisionIndex": 69,
+      "actorSeat": 0,
+      "commitment": "91b7f20285b4e04d9f36b53d3a2b5907d1c063b2d9b8d4c59125cb4edc04a302",
+      "cell": "contains_ryanmen/high"
+    },
+    {
+      "shard": 130,
+      "seed": 3653699884,
+      "dealer": 1,
+      "decisionIndex": 84,
+      "actorSeat": 0,
+      "commitment": "edd5497e1e45ab72ac2e6fb6eacc6c93aa217c2eeb2c9ea0e3ddee47310ec061",
+      "cell": "contains_ryanmen/high"
+    },
+    {
+      "shard": 261,
+      "seed": 2921892488,
+      "dealer": 0,
+      "decisionIndex": 73,
+      "actorSeat": 0,
+      "commitment": "7a9afb374ca86ac49cd1b3eb7506bed00e6336e3fd80f41f98c285799b0128c5",
+      "cell": "contains_ryanmen/high"
+    }
+  ]
+}
