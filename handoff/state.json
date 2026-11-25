@@ -9,7 +9,7 @@
   },
   "active_task": {
     "phase": "P2a-v4.7 free-only known-case semantic diagnostic",
-    "status": "UNSEEN_UI_PASS_PUSH60_PRECISION_UNMET_EXTENSION842_INTAKE_PASS_MISSING9_RETRY_RUNNING",
+    "status": "BOOK_LED_RESEARCH_PIVOT_FIRST_THEME13_PROVISIONAL_COMPARISON_EXTENSION_REPAIR_PENDING",
     "branch": "feat/coach-p2a-v47-minimal-diagnostic",
     "commit": "7959435bfad0412e9cd94234f01395af05d84789",
     "pr": 71,
@@ -355,7 +355,7 @@
       }
     ],
     "decision": "v46 API-only Stage1 stopped after 2 paid calls, 1 contract pass and 1 incomplete output due to cap. No evidence of typed condition contract failure from pilot82; no semantic certification. Original manual Stage1 plan not performed. No new paid generation authorized.",
-    "next": "Check run45571397958 targeted retry for 2818-2826; retain original55, verify exact coverage and hashes before count, repair ledger separate. Continue local extension intake from843 using pinned SHA, frozen split and atomic receipts, keep confirmation payloads opaque and re-encrypted, separate key custody unresolved. 4052 confirmed successful jobs at 07:50:22Z, failed55 excluded. Main audit 568 of first842; 274 confirmation sealed. Push60 exploration complete 0/3 precision, unseen UI pass synthetic. Book comparison, actual private-pack real browser/iPhone, learning effect remain. No paid API/main change.",
+    "next": "Use attached book as primary research roadmap: first verify theme13 definitions/fold costs, theme20/21 risk denominator and turn index, theme29 expected loss, theme0 accounting. Reproduce exact observable definitions or label approximate. Continue already-approved extension intake/repair run45571397958 and holdout separation; do not use confirmation contents. Previous 120/60 exploration precision unmet. No production change or new paid calls. Report practical research question, finding, limits, and in-game display use.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -3778,8 +3778,73 @@
         "commit": "18364c8c19e24bd127aa7349a7e9bbd7e8ac1a24"
       },
       "latestReport": {
-        "path": "handoff/learning-push60-intake842-repair-20261125.md",
-        "commit": "3e5cd4be409d76892a1a4e47d0bcd31126d19148"
+        "path": "handoff/learning-book-reproduction-pivot-20261125.md",
+        "commit": "9dbc517ab3b623c19a6f0d09ed47ada6ec2abbb4"
+      },
+      "bookLedResearch": {
+        "status": "SOURCE_RECEIVED_30_THEME_ROADMAP_FIRST_THEME13_PROVISIONAL_REPRODUCTION",
+        "report": "handoff/learning-book-reproduction-pivot-20261125.md",
+        "reportCommit": "9dbc517ab3b623c19a6f0d09ed47ada6ec2abbb4",
+        "source": {
+          "name": "2026-11-25 09.56.33(1).pdf",
+          "fileId": "file_000000003258820694bf7a84391c7aaa",
+          "pages": 95,
+          "private": true
+        },
+        "roadmap": {
+          "name": "mahjong_book_research_roadmap_20261125.md",
+          "fileId": "file_0000000076e482068e755c4f7caafd45",
+          "sha256": "bfd41af9b288acb247d9beccbb3d1cc80b44b0d32402b4036d3050eba5869bbb",
+          "themes": 30
+        },
+        "firstReproduction": {
+          "theme": 13,
+          "status": "PROVISIONAL_OBSERVATIONAL_COMPARISON",
+          "matches": 970,
+          "hands": 10089,
+          "winningEvents": 8797,
+          "categories": 14,
+          "bootstrap": 2000,
+          "artifact": {
+            "name": "mahjong_book_reproduction_theme13_20261125.zip",
+            "fileId": "file_000000006d64820685f939a70c67274e",
+            "sha256": "6a1ded3a48e35562bebb4074eb6a940e8aacf61c24716104d820103559f578cc"
+          },
+          "limits": "recorded defen, provisional yaku groups, original extraction code unknown, no independent confirmation, no full scoring certification"
+        },
+        "priority": [
+          13,
+          20,
+          21,
+          29,
+          0,
+          1,
+          2,
+          4,
+          5,
+          6,
+          8,
+          9,
+          10,
+          11,
+          12,
+          3,
+          7,
+          14,
+          15,
+          16,
+          17,
+          18,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          19
+        ],
+        "rules": "Distinguish observed human/Mortal rates, book model assumptions, counterfactual policies. Do not treat selected final dama as prospective comparison. Align exact denominator and timing; missing definitions provisional. Preserve 3000 confirmation split, no human grading of opponent open-hand tenpai from S42. User goal in-game research display before more isolated UI work; no public source text/table or paid calls."
       }
     },
     "learningCorpus": {
