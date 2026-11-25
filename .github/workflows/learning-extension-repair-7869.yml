@@ -12,7 +12,16 @@ concurrency:
 jobs:
   repair:
     runs-on: ubuntu-24.04
-    timeout-minutes: 35
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        include:
+          - {first: 7869, last: 7872}
+          - {first: 7873, last: 7876}
+          - {first: 7877, last: 7880}
+          - {first: 7881, last: 7882}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/checkout@v4
@@ -51,17 +60,31 @@ jobs:
           npx playwright install chromium
       - name: Generate and encrypt batch
         env:
-          FIRST: '7869'
-          LAST: '7882'
+          FIRST: '${{ matrix.first }}'
+          LAST: '${{ matrix.last }}'
         run: |
           set -euo pipefail
           (cd /tmp/lab && python3 -m http.server 8788 --bind 127.0.0.1 >/tmp/http-log 2>&1) &
           sleep 2
-          python3 handoff/learning-corpus/collect-1000.py "$FIRST" "$LAST"
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('/tmp/lab/tests/next/run-p1-v2-dev.cjs')
+          s=p.read_text()
+          a='await page.waitForFunction(()=>MahjongLabS42Debug().ready,null,{timeout:120000});'
+          assert s.count(a)==1
+          s=s.replace(a,'console.log("AUDIT_STAGE_MODEL_LOADING");\n  '+a.replace('120000','180000')+'\n  console.log("AUDIT_STAGE_MODEL_READY");')
+          p.write_text(s)
+          PY
+          rc=0
+          python3 handoff/learning-corpus/collect-1000.py "$FIRST" "$LAST" || rc=$?
+          if [ "$rc" != 0 ]; then
+            grep -xE 'AUDIT_STAGE_MODEL_LOADING|AUDIT_STAGE_MODEL_READY' /tmp/corpus-run.log || true
+          fi
+          exit "$rc"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: tenhou-corpus-extension-repair-7869-7882
+          name: tenhou-corpus-extension-repair-${{ matrix.first }}-${{ matrix.last }}
           path: corpus-output/
           if-no-files-found: error
           retention-days: 30
