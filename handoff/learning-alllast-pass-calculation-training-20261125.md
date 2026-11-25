@@ -1,0 +1,6 @@
+# 2026-11-25 南4研究画面合格・確定計算教材の実装
+- PR88 run45554781404 job139004093425 success。ログ ALLLAST_RESEARCH_PASS Chromium/WebKit 両方、naturalStart/rawLogPublicAudit/assessmentHidden/completedMatch/nativeCrypto/syntheticPack=1。初回南4局開始点棒snapshotと完走牌譜の独立公開点棒照合、計測中非表示、終局後利用、合成packの実ブラウザ確認。私的実packをローカル再確認: SHA256 0e3f0dd2ed26d571a6a74154658a22bad71cae574a228e494913273a59be91f5、24セルの順位合計、親子・点差分割、率の整合全件成功。ただし実私的packと実ブラウザ本体の組合せ/iPhone未検証。
+- PR90 branch feat/learning-d1-training-core-20261125 head ff5b63225afebece610bac72d3ddb1d08e8ff965、run45556501377 job139009710910。追加の算術トレーニング（旧D1 v2の12+12診断とは別）。基準12問/別問題12問、仮定の終局点棒・同点起家順・必要点数移動、固定段位ptの期待値と比較・逆転に必要な整数確率。実際の合法和了打点や終局判定・人間予測・戦術最適性を問うものではない。合成24問、公開コード上の答えは閲覧可能で厳密な盲検ではない。正解表示は全問確定後、回答根拠・自信度1–5・所要時間、端末内JSON export。保存は任意、学習効果未測定。V8 24/24 正解生成/採点確認、同点の境界2件一致。CI independent arithmetic and session tests success（ブラウザは実行中）。calculation-training.html スタンドアロン開発版、ホームへの入口は未追加、配布・実機未実施。別問題は同じ計算類型の練習で独立実戦評価/保持試験ではない。追加のデザイン選択は開発側判断。
+- L2探索120 run45551863303 2セルsuccess、3in_progress、1queued。全6セル完了前の効果閲覧なし。成功セル数から40ペアの技術成功、効果集計は保留。
+- 10k拡張 run45530376491、34有効artifactの範囲名義上2836（初期970＋1866）。前回全ページ成功job/artifact照合済2708が厳格な確認下限。追加128は成功jobとの全ページ再照合未実施、初期970だけ完全内容監査。
+- 未完: 120全セル結果、教材ブラウザ、実pack本体・iPhone、書籍外部照合、拡張復号と確認用物理隔離、学習効果。追加有料API/runnerなし、main/PR77変更なし。
