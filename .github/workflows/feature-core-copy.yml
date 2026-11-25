@@ -1,0 +1,22 @@
+name: Pinned research core source export
+on:
+  pull_request:
+    branches: [project-handoff]
+    paths: ['.github/workflows/feature-core-copy.yml']
+permissions:
+  contents: read
+jobs:
+  core:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 75c87e621b85bc411ef92152f84918a1802dbd2b
+          path: pinned
+      - run: sha256sum pinned/index.html
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pinned-research-core-source
+          path: pinned/index.html
+          retention-days: 1
