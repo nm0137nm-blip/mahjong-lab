@@ -9,7 +9,7 @@
   },
   "active_task": {
     "phase": "P2a-v4.7 free-only known-case semantic diagnostic",
-    "status": "L1_INITIAL_RESULTS_VALIDATED_EXTENSION_RUNNING",
+    "status": "L1_REFINEMENT_V2_COMPLETE_PARTIAL_GATES_PENDING_EXTENSION_RUNNING",
     "branch": "feat/coach-p2a-v47-minimal-diagnostic",
     "commit": "7959435bfad0412e9cd94234f01395af05d84789",
     "pr": 71,
@@ -355,7 +355,7 @@
       }
     ],
     "decision": "v46 API-only Stage1 stopped after 2 paid calls, 1 contract pass and 1 incomplete output due to cap. No evidence of typed condition contract failure from pilot82; no semantic certification. Original manual Stage1 plan not performed. No new paid generation authorized.",
-    "next": "Continue L1 independent tracks: exact required-score enumeration, A2 scope fixtures/pass-after-riichi category, B1 same-definition book comparison, B2 wait/first/chase, C1 role-ready/non-genbutsu opportunities, D1 private diagnostic/original drills. Use prior 970 only for development, no unsupported external extrapolation. Parallel extension45530376491; initial 8 bulk running, 980 stored cumulative. PR77 deployment review separate; no paid or new training.",
+    "next": "Continue L1 from v2: further wait/value-conditioned aggregates after definition card; external exact definitions uncertain, do not block other work. D1 baseline ready, holdout separate; user response needed only for personalized diagnosis. Prepare L2 branch feasibility independently; no S42-as-truth or unsupported causal claims. Extension45530376491 1172 saved, 8 active,130 queued, zero observed failures. PR77 separate deployment review pending. No paid or extra training.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -2995,6 +2995,53 @@
           "bytes": 22126,
           "includes": "aggregate + own code, no raw logs, keys, book content",
           "fileId": "file_00000000412082069cbd0042f1292dc2"
+        },
+        "v2": {
+          "status": "INDEPENDENT_TASKS_PROGRESS",
+          "record": "handoff/learning-l1-refinement-results-v2-20261125.md",
+          "commit": "680624100482e761d852295abc506931c3a1ab56",
+          "prereg": "handoff/learning-l1-refinement-v2-20261125.md",
+          "matches": 970,
+          "hands": 10089,
+          "cells": 1087,
+          "supported": 336,
+          "shared96Mismatch": 0,
+          "A1": {
+            "status": "SINGLE_WIN_NO_PAO_TARGET_ENUMERATION_PASS",
+            "anchors": 68,
+            "checks": 6144,
+            "mismatch": 0
+          },
+          "A2": {
+            "status": "PUBLIC_PASSED_AFTER_RIICHI_ADDED_SMOKE_PASS",
+            "checks": 250,
+            "mismatch": 0,
+            "strategicValidityPending": true
+          },
+          "BC": {
+            "status": "OPEN_ROLE_READY_AND_NON_GENBUTSU_LEGAL_AND_CHASE_AGGREGATES_DONE",
+            "first": 6147,
+            "chase": 1564,
+            "humanTransferNotVerified": true
+          },
+          "external": {
+            "status": "DEFINITION_ALIGNMENT_PARTIAL_NO_DIRECT_COMPARISON",
+            "fineLegalCells": 449,
+            "fineLegalPass": 160,
+            "fineActualCells": 410,
+            "fineActualPass": 2
+          },
+          "D1": {
+            "status": "ORIGINAL_BASELINE_HOLDOUT_READY_USER_NOT_YET_ANSWERED",
+            "baseline": 12,
+            "holdout": 12
+          },
+          "privateZip": {
+            "name": "mahjong_l1_research_v2_20261125.zip",
+            "sha256": "ef82a1f71a47dcbccc07c8f693a5b8130850da66af445efb77b1f63a3ba40c6b",
+            "bytes": 59182,
+            "fileId": "file_00000000fac08206a42c2514607db022"
+          }
         }
       }
     },
@@ -3167,12 +3214,14 @@
         "eta": "16–24h or longer conditional on failures, queue and setup; next morning check",
         "paidCalls": 0,
         "latestObserved": {
-          "savedCumulative": 980,
+          "savedCumulative": 1172,
           "pilot10": "pass",
           "bulkActive": 8,
-          "bulkArtifactsConfirmed": 0,
+          "bulkArtifactsConfirmed": 3,
+          "bulkSaved": 192,
           "failedObserved": 0,
-          "scope": "first 100 jobs inspected"
+          "scope": "all 147 jobs",
+          "queued": 130
         }
       }
     },
