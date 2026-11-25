@@ -17,15 +17,25 @@ used.update(seed('mahjong-lab:learning-corpus-pilot:20261125:v1:'+str(i)) for i 
 used.update(seed('mahjong-lab:learning-corpus-1000:20261125:v1:'+str(i)) for i in range(1,1001))
 outer=json.loads(Path('/tmp/prior-outer/outer-seeds.json').read_text()); assert outer['status']=='locked_before_outer_acquisition' and len(outer['entries'])==160
 used.update(e['seed'] for e in outer['entries'])
-entries=[dict(shard=i,seed=seed(plan['seedNamespace']+':'+str(i)),family='s42',policy='s42',dealer=(i-1)%4) for i in range(1,1001)]
-assert len({e['seed'] for e in entries})==1000 and not used.intersection(e['seed'] for e in entries)
+used.update(seed('mahjong-lab:tenhou-corpus-1000:20261125:v1:'+str(i)) for i in range(1,1001))
+entries=[]
+reserved=set(used)
+for i in range(1,plan['count']+1):
+ attempt=0
+ while True:
+  value=seed(plan['seedNamespace']+':'+str(i)+(f':collision:{attempt}' if attempt else ''))
+  if value not in reserved:break
+  attempt+=1
+ reserved.add(value)
+ entries.append(dict(shard=i,seed=value,family='s42',policy='s42',dealer=(i-1)%4))
+assert len({e['seed'] for e in entries})==plan['count'] and not used.intersection(e['seed'] for e in entries)
 lab=Path('/tmp/lab'); runner=lab/'tests/next/run-p1-v2-dev.cjs'
 s=runner.read_text()
 def patch(a,b):
  global s
  assert s.count(a)==1
  s=s.replace(a,b)
-patch('shard>96','shard>1000')
+patch('shard>96','shard>'+str(plan['count']))
 patch('for(let i=0;i<4;i++){\n const child=spawn(', 'for(let i=0;i<0;i++){\n const child=spawn(')
 patch("console.log('ARENA_MATCH='+JSON.stringify(rows.at(-1)));","console.log('S42 synthetic match finished');")
 patch("fs.writeFileSync('/tmp/development/paipu.json',JSON.stringify(outcome.game));","fs.writeFileSync('/tmp/development/paipu.json',JSON.stringify(outcome.game));\n   fs.writeFileSync('/tmp/development/wallOrder.json',JSON.stringify(outcome.walls));")
@@ -36,7 +46,7 @@ Path('/tmp/v2-dev-seeds.json').write_text(json.dumps(dict(status='locked_v2_deve
 html=lab/'index.html'; coach=lab/'src/coach/phoenix-coach.mjs'
 profile.apply(html)
 originals={p:p.read_bytes() for p in (html,coach)}
-first,last=map(int,sys.argv[1:3]); assert 1<=first<=last<=1000 and last-first<32
+first,last=map(int,sys.argv[1:3]); assert 1<=first<=last<=plan['count'] and last-first<plan['batchSize']
 out=ROOT/'corpus-output'; out.mkdir(exist_ok=True)
 stage=Path('/tmp/corpus-stage'); stage.mkdir(exist_ok=True)
 summaries=[]; failure=None; start=time.monotonic()
@@ -49,7 +59,11 @@ try:
   t=time.monotonic()
   with open('/tmp/corpus-run.log','wb') as log:
    proc=subprocess.run(['node',str(runner)],env={**os.environ,'COACH_ARENA_QA':'1','ARENA_PAIR':str(i)},stdout=log,stderr=log,timeout=300)
-  assert proc.returncode==0,'runner exit'
+  if proc.returncode!=0:
+   logtext=Path('/tmp/corpus-run.log').read_text(errors='replace')
+   categories=['legal_mask_mismatch','private qipai contract','private draw contract','focal native encoder not ready','reference mask mismatch','decision progression mismatch','CPU arena failure','arena stall','invalid arena result','development coverage audit','teacher turn owner','oracle own hand alignment','unstable opponent hand','honba score regression','legal ron without positive payment','visible tile overflow','TimeoutError','page.evaluate','out of memory']
+   print('diagnostic categories:',json.dumps([v for v in categories if v.lower() in logtext.lower()]),flush=True)
+   assert False,'runner exit (classified diagnostic only)'
   m=json.loads((base/'manifest.json').read_text()); r,=m['rows']; p=json.loads((base/'paipu.json').read_text()); walls=json.loads((base/'wallOrder.json').read_text())
   a=r['cpuAudit']
   assert m['seed']==entries[i-1]['seed'] and m['shard']==i and p['qijia']==r['dealer']==entries[i-1]['dealer']
@@ -69,7 +83,7 @@ try:
   expected_points=[p['score'][k]-30000+([40000,10000,-10000,-20000][p['rank'][k]-1]) for k in range(4)]
   from decimal import Decimal
   assert [int(Decimal(v)*1000) for v in p['point']]==expected_points, 'uma/oka/rounding mismatch'
-  m.update(ruleProfile=profile.PROFILE_ID,ruleSource=plan['ruleSource'],actualRule=p['rule'],boundaryAudit=ba,patchedEngineSha256=sha(originals[html]),collectorSha256=sha(Path(__file__).read_bytes()))
+  m.update(corpusNamespace=plan['seedNamespace'],ruleProfile=profile.PROFILE_ID,ruleSource=plan['ruleSource'],actualRule=p['rule'],boundaryAudit=ba,patchedEngineSha256=sha(originals[html]),collectorSha256=sha(Path(__file__).read_bytes()))
   (base/'manifest.json').write_text(json.dumps(m,ensure_ascii=False,indent=2)+'\n')
   target=stage/str(i);shutil.copytree(base,target)
   rows={f.name:sha(f.read_bytes()) for f in target.glob('*.json')}
