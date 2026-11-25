@@ -9,7 +9,7 @@
   },
   "active_task": {
     "phase": "P2a-v4.7 free-only known-case semantic diagnostic",
-    "status": "L1_REFINEMENT_V2_COMPLETE_PARTIAL_GATES_PENDING_EXTENSION_RUNNING",
+    "status": "L1_V3_WAIT_CLASSIFIER_AND_L2_RECEIPT_PREP_SYNTHETIC_ONLY_EXTENSION_RUNNING",
     "branch": "feat/coach-p2a-v47-minimal-diagnostic",
     "commit": "7959435bfad0412e9cd94234f01395af05d84789",
     "pr": 71,
@@ -355,7 +355,7 @@
       }
     ],
     "decision": "v46 API-only Stage1 stopped after 2 paid calls, 1 contract pass and 1 incomplete output due to cap. No evidence of typed condition contract failure from pilot82; no semantic certification. Original manual Stage1 plan not performed. No new paid generation authorized.",
-    "next": "Continue L1 from v2: further wait/value-conditioned aggregates after definition card; external exact definitions uncertain, do not block other work. D1 baseline ready, holdout separate; user response needed only for personalized diagnosis. Prepare L2 branch feasibility independently; no S42-as-truth or unsupported causal claims. Extension45530376491 1172 saved, 8 active,130 queued, zero observed failures. PR77 separate deployment review pending. No paid or extra training.",
+    "next": "Recover private 970 corpus and prior L1 v2 research ZIP in a private environment; validate independent wait enumeration against actual rules and run L1 v3 stratified aggregates. L2 focal replay runner hook and baseline reproduction pending; use new synthetic-tested receipt guard. Continue existing extension run45530376491; observed 1364 cumulative saved via successful 5 pilot and 6 bulk jobs with artifacts; only initial 970 fully audited. D1 optional personalized baseline user response pending, PR77 separate release review. No paid API, new generation, or main merge.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -3042,7 +3042,38 @@
             "bytes": 59182,
             "fileId": "file_00000000fac08206a42c2514607db022"
           }
+        },
+        "v3Prep": {
+          "status": "SYNTHETIC_WAIT_CLASSIFIER_PASS_NO_REAL_AGGREGATES",
+          "branch": "feat/learning-l2-pair-audit-20261125",
+          "code": "handoff/learning-l1/classify-waits.mjs",
+          "codeCommit": "bcde1e675fd977ab56c6504920e8668f0f4c1711",
+          "testCommit": "2dbaeda819a264ecd9534b14844d4e9949e43900",
+          "record": "handoff/learning-l1-v3-l2-receipt-prep-20261125.md",
+          "recordCommit": "a3376de94fae6f867302f9303d3f545beb5e4fd4",
+          "syntheticChecks": 12,
+          "syntheticPassed": 12,
+          "execution": "same function V8; retained Node tests not independently run",
+          "naturalCases": 0,
+          "aggregationRun": false,
+          "blocker": "previous private L1 v2 ZIP inaccessible via file search and materialization; private raw data/key not recovered in new environment",
+          "noPaidCalls": true
         }
+      },
+      "l2Prep": {
+        "status": "PAIR_RECEIPT_GUARD_SYNTHETIC_ONLY",
+        "branch": "feat/learning-l2-pair-audit-20261125",
+        "code": "handoff/learning-l2/audit-pair.mjs",
+        "codeCommit": "f6f0bf9a42db7118f093a4cae6641340317f69fb",
+        "testCommit": "44890f619bcad72da01cad05c384c695c1c26055",
+        "positivePass": 1,
+        "negativeRejected": 19,
+        "execution": "same function V8; retained Node tests not independently run",
+        "actualPairedReplays": 0,
+        "sourceHashVerificationAndLeakAttestationsIndependent": false,
+        "runnerHookPending": true,
+        "mainUnchanged": true,
+        "paidCalls": 0
       }
     },
     "learningCorpus": {
@@ -3214,14 +3245,15 @@
         "eta": "16–24h or longer conditional on failures, queue and setup; next morning check",
         "paidCalls": 0,
         "latestObserved": {
-          "savedCumulative": 1172,
+          "savedCumulative": 1364,
           "pilot10": "pass",
-          "bulkActive": 8,
-          "bulkArtifactsConfirmed": 3,
-          "bulkSaved": 192,
+          "bulkActiveObserved": 8,
+          "bulkArtifactsConfirmed": 6,
+          "bulkSaved": 384,
           "failedObserved": 0,
-          "scope": "all 147 jobs",
-          "queued": 130
+          "scope": "first page 30 jobs only: 12 success (rule QA + 5 pilot + 6 bulk), 8 in progress, 10 queued; 11 artifacts confirmed, full job list not retrieved",
+          "verifiedInitial": 970,
+          "extensionFullAuditPending": true
         }
       }
     },
