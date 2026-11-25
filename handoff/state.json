@@ -9,7 +9,7 @@
   },
   "active_task": {
     "phase": "P2a-v4.7 free-only known-case semantic diagnostic",
-    "status": "L1_INDEPENDENT_REFERENCE_SCORING_AND_REAL_APP_SYNTHETIC_QA_PASS_L2_VARIANCE_AND_REAL_POISON_RUNNING",
+    "status": "L2_VARIANCE24_REAL_MODEL_POISON_PASS_EXPLORATORY120_AND_STUDY_MODE_QA_RUNNING",
     "branch": "feat/coach-p2a-v47-minimal-diagnostic",
     "commit": "7959435bfad0412e9cd94234f01395af05d84789",
     "pr": 71,
@@ -355,7 +355,7 @@
       }
     ],
     "decision": "v46 API-only Stage1 stopped after 2 paid calls, 1 contract pass and 1 incomplete output due to cap. No evidence of typed condition contract failure from pilot82; no semantic certification. Original manual Stage1 plan not performed. No new paid generation authorized.",
-    "next": "Check run45546401887 (24-pair variance-only pilot) and run45550031870 (actual model isolated poison). Validate complete output, diagnose failure without using partial outcomes; then plan statistical precision and remaining gates. L1 ordinary reference ron independent audit complete. App PR83 Chromium/WebKit synthetic-pack pass; private pack real-app check remains, local browser secure navigation blocked; no private data in public CI. Book external definitions not recovered; formal self/assessment modes, D1 optional and iPhone testing pending. Extension first-page job/artifact matched lower bound2324, nominal2388. No paid APIs, main/PR77 unchanged. Four report categories.",
+    "next": "Check study mode browser QA run45552035287 first (Chromium/WebKit, synthetic pack), diagnose failures and verify full results. Check 120 exploratory run45551863303 all six cell aggregates; do not use partial outcomes; no efficacy claims and plan precision/independent holdout. L2 actual isolated poison and 24 variance pilot success. Book original title/name search returned no results; external verification unavailable. Private pack real app and iPhone untested, post-match research linkage and D1 pending. 10k extension lower bound2388, nominal2452. Main/PR77 unchanged. No paid API/runner. Four report categories.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -3170,10 +3170,28 @@
           "eastHidden": true,
           "actualPrivatePackInRealApp": false,
           "mainUnchanged": true
+        },
+        "studyModes": {
+          "status": "IMPLEMENTED_BROWSER_QA_RUNNING",
+          "pr": 86,
+          "run": 45552035287,
+          "job": 138995211405,
+          "branch": "feat/learning-study-modes-20261125",
+          "head": "8e90f83c7a25c132bc5427985e1fdb77a5870e8e",
+          "base": "ee7828b5524a1f3531c4b947d0cfb0b9c92cbc91",
+          "modes": [
+            "coach",
+            "self",
+            "assessment"
+          ],
+          "recordHistorySeparated": true,
+          "legacyHistoryMappedTo": "coach",
+          "selfReviewTiming": "after full match, not immediate",
+          "scope": "UI only, no devtools anti-cheat; research during self hanchan, no during assessment; actual private pack and iPhone untested; after-match research integration not implemented"
         }
       },
       "l2Prep": {
-        "status": "FIVE_TECHNICAL_PAIRS_PASS_24_VARIANCE_PILOT_RUNNING",
+        "status": "VARIANCE24_AND_REAL_MODEL_ISOLATION_PASS_EXPLORATORY120_RUNNING",
         "branch": "feat/learning-l2-pair-audit-20261125",
         "code": "handoff/learning-l2/audit-pair.mjs",
         "codeCommit": "f6f0bf9a42db7118f093a4cae6641340317f69fb",
@@ -3181,7 +3199,7 @@
         "positivePass": 1,
         "negativeRejected": 19,
         "execution": "same function V8; retained Node tests not independently run",
-        "actualPairedReplays": 5,
+        "actualPairedReplays": 29,
         "sourceHashVerificationAndLeakAttestationsIndependent": false,
         "runnerHookPending": false,
         "mainUnchanged": true,
@@ -3236,7 +3254,7 @@
           "limitations": "independent masked-log bridge/packet guard only, not end-to-end model poison"
         },
         "variancePilot": {
-          "status": "in_progress",
+          "status": "success",
           "pr": 82,
           "run": 45546401887,
           "head": "4d3c867e00c87ce59949bd709cbb97f1abb7bc56",
@@ -3253,16 +3271,73 @@
           "accountingMismatches": 0,
           "runnerTimeoutMinutes": 90,
           "standardPublicRunner": true,
-          "scope": "variance planning only; no efficacy estimates or per-case results; actual 24 results pending"
+          "scope": "variance planning only, not strategy effect; equal cells, 4 each",
+          "actualPairs": 24,
+          "job": 138976964169,
+          "commonWallKeys": 250,
+          "maskedPacketAudit": {
+            "packets": 215504,
+            "unchanged": 215504,
+            "rejectedHands": 2212,
+            "rejectedDraws": 76554
+          },
+          "summary": {
+            "n": 24,
+            "roundDeltaSDRounded100": 5000,
+            "finalDeltaSDRounded100": 12000,
+            "fourthDeltaSD": 0.359,
+            "pairedToIndependentVarianceRatio": 0.24,
+            "illustrativeNFor1000PointCIWidth": 391
+          }
         },
         "realPolicyPoison": {
-          "status": "in_progress",
+          "status": "success",
           "pr": 84,
           "run": 45550031870,
           "job": 138988735886,
           "branch": "feat/learning-l2-policy-poison-20261125",
           "head": "3613684655198ff209b2d895e7681b6d2988c716",
-          "scope": "isolated actual encoder and ONNX worker on synthetic packets; byte-identical input, legal mask, legal Q, reach/kan detail, forbidden packet rejection; not every game path; no results yet"
+          "scope": "isolated actual encoder and ONNX worker on synthetic packets; byte-identical input, legal mask, legal Q, reach/kan detail, forbidden packet rejection; not every game path; no results yet",
+          "result": {
+            "fixtures": 52,
+            "packets": 250,
+            "decisions": 52,
+            "reachDetails": 1,
+            "kanDetails": 2,
+            "rejectedHands": 52,
+            "rejectedDraws": 52,
+            "poisonedReads": 0
+          },
+          "limitations": "actual isolated encoder/ONNX inputs and legal Q/best, not whole game sandbox proof"
+        },
+        "exploratory120": {
+          "status": "in_progress",
+          "pr": 85,
+          "run": 45551863303,
+          "branch": "feat/learning-l2-exploratory-120-20261125",
+          "head": "92bf856e63b7d8e41e223b42f9a3b964fa1f6c66",
+          "selected": 120,
+          "distinctHanchan": 120,
+          "perCell": 20,
+          "representatives": 768,
+          "frameCounts": {
+            "contains_ryanmen/high": 102,
+            "contains_ryanmen/low": 188,
+            "contains_ryanmen/mid": 172,
+            "no_ryanmen/high": 52,
+            "no_ryanmen/low": 163,
+            "no_ryanmen/mid": 91
+          },
+          "planSha256": "21061d819a1640658074885dcf671569f3d388db05cc8f2975da47727a14a8d6",
+          "sourceCommitmentsSha256": "7106d82404f55a5afab951d0e67202798d9f2b3b9bbd5cfa30971aa916b6a922",
+          "preflightPassed": 120,
+          "parallel": 3,
+          "jobs": 6,
+          "observedRunning": 3,
+          "observedQueued": 3,
+          "actualPairsVerified": 0,
+          "prereg": "handoff/learning-l2/exploratory-120-prereg.md",
+          "scope": "exploratory S42-selected first riichi only, no efficacy certification; separate 240 replay hanchan not count toward 10k; use no partial efficacy results; standard public runner only"
         }
       },
       "l2LatestReport": {
@@ -3270,8 +3345,8 @@
         "commit": "18364c8c19e24bd127aa7349a7e9bbd7e8ac1a24"
       },
       "latestReport": {
-        "path": "handoff/learning-l1-independent-scoring-app-qa-20261125.md",
-        "commit": "e56b4234ba696ec295650558d0f6d122e53ee81e"
+        "path": "handoff/learning-l2-variance-pass-explore120-study-modes-20261125.md",
+        "commit": "f99e9c10dca8ecc7028cfba5bf5b561abd175e70"
       }
     },
     "learningCorpus": {
@@ -3443,19 +3518,18 @@
         "eta": "16–24h or longer conditional on failures, queue and setup; next morning check",
         "paidCalls": 0,
         "latestObserved": {
-          "cumulativeSaved": 2324,
-          "additionalSaved": 1354,
-          "nominalArtifactRangeCount": 2388,
-          "artifacts": 27,
-          "matchedSuccessArtifacts": 26,
+          "cumulativeSaved": 2388,
+          "additionalSaved": 1418,
+          "nominalArtifactRangeCount": 2452,
+          "artifacts": 28,
+          "matchedSuccessArtifacts": 27,
           "unmatchedArtifact": "tenhou-corpus-extension-1227-1290",
           "firstPageJobs": 30,
-          "success": 27,
-          "inProgress": 3,
-          "queued": 0,
+          "success": 28,
+          "inProgress": 2,
           "observedFailure": 0,
           "initial970OnlyFullyAudited": true,
-          "limitations": "conservative matched successful jobs; nominal range count not used as confirmed count; first-page API cannot guarantee full run count"
+          "limitations": "conservative matched successful jobs; first-page API cannot guarantee full run count"
         }
       }
     },
