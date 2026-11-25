@@ -9,7 +9,7 @@
   },
   "active_task": {
     "phase": "P2a-v4.7 free-only known-case semantic diagnostic",
-    "status": "L1_V4_EXPLORATORY_AND_QUERY_PREVIEW_PASS_L2_FIRST_PAIR_RUNNING_EXTENSION_RUNNING",
+    "status": "L2_FIVE_TECHNICAL_PAIRS_PASS_VARIANCE24_RUNNING_L1_APP_ADAPTER_PREP",
     "branch": "feat/coach-p2a-v47-minimal-diagnostic",
     "commit": "7959435bfad0412e9cd94234f01395af05d84789",
     "pr": 71,
@@ -355,7 +355,7 @@
       }
     ],
     "decision": "v46 API-only Stage1 stopped after 2 paid calls, 1 contract pass and 1 incomplete output due to cap. No evidence of typed condition contract failure from pilot82; no semantic certification. Original manual Stage1 plan not performed. No new paid generation authorized.",
-    "next": "Check run45543598334 first technical pair. If failure diagnose and patch, if pass independently verify policy boundary/poison and remaining four preselected cases within unpaid scope, then preregister grouped paired experiments. Research v4 artifact holds reproducible code and preview; external book definition/independent yaku-fu and application game integration unfinished; user baseline D1 optional. Continue existing extension run45530376491 (1812 saved, 970 fully audited). No paid API or main merge. Preserve four reporting categories; do not claim Phase completion before all gates.",
+    "next": "Check run45546401887 (24-pair variance-only pilot). If complete validate logged aggregate and sample planning; if failure diagnose, preserve frozen 24 selection, do not use partial outcomes. Full policy poison audit/independent yaku-fu and human book comparisons still incomplete. Apply private research UI patch to PR77-based separate branch and test actual app using free CI; local secure navigation blocked. Research pack and source ZIP in conversation. D1 optional; PR77 release separate. Existing extension run45530376491 currently 2004 saved; initial 970 fully audited. No paid calls or main merge. Four report categories.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -3113,10 +3113,30 @@
           },
           "preview": "mahjong_research_preview_20261125.html",
           "limitations": "S42 descriptive only, accepted-riichi conditioning, no external book source recovered in search, yaku/fu not independently scored, actual LAB connection pending, no independent heldout"
+        },
+        "researchAppPrep": {
+          "status": "DECISION_SESSION_AND_PANEL_FIXTURE_TESTED_PATCH_NOT_APPLIED",
+          "nodeTests": 8,
+          "nodePassed": 8,
+          "browser": "Chromium real public fixture passed; secure navigation blocked, SHA via Python binding, actual app/native WebCrypto/WebKit untested",
+          "pinnedIndexBlob": "d89ba774864e76733a03f4eb2c87985e486a77aa",
+          "patchAnchors": 8,
+          "patchApplied": false,
+          "artifact": {
+            "name": "mahjong_l2_research_integration_20261125.zip",
+            "fileId": "file_00000000891882069702e64b781f9b10",
+            "sha256": "e73bd1cc9ac17ce2b853e61eb7ea9f4b38ab0bc881a9a43a0bb12939d88ccace"
+          },
+          "dataPack": {
+            "name": "mahjong_research_pack_20261125.json",
+            "sha256": "412c8f711270d1fb74620440e7fcdb503b9f39814816432b6f2b8c897b312d44",
+            "bytes": 112331
+          },
+          "scope": "practice hanchan own turn riichi stats only, no implicit broadening, existing coaching unchanged, no live app integration yet"
         }
       },
       "l2Prep": {
-        "status": "FIRST_PAIR_TECHNICAL_SMOKE_RUNNING",
+        "status": "FIVE_TECHNICAL_PAIRS_PASS_24_VARIANCE_PILOT_RUNNING",
         "branch": "feat/learning-l2-pair-audit-20261125",
         "code": "handoff/learning-l2/audit-pair.mjs",
         "codeCommit": "f6f0bf9a42db7118f093a4cae6641340317f69fb",
@@ -3124,7 +3144,7 @@
         "positivePass": 1,
         "negativeRejected": 19,
         "execution": "same function V8; retained Node tests not independently run",
-        "actualPairedReplays": 0,
+        "actualPairedReplays": 5,
         "sourceHashVerificationAndLeakAttestationsIndependent": false,
         "runnerHookPending": false,
         "mainUnchanged": true,
@@ -3143,7 +3163,7 @@
         },
         "localModelRuntimeAvailable": false,
         "sourcePreflightPassed": 5,
-        "liveRunnerHookVerified": false,
+        "liveRunnerHookVerified": true,
         "independentPoisonAudit": false,
         "patchCommit": "96efb500603959cb601848c1303b67c1cd29fb34",
         "runnerCommit": "88ec8d50abb0065a3ae16246f5b445c6499c673c",
@@ -3157,7 +3177,51 @@
           "timeoutMinutes": 20,
           "rawUploads": false,
           "paidApiCalls": 0
+        },
+        "firstTechnicalSmoke": {
+          "run": 45543598334,
+          "status": "success",
+          "pairs": 1,
+          "commonWallKeys": 8
+        },
+        "remainingTechnicalSmoke": {
+          "run": 45545415868,
+          "head": "ea0d9e7ca621bf87ee6ced4b8e695da0a90a06d4",
+          "status": "success",
+          "pairs": 4,
+          "commonWallKeys": 37,
+          "packetPoison": {
+            "packets": 30632,
+            "unchanged": 30632,
+            "rejectedHands": 324,
+            "rejectedDraws": 10908
+          },
+          "limitations": "independent masked-log bridge/packet guard only, not end-to-end model poison"
+        },
+        "variancePilot": {
+          "status": "in_progress",
+          "pr": 82,
+          "run": 45546401887,
+          "head": "4d3c867e00c87ce59949bd709cbb97f1abb7bc56",
+          "branch": "feat/learning-l2-variance-pilot-20261125",
+          "selected": 24,
+          "distinctHanchan": 24,
+          "perCell": 4,
+          "firstRiichiFrame": 1570,
+          "frameHanchan": 792,
+          "frameHash": "7b958efb22f5cd25bee2eba864e92a4c156b5b04ac528ee97dc8523fc2210f5a",
+          "privatePlanSha256": "1f77d1552c969dd3b16f61e043a0bfe542aa355011ef98739fe1aa47c22dcfcd",
+          "sourceCommitmentsVerified": 24,
+          "naturalAccountingChecks": 40356,
+          "accountingMismatches": 0,
+          "runnerTimeoutMinutes": 90,
+          "standardPublicRunner": true,
+          "scope": "variance planning only; no efficacy estimates or per-case results; actual 24 results pending"
         }
+      },
+      "l2LatestReport": {
+        "path": "handoff/learning-l2-five-pairs-variance-start-20261125.md",
+        "commit": "18364c8c19e24bd127aa7349a7e9bbd7e8ac1a24"
       }
     },
     "learningCorpus": {
@@ -3329,15 +3393,15 @@
         "eta": "16–24h or longer conditional on failures, queue and setup; next morning check",
         "paidCalls": 0,
         "latestObserved": {
-          "cumulativeSaved": 1812,
-          "additionalSaved": 842,
-          "artifacts": 18,
+          "cumulativeSaved": 2004,
+          "additionalSaved": 1034,
+          "artifacts": 21,
           "pilotSuccess": 5,
-          "bulkSuccess": 13,
+          "bulkSuccess": 16,
           "firstPageJobs": 30,
-          "success": 19,
+          "success": 22,
           "inProgress": 7,
-          "queued": 4,
+          "queued": 1,
           "observedFailure": 0,
           "initial970OnlyFullyAudited": true
         }
