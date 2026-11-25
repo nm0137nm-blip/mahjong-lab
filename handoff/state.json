@@ -9,7 +9,7 @@
   },
   "active_task": {
     "phase": "P2a-v4.7 free-only known-case semantic diagnostic",
-    "status": "CORPUS_10000_GENERATION_AND_SCOPED_CONTENT_AUDIT_PASS_DURABLE_BACKUP_PENDING",
+    "status": "ROLLING_20000_STARTED_AND_ROUND_EV_DEVELOPMENT_RESUMED",
     "branch": "feat/coach-p2a-v47-minimal-diagnostic",
     "commit": "7959435bfad0412e9cd94234f01395af05d84789",
     "pr": 71,
@@ -355,7 +355,7 @@
       }
     ],
     "decision": "v46 API-only Stage1 stopped after 2 paid calls, 1 contract pass and 1 incomplete output due to cap. No evidence of typed condition contract failure from pilot82; no semantic certification. Original manual Stage1 plan not performed. No new paid generation authorized.",
-    "next": "Readback verify all 16 original backup parts from private Library; complete durable separated development/confirmation backup or document equivalent recovery gate. No training/rolling generation until gate disposition; no holdout research access, no paid APIs/main changes.",
+    "next": "Monitor run45709695837 pilot and bulk; audit exact new shards and recover encrypted archives before expiry. First corpus user-side backup accepted; develop using fixed 6990 development only, QA and confirmation excluded; full feature and counterfactual validation pending; no paid APIs or main merge.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -3847,7 +3847,7 @@
         "rules": "Distinguish observed human/Mortal rates, book model assumptions, counterfactual policies. Do not treat selected final dama as prospective comparison. Align exact denominator and timing; missing definitions provisional. Preserve 3000 confirmation split, no human grading of opponent open-hand tenpai from S42. User goal in-game research display before more isolated UI work; no public source text/table or paid calls."
       },
       "candidateRoundEVFirstGoal": {
-        "status": "EMPIRICAL_1068_ROUND_PREVIEW_PASS_APP_INTEGRATION_DRAFT",
+        "status": "INITIAL_970_SELECTED_ACTION_TWO_STAGE_MODEL_CV_COMPLETE_NOT_COUNTERFACTUAL",
         "report": "handoff/learning-candidate-round-ev-first-goal-20261125.md",
         "reportCommit": "7b3086be263bf702e81b8ba8e9bac09b5f83b314",
         "goal": "In-game per legal concrete discard candidate display five mutually exclusive terminal outcome probabilities and conditional score changes (ten terms), expected round net points and uncertainty; no fabricated numbers.",
@@ -3905,7 +3905,7 @@
           "limits": "illustrative independent precision and binary shrinkage calculations, actual clustered model sample size not determined; no new paid API or model training"
         },
         "variablesV1": {
-          "status": "SPEC_FIXED_PAUSED_UNTIL_COMPLETE_10000_CORPUS",
+          "status": "DEVELOPMENT_RESUMED_SELECTED_ACTION_BASELINE",
           "path": "handoff/learning-round-ev-variables-v1-20261125.md",
           "commit": "2bfc52ee14657df61d218b32bfcee3429f912536",
           "targets": 9,
@@ -3925,7 +3925,7 @@
           "scope": "predictive feature acquisition fixed, not coefficients or accuracy certified; advanced definitions and labels implementation pending"
         },
         "dataUseProtocol": {
-          "status": "RULES_FIXED_IMPLEMENTATION_PENDING",
+          "status": "DEVELOPMENT_FOLDS_MATERIALIZED_INITIAL_PILOT_RUN",
           "path": "handoff/learning-round-ev-data-use-protocol-20261125.md",
           "commit": "68be2e518aec15163d9816dce54fd672922987a5",
           "development": 6990,
@@ -3953,6 +3953,45 @@
           "priority": "all-seat data, candidate legal ron/actual policy ron distinction, Y07b and two-stage outcome model, detailed wait and safety features, book-aligned benchmarks",
           "deferred": "rank transition model after core MVP, additional branch simulations and advanced future risk features; no budget changes",
           "limits": "book exact definitions not independently rechecked in this review, no precision guarantee, original v1 not replaced pending disposition"
+        },
+        "baseline20261126": {
+          "matches": 970,
+          "rows": 111187,
+          "featureColumns": 43,
+          "folds": 5,
+          "fullDevelopmentFoldCounts": [
+            1398,
+            1398,
+            1398,
+            1398,
+            1398
+          ],
+          "initialRowsPerClass": [
+            21329,
+            13774,
+            28524,
+            27669,
+            19891
+          ],
+          "immediateRon": 1063,
+          "joinMismatches": 0,
+          "confirmationParsed": false,
+          "qaUsed": false,
+          "metrics": {
+            "frequency": {
+              "logLoss": 1.578769927743858,
+              "rmse": 4583.623825276192
+            },
+            "logisticRidge": {
+              "logLoss": 1.4728099115445927,
+              "rmse": 4466.875702543467
+            },
+            "lightgbm": {
+              "logLoss": 1.472088369680646,
+              "rmse": 4463.484482716481
+            }
+          },
+          "scope": "initial 970 focal seat, selected normal/reach discard only; 43 numeric columns not 43 defined feature groups; no general legal counterfactual or final holdout evaluation; no production promotion"
         }
       }
     },
@@ -4411,6 +4450,16 @@
               "userDeviceSaveVerified": false,
               "recoveryKeyIncluded": false,
               "partitionMix": "Mixed encrypted originals; must reconstruct fixed split before development access. Separately sealed development/confirmation durable individual backup pending."
+            },
+            "gateDisposition": {
+              "status": "USER_ACCEPTS_RECOVERABLE_ENCRYPTED_ORIGINAL_AS_BACKUP_AND_AUTHORIZES_CONTINUATION",
+              "userChecklistAllChecked": true,
+              "libraryUploads17": true,
+              "libraryReadbackNotVerified": true,
+              "userDeviceBytesNotIndependentlyVerified": true,
+              "rawOriginalMayMixPartitions": true,
+              "confirmationMustBeReseparatedBeforeAnyAnalysis": true,
+              "offlineRuntimeNoTrainingCorpusRequired": true
             }
           },
           "scope": "All 10000 archive and inner hash/CRC; 7000 content checks including rules, recorded settlement, physical wall, visible counts, recorded Q argmax; 3000 confirmation opaque only. Not full independent legal/yaku/fu or tactical quality proof.",
@@ -4419,7 +4468,7 @@
         }
       },
       "rollingGeneration": {
-        "status": "PLAN_RECORDED_AWAITING_FIRST_10000_VERIFIED",
+        "status": "SECOND_BATCH_STARTED_PILOT_RUNNING",
         "plan": "handoff/learning-rolling-corpus-plan-20261125.md",
         "commit": "c49cb19238271a2e118bea6aee3a6fb78d237e92",
         "dailyTarget": 10000,
@@ -4430,7 +4479,27 @@
           "confirmation": 15000,
           "qa": 10
         },
-        "constraints": "verified unique first10000; no unapproved paid compute/API; fixed pre-content partition; private durable backup and capacity; no overlapping duplicate batches; immutable training snapshots; additional batch not yet implemented or started"
+        "constraints": "fixed pre-content partition, keep prior holdout sealed; no unapproved cost, audit each exact batch before counting, recoverable encrypted backups before expiry, no raw corpus required by final runtime",
+        "secondBatch": {
+          "pr": 100,
+          "branch": "feat/tenhou-corpus-20000-20261126",
+          "head": "1a7852d6bf2ab112b8fa26ba17667cfab777302b",
+          "run": 45709695837,
+          "planned": 10000,
+          "priorVerified": 10000,
+          "plannedCumulative": 20000,
+          "namespace": "mahjong-lab:tenhou-corpus-rolling-20000:20261126:v1",
+          "development": 8667,
+          "confirmation": 1333,
+          "qa": 0,
+          "pilot": 10,
+          "bulkBatches": 157,
+          "ruleQA": "success",
+          "pilotStatus": "in_progress",
+          "priorSeedCollisionReplay": true,
+          "paidCalls": 0,
+          "mainChanged": false
+        }
       }
     },
     "labTenhou": {
