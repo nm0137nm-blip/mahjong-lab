@@ -9,7 +9,7 @@
   },
   "active_task": {
     "phase": "P2a-v4.7 free-only known-case semantic diagnostic",
-    "status": "WAIT_FOR_FULL_10000_CORPUS_BEFORE_STAGE3_4",
+    "status": "CORPUS_FINAL_AUDIT_FOUND_14_MISSING_REPAIR_RUNNING",
     "branch": "feat/coach-p2a-v47-minimal-diagnostic",
     "commit": "7959435bfad0412e9cd94234f01395af05d84789",
     "pr": 71,
@@ -355,7 +355,7 @@
       }
     ],
     "decision": "v46 API-only Stage1 stopped after 2 paid calls, 1 contract pass and 1 incomplete output due to cap. No evidence of typed condition contract failure from pilot82; no semantic certification. Original manual Stage1 plan not performed. No new paid generation authorized.",
-    "next": "User pause until full 10000 remains. Continue only approved generation, repair and data storage/audit. Upon complete unique corpus, implement frozen data-use protocol (5 grouped development folds, locked 3000 final holdout, QA excluded, allowlist and per-fold preprocessing) before feature dataset creation and fitting. No paid API/main change. After verified first 10000, parallelize development and rolling corpus batches under recorded plan and constraints; first review at 100000.",
+    "next": "Complete targeted 14 repair run45704082840; audit exact coverage+both repaired ranges, all encrypted archives/seed/log commitments, content of development and opaque confirmation split/private backups. Prior full archive script stopped on single-failure assumption; correct to handle both. No model work or rolling generation until verified first 10000. No paid API/main changes.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -4098,7 +4098,7 @@
       },
       "userAccepted970": true,
       "extension": {
-        "status": "PILOT_10_PASS_BULK_RUNNING",
+        "status": "ORIGINAL_RUN_COMPLETE_SECOND_14_MISSING_REPAIR_RUNNING",
         "userAuthorized": "2026-11-25 user accepts 970 and authorizes cumulative 10000 if initial quality acceptable, unpaid",
         "targetCumulative": 10000,
         "additionalPlanned": 9030,
@@ -4125,35 +4125,36 @@
         "eta": "16–24h or longer conditional on failures, queue and setup; next morning check",
         "paidCalls": 0,
         "latestObserved": {
-          "cumulativeSaved": 4052,
-          "additionalSaved": 3082,
-          "nominalArtifactRangeCount": 4116,
-          "artifacts": 54,
-          "matchedSuccessArtifacts": 53,
+          "cumulativeSaved": 9986,
+          "additionalSaved": 9016,
+          "nominalArtifactRangeCount": 10000,
+          "artifacts": 146,
+          "matchedSuccessArtifacts": 144,
           "allJobs": 147,
-          "success": 54,
-          "inProgress": 8,
-          "queued": 84,
-          "observedFailure": 1,
+          "success": 145,
+          "inProgress": 0,
+          "queued": 0,
+          "observedFailure": 2,
           "partitionSaved": {
             "qa": 10,
-            "development": 2056,
-            "confirmation": 1016
+            "development": 6981,
+            "confirmation": 2995
           },
           "metadataAudit": {
             "pr": 89,
-            "run": 45571240032,
-            "job": 139058125356,
-            "head": "882520e2b942574da19b27de0f5721dd2d86ef9c",
-            "status": "success",
-            "observedAt": "2026-11-25T07:50:22Z",
+            "head": "124e506283358d49541ea37805616f2a0b937a77",
+            "run": 45703840337,
+            "job": 139520565010,
+            "status": "ALL_PAGES_READ_SECOND_FAILURE_FOUND_ARCHIVE_AUDIT_NOT_RUN",
+            "observedAt": "2026-11-25T21:23:28Z",
             "missingSuccessArtifact": 0,
             "artifactWithoutSuccess": [
-              "tenhou-corpus-extension-2763-2826"
+              "tenhou-corpus-extension-2763-2826",
+              "tenhou-corpus-extension-7819-7882"
             ],
             "splitHashMatch": true
           },
-          "limitations": "4052 matched successful job/artifact ranges; 55 completed rows in failed partial artifact not included; local intake tracked separately",
+          "limitations": "9986 from successful job artifact ranges plus 55+9+50 verified partial/repaired archives; not full corpus content audit. Second repair 14 running.",
           "latestNominalRangeCount": 6996,
           "latestArtifactCount": 99,
           "latestObservationScope": "artifact names only; repair reconciliation and full content audit pending; last full job/artifact verification 4052",
@@ -4228,7 +4229,7 @@
           ]
         },
         "repair": {
-          "status": "RETRY_JOB_SUCCESS_ARTIFACT_COVERAGE_AUDIT_PENDING",
+          "status": "REPAIRED_64_COVERAGE_HASH_PASS_45_DEVELOPMENT_CONTENT_CHECK_PASS",
           "failedOriginalJob": 138925873673,
           "failedRange": [
             2763,
@@ -4247,7 +4248,7 @@
             2818,
             2826
           ],
-          "excludedFromConfirmedCount": true,
+          "excludedFromConfirmedCount": false,
           "pr": 95,
           "branch": "fix/tenhou-extension-2818-2826-20261125",
           "head": "bed7d4d6e7b4cb3b11ae8e16d23b282141dee0f8",
@@ -4261,7 +4262,53 @@
               "digest": "sha256:2db1c489f62c765612fbb6f814ff63ee1dfe3e78b42a7c0a0c5675a6ba7f53ae",
               "expired": false
             }
-          ]
+          ],
+          "verifiedFiles": 384,
+          "developmentContent": 45,
+          "confirmationOpaque": 19,
+          "developmentHands": 483,
+          "publicPhysicalViews": 174456,
+          "publicDecisions": 6709,
+          "limits": "content checks for 45, confirmation opaque; full legality/yaku not rerun"
+        },
+        "secondRepair": {
+          "status": "MISSING_14_RETRY_RUNNING",
+          "failedOriginalJob": 138925887544,
+          "failedRange": [
+            7819,
+            7882
+          ],
+          "savedRange": [
+            7819,
+            7868
+          ],
+          "saved": 50,
+          "missingRange": [
+            7869,
+            7882
+          ],
+          "partialArtifact": 15040921816,
+          "partialArtifactSHA256": "9e6494351812fece4f4473f1e9a2d55c7852e42638cca26424b56c66214b904d",
+          "partialFile": "mahjong_extension_7819_7882_partial_encrypted.zip",
+          "partialHashesVerified": 300,
+          "partialSplit": {
+            "development": 32,
+            "confirmation": 18
+          },
+          "missingSplit": {
+            "development": 9,
+            "confirmation": 5
+          },
+          "pr": 97,
+          "branch": "fix/tenhou-extension-7869-7882-20261126",
+          "head": "76a002ec3b1b76dcad3e51b174442c56c559aeb3",
+          "run": 45704082840
+        },
+        "finalAudit": {
+          "status": "INCOMPLETE_14_MISSING_FULL_CONTENT_PENDING",
+          "report": "handoff/learning-corpus-final-audit-20261126.md",
+          "reportCommit": "0231fa1603ff4309bd49383ce288b4d12fa61f5a",
+          "locallyVerifiedUniqueSeedLogCount": 1876
         }
       },
       "rollingGeneration": {
