@@ -355,7 +355,7 @@
       }
     ],
     "decision": "v46 API-only Stage1 stopped after 2 paid calls, 1 contract pass and 1 incomplete output due to cap. No evidence of typed condition contract failure from pilot82; no semantic certification. Original manual Stage1 plan not performed. No new paid generation authorized.",
-    "next": "Complete durable private backup transfer of encrypted development/confirmation partitions (large upload blocked); no rolling generation/model work/paid APIs/main changes until gate disposition. Confirmation 3000 never opened for research; use only preregistered final verification.",
+    "next": "Readback verify all 16 original backup parts from private Library; complete durable separated development/confirmation backup or document equivalent recovery gate. No training/rolling generation until gate disposition; no holdout research access, no paid APIs/main changes.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -4342,7 +4342,7 @@
         "finalAudit": {
           "status": "10000_FULL_BYTE_HASH_AND_7000_SCOPED_CONTENT_AUDIT_PASS_DURABLE_BACKUP_PENDING",
           "report": "handoff/learning-corpus-final-audit-20261126.md",
-          "reportCommit": "5c2aa970c9aa0add21c2a703e210ce2afcf80cb1",
+          "reportCommit": "6b5c148e42d6550b231e361c1a8334639a5c445d",
           "locallyVerifiedUniqueSeedLogCount": 10000,
           "archiveAudit": {
             "pr": 98,
@@ -4393,7 +4393,25 @@
             "metadataSha256": "3d398695fc8c592bdab785a5234735f1580b8b2c635089eacfdf87baa82695cc",
             "developmentConfirmationZipPartsLocal": 9,
             "allPartsCRCAndHashVerifiedLocally": true,
-            "externalDurableSaveVerified": false
+            "externalDurableSaveVerified": false,
+            "originalArchiveBackup": {
+              "status": "ALL_17_LIBRARY_UPLOADS_SUCCEEDED_READBACK_NOT_YET_VERIFIED",
+              "folder": "/麻雀LAB/10000半荘暗号化原本20261126",
+              "directoryId": "6b075798f8bc8191a5c6bc4f3900b9b5",
+              "indexLibraryId": "libfile_cce475f9349081918d2d61612dc9e3ed",
+              "indexSHA256": "c8ae81b5af1da11cd18e04791169fa972834500ffaf8611fc6c32c76e7ce9699",
+              "parts": 16,
+              "archives": 187,
+              "matches": 10000,
+              "originalArchiveBytes": 1403907760,
+              "partsBytes": 1404008554,
+              "localSHAAndCRCVerified": true,
+              "libraryUploadSuccess": 17,
+              "libraryReadbackSHA256Verified": false,
+              "userDeviceSaveVerified": false,
+              "recoveryKeyIncluded": false,
+              "partitionMix": "Mixed encrypted originals; must reconstruct fixed split before development access. Separately sealed development/confirmation durable individual backup pending."
+            }
           },
           "scope": "All 10000 archive and inner hash/CRC; 7000 content checks including rules, recorded settlement, physical wall, visible counts, recorded Q argmax; 3000 confirmation opaque only. Not full independent legal/yaku/fu or tactical quality proof.",
           "paidCalls": 0,
