@@ -9,7 +9,7 @@
   },
   "active_task": {
     "phase": "P2a-v4.7 free-only known-case semantic diagnostic",
-    "status": "ROUND_EV_1068_PREVIEW_PASS_APP_DRAFT_NEEDS_REAL_GAME_SMOKE",
+    "status": "ROUND_EV_VARIABLES_V1_FIXED_STAGE3_READY",
     "branch": "feat/coach-p2a-v47-minimal-diagnostic",
     "commit": "7959435bfad0412e9cd94234f01395af05d84789",
     "pr": 71,
@@ -355,7 +355,7 @@
       }
     ],
     "decision": "v46 API-only Stage1 stopped after 2 paid calls, 1 contract pass and 1 incomplete output due to cap. No evidence of typed condition contract failure from pilot82; no semantic certification. Original manual Stage1 plan not performed. No new paid generation authorized.",
-    "next": "Prioritize working LAB ten-term panel with existing empirical prototype pack, actual game smoke and device access. No more isolated research before usable prototype. Then expand same aggregation across remaining development matches; avoid confirmation data. Candidate-specific precision/causality/human validation still not met. Existing generation and repair status check separately; no paid calls or main change.",
+    "next": "Use v1 fixed target/feature specification, create training data (stage3) and fit regularized regression + LightGBM on existing development data without waiting for advanced features or full 10k. Preserve holdout. No paid API/main change.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -3885,7 +3885,7 @@
           "reportCommit": "4f53a95cb6319b87feee59c06a888c903cbb515c"
         },
         "regressionDesignProposal": {
-          "status": "PROPOSED_0_1_2_USER_REVIEW_PENDING",
+          "status": "VARIABLES_0_1_FIXED_SAMPLE_SIZE_PROVISIONAL",
           "report": "handoff/learning-round-ev-regression-design-proposal-20261125.md",
           "commit": "c74e1c6dc1567964c4c54187868d530b718dab89",
           "pilot": {
@@ -3903,6 +3903,26 @@
           },
           "split": "existing development6990 confirmation3000 QA10",
           "limits": "illustrative independent precision and binary shrinkage calculations, actual clustered model sample size not determined; no new paid API or model training"
+        },
+        "variablesV1": {
+          "status": "SPEC_FIXED_IMPLEMENTATION_PENDING",
+          "path": "handoff/learning-round-ev-variables-v1-20261125.md",
+          "commit": "2bfc52ee14657df61d218b32bfcee3429f912536",
+          "targets": 9,
+          "featureGroups": 49,
+          "initialFeatureGroups": 43,
+          "advancedFeatureGroups": [
+            "B06",
+            "B08",
+            "C03",
+            "C05",
+            "E07",
+            "F05"
+          ],
+          "targetUnit": "legal concrete action at own unriichi discard decision; selected action only observed labels, unselected null",
+          "model": "regularized multinomial/conditional regressions versus LightGBM; feature selection by grouped validation",
+          "split": "existing development6990 confirmation3000 QA10",
+          "scope": "predictive feature acquisition fixed, not coefficients or accuracy certified; advanced definitions and labels implementation pending"
         }
       }
     },
