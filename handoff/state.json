@@ -9,7 +9,7 @@
   },
   "active_task": {
     "phase": "P2a-v4.7 free-only known-case semantic diagnostic",
-    "status": "RIICHI_EXPLORATORY120_COMPLETE_PRECISION_UNMET_V6_UNSEEN_WAIT_STATS_PASS_PUSH_VARIANCE24_RUNNING",
+    "status": "PUSH_VARIANCE24_PASS_EXPLORATORY60_RUNNING_UNSEEN_UI_QA_RETRY",
     "branch": "feat/coach-p2a-v47-minimal-diagnostic",
     "commit": "7959435bfad0412e9cd94234f01395af05d84789",
     "pr": 71,
@@ -355,7 +355,7 @@
       }
     ],
     "decision": "v46 API-only Stage1 stopped after 2 paid calls, 1 contract pass and 1 incomplete output due to cap. No evidence of typed condition contract failure from pilot82; no semantic certification. Original manual Stage1 plan not performed. No new paid generation authorized.",
-    "next": "Check push variance run45559977167. Riichi exploration120 complete with 0/6 precision gate, do not convert to recommended strategy; fixed-scope next sample planning after development extension and holdout physical separation. L1 v6 public unseen wait statistics complete exploratory; real app connection not done. 10k all-page confirmation3156 at06:24:37Z, later nominal3220. External book source missing, real private pack and iPhone, learning effect remain. No paid calls or production changes. Four report categories.",
+    "next": "Check PR93 retry for unseen UI test (corrected head c7881e15..., first test order failure); check push exploration60 run45565512300 all 3 bands before effects; precision unchanged. L1 actual private packs in app, iPhone, book comparison, learner effect remain. 10k metadata confirmed3156, latest nominal3668. No paid API/main change; four report categories.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -3327,7 +3327,32 @@
             "sha256": "119bd714bc639a682c9bbe1d18d338380d1782a6cabea72411a5a887fa45ca3f",
             "fileId": "file_0000000030ac820694feb11c5f5fdf19"
           },
-          "scope": "S42 accepted riichi, public unseen count, not actual live wall, event and current public reconstruction share tile parser; original row consistency, no independent holdout, no app integration"
+          "scope": "S42 accepted riichi, public unseen count, not actual live wall, event and current public reconstruction share tile parser; original row consistency, no independent holdout, no app integration",
+          "app": {
+            "status": "QA_FIRST_ATTEMPT_FAILED_TEST_ORDER_CORRECTED_RETRY",
+            "pr": 93,
+            "branch": "feat/learning-unseen-wait-ui-20261125",
+            "head": "c7881e15e7d4817c0f08fe7bd33b99dc68871978",
+            "firstRun": 45565189345,
+            "firstJob": 139038145153,
+            "firstFailure": "test called live file-load routine after postmatch pack already loaded; moved live call to correct earlier anchor, retry required",
+            "retryRun": 45565577052,
+            "retryStatus": "in_progress",
+            "localPublicSceneAudit": {
+              "matched": 1933,
+              "unmatched": 90,
+              "rejected": 0,
+              "mismatches": 0,
+              "matchesWithAccepted": 969,
+              "scope": "local same-logic reimplementation, actual recorded focal scene, not all-seat live game"
+            },
+            "pack": {
+              "name": "mahjong_unseen_wait_pack_20261125.json",
+              "bytes": 65046,
+              "sha256": "bea9c1ff502851c7a18168619bd24ee7333efc0826d1ccdbeb5a2e9d7e433e9c"
+            },
+            "scope": "candidate specific unseen counts, exact role/unseen plus shape or turn only; actual pack validation locally, browser CI synthetic, iPhone untested"
+          }
         }
       },
       "l2Prep": {
@@ -3538,7 +3563,7 @@
           "illustrativeN1000Total": 3123
         },
         "pushGenbutsu": {
-          "status": "THREE_TECHNICAL_PAIRS_AND_INDEPENDENT_SHANTEN_PASS_VARIANCE24_RUNNING",
+          "status": "VARIANCE24_PASS_EXPLORATORY60_RUNNING",
           "pr": 91,
           "branch": "feat/learning-l2-push-genbutsu-20261125",
           "head": "60d45a6f6f0c0ec23704166fb976e72595ccc00f",
@@ -3609,7 +3634,7 @@
             }
           },
           "variancePilot": {
-            "status": "in_progress",
+            "status": "success",
             "pr": 92,
             "branch": "feat/learning-l2-push-variance-20261125",
             "head": "a4b86b865430b26c757456eb8667fd09375a60ed",
@@ -3621,7 +3646,64 @@
             "preflightPassed": 24,
             "selectionSha256": "8193c24129c0990e0b679dd0773f62ffb47f7a6357f248fd4bb1565997eaf729",
             "sourceCommitment": "52c7d7053a6ba3682db2e77e76620d1c8035f66bf21475d74f61054dd65c0215",
-            "scope": "variance only, one-step hand-break, separate topic may overlap first-riichi source matches, no strategic certification or effect means, standard runner"
+            "scope": "variance only, one-step hand-break, separate topic may overlap first-riichi source matches, no strategic certification or effect means, standard runner",
+            "actualPairs": 24,
+            "commonWallKeys": 255,
+            "maskedPacketAudit": {
+              "packets": 215724,
+              "unchanged": 215724,
+              "rejectedHands": 2192,
+              "rejectedDraws": 76779
+            },
+            "summary": {
+              "overall": {
+                "n": 24,
+                "roundSDRounded100": 4300,
+                "finalSDRounded100": 9700,
+                "fourthSD": 0.359,
+                "pairedToIndependent": 0.512,
+                "illustrativeNFor1000PointCIWidth": 278
+              },
+              "byBand": {
+                "early": {
+                  "n": 8,
+                  "roundSDRounded100": 5900,
+                  "illustrativeNFor1000PointCIWidth": 537
+                },
+                "mid": {
+                  "n": 8,
+                  "roundSDRounded100": 400,
+                  "illustrativeNFor1000PointCIWidth": 2
+                },
+                "late": {
+                  "n": 8,
+                  "roundSDRounded100": 4400,
+                  "illustrativeNFor1000PointCIWidth": 291
+                }
+              }
+            },
+            "limitations": "small strata n8; unstable mid variance, no effect means; no optimality"
+          },
+          "exploratory60": {
+            "status": "in_progress",
+            "pr": 94,
+            "run": 45565512300,
+            "branch": "feat/learning-l2-push-exploration60-20261125",
+            "head": "8d154f16fcc4ec88598ca44002948de68eab6787",
+            "prereg": "5297c6cfef62bc760ddfa9d344195e1ede68bbeb",
+            "selected": 60,
+            "perBand": 20,
+            "distinctMatches": 60,
+            "representatives": {
+              "early": 35,
+              "mid": 322,
+              "late": 125
+            },
+            "preflightPassed": 60,
+            "selectionSha256": "9244761ac396d73a42c04225ece792364a8a3dcf46edebd26a2a84608c386820",
+            "sourceCommitment": "e48e0e06c5c36e680a801933ed0c018e014aa807818967c8e9ec71a61bca132d",
+            "partialEffectsRead": false,
+            "scope": "same-topic pilot and tech excluded, other topic overlap permitted, one-step only, exploration and no strategic certification"
           }
         }
       },
@@ -3630,8 +3712,8 @@
         "commit": "18364c8c19e24bd127aa7349a7e9bbd7e8ac1a24"
       },
       "latestReport": {
-        "path": "handoff/learning-riichi-explore120-v6-unseen-20261125.md",
-        "commit": "5e9bf98286b539f756d7537a2471f57a7d09a336"
+        "path": "handoff/learning-push-variance-pass-unseen-ui-20261125.md",
+        "commit": "df7cb619c034e52d59199a6506d8270dfe5c6213"
       }
     },
     "learningCorpus": {
@@ -3830,10 +3912,10 @@
             "artifactWithoutSuccess": 0,
             "splitHashMatch": true
           },
-          "latestNominalRangeCount": 3220,
-          "latestArtifactCount": 40,
-          "latestUnmatchedIncrement": 64,
-          "limitations": "all-page matched metadata 3156, latest nominal3220, only initial970 fully content audited"
+          "latestNominalRangeCount": 3668,
+          "latestArtifactCount": 47,
+          "latestUnmatchedIncrement": 512,
+          "limitations": "last full all-page matched metadata3156; nominal3668, additional512 not matched to jobs; initial970 fully content audited"
         },
         "holdout": {
           "status": "PREREGISTERED_NOT_PHYSICALLY_ISOLATED",
