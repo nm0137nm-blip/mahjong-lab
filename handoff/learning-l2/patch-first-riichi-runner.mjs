@@ -37,6 +37,8 @@ export function patchPinnedRunner(source) {
       const scene=captureS42Scene();
       if(scene.rivers.some(r=>r.riichi)||scene.pendingReach)throw Error('L2 not first riichi');
       const request=arenaBlind({scene,legalChoices:c,candidates:candidateInfo},M,'d-'+index);
+      // CI plan contains commitments only; derive concrete actions in private runtime.
+      if(!l2Plan.originalAction){const p=choice.payload?.dapai;if(!p?.endsWith('*'))throw Error('L2 original was not riichi');l2Plan.originalAction={dapai:p};l2Plan.alternativeAction={dapai:p.slice(0,-1)};}
       const selected=chooseIntervention(l2Plan,index,choice,forced,opts);
       if(!selected)throw Error('L2 missing choice');
       const b=game.model;
