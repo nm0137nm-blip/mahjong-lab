@@ -9,7 +9,7 @@
   },
   "active_task": {
     "phase": "P2a-v4.7 free-only known-case semantic diagnostic",
-    "status": "L2_FIVE_TECHNICAL_PAIRS_PASS_VARIANCE24_RUNNING_L1_APP_ADAPTER_PREP",
+    "status": "L1_INDEPENDENT_REFERENCE_SCORING_AND_REAL_APP_SYNTHETIC_QA_PASS_L2_VARIANCE_AND_REAL_POISON_RUNNING",
     "branch": "feat/coach-p2a-v47-minimal-diagnostic",
     "commit": "7959435bfad0412e9cd94234f01395af05d84789",
     "pr": 71,
@@ -355,7 +355,7 @@
       }
     ],
     "decision": "v46 API-only Stage1 stopped after 2 paid calls, 1 contract pass and 1 incomplete output due to cap. No evidence of typed condition contract failure from pilot82; no semantic certification. Original manual Stage1 plan not performed. No new paid generation authorized.",
-    "next": "Check run45546401887 (24-pair variance-only pilot). If complete validate logged aggregate and sample planning; if failure diagnose, preserve frozen 24 selection, do not use partial outcomes. Full policy poison audit/independent yaku-fu and human book comparisons still incomplete. Apply private research UI patch to PR77-based separate branch and test actual app using free CI; local secure navigation blocked. Research pack and source ZIP in conversation. D1 optional; PR77 release separate. Existing extension run45530376491 currently 2004 saved; initial 970 fully audited. No paid calls or main merge. Four report categories.",
+    "next": "Check run45546401887 (24-pair variance-only pilot) and run45550031870 (actual model isolated poison). Validate complete output, diagnose failure without using partial outcomes; then plan statistical precision and remaining gates. L1 ordinary reference ron independent audit complete. App PR83 Chromium/WebKit synthetic-pack pass; private pack real-app check remains, local browser secure navigation blocked; no private data in public CI. Book external definitions not recovered; formal self/assessment modes, D1 optional and iPhone testing pending. Extension first-page job/artifact matched lower bound2324, nominal2388. No paid APIs, main/PR77 unchanged. Four report categories.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -3069,7 +3069,7 @@
           "artifact": {
             "name": "mahjong_l1_v3_20261125.zip",
             "sha256": "04c4e1b0ec45bc78c62e6e14c1ff4835d0e4036abdd7df88ec3ffb34444ced74",
-            "fileId": "file_0000000079ac8206a6f9d846e2fcec46"
+            "fileId": "file_00000000e9b482068b83f76835c9e10d"
           },
           "limitations": "S42 selfplay descriptive only, development sample; score support width not fixed; external comparison and visible prospective scoring strata pending"
         },
@@ -3109,22 +3109,41 @@
           "artifact": {
             "name": "mahjong_l1_v4_20261125.zip",
             "sha256": "367a057a8b9d04d891abd2babcbf172f08c4e753d997510ac070179318e52ef7",
-            "bytes": 67831
+            "bytes": 67831,
+            "fileId": "file_00000000ceac8206b7378bf0638dce4c"
           },
           "preview": "mahjong_research_preview_20261125.html",
-          "limitations": "S42 descriptive only, accepted-riichi conditioning, no external book source recovered in search, yaku/fu not independently scored, actual LAB connection pending, no independent heldout"
+          "limitations": "S42 descriptive development only; accepted-riichi conditional; ordinary reference-ron roles/fu now independently audited, full general scoring and book comparison pending; independent heldout pending",
+          "independentScoring": {
+            "status": "PASS_ORDINARY_REFERENCE_RON_SCOPE",
+            "variants": 15828,
+            "exactReferenceOptions": 15828,
+            "pointsMismatch": 0,
+            "fuHanYakuMismatch": 0,
+            "unsupported": 0,
+            "equalMaximumMultipleOptions": 71,
+            "unitTestsPassed": 6,
+            "unitTestsTotal": 6,
+            "limitations": "ordinary closed hypothetical ron only; no rare yakuman/situational general scoring; input replay and reference fixed core; external comparison pending",
+            "artifact": {
+              "name": "mahjong_l1_independent_scoring_20261125.zip",
+              "bytes": 9997,
+              "sha256": "88e53c867f2074b787c6407dd9738d8fd9db886215eef85f828307e2946b92a4",
+              "fileId": "file_0000000080108206b9e129cd9f7ccf68"
+            }
+          }
         },
         "researchAppPrep": {
-          "status": "DECISION_SESSION_AND_PANEL_FIXTURE_TESTED_PATCH_NOT_APPLIED",
+          "status": "REAL_APP_INTEGRATION_CHROMIUM_WEBKIT_PASS_SYNTHETIC_PACK",
           "nodeTests": 8,
           "nodePassed": 8,
           "browser": "Chromium real public fixture passed; secure navigation blocked, SHA via Python binding, actual app/native WebCrypto/WebKit untested",
           "pinnedIndexBlob": "d89ba774864e76733a03f4eb2c87985e486a77aa",
           "patchAnchors": 8,
-          "patchApplied": false,
+          "patchApplied": true,
           "artifact": {
             "name": "mahjong_l2_research_integration_20261125.zip",
-            "fileId": "file_00000000891882069702e64b781f9b10",
+            "fileId": "file_000000001e2c82069f049b34204fd3a6",
             "sha256": "e73bd1cc9ac17ce2b853e61eb7ea9f4b38ab0bc881a9a43a0bb12939d88ccace"
           },
           "dataPack": {
@@ -3132,7 +3151,25 @@
             "sha256": "412c8f711270d1fb74620440e7fcdb503b9f39814816432b6f2b8c897b312d44",
             "bytes": 112331
           },
-          "scope": "practice hanchan own turn riichi stats only, no implicit broadening, existing coaching unchanged, no live app integration yet"
+          "scope": "practice hanchan own-turn riichi stats only; actual existing coach unchanged, full self/assessment modes not implemented; native iPhone not tested",
+          "branch": "feat/learning-research-app-20261125",
+          "pr": 83,
+          "base": "01686894afa47037f496b17b7292110136a4542a",
+          "head": "ee7828b5524a1f3531c4b947d0cfb0b9c92cbc91",
+          "run": 45549731770,
+          "browserJob": 138987758704,
+          "browserPass": [
+            "Chromium",
+            "WebKit"
+          ],
+          "nativeCrypto": true,
+          "syntheticPack": true,
+          "naturalRiichi": true,
+          "practiceInert": true,
+          "measureHidden": true,
+          "eastHidden": true,
+          "actualPrivatePackInRealApp": false,
+          "mainUnchanged": true
         }
       },
       "l2Prep": {
@@ -3158,7 +3195,7 @@
           "artifact": {
             "name": "mahjong_l2_pilot_selection_20261125.zip",
             "sha256": "360c3406516658c04ae6645e67438793e905878fa0334f5b05eb0c30fc8bf5f7",
-            "fileId": "file_00000000cdd08206ad86d93bb7f49b50"
+            "fileId": "file_00000000a5cc8206b80aa64a28699496"
           }
         },
         "localModelRuntimeAvailable": false,
@@ -3217,11 +3254,24 @@
           "runnerTimeoutMinutes": 90,
           "standardPublicRunner": true,
           "scope": "variance planning only; no efficacy estimates or per-case results; actual 24 results pending"
+        },
+        "realPolicyPoison": {
+          "status": "in_progress",
+          "pr": 84,
+          "run": 45550031870,
+          "job": 138988735886,
+          "branch": "feat/learning-l2-policy-poison-20261125",
+          "head": "3613684655198ff209b2d895e7681b6d2988c716",
+          "scope": "isolated actual encoder and ONNX worker on synthetic packets; byte-identical input, legal mask, legal Q, reach/kan detail, forbidden packet rejection; not every game path; no results yet"
         }
       },
       "l2LatestReport": {
         "path": "handoff/learning-l2-five-pairs-variance-start-20261125.md",
         "commit": "18364c8c19e24bd127aa7349a7e9bbd7e8ac1a24"
+      },
+      "latestReport": {
+        "path": "handoff/learning-l1-independent-scoring-app-qa-20261125.md",
+        "commit": "e56b4234ba696ec295650558d0f6d122e53ee81e"
       }
     },
     "learningCorpus": {
@@ -3393,17 +3443,19 @@
         "eta": "16–24h or longer conditional on failures, queue and setup; next morning check",
         "paidCalls": 0,
         "latestObserved": {
-          "cumulativeSaved": 2004,
-          "additionalSaved": 1034,
-          "artifacts": 21,
-          "pilotSuccess": 5,
-          "bulkSuccess": 16,
+          "cumulativeSaved": 2324,
+          "additionalSaved": 1354,
+          "nominalArtifactRangeCount": 2388,
+          "artifacts": 27,
+          "matchedSuccessArtifacts": 26,
+          "unmatchedArtifact": "tenhou-corpus-extension-1227-1290",
           "firstPageJobs": 30,
-          "success": 22,
-          "inProgress": 7,
-          "queued": 1,
+          "success": 27,
+          "inProgress": 3,
+          "queued": 0,
           "observedFailure": 0,
-          "initial970OnlyFullyAudited": true
+          "initial970OnlyFullyAudited": true,
+          "limitations": "conservative matched successful jobs; nominal range count not used as confirmed count; first-page API cannot guarantee full run count"
         }
       }
     },
