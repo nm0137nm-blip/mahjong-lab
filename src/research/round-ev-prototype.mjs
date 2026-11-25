@@ -37,7 +37,7 @@ export function showRoundEV({scene,candidates,legalChoices,pack,query,root,tileN
  if(!results.length){root.append(el('p','対象候補なし'));return;}
  root.append(select);const detail=el('div','');root.append(detail);
  const draw=()=>{detail.replaceChildren();const x=results[Number(select.value)],q=x?.q;if(!q){detail.append(el('p','参考値を計算できる標本がありません。'));return;}
-  detail.append(el('p','類似実打牌 '+q.n+'件 / '+q.matches+'半荘。集計条件：'+q.conditions.join('・')+(q.level?'（一部の条件を緩和）':''));
+  detail.append(el('p','類似実打牌 '+q.n+'件 / '+q.matches+'半荘。集計条件：'+q.conditions.join('・')+(q.level?'（一部の条件を緩和）':'')));
   const table=el('table','');table.style.cssText='width:100%;border-collapse:collapse;font-size:14px';
   const row=values=>{const tr=el('tr','');for(const v of values){const td=el('td',v);td.style.cssText='padding:5px;border-bottom:1px solid #8885';tr.append(td);}table.append(tr);};
   row(['結果','観測割合','平均得失点','寄与']);
