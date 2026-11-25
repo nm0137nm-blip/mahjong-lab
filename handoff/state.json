@@ -355,7 +355,7 @@
       }
     ],
     "decision": "v46 API-only Stage1 stopped after 2 paid calls, 1 contract pass and 1 incomplete output due to cap. No evidence of typed condition contract failure from pilot82; no semantic certification. Original manual Stage1 plan not performed. No new paid generation authorized.",
-    "next": "Check final original bulk and diagnostic run45519978000; repair confirmed cause and generate only missing 426–456. Sample decryption successful 2/2; audit all archived data before L0 completion. LAB PR77 unit72/72 browser both passed; end-to-end real-model both modes/offline check started on head01686894, no merge yet. Next user check around 11–12 JST conditional on results. No paid or further corpus beyond 1000.",
+    "next": "Finish missing 427–456 within existing authorized 1000 scope after bounded recovery decision; original shard426 failure not reproduced. Full archive audit and private retention plan, all-seat reconstruction checks and L1 research cards before L0 completion. PR77 complete-match CI passed, review before merge. No new spend or expansion.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -2932,6 +2932,22 @@
         "evaluationProfile": "Tenhou generation profile already authorized; distinct rank-point evaluation profile proposed, no main rule changes or unapproved product integration",
         "preserveWorkingAssumption": true,
         "executionScopeUnchanged": true
+      },
+      "integratedPlanReview": {
+        "status": "REVIEWS_INTEGRATED_WORKING_PLAN",
+        "record": "handoff/learning-integrated-plan-review-20261125.md",
+        "commit": "2bedd21143c65f104e642e907371e23b3e1a6cf6",
+        "keepApprovedScope": true,
+        "early": [
+          "deterministic settlement",
+          "minimal defensive-constrained one-step efficiency",
+          "external descriptive comparison",
+          "S42-only open-hand descriptive research",
+          "private learner diagnosis"
+        ],
+        "validation": "Calculation accuracy separate from strategic utility; paired branch comparison before asserting decision benefit; no S42 match rate as primary learning metric",
+        "storage": "existing encrypted CI artifacts conflict with newly proposed no-CI-artifacts policy; private durable backup and next-run design needed; no plaintext or private book material public",
+        "newExecutionAuthorization": false
       }
     },
     "learningCorpus": {
@@ -3014,22 +3030,24 @@
       "archiveIntegrity": "8 pilot games passed in-run checks and encrypted artifacts exist; decryption and cross-corpus audit pending",
       "scaleDecision": "Keep current 1000; examine support and precision by theme before expanding to 10000; no further bulk launch yet.",
       "latestStatus": {
-        "observed": "2026-11-25 09:39 JST check",
-        "inRunSaved": 937,
+        "observed": "2026-11-25 review check",
+        "inRunSaved": 970,
         "verifiedAfterDecryption": 2,
-        "artifactCount": 34,
+        "artifactCount": 36,
         "totalArtifactBytes": 131024291,
         "failedBatch": "425-456",
         "savedInFailedBatch": 1,
-        "unproducedInFailedBatch": 31,
+        "unproducedInFailedBatch": 30,
         "firstFailedShard": 426,
-        "remainingFinalBatch": 32,
+        "remainingFinalBatch": 0,
         "reason": "runner exit, private log suppressed; cause not yet known",
         "diagnostic": {
           "pr": 78,
           "head": "a25861b4876f0838afd83dce6a75684196b4cd6c",
           "run": 45519978000,
-          "scope": "426 only, original seed, allowlisted categories, no full rerun"
+          "scope": "426 only, original seed, allowlisted categories, no full rerun",
+          "result": "completed successfully, shard426 7 hands 35.814s; root cause of original failure not reproduced",
+          "artifact": 14979394486
         },
         "sampleAudit": {
           "artifact": 14971366545,
@@ -3039,11 +3057,13 @@
           "keyHashMatched": true,
           "cmsHashMatched": true,
           "allFileHashesMatched": true
-        }
+        },
+        "remaining": "427–456; not yet generated",
+        "finalBatchArtifact": 14977909336
       }
     },
     "labTenhou": {
-      "status": "UNIT_AND_BROWSER_PASS_COMPLETE_MATCH_PENDING",
+      "status": "CI_UNIT_BROWSER_COMPLETE_MATCH_PASS_PENDING_FINAL_DEPLOYMENT_REVIEW",
       "userAuthorized": "2026-11-25 user approved interactive LAB Tenhou-target rules",
       "pr": 77,
       "branch": "feat/lab-tenhou-rules-20261125",
@@ -3065,7 +3085,11 @@
       "fullMatchRuns": [
         45520060496,
         45520060433
-      ]
+      ],
+      "completeMatchRun": 45520060433,
+      "completeMatchJob": 138889361814,
+      "completeMatchConclusion": "success",
+      "mainMerged": false
     }
   },
   "previous_runs": [
