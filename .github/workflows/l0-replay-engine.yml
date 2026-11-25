@@ -1,0 +1,41 @@
+name: Pinned public rule-engine export for private L0 audit
+on:
+  pull_request:
+    branches: [project-handoff]
+    paths: ['.github/workflows/l0-replay-engine.yml']
+permissions:
+  contents: read
+jobs:
+  export:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ec66466a127f2aca6a9b46e81d504c8f3e9f692d
+          path: profile
+      - uses: actions/checkout@v4
+        with:
+          ref: 75c87e621b85bc411ef92152f84918a1802dbd2b
+          path: lab
+      - name: Export public code only
+        run: |
+          set -euo pipefail
+          python3 profile/handoff/learning-corpus/tenhou-profile.py lab/index.html /tmp/tenhou-rule.json
+          echo '19d62e1acaa1d4334bf9828fbc14c3aca56734be0aff6b96ce749de4b18d34c5  lab/index.html' | sha256sum -c -
+          mkdir export
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          s=re.search(r'<script>([\s\S]*?)</script>',Path('lab/index.html').read_text()).group(1)
+          marker='})(typeof window!=="undefined"?window:globalThis);'
+          i=s.index(marker)+len(marker)
+          Path('export/core.cjs').write_text('const window={};\n'+s[:i]+'\nmodule.exports=window.MajiangCore;\n')
+          PY
+          node --check export/core.cjs
+          node -e 'const M=require("./export/core.cjs");if(!M.Game||!M.Shoupai||!M.Util)process.exit(1)'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pinned-public-rule-core
+          path: export/core.cjs
+          retention-days: 7
