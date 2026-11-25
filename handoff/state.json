@@ -9,7 +9,7 @@
   },
   "active_task": {
     "phase": "P2a-v4.7 free-only known-case semantic diagnostic",
-    "status": "PUSH_VARIANCE24_PASS_EXPLORATORY60_RUNNING_UNSEEN_UI_QA_RETRY",
+    "status": "UNSEEN_UI_PASS_PUSH60_PRECISION_UNMET_EXTENSION842_INTAKE_PASS_MISSING9_RETRY_RUNNING",
     "branch": "feat/coach-p2a-v47-minimal-diagnostic",
     "commit": "7959435bfad0412e9cd94234f01395af05d84789",
     "pr": 71,
@@ -355,7 +355,7 @@
       }
     ],
     "decision": "v46 API-only Stage1 stopped after 2 paid calls, 1 contract pass and 1 incomplete output due to cap. No evidence of typed condition contract failure from pilot82; no semantic certification. Original manual Stage1 plan not performed. No new paid generation authorized.",
-    "next": "Check PR93 retry for unseen UI test (corrected head c7881e15..., first test order failure); check push exploration60 run45565512300 all 3 bands before effects; precision unchanged. L1 actual private packs in app, iPhone, book comparison, learner effect remain. 10k metadata confirmed3156, latest nominal3668. No paid API/main change; four report categories.",
+    "next": "Check run45571397958 targeted retry for 2818-2826; retain original55, verify exact coverage and hashes before count, repair ledger separate. Continue local extension intake from843 using pinned SHA, frozen split and atomic receipts, keep confirmation payloads opaque and re-encrypted, separate key custody unresolved. 4052 confirmed successful jobs at 07:50:22Z, failed55 excluded. Main audit 568 of first842; 274 confirmation sealed. Push60 exploration complete 0/3 precision, unseen UI pass synthetic. Book comparison, actual private-pack real browser/iPhone, learning effect remain. No paid API/main change.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -3329,7 +3329,7 @@
           },
           "scope": "S42 accepted riichi, public unseen count, not actual live wall, event and current public reconstruction share tile parser; original row consistency, no independent holdout, no app integration",
           "app": {
-            "status": "QA_FIRST_ATTEMPT_FAILED_TEST_ORDER_CORRECTED_RETRY",
+            "status": "CHROMIUM_WEBKIT_PASS_SYNTHETIC_PACK",
             "pr": 93,
             "branch": "feat/learning-unseen-wait-ui-20261125",
             "head": "c7881e15e7d4817c0f08fe7bd33b99dc68871978",
@@ -3337,7 +3337,7 @@
             "firstJob": 139038145153,
             "firstFailure": "test called live file-load routine after postmatch pack already loaded; moved live call to correct earlier anchor, retry required",
             "retryRun": 45565577052,
-            "retryStatus": "in_progress",
+            "retryStatus": "success",
             "localPublicSceneAudit": {
               "matched": 1933,
               "unmatched": 90,
@@ -3351,7 +3351,13 @@
               "bytes": 65046,
               "sha256": "bea9c1ff502851c7a18168619bd24ee7333efc0826d1ccdbeb5a2e9d7e433e9c"
             },
-            "scope": "candidate specific unseen counts, exact role/unseen plus shape or turn only; actual pack validation locally, browser CI synthetic, iPhone untested"
+            "scope": "candidate specific unseen counts, exact role/unseen plus shape or turn only; actual pack validation locally, browser CI synthetic, iPhone untested",
+            "retryJob": 139039408891,
+            "browserPass": [
+              "Chromium",
+              "WebKit"
+            ],
+            "privatePackRealBrowser": false
           }
         }
       },
@@ -3563,7 +3569,7 @@
           "illustrativeN1000Total": 3123
         },
         "pushGenbutsu": {
-          "status": "VARIANCE24_PASS_EXPLORATORY60_RUNNING",
+          "status": "EXPLORATORY60_COMPLETE_PRECISION_UNMET",
           "pr": 91,
           "branch": "feat/learning-l2-push-genbutsu-20261125",
           "head": "60d45a6f6f0c0ec23704166fb976e72595ccc00f",
@@ -3685,7 +3691,7 @@
             "limitations": "small strata n8; unstable mid variance, no effect means; no optimality"
           },
           "exploratory60": {
-            "status": "in_progress",
+            "status": "TECHNICAL_60_PASS_PRECISION_0_OF_3_EXPLORATORY_ONLY",
             "pr": 94,
             "run": 45565512300,
             "branch": "feat/learning-l2-push-exploration60-20261125",
@@ -3703,7 +3709,67 @@
             "selectionSha256": "9244761ac396d73a42c04225ece792364a8a3dcf46edebd26a2a84608c386820",
             "sourceCommitment": "e48e0e06c5c36e680a801933ed0c018e014aa807818967c8e9ec71a61bca132d",
             "partialEffectsRead": false,
-            "scope": "same-topic pilot and tech excluded, other topic overlap permitted, one-step only, exploration and no strategic certification"
+            "scope": "same-topic pilot and tech excluded, other topic overlap permitted, one-step only, exploration and no strategic certification",
+            "actualPairsVerified": 60,
+            "observedSuccess": 3,
+            "completeEffectsRead": true,
+            "technical": {
+              "commonWallKeys": 623,
+              "packets": 514544,
+              "unchanged": 514544,
+              "rejectedHands": 5216,
+              "rejectedDraws": 183351
+            },
+            "primaryPrecisionPassedCells": 0,
+            "primaryPrecisionTotalCells": 3,
+            "planning": [
+              {
+                "band": "early",
+                "n": 20,
+                "mean": -790,
+                "sd": 1593.37443975456,
+                "t95": [
+                  -1535.7221924809264,
+                  -44.27780751907369
+                ],
+                "bootstrap95": [
+                  -1525,
+                  -130
+                ],
+                "n1000": 40
+              },
+              {
+                "band": "mid",
+                "n": 20,
+                "mean": -200,
+                "sd": 6429.618962271404,
+                "t95": [
+                  -3209.1543015466823,
+                  2809.1543015466823
+                ],
+                "bootstrap95": [
+                  -2805,
+                  2670
+                ],
+                "n1000": 636
+              },
+              {
+                "band": "late",
+                "n": 20,
+                "mean": 785,
+                "sd": 3380.793273463306,
+                "t95": [
+                  -797.2599567997174,
+                  2367.2599567997177
+                ],
+                "bootstrap95": [
+                  -300,
+                  2475
+                ],
+                "n1000": 176
+              }
+            ],
+            "limitations": "all three precision gates failed; early pointwise CI excludes zero but multiple comparisons and selected frame; no recommended action; single-step not full fold; no further large replay started"
           }
         }
       },
@@ -3712,8 +3778,8 @@
         "commit": "18364c8c19e24bd127aa7349a7e9bbd7e8ac1a24"
       },
       "latestReport": {
-        "path": "handoff/learning-push-variance-pass-unseen-ui-20261125.md",
-        "commit": "df7cb619c034e52d59199a6506d8270dfe5c6213"
+        "path": "handoff/learning-push60-intake842-repair-20261125.md",
+        "commit": "3e5cd4be409d76892a1a4e47d0bcd31126d19148"
       }
     },
     "learningCorpus": {
@@ -3885,40 +3951,38 @@
         "eta": "16–24h or longer conditional on failures, queue and setup; next morning check",
         "paidCalls": 0,
         "latestObserved": {
-          "cumulativeSaved": 3156,
-          "additionalSaved": 2186,
-          "nominalArtifactRangeCount": 3156,
-          "artifacts": 39,
-          "matchedSuccessArtifacts": 39,
+          "cumulativeSaved": 4052,
+          "additionalSaved": 3082,
+          "nominalArtifactRangeCount": 4116,
+          "artifacts": 54,
+          "matchedSuccessArtifacts": 53,
           "allJobs": 147,
-          "success": 40,
+          "success": 54,
           "inProgress": 8,
-          "queued": 99,
-          "observedFailure": 0,
-          "initial970OnlyFullyAudited": true,
+          "queued": 84,
+          "observedFailure": 1,
           "partitionSaved": {
             "qa": 10,
-            "development": 1451,
-            "confirmation": 725
+            "development": 2056,
+            "confirmation": 1016
           },
           "metadataAudit": {
             "pr": 89,
-            "run": 45560361480,
-            "job": 139022328451,
-            "head": "b234fdf073b2513cf14ad26a37d7029a4d235368",
+            "run": 45571240032,
+            "job": 139058125356,
+            "head": "882520e2b942574da19b27de0f5721dd2d86ef9c",
             "status": "success",
-            "observedAt": "2026-11-25T06:24:37Z",
+            "observedAt": "2026-11-25T07:50:22Z",
             "missingSuccessArtifact": 0,
-            "artifactWithoutSuccess": 0,
+            "artifactWithoutSuccess": [
+              "tenhou-corpus-extension-2763-2826"
+            ],
             "splitHashMatch": true
           },
-          "latestNominalRangeCount": 3668,
-          "latestArtifactCount": 47,
-          "latestUnmatchedIncrement": 512,
-          "limitations": "last full all-page matched metadata3156; nominal3668, additional512 not matched to jobs; initial970 fully content audited"
+          "limitations": "4052 matched successful job/artifact ranges; 55 completed rows in failed partial artifact not included; local intake tracked separately"
         },
         "holdout": {
-          "status": "PREREGISTERED_NOT_PHYSICALLY_ISOLATED",
+          "status": "PARTIAL_274_CONFIRMATION_SEALED_SEPARATELY_NO_RESEARCH_ACCESS",
           "document": "handoff/learning-extension-holdout-20261125.md",
           "documentCommit": "c7488e8ad480119395dd2d76d77f82377015c380",
           "codeCommit": "b2d761b4db57d5634ffefef8077802d4f19f8b94",
@@ -3930,7 +3994,87 @@
           "duplicates": 0,
           "missing": 0,
           "confirmationOpened": false,
-          "physicalIsolationDone": false
+          "physicalIsolationDone": false,
+          "localSeparatedConfirmation": 274,
+          "localSeparatedDevelopment": 558,
+          "localSeparatedQA": 10,
+          "limitations": "separate encrypted files but same recipient key; confirmation payloads were decrypted for opaque byte hashing and re-encryption, not JSON parsing or research; independent external key custody not done"
+        },
+        "intake": {
+          "status": "FIRST_842_SPLIT_HASH_ROUNDTRIP_PASS_568_CONTENT_MAIN_CHECKS_PASS",
+          "range": [
+            1,
+            842
+          ],
+          "batches": 18,
+          "counts": {
+            "qa": 10,
+            "development": 558,
+            "confirmation": 274
+          },
+          "files": 5052,
+          "roundTripMismatch": 0,
+          "seedLogDuplicates": 0,
+          "contentAudit": {
+            "matches": 568,
+            "hands": 5800,
+            "publicDecisions": 82723,
+            "physicalViews": 2189468,
+            "selectedDiscard": 271858,
+            "selectedRiichi": 4595,
+            "selectedCall": 10275,
+            "selectedKan": 506,
+            "selectedRon": 3077,
+            "selectedTsumo": 2034,
+            "selectedAbort": 57,
+            "priorityCensoredReaction": 26572
+          },
+          "localDir": "/tmp/mlab_private/extension/intake_v1",
+          "script": "/tmp/mlab_private/extension/split_audit.py",
+          "receipt": "intake_summary.json",
+          "confirmationJSONParsed": false,
+          "confirmationResearchAccess": false,
+          "independentKeyCustody": false,
+          "scope": "opaque hash and re-encrypted confirmation separation using same recipient; no independent custody. Main content checks for QA and development only, not general yaku/fu or full public-facts audit. Temporary directories removed. Additional remaining intake pending.",
+          "backups": [
+            {
+              "name": "mahjong_extension_842_development_qa_20261125.zip",
+              "bytes": 111272192,
+              "sha256": "1dd6471a7beaf8f4f9c34f46db0a797778fabe376fe28fd46bda9325507c764c"
+            },
+            {
+              "name": "mahjong_extension_842_confirmation_20261125.zip",
+              "bytes": 53157121,
+              "sha256": "cc6fd2da8f20051b189af54e0afe54ae292a64bba1c4af83a00418384c9f9ef6"
+            }
+          ]
+        },
+        "repair": {
+          "status": "MISSING_9_RETRY_RUNNING",
+          "failedOriginalJob": 138925873673,
+          "failedRange": [
+            2763,
+            2826
+          ],
+          "diagnostic": "TimeoutError",
+          "originalPartialArtifact": 15000888076,
+          "partialArtifactSHA256": "2f7b8a6310de04aa2bfb5afb0ed1ea99e19460377a14052a91527863aeaeaa5e",
+          "partialArtifactFile": "mahjong_extension_2763_2826_partial_encrypted.zip",
+          "partialCompleted": 55,
+          "partialRange": [
+            2763,
+            2817
+          ],
+          "missingRange": [
+            2818,
+            2826
+          ],
+          "excludedFromConfirmedCount": true,
+          "pr": 95,
+          "branch": "fix/tenhou-extension-2818-2826-20261125",
+          "head": "bed7d4d6e7b4cb3b11ae8e16d23b282141dee0f8",
+          "run": 45571397958,
+          "scope": "same pinned collector/seed/engine/timeouts; retry only 9; count after exact coverage and audit; separate repair ledger; no replacement or main merge"
         }
       }
     },
