@@ -9,7 +9,7 @@
   },
   "active_task": {
     "phase": "P2a-v4.7 free-only known-case semantic diagnostic",
-    "status": "ROUND_EV_VARIABLES_V1_FIXED_STAGE3_READY",
+    "status": "WAIT_FOR_FULL_10000_CORPUS_BEFORE_STAGE3_4",
     "branch": "feat/coach-p2a-v47-minimal-diagnostic",
     "commit": "7959435bfad0412e9cd94234f01395af05d84789",
     "pr": 71,
@@ -355,7 +355,7 @@
       }
     ],
     "decision": "v46 API-only Stage1 stopped after 2 paid calls, 1 contract pass and 1 incomplete output due to cap. No evidence of typed condition contract failure from pilot82; no semantic certification. Original manual Stage1 plan not performed. No new paid generation authorized.",
-    "next": "Use v1 fixed target/feature specification, create training data (stage3) and fit regularized regression + LightGBM on existing development data without waiting for advanced features or full 10k. Preserve holdout. No paid API/main change.",
+    "next": "User 2026-11-25 17:56 JST: wait until 10,000 hanchan corpus is assembled before stage3 feature dataset creation or stage4 model fitting. Continue only already-approved generation and necessary recovery, encrypted backup, split and content audit; no new research/model/UI work while waiting. Confirm complete unique coverage, reconcile failed original batch and successful 9-shard retry, preserve frozen confirmation partition; holdout unavailable to training. Then stage3 using fixed 9 response targets/49 feature groups v1 and stage4 regression/LightGBM comparison. No paid API/main change.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -3905,7 +3905,7 @@
           "limits": "illustrative independent precision and binary shrinkage calculations, actual clustered model sample size not determined; no new paid API or model training"
         },
         "variablesV1": {
-          "status": "SPEC_FIXED_IMPLEMENTATION_PENDING",
+          "status": "SPEC_FIXED_PAUSED_UNTIL_COMPLETE_10000_CORPUS",
           "path": "handoff/learning-round-ev-variables-v1-20261125.md",
           "commit": "2bfc52ee14657df61d218b32bfcee3429f912536",
           "targets": 9,
@@ -4123,7 +4123,10 @@
             ],
             "splitHashMatch": true
           },
-          "limitations": "4052 matched successful job/artifact ranges; 55 completed rows in failed partial artifact not included; local intake tracked separately"
+          "limitations": "4052 matched successful job/artifact ranges; 55 completed rows in failed partial artifact not included; local intake tracked separately",
+          "latestNominalRangeCount": 4628,
+          "latestArtifactCount": 62,
+          "latestObservationScope": "artifact names only including original incomplete 64-shard range; retry job successful but reconciliation pending, latest full all-job verification still 4052"
         },
         "holdout": {
           "status": "PARTIAL_274_CONFIRMATION_SEALED_SEPARATELY_NO_RESEARCH_ACCESS",
@@ -4194,7 +4197,7 @@
           ]
         },
         "repair": {
-          "status": "MISSING_9_RETRY_RUNNING",
+          "status": "RETRY_JOB_SUCCESS_ARTIFACT_COVERAGE_AUDIT_PENDING",
           "failedOriginalJob": 138925873673,
           "failedRange": [
             2763,
@@ -4218,7 +4221,16 @@
           "branch": "fix/tenhou-extension-2818-2826-20261125",
           "head": "bed7d4d6e7b4cb3b11ae8e16d23b282141dee0f8",
           "run": 45571397958,
-          "scope": "same pinned collector/seed/engine/timeouts; retry only 9; count after exact coverage and audit; separate repair ledger; no replacement or main merge"
+          "scope": "same pinned collector/seed/engine/timeouts; retry only 9; count after exact coverage and audit; separate repair ledger; no replacement or main merge",
+          "retryJob": 139058649648,
+          "retryArtifacts": [
+            {
+              "id": 15003311615,
+              "name": "tenhou-corpus-extension-repair-2818-2826",
+              "digest": "sha256:2db1c489f62c765612fbb6f814ff63ee1dfe3e78b42a7c0a0c5675a6ba7f53ae",
+              "expired": false
+            }
+          ]
         }
       }
     },
