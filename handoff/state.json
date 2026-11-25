@@ -355,7 +355,7 @@
       }
     ],
     "decision": "v46 API-only Stage1 stopped after 2 paid calls, 1 contract pass and 1 incomplete output due to cap. No evidence of typed condition contract failure from pilot82; no semantic certification. Original manual Stage1 plan not performed. No new paid generation authorized.",
-    "next": "Monitor run45709695837 pilot and bulk; audit exact new shards and recover encrypted archives before expiry. First corpus user-side backup accepted; develop using fixed 6990 development only, QA and confirmation excluded; full feature and counterfactual validation pending; no paid APIs or main merge.",
+    "next": "Check run45709695837 actual bulk artifacts/repair/audit; continue private development from saved baseline ZIP, extract remaining 5595 dev-only data with fixed folds; candidate feature/label audit and model testing before holdout freeze. No unpaid-cost assumption beyond standard approved runners, no new paid API/main merge. Keep sealed holdout and recoverable original backups.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -3847,7 +3847,7 @@
         "rules": "Distinguish observed human/Mortal rates, book model assumptions, counterfactual policies. Do not treat selected final dama as prospective comparison. Align exact denominator and timing; missing definitions provisional. Preserve 3000 confirmation split, no human grading of opponent open-hand tenpai from S42. User goal in-game research display before more isolated UI work; no public source text/table or paid calls."
       },
       "candidateRoundEVFirstGoal": {
-        "status": "INITIAL_970_SELECTED_ACTION_TWO_STAGE_MODEL_CV_COMPLETE_NOT_COUNTERFACTUAL",
+        "status": "DEVELOPMENT_1395_SELECTED_ACTION_CV_AND_PORTABLE_PROTOTYPE_PASS",
         "report": "handoff/learning-candidate-round-ev-first-goal-20261125.md",
         "reportCommit": "7b3086be263bf702e81b8ba8e9bac09b5f83b314",
         "goal": "In-game per legal concrete discard candidate display five mutually exclusive terminal outcome probabilities and conditional score changes (ten terms), expected round net points and uncertainty; no fabricated numbers.",
@@ -3905,7 +3905,7 @@
           "limits": "illustrative independent precision and binary shrinkage calculations, actual clustered model sample size not determined; no new paid API or model training"
         },
         "variablesV1": {
-          "status": "DEVELOPMENT_RESUMED_SELECTED_ACTION_BASELINE",
+          "status": "DEVELOPMENT_BASELINE_43_NUMERIC_COLUMNS_PARTIAL_FEATURE_GROUPS",
           "path": "handoff/learning-round-ev-variables-v1-20261125.md",
           "commit": "2bfc52ee14657df61d218b32bfcee3429f912536",
           "targets": 9,
@@ -3925,7 +3925,7 @@
           "scope": "predictive feature acquisition fixed, not coefficients or accuracy certified; advanced definitions and labels implementation pending"
         },
         "dataUseProtocol": {
-          "status": "DEVELOPMENT_FOLDS_MATERIALIZED_INITIAL_PILOT_RUN",
+          "status": "FROZEN_6990_FOLD_MANIFEST_ENFORCED_1395_DEVELOPMENT_ONLY",
           "path": "handoff/learning-round-ev-data-use-protocol-20261125.md",
           "commit": "68be2e518aec15163d9816dce54fd672922987a5",
           "development": 6990,
@@ -3944,7 +3944,9 @@
           "preprocessing": "fit on training folds only",
           "publicDecisionTimeOnly": true,
           "unselectedOutcomeImputation": false,
-          "limits": "protocol not enforced yet, common decryption key, final metric thresholds and candidate paired evaluation details pending"
+          "limits": "protocol not enforced yet, common decryption key, final metric thresholds and candidate paired evaluation details pending",
+          "manifestCreated": true,
+          "manifestSHA256": "631111542c20b392a41299c5aaf24316ccd9c7e41951e827f5cda5cd5dc894f0"
         },
         "geminiReview": {
           "status": "REVIEWED_V2_AMENDMENTS_PROPOSED_NOT_IMPLEMENTED",
@@ -3991,7 +3993,61 @@
               "rmse": 4463.484482716481
             }
           },
-          "scope": "initial 970 focal seat, selected normal/reach discard only; 43 numeric columns not 43 defined feature groups; no general legal counterfactual or final holdout evaluation; no production promotion"
+          "scope": "initial 970 focal seat, selected normal/reach discard only; 43 numeric columns not 43 defined feature groups; no general legal counterfactual or final holdout evaluation; no production promotion",
+          "latest": {
+            "initial": 970,
+            "extension": 425,
+            "matches": 1395,
+            "rows": 158774,
+            "featureColumns": 43,
+            "joinMismatches": 0,
+            "classCounts": [
+              30140,
+              19625,
+              41290,
+              39813,
+              27906
+            ],
+            "immediateRon": 1510,
+            "confirmationJSONParsed": false,
+            "qaUsed": false,
+            "metrics": {
+              "frequency": {
+                "logLoss": 1.5767958043409878,
+                "brier": 0.7873801541828942,
+                "rmse": 4610.29975180691
+              },
+              "logisticRidge": {
+                "logLoss": 1.4758942027937767,
+                "brier": 0.7455142472721661,
+                "rmse": 4492.554813236901
+              },
+              "lightgbm": {
+                "logLoss": 1.4716822197175563,
+                "brier": 0.7429525510586906,
+                "rmse": 4493.277488800096
+              }
+            },
+            "portablePrototype": {
+              "bytes": 27380,
+              "testRows": 1159,
+              "probabilityMaxAbs": 2.7755575615628914e-17,
+              "conditionalMeanMaxAbs": 1.8189894035458565e-12,
+              "evMaxAbs": 2.2737367544323206e-13,
+              "rawCorpusNeededAtInference": false,
+              "labIntegrated": false
+            },
+            "artifact": {
+              "name": "mahjong_round_ev_dev_1395_20261126.zip",
+              "sha256": "bd5770f2c27d8f9b7a7c236fc98581f0743c7c7c3ae4280b12a208359c83404f",
+              "bytes": 55904,
+              "libraryId": "libfile_a105a35b4300819191057c6724ceb61d",
+              "fileId": "file_0000000076c082069f2871a944bb71b6"
+            },
+            "report": "handoff/learning-round-ev-baseline-1395-20261126.md",
+            "reportCommit": "6a658b6e46695437e4d3a98d302c9da4a6bf6528",
+            "limits": "selected focal seat; exploratory CV; full all-seat and unselected candidate, Y08, final confirmation and independent interventions pending. CLI script syntax passed but independent rerun not done."
+          }
         }
       }
     },
@@ -4468,7 +4524,7 @@
         }
       },
       "rollingGeneration": {
-        "status": "SECOND_BATCH_STARTED_PILOT_RUNNING",
+        "status": "SECOND_BATCH_PILOT_SUCCESS_BULK_RUNNING",
         "plan": "handoff/learning-rolling-corpus-plan-20261125.md",
         "commit": "c49cb19238271a2e118bea6aee3a6fb78d237e92",
         "dailyTarget": 10000,
@@ -4495,10 +4551,13 @@
           "pilot": 10,
           "bulkBatches": 157,
           "ruleQA": "success",
-          "pilotStatus": "in_progress",
+          "pilotStatus": "success",
           "priorSeedCollisionReplay": true,
           "paidCalls": 0,
-          "mainChanged": false
+          "mainChanged": false,
+          "pilotSaved": 10,
+          "bulkStatus": "in_progress",
+          "observedBulkInProgress": 8
         }
       }
     },
