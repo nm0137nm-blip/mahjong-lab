@@ -25,9 +25,16 @@ export function createResearchPanel({M,dialog,body,readCurrent,isCurrent,tileNam
   if(!pack){const label=node('label','研究データ（JSON・端末内で読み込み）');const input=node('input');input.type='file';input.accept='.json,application/json';input.id='researchPackInput';label.htmlFor=input.id;const msg=node('p');msg.setAttribute('role','status');input.addEventListener('change',async()=>{try{msg.textContent='検証中';await load(input.files?.[0],ctx)}catch(e){if(context===ctx&&isCurrent(ctx.key))msg.textContent=e.message}});body.append(label,input,msg);return;}
   try{
    const snapshot=readCurrent(ctx.key);if(canonical(snapshot.rule)!==canonical(pack.rule)){body.append(node('p','このルールでは研究統計を利用できません。'));return;}
-   session=createDecisionResearch({M,rule:snapshot.rule,query,mode:'coach'});token=session.beginDecision(()=>({publicCase:snapshot.publicCase,legalRiichiDiscards:snapshot.legalRiichiDiscards}));
+   const timing=snapshot.timing??'during',mode=snapshot.mode??'coach';
+   session=createDecisionResearch({M,rule:snapshot.rule,query,mode});
+   const read=()=>({publicCase:snapshot.publicCase,legalRiichiDiscards:snapshot.legalRiichiDiscards});
+   if(timing==='after'){session.finishMatch();token=session.beginReview(read);}
+   else if(timing==='during'){token=session.beginDecision(read);}
+   else throw Error('invalid research timing');
+   if(timing==='after')body.append(node('p','終局後の振り返り：判断当時の公開情報・合法候補のみを使用しています。'));
    const data=session.access(token);if(data.status!=='ready'){body.append(node('p','この局面に対応する研究統計はまだありません。'));return;}
    const label=node('label','立直候補');const select=node('select');select.id='researchCandidate';label.htmlFor=select.id;for(const c of data.candidates){const o=node('option',tileName(c.discard)+(c.discard.endsWith('_')?'（ツモ切り）':'')+'を切る');o.value=c.discard;select.append(o)}
+   if(timing==='after'&&snapshot.chosenDiscard&&data.candidates.some(c=>c.discard===snapshot.chosenDiscard))select.value=snapshot.chosenDiscard;
    const filters=node('fieldset');filters.append(node('legend','比較条件を明示的に広げる'));const controls=[];
    for(const k of Object.keys(names)){const l=node('label');const check=node('input');check.type='checkbox';check.value=k;l.append(check,document.createTextNode(names[k]+'を全体にする'));filters.append(l);controls.push(check)}
    const result=node('section');result.id='researchResult';result.setAttribute('aria-live','polite');body.append(label,select,filters,result);
