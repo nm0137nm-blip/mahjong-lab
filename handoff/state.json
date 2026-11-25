@@ -3945,6 +3945,14 @@
           "publicDecisionTimeOnly": true,
           "unselectedOutcomeImputation": false,
           "limits": "protocol not enforced yet, common decryption key, final metric thresholds and candidate paired evaluation details pending"
+        },
+        "geminiReview": {
+          "status": "REVIEWED_V2_AMENDMENTS_PROPOSED_NOT_IMPLEMENTED",
+          "path": "handoff/learning-gemini-book-review-disposition-20261125.md",
+          "commit": "fad1ce5e29aac16f4666448640e91347008b239f",
+          "priority": "all-seat data, candidate legal ron/actual policy ron distinction, Y07b and two-stage outcome model, detailed wait and safety features, book-aligned benchmarks",
+          "deferred": "rank transition model after core MVP, additional branch simulations and advanced future risk features; no budget changes",
+          "limits": "book exact definitions not independently rechecked in this review, no precision guarantee, original v1 not replaced pending disposition"
         }
       }
     },
