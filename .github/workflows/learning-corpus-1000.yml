@@ -1,0 +1,73 @@
+name: Tenhou corpus single seed diagnostic
+on:
+  pull_request:
+    branches: [project-handoff]
+    paths: ['handoff/learning-corpus/**','.github/workflows/learning-corpus-1000.yml']
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: tenhou-corpus-shard426-diagnostic
+  cancel-in-progress: false
+jobs:
+  diagnostic:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    strategy:
+      matrix:
+        include:
+          - first: 426
+            last: 426
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          ref: 75c87e621b85bc411ef92152f84918a1802dbd2b
+          path: lab
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.23.4'
+      - uses: actions/download-artifact@v4
+        with:
+          name: corrected-encoder
+          run-id: 44673093075
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/fixed-encoder
+      - uses: actions/download-artifact@v4
+        with:
+          name: p1-outer-locked-manifest
+          run-id: 44717123756
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/prior-outer
+      - name: Prepare pinned development environment
+        run: |
+          set -euo pipefail
+          cp /tmp/fixed-encoder/encoder-pkg/encoder* lab/assets/mortal/
+          echo '886cb7abb09034dcdf348039d651d63a83cd7edb87d3337a452722c960b9d97a  lab/assets/mortal/encoder.js' | sha256sum -c -
+          echo '0e9dcc57545afb5769d42f372bbd82be5c26941d1e352245b225d62ce0c611bf  lab/assets/mortal/encoder_bg.wasm' | sha256sum -c -
+          mv lab /tmp/lab
+          node --test /tmp/lab/tests/mortal-cpu.test.mjs
+          curl --fail --location --retry 1 --silent --show-error --max-time 160 'https://huggingface.co/xzhe121/Mortal-S42-onnx/resolve/main/model.onnx' -o /tmp/lab/tests/mortal/model.onnx
+          echo '30381bf21389e2d25d3edf48fed11bf772336ef3daeee67d1bdae7fb9dd30cb4  /tmp/lab/tests/mortal/model.onnx' | sha256sum -c -
+          mkdir -p /tmp/probe
+          cd /tmp/probe
+          npm init -y >/dev/null
+          npm install --ignore-scripts --no-audit --no-fund playwright@1.57.0 >/dev/null
+          npx playwright install chromium
+      - name: Generate and encrypt batch
+        env:
+          FIRST: ${{ matrix.first }}
+          LAST: ${{ matrix.last }}
+        run: |
+          set -euo pipefail
+          (cd /tmp/lab && python3 -m http.server 8788 --bind 127.0.0.1 >/tmp/http-log 2>&1) &
+          sleep 2
+          python3 handoff/learning-corpus/collect-1000.py "$FIRST" "$LAST"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: tenhou-corpus-recovery-diagnostic-${{ matrix.first }}-${{ matrix.last }}
+          path: corpus-output/
+          if-no-files-found: error
+          retention-days: 90
+
