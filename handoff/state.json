@@ -355,7 +355,7 @@
       }
     ],
     "decision": "v46 API-only Stage1 stopped after 2 paid calls, 1 contract pass and 1 incomplete output due to cap. No evidence of typed condition contract failure from pilot82; no semantic certification. Original manual Stage1 plan not performed. No new paid generation authorized.",
-    "next": "User 2026-11-25 17:56 JST: wait until 10,000 hanchan corpus is assembled before stage3 feature dataset creation or stage4 model fitting. Continue only already-approved generation and necessary recovery, encrypted backup, split and content audit; no new research/model/UI work while waiting. Confirm complete unique coverage, reconcile failed original batch and successful 9-shard retry, preserve frozen confirmation partition; holdout unavailable to training. Then stage3 using fixed 9 response targets/49 feature groups v1 and stage4 regression/LightGBM comparison. No paid API/main change.",
+    "next": "User pause until full 10000 remains. Continue only approved generation, repair and data storage/audit. Upon complete unique corpus, implement frozen data-use protocol (5 grouped development folds, locked 3000 final holdout, QA excluded, allowlist and per-fold preprocessing) before feature dataset creation and fitting. No paid API/main change.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -3923,6 +3923,28 @@
           "model": "regularized multinomial/conditional regressions versus LightGBM; feature selection by grouped validation",
           "split": "existing development6990 confirmation3000 QA10",
           "scope": "predictive feature acquisition fixed, not coefficients or accuracy certified; advanced definitions and labels implementation pending"
+        },
+        "dataUseProtocol": {
+          "status": "RULES_FIXED_IMPLEMENTATION_PENDING",
+          "path": "handoff/learning-round-ev-data-use-protocol-20261125.md",
+          "commit": "68be2e518aec15163d9816dce54fd672922987a5",
+          "development": 6990,
+          "confirmation": 3000,
+          "qa": 10,
+          "devCV": {
+            "folds": 5,
+            "validationPerFold": 1398,
+            "trainingPerFold": 5592,
+            "group": "source hanchan including all seats, turns, candidates and paired derivatives",
+            "salt": "mahjong-lab:round-ev-dev-fold:v1:",
+            "stratifyBy": "initial vs extension",
+            "manifestCreated": false
+          },
+          "finalHoldout": "no feature/parameter/calibration/model selection or outcome access before freeze; after inspection not independent for revised model",
+          "preprocessing": "fit on training folds only",
+          "publicDecisionTimeOnly": true,
+          "unselectedOutcomeImputation": false,
+          "limits": "protocol not enforced yet, common decryption key, final metric thresholds and candidate paired evaluation details pending"
         }
       }
     },
