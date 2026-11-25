@@ -456,10 +456,17 @@
       </div>
       <div class="rule-line"><span>4人打ち</span><span>赤ドラ各1枚</span><span>25,000点持ち</span></div>
       <p class="hint">オーラスは親が単独トップならアガリ・テンパイやめ／0点未満でトビ終了（延長戦なし）</p>
-      <h3 class="section-subtitle">記録モード</h3>
+      <h3 class="section-subtitle">学習サポート</h3>
+      <div class="choose record-choose" role="group" aria-label="学習サポート">
+        <label><input type="radio" name="supportMode" value="coach" checked><span><strong>コーチ付き</strong><small>牌効率・S42表示。練習時は研究統計も参照可</small></span></label>
+        <label><input type="radio" name="supportMode" value="self"><span><strong>自力判断</strong><small>対局中はコーチ非表示・研究統計参照可</small></span></label>
+        <label><input type="radio" name="supportMode" value="assessment"><span><strong>実力測定</strong><small>対局中はコーチ・研究統計とも非表示</small></span></label>
+      </div>
+      <p class="hint">自力判断・実力測定では半荘（または東風）終了後に評価を振り返ります。成績はサポート別に集計します。</p>
+      <h3 class="section-subtitle">記録設定</h3>
       <div class="choose record-choose" role="group" aria-label="記録するか選択">
-        <label><input type="radio" name="recordMode" value="practice" checked><span><strong>練習対局</strong><small>記録しない・コーチあり</small></span></label>
-        <label><input type="radio" name="recordMode" value="measure"><span><strong>計測用対局</strong><small>完走分を保存・コーチあり</small></span></label>
+        <label><input type="radio" name="recordMode" value="practice" checked><span><strong>練習対局</strong><small>記録しない</small></span></label>
+        <label><input type="radio" name="recordMode" value="measure"><span><strong>計測用対局</strong><small>完走分を保存</small></span></label>
       </div>
       <div class="table-controls"><label for="tenhouRoom">評価卓 <select id="tenhouRoom"><option value="tokujou">特上卓</option><option value="houou">鳳凰卓</option></select></label><label for="tenhouDan">評価段位 <select id="tenhouDan"><option value="4">4段</option><option value="5">5段</option><option value="6" selected>6段</option><option value="7">7段</option><option value="8">8段</option><option value="9">9段</option><option value="10">10段</option></select></label></div><p class="hint">段位ptは固定段位でのローカル評価です。卓・段位でCPUの打ち方は変わりません。</p><button class="primary big" id="startBtn" type="button">対局をはじめる <span>→</span></button><div class="mortal-setup"><div class="mortal-setup-title"><span>Mortal-S42 AIコーチ</span><span id="mortalLive" class="mortal-live">準備中</span></div><div id="mortalStatus" class="mortal-help">端末内AIの準備中です</div><button id="mortalDownloadBtn" class="mortal-download" type="button">S42モデルを取得・設定（初回43.7MB）</button><input id="mortalModelFile" type="file" class="mortal-file" accept=".onnx,application/octet-stream" aria-label="S42学習済みモデルを選択"><div class="mortal-help">S42は学習済みモデルの設定後に使用可能です。上の自動取得がSafariで失敗した場合は、下の「モデル配布元」を開き、model.onnx（約43.7MB）をiPhoneの「ファイル」に保存して、このファイル選択欄から読み込んでください。モデルは端末内に保存され、次回以降はオフラインで推論します。対局情報は送信しません。未設定時は牌効率コーチのみ利用可能です。</div><div class="mortal-source">モデル配布元：<a href="https://huggingface.co/xzhe121/Mortal-S42-onnx/blob/main/model.onnx" target="_blank" rel="noopener noreferrer" style="color:#c4e988">Hugging Face / S42 ONNX</a>（取得後SHA-256を照合）。通信・容量の制限で自動取得できない場合は、配布ページからmodel.onnxをダウンロードし、手動選択してください。</div></div>
     </section>
@@ -469,6 +476,7 @@
         <button id="statsEast" class="stat-tab active" type="button" aria-pressed="true">東風戦</button>
         <button id="statsHalf" class="stat-tab" type="button" aria-pressed="false">半荘戦</button>
       </div>
+      <div class="table-controls"><label for="statsSupport">サポート別成績 <select id="statsSupport"><option value="coach">コーチ付き（旧記録含む）</option><option value="self">自力判断</option><option value="assessment">実力測定</option></select></label></div>
       <div class="stats" id="homeStats"></div><div id="homeS42Stats"></div>
       <div id="detailStats" class="stats-content"></div>
       <p class="stats-note">※ 計測用対局の完走分のみ。率は総局数を基準（ツモ率のみ自分の和了数を基準）。旧ルール成績は端末に保持し、天鳳版の集計には混ぜません。卓・固定段位・対局形式別に集計。練習・途中中断・自動テストは対象外です。牌効率とS42のQ値は別の評価です。S42指標は解析済みの新しい対局から集計します。</p>
@@ -4865,11 +4873,16 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
   }
   function signedPt(n){return (n>0?'+':'')+n+' pt';}
   const S42_REVIEW_KEY='mahjonglab-s42-reviews-last-v2';
-  let recordMode = 'practice', statsMode = 1, debugUsed = false;
+  let recordMode = 'practice', statsMode = 1, debugUsed = false, supportMode='coach';
+  const validSupport=new Set(['coach','self','assessment']);
+  const supportLabels={coach:'コーチ付き',self:'自力判断',assessment:'実力測定'};
+  const duringCoachAllowed=()=>supportMode==='coach';
+  const reviewAllowed=()=>gameEnded||duringCoachAllowed();
+  const duringResearchAllowed=()=>supportMode==='self'||(supportMode==='coach'&&recordMode==='practice');
   function summarizeMatch(paipu) {
     const out={
       at:new Date().toISOString(),mode:Number(mode),rank:Number(paipu.rank?.[0]),
-      score:Number(paipu.defen?.[0]),ruleProfile:RULE_PROFILE,room:matchProfile.room,dan:matchProfile.dan,rankPt:tenhouRankPt(matchProfile.room,matchProfile.dan,Number(mode),Number(paipu.rank?.[0])),hands:0,wins:0,tsumoWins:0,
+      score:Number(paipu.defen?.[0]),supportMode,ruleProfile:RULE_PROFILE,room:matchProfile.room,dan:matchProfile.dan,rankPt:tenhouRankPt(matchProfile.room,matchProfile.dan,Number(mode),Number(paipu.rank?.[0])),hands:0,wins:0,tsumoWins:0,
       dealIns:0,openHands:0,riichiHands:0,winPoints:0
     };
     if(!Array.isArray(paipu.log))throw Error('牌譜の局記録がありません');
@@ -4898,7 +4911,8 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
   }
   function renderStats() {
     const profile=readTenhouProfile();
-    const all=store.read(RECORD_KEY,[]).filter(x=>x?.ruleProfile===RULE_PROFILE && x?.room===profile.room && x?.dan===profile.dan && x?.mode===statsMode && x?.rank>=1 && x?.rank<=4);
+    const selectedSupport=$('statsSupport').value;
+    const all=store.read(RECORD_KEY,[]).filter(x=>(x?.supportMode??'coach')===selectedSupport && x?.ruleProfile===RULE_PROFILE && x?.room===profile.room && x?.dan===profile.dan && x?.mode===statsMode && x?.rank>=1 && x?.rank<=4);
     const total=all.length;
     const sum=k=>all.reduce((a,x)=>a+Number(x[k]||0),0);
     const hands=sum('hands'),wins=sum('wins');
@@ -4953,9 +4967,16 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     if (game && !gameEnded) { try { game.stop(()=>{}); } catch {} }
     mode = document.querySelector('input[name="length"]:checked')?.value || '1';
     recordMode = document.querySelector('input[name="recordMode"]:checked')?.value || 'practice';
+    supportMode=document.querySelector('input[name="supportMode"]:checked')?.value||'coach';
+    if(!validSupport.has(supportMode))throw Error('invalid study support mode');
+    $('statsSupport').value=supportMode;
+    $('coachFlash').classList.add('hidden');$('coachFlashMain').replaceChildren();$('coachBody').replaceChildren();$('coachModalBody').replaceChildren();
+    $('resultDecisionReview').replaceChildren();$('resultDecisionReview').hidden=true;
+    $('endLastReview').replaceChildren();$('endLastReview').hidden=true;
+    $('s42EndSummary').replaceChildren();$('s42ReviewBody').replaceChildren();$('s42ReviewOverlay').classList.add('hidden');
     debugUsed = false; matchSaved = false;
     recordedMatchId=String(Date.now())+'-'+Math.random().toString(36).slice(2);
-    $('recordModeBadge').textContent=recordMode==='measure'?'計測中':'練習';
+    $('recordModeBadge').textContent=supportLabels[supportMode]+(recordMode==='measure'?'・記録':'');
     matchProfile=readTenhouProfile();
     selectedRule = M.rule({'配給原点':25000,'赤牌':{m:1,p:1,s:1},'場数':Number(mode),'延長戦方式':2,'オーラス止めあり':true,'オーラス単独トップ止め':false,'トビ終了あり':true,'順位点':['20.0','10.0','-10.0','-20.0'],'ダブル役満あり':false,'Tenhou研究ルール':true});
     human = new Human(); referenceAI = null;
@@ -5242,14 +5263,14 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     else if(pending?.type==='reaction') msg.textContent='鳴くかどうかを選択してください';
     else msg.textContent='CPUの手番';
     const shanten=M.Util.xiangting(sh);
-    $('handInfo').textContent=(shanten===-1?'和了形':shanten===0?'テンパイ':`${shanten}向聴`) + (sh.lizhi?' · リーチ中':'');
+    $('handInfo').textContent=(duringCoachAllowed()?(shanten===-1?'和了形':shanten===0?'テンパイ':`${shanten}向聴`):'') + (sh.lizhi?' · リーチ中':'');
   }
   function addAction(label, fn, cls='') {const b=el('button','action-btn '+cls,label);b.type='button';b.addEventListener('click',fn);$('actionBar').append(b);}
   function renderActions() {
     const holder=$('actionBar');holder.replaceChildren();
     if (!pending) {const txt=el('span','wall-message',gameEnded?'対局終了':readyToNext?'次の局へ進んでください':'対局が進行しています');holder.append(txt);return;}
     if (pending.type==='turn') {
-      if(researchPanel&&recordMode==='practice'&&Number(mode)===2)addAction('研究統計（立直）',()=>{if(researchPanel.open(pending))$('gameScreen').inert=true;});
+      if(researchPanel&&duringResearchAllowed()&&Number(mode)===2)addAction('研究統計（立直）',()=>{if(researchPanel.open(pending))$('gameScreen').inert=true;});
       if(pending.win) addAction('ツモ',()=>answer({hule:'-'}),'important');
       if(pending.nine) addAction('九種九牌（流局）',()=>answer({daopai:'-'}),'nine-tiles');
       for(const m of pending.gang) addAction(`カン (${meldTiles(m).map(tileName).join(' ')})`,()=>answer({gang:m}));
@@ -5535,6 +5556,9 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     if(x.kanAvailable){const k=x.kanComparison;content.append(el('div','inline-metric',k?'カン可否：あなた '+k.chosen+' ／ S42 '+k.recommended:'カン可否：比較Q値未取得／解析中'));}
   }
   function renderCoach() {
+    const visible=duringCoachAllowed();
+    $('coachPanel').classList.toggle('hidden',!visible);
+    if(!visible){$('coachFlash').classList.add('hidden');$('coachFlashMain').replaceChildren();$('coachBody').replaceChildren();return;}
     const inReaction=pending?.type==='reaction';
     $('coachPanel').classList.toggle('reaction-quiet',inReaction);
     const flash=$('coachFlash');
@@ -5892,7 +5916,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     refresh();
   }
   function openCoachDetails() {
-    if(!lastFeedback)return;
+    if(!reviewAllowed()||!lastFeedback)return;
     const x=lastFeedback,body=$('coachModalBody');body.replaceChildren();
     body.append(el('p','coach-callout',x.type!=='discard'?
       '直前の判断：'+x.choiceLabel+(x.type==='call'?' · '+tileName(x.discard):''):
@@ -6003,6 +6027,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
   function renderLastDecisionReview(id,requireCurrentRound=false){
     const area=$(id);if(!area)return;
     area.replaceChildren();area.hidden=true;
+    if(!reviewAllowed())return;
     const round=game?`${F[game.model.zhuangfeng]}${game.model.jushu+1}局`:'';
     const found=decisionLog.slice().reverse().find(x=>!requireCurrentRound||x.round===round);
     if(!found)return;
@@ -6110,6 +6135,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     $('s42ReviewNext').disabled=s42ReviewCursor===s42ReviewRows.length-1;
   }
   function openS42Replay(all=false){
+    if(!gameEnded)return;
     s42ReplayAll=all;
     s42ReviewRows=all?decisionLog.filter(x=>x.scene):s42ReviewList();
     if(!all&&!s42ReviewRows.length)s42ReviewRows=store.read(S42_REVIEW_KEY,[]);
@@ -6132,7 +6158,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     $('endOverlay').classList.remove('hidden');
   }
   function goHome() {
-    researchPanel?.close();
+    researchPanel?.close();$('s42ReviewOverlay').classList.add('hidden');
     if(game && !gameEnded) {try{game.stop(()=>{});}catch{}}
     gameEnded=true;pending=null;readyToNext=false;
     $('gameScreen').classList.add('hidden');$('endOverlay').classList.add('hidden');$('resultOverlay').classList.add('hidden');
@@ -6143,7 +6169,8 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
   $('statsHalf').addEventListener('click',()=>{statsMode=2;renderStats();});
   $('tenhouRoom').addEventListener('change',()=>{refreshTenhouDan();renderStats();});
   $('tenhouDan').addEventListener('change',renderStats);
-  const researchCurrent=ctx=>recordMode==='practice'&&Number(mode)===2&&!!game&&!gameEnded&&pending===ctx&&pending?.type==='turn'&&!$('gameScreen').classList.contains('hidden');
+  $('statsSupport').addEventListener('change',renderStats);
+  const researchCurrent=ctx=>duringResearchAllowed()&&Number(mode)===2&&!!game&&!gameEnded&&pending===ctx&&pending?.type==='turn'&&!$('gameScreen').classList.contains('hidden');
   import('./src/research/research-panel.mjs').then(({createResearchPanel})=>{
     researchPanel=createResearchPanel({M,dialog:$('researchOverlay'),body:$('researchBody'),tileName,isCurrent:researchCurrent,onClose:()=>$('gameScreen').inert=false,readCurrent:ctx=>{
       if(!researchCurrent(ctx))throw Error('stale research context');
@@ -6157,7 +6184,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
   $('coachDetailBtn').addEventListener('click',openCoachDetails);
   $('closeCoachBtn').addEventListener('click',()=>{ $('coachOverlay').classList.add('hidden'); });
   $('exitBtn').addEventListener('click',()=>{if(confirm('対局を中断してトップに戻りますか？（途中対局の成績は保存されません）'))goHome();});
-  $('toggleCoach').addEventListener('click',()=>{coachCollapsed=!coachCollapsed;renderCoach();});
+  $('toggleCoach').addEventListener('click',()=>{if(!duringCoachAllowed())return;coachCollapsed=!coachCollapsed;renderCoach();});
   $('continueBtn').addEventListener('click',()=>{ if(!readyToNext)return; $('resultOverlay').classList.add('hidden');readyToNext=false;if(game&&!gameEnded)game.start();});
   $('s42ReviewBtn').addEventListener('click',()=>openS42Replay(false));
   $('allReviewBtn').addEventListener('click',()=>openS42Replay(true));
