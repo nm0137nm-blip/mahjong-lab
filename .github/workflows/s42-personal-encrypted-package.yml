@@ -1,0 +1,58 @@
+name: Assemble encrypted personal S42 preview
+on:
+  pull_request:
+    branches: [project-handoff]
+    paths: ['.github/workflows/s42-personal-encrypted-package.yml']
+permissions:
+  contents: read
+  actions: read
+jobs:
+  package:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: handoff-repo
+      - uses: actions/checkout@v4
+        with:
+          ref: a98dbef41cebfd6d5af1c6bdf42a029f25804937
+          path: preview
+      - uses: actions/checkout@v4
+        with:
+          ref: 75c87e621b85bc411ef92152f84918a1802dbd2b
+          path: audited
+      - uses: actions/download-artifact@v4
+        with:
+          name: corrected-encoder
+          run-id: 44673093075
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/fixed-encoder
+      - name: Assemble only public game sources and matching runtime
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/personal/mahjong-lab/NOTICE /tmp/encrypted
+          cp preview/index.html preview/service-worker.js /tmp/personal/mahjong-lab/
+          cp -R preview/assets preview/src /tmp/personal/mahjong-lab/
+          for file in manifest.json manifest.webmanifest; do if [ -f "preview/$file" ]; then cp "preview/$file" /tmp/personal/mahjong-lab/; fi; done
+          cp /tmp/fixed-encoder/encoder-pkg/encoder.js /tmp/fixed-encoder/encoder-pkg/encoder_bg.wasm /tmp/personal/mahjong-lab/assets/mortal/
+          cd /tmp/personal/mahjong-lab
+          echo '886cb7abb09034dcdf348039d651d63a83cd7edb87d3337a452722c960b9d97a  assets/mortal/encoder.js' | sha256sum -c -
+          echo '0e9dcc57545afb5769d42f372bbd82be5c26941d1e352245b225d62ce0c611bf  assets/mortal/encoder_bg.wasm' | sha256sum -c -
+          cd "$GITHUB_WORKSPACE"
+          cp audited/vendor/majiang-ai-LICENSE.txt audited/vendor/majiang-core-LICENSE.txt /tmp/personal/mahjong-lab/NOTICE/
+          cp handoff-repo/archive/versions/s42-corrected-encoder-v1/encoder-corresponding-source.tar.gz /tmp/personal/mahjong-lab/NOTICE/
+          cp handoff-repo/handoff/third-party-notices-draft-20261120.md /tmp/personal/mahjong-lab/NOTICE/
+          cp handoff-repo/handoff/license-decision-v1.1-20261120.md /tmp/personal/mahjong-lab/NOTICE/
+          test -z "$(find /tmp/personal -iname '*.onnx' -o -iname '*.cms' -o -iname '*.pem')"
+          cd /tmp/personal
+          find mahjong-lab -type f -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS.txt
+          zip -q -r /tmp/personal-preview.zip mahjong-lab SHA256SUMS.txt
+          sha256sum /tmp/personal-preview.zip
+          openssl cms -encrypt -binary -aes-256-gcm -in /tmp/personal-preview.zip -out /tmp/encrypted/personal-preview.zip.cms -outform DER "$GITHUB_WORKSPACE/handoff-repo/handoff/s42-personal-transfer-cert.pem"
+          sha256sum /tmp/encrypted/personal-preview.zip.cms
+      - uses: actions/upload-artifact@v4
+        with:
+          name: personal-preview-encrypted-only
+          path: /tmp/encrypted/personal-preview.zip.cms
+          retention-days: 1
