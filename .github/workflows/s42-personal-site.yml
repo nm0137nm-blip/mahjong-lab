@@ -1,0 +1,85 @@
+name: Personal encrypted S42 site build and validation
+on:
+  pull_request:
+    branches: [project-handoff]
+    paths: ['.github/workflows/s42-personal-site.yml','handoff/s42-personal-site/**']
+permissions:
+  contents: write
+  actions: read
+jobs:
+  validate_and_prepare:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 22
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: build
+      - uses: actions/checkout@v4
+        with:
+          ref: a98dbef41cebfd6d5af1c6bdf42a029f25804937
+          path: preview
+      - uses: actions/checkout@v4
+        with:
+          ref: 75c87e621b85bc411ef92152f84918a1802dbd2b
+          path: audited
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/s42-personal-site-v1-20261126
+          path: site
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/download-artifact@v4
+        with:
+          name: corrected-encoder
+          run-id: 44673093075
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/fixed-encoder
+      - name: Prepare source, verified encoder and synthetic test key
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/personal-source/NOTICE /tmp/gate-test/personal-s42-v1
+          cp preview/index.html preview/service-worker.js /tmp/personal-source/
+          cp -R preview/assets preview/src /tmp/personal-source/
+          cp /tmp/fixed-encoder/encoder-pkg/encoder.js /tmp/fixed-encoder/encoder-pkg/encoder_bg.wasm /tmp/personal-source/assets/mortal/
+          echo '886cb7abb09034dcdf348039d651d63a83cd7edb87d3337a452722c960b9d97a  /tmp/personal-source/assets/mortal/encoder.js' | sha256sum -c -
+          echo '0e9dcc57545afb5769d42f372bbd82be5c26941d1e352245b225d62ce0c611bf  /tmp/personal-source/assets/mortal/encoder_bg.wasm' | sha256sum -c -
+          cp audited/vendor/majiang-ai-LICENSE.txt audited/vendor/majiang-core-LICENSE.txt /tmp/personal-source/NOTICE/
+          cp build/archive/versions/s42-corrected-encoder-v1/encoder-corresponding-source.tar.gz /tmp/personal-source/NOTICE/
+          cp build/handoff/third-party-notices-draft-20261120.md /tmp/personal-source/NOTICE/
+          openssl genpkey -algorithm EC -pkeyopt ec_paramgen_curve:prime256v1 -out /tmp/test-private.pem
+          openssl pkcs8 -topk8 -nocrypt -in /tmp/test-private.pem -outform DER -out /tmp/test-private.der
+          openssl pkey -in /tmp/test-private.pem -pubout -outform DER -out /tmp/test-public.der
+          D=build/handoff/s42-personal-site
+          cp "$D/index.html" "$D/unlock-sw.js" /tmp/gate-test/personal-s42-v1/
+          node "$D/pack.mjs" /tmp/personal-source /tmp/gate-test/personal-s42-v1 "$(base64 -w0 /tmp/test-public.der)"
+          curl --fail --location --retry 1 --silent --show-error --max-time 180 'https://huggingface.co/xzhe121/Mortal-S42-onnx/resolve/main/model.onnx' -o /tmp/model.onnx
+          echo '30381bf21389e2d25d3edf48fed11bf772336ef3daeee67d1bdae7fb9dd30cb4  /tmp/model.onnx' | sha256sum -c -
+          mkdir -p /tmp/probe && cd /tmp/probe
+          npm init -y >/dev/null
+          npm install --ignore-scripts --no-audit --no-fund playwright@1.57.0 >/dev/null
+          npx playwright install --with-deps chromium webkit
+      - name: Test gated real inference and offline reload in Chromium and WebKit
+        run: |
+          set -euo pipefail
+          (cd /tmp/gate-test && python3 -m http.server 8788 --bind 127.0.0.1 >/tmp/gate-http.log 2>&1) &
+          sleep 2
+          BROWSER=chromium node build/handoff/s42-personal-site/test.mjs
+          BROWSER=webkit node build/handoff/s42-personal-site/test.mjs
+      - name: Build for recipient and commit only encrypted files to candidate branch
+        run: |
+          set -euo pipefail
+          D=build/handoff/s42-personal-site
+          O=site/personal-s42-v1
+          mkdir -p "$O"
+          cp "$D/index.html" "$D/unlock-sw.js" "$O/"
+          node "$D/pack.mjs" /tmp/personal-source "$O" 'MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAETj3x0NhQvhRVwAUdShrbv2RVwMD8n1yR56Sulfuz4Bt1Uh5qyQQMTTdGLVZOv7IHGQM8Q4QurHoBIj4ZnOICrA=='
+          printf 'User-only encrypted preview. The executable application is not served as plaintext. The key is not in the repository. No model weights included. Source build: a98dbef41cebfd6d5af1c6bdf42a029f25804937.\n' > "$O/README.md"
+          cd site
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git config user.name 'github-actions[bot]'
+          git add personal-s42-v1
+          git diff --cached --name-only | grep -v '^personal-s42-v1/' && exit 1 || true
+          git commit -m 'Add encrypted personal S42 preview only'
+          git push origin HEAD:feat/s42-personal-site-v1-20261126
+          git rev-parse HEAD
