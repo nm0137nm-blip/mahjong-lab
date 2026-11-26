@@ -59,10 +59,11 @@ jobs:
           npm init -y >/dev/null
           npm install --ignore-scripts --no-audit --no-fund playwright@1.57.0 >/dev/null
           npx playwright install --with-deps chromium webkit
-      - name: Test gated real inference and offline reload in Chromium and WebKit
+      - name: Test gated inference and distinguish WebKit offline support
         run: |
           set -euo pipefail
-          (cd /tmp/gate-test && python3 -m http.server 8788 --bind 127.0.0.1 >/tmp/gate-http.log 2>&1) &
+          python3 -m http.server 8788 --bind 127.0.0.1 --directory /tmp/gate-test >/tmp/gate-http.log 2>&1 &
+          echo $! > /tmp/gate-server.pid
           sleep 2
           BROWSER=chromium node build/handoff/s42-personal-site/test.mjs
           BROWSER=webkit node build/handoff/s42-personal-site/test.mjs
