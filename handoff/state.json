@@ -9,7 +9,7 @@
   },
   "active_task": {
     "phase": "P2a-v4.7 free-only known-case semantic diagnostic",
-    "status": "FEATURE_V3_SELECTED_EXTRACTION_PASS_COMPLETION_GATE_OPEN",
+    "status": "FEATURE_V4_44_SELECTED_GROUPS_FULL_ALL_CANDIDATE_GATE_OPEN",
     "branch": "feat/coach-p2a-v47-minimal-diagnostic",
     "commit": "7959435bfad0412e9cd94234f01395af05d84789",
     "pr": 71,
@@ -355,7 +355,7 @@
       }
     ],
     "decision": "v46 API-only Stage1 stopped after 2 paid calls, 1 contract pass and 1 incomplete output due to cap. No evidence of typed condition contract failure from pilot82; no semantic certification. Original manual Stage1 plan not performed. No new paid generation authorized.",
-    "next": "Finish all-development B08/B05/C05 sweeps, B04/B09/C02/C04/D01/D07/E07/F05 specification and independent checks, all candidate coverage and joint opponent exact transfers/legal/policy ron labels before model comparison. Keep fixed folds and confirmation sealed; no paid work or main changes. Existing model exploratory only.",
+    "next": "Restore encrypted v4 checkpoints, do not repeat completed selected sweeps; complete full candidate advanced public feature extraction, B04/B09/C04/D07/E07 exact definitions, role-aware next paths and independent yaku/fu, legality, leakage audits. Keep dev fold fixed and confirmation sealed; no training or main promotion until feature gate passed.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -4171,7 +4171,7 @@
           "remaining": "Complete 49 feature groups, Y08, all-candidate strict reach/legal/policy ron, full nonlinear model comparison, calibration, causal difference validation. No production or holdout opening."
         },
         "featureCompletion": {
-          "status": "ALL49_IMPLEMENTATION_PARTIAL_V3_COMPLETION_GATE_NOT_PASSED",
+          "status": "V4_SELECTED_SWEEPS_AND_TEACHER_COMPLETE_ALL_CANDIDATE_GATE_NOT_PASSED",
           "report": "handoff/learning-feature-completion-gate-20261126.md",
           "reportCommit": "bbd8b362cd437d7875f336c9a1aae65b776f9d9d",
           "contractBlobSHA": "15778762afa0093057c4122e18228684291cd589",
@@ -4284,6 +4284,108 @@
             "newTraining": false,
             "paidCalls": 0,
             "mainChanged": false,
+            "gatePassed": false
+          },
+          "v4": {
+            "status": "SELECTED_44_FULL_5_PARTIAL_ALL_CANDIDATE_GATE_NOT_PASSED",
+            "report": "handoff/learning-feature-completion-v4-20261126.md",
+            "reportCommit": "f9c3228fb5f453bcf29638a740f08023a8e442cd",
+            "matches": 6990,
+            "selectedRows": 3205698,
+            "counts": {
+              "completeSelected": 44,
+              "partial": 5,
+              "pilotOnly": 0,
+              "missing": 0,
+              "fullCandidateIndependentCertified": 0
+            },
+            "remainingGroups": [
+              "B04",
+              "B09",
+              "C04",
+              "D07",
+              "E07"
+            ],
+            "teacher": {
+              "ordinary": 35435373,
+              "physical": 34750154,
+              "normalized": 34329411,
+              "legalReach": 230946,
+              "legalRonPositivePhysical": 940996,
+              "multi": 24998,
+              "triple": 312,
+              "actualImmediate": 31268,
+              "double": 385,
+              "actualPaid": 162913000,
+              "y08": 1562083,
+              "actualScoreChecks": 31653,
+              "uraChecks": 10911,
+              "wallChecks": 79005,
+              "mismatches": 0
+            },
+            "observed": {
+              "columns": 52,
+              "netChecks": 12822792,
+              "dealInRows": 403207,
+              "selfRonPaymentChecks": 383050,
+              "mismatches": 0
+            },
+            "timeline": {
+              "columns": 340,
+              "physicalInventoryChecks": 118610826,
+              "normalizedChecks": 108993732,
+              "mismatches": 0
+            },
+            "selected": {
+              "B08Applicable": 1292277,
+              "B05C05Applicable": 933828,
+              "ronPositive": 771956,
+              "tsumoPositive": 929191,
+              "mismatches": 0,
+              "reference": "no additional future reach"
+            },
+            "candidatePilot": {
+              "matches": 47,
+              "normalized": 218098,
+              "selectedChecks": 8475,
+              "waitMaskRechecks": 3497,
+              "independentPublicSample": {
+                "matches": 24,
+                "decisions": 453,
+                "concrete": 5038,
+                "mismatch": 0
+              }
+            },
+            "artifact": {
+              "name": "mahjong_feature_completion_v4_20261126.zip",
+              "bytes": 268050,
+              "sha256": "d481765d20043725177b18e66d1fb03fc1fd58b215acc4d2251b2d91b5753109",
+              "libraryId": "libfile_f82ce45332248191b53441157f2ad199",
+              "fileId": "file_00000000e8d08211988ccbeff8018857"
+            },
+            "checkpoints": {
+              "folder": "/麻雀LAB/特徴量v4再開チェックポイント20261126",
+              "directoryId": "6b077ee162f0819182df6ca193bf8029",
+              "volumes": 15,
+              "indexes": 9,
+              "localRoundTripVerified": true,
+              "libraryReadbackVerified": false,
+              "stages": [
+                "source",
+                "candidates",
+                "target_exact",
+                "reach_v4",
+                "secondary_v4",
+                "next_v4_cache",
+                "observed_outcome",
+                "timeline_v4",
+                "candidate_advanced"
+              ]
+            },
+            "confirmationUsed": false,
+            "qaUsed": false,
+            "paidCalls": 0,
+            "training": false,
             "gatePassed": false
           }
         }
