@@ -9,7 +9,7 @@
   },
   "active_task": {
     "phase": "P2a-v4.7 free-only known-case semantic diagnostic",
-    "status": "FEATURE_V6_PARTIAL_ADVANCED_SWEEP_PER_MATCH_RESUMABLE",
+    "status": "FEATURE_V6_BLOCKED_LOCAL_RECOVERY_KEY_AND_PERSISTENT_RUNTIME",
     "branch": "feat/coach-p2a-v47-minimal-diagnostic",
     "commit": "7959435bfad0412e9cd94234f01395af05d84789",
     "pr": 71,
@@ -355,7 +355,7 @@
       }
     ],
     "decision": "v46 API-only Stage1 stopped after 2 paid calls, 1 contract pass and 1 incomplete output due to cap. No evidence of typed condition contract failure from pilot82; no semantic certification. Original manual Stage1 plan not performed. No new paid generation authorized.",
-    "next": "Use latest v6 code and checkpoint library IDs, with v4/v5 base. Resume missing archives using candidate_secondary_fast_v5.py and score_candidate_v6_run.py (per-match atomic receipts), then audit_all_candidates_v6.py. No repeat of completed stages; full definition/legality independent checks still required. Hourly continuation enabled, successful scheduled execution not verified; avoid duplicate work. Notify only actionable blockers/decisions. No paid work, holdout, training or main change.",
+    "next": "Resume only in authorized local environment with original recovery key and restored development checkpoints; never transmit key to GitHub/external services. Latest v6 ciphertext readback verified. No new feature matches this run; no paid work, holdout, training or main changes.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -4523,7 +4523,8 @@
               "partsVolume": "libfile_d166ac3450c88191bceaf511c36618fe",
               "partsIndex": "libfile_11c1009c98588191880367e64365cdf7",
               "localRoundTripVerified": true,
-              "libraryReadbackVerified": false
+              "libraryReadbackVerified": true,
+              "libraryReadbackScope": "2026-11-26 12:34 JST: all three latest v6 CMS ciphertext SHA256 and code ZIP matched; plaintext not decrypted in new runtime"
             },
             "continuation": {
               "automationCreated": true,
@@ -4531,7 +4532,14 @@
               "interval": "hourly",
               "successfulRunVerified": false,
               "scope": "bounded work if environment available; notify only actionable blockers",
-              "localSweepsStopped": true
+              "localSweepsStopped": true,
+              "lastAttempt": {
+                "date": "2026-11-26 12:34 JST",
+                "newMatches": 0,
+                "consecutiveZeroRuns": 2,
+                "blocker": "Fresh isolated runtime lacks /tmp/mlab_feature_v3 and /tmp/mlab_private/key; code ZIP and encrypted checkpoint bytes verified but original local recovery key unavailable. No permitted decryption or actual feature computation possible.",
+                "notified": true
+              }
             },
             "confirmationUsed": false,
             "qaUsed": false,
