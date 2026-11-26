@@ -9,7 +9,7 @@
   },
   "active_task": {
     "phase": "P2a-v4.7 free-only known-case semantic diagnostic",
-    "status": "FEATURE_V6_PARTIAL_ADVANCED_SWEEP_HOURLY_CONTINUATION",
+    "status": "FEATURE_V6_PARTIAL_ADVANCED_SWEEP_PER_MATCH_RESUMABLE",
     "branch": "feat/coach-p2a-v47-minimal-diagnostic",
     "commit": "7959435bfad0412e9cd94234f01395af05d84789",
     "pr": 71,
@@ -355,7 +355,7 @@
       }
     ],
     "decision": "v46 API-only Stage1 stopped after 2 paid calls, 1 contract pass and 1 incomplete output due to cap. No evidence of typed condition contract failure from pilot82; no semantic certification. Original manual Stage1 plan not performed. No new paid generation authorized.",
-    "next": "Use latest v6 checkpoints over v5 for secondary/scoring; retain all other v4/v5 dependencies. Resume missing archives only, avoid duplicate workers, update verified receipts and encrypted backups. Full candidate join and independent definition/legality audit still required. Hourly task configured, no guarantee of future environment availability. Notify user only actionable blockers. No unapproved paid work, training, holdout use or main changes.",
+    "next": "Use latest v6 code and checkpoint library IDs, with v4/v5 base. Resume missing archives using candidate_secondary_fast_v5.py and score_candidate_v6_run.py (per-match atomic receipts), then audit_all_candidates_v6.py. No repeat of completed stages; full definition/legality independent checks still required. Hourly continuation enabled, successful scheduled execution not verified; avoid duplicate work. Notify only actionable blockers/decisions. No paid work, holdout, training or main change.",
     "gate": "handoff/roadmap-v1.4-pilot-go-20261120.md",
     "bias_run_id": 44758490026,
     "manual_protocol": "handoff/v14-manual-pilot-execution-20261121.md",
@@ -4496,42 +4496,82 @@
             "gatePassed": false
           },
           "v6": {
-            "status": "PARTIAL_ADVANCED_SWEEP_RESUMED_HOURLY_CONTINUATION_CONFIGURED",
+            "status": "PARTIAL_ADVANCED_SWEEP_PER_MATCH_RESUME_AND_JOIN_AUDIT",
             "secondary": {
-              "matches": 1126,
-              "archives": 34,
-              "applicable": 1099341,
-              "selectedChecks": 207061,
+              "matches": 1638,
+              "archives": 46,
+              "applicable": 1594987,
+              "selectedChecks": 300295,
               "mismatch": 0
             },
             "score": {
-              "matches": 106,
-              "archives": 10,
-              "physical": 504863,
-              "selectedNextChecks": 13660,
+              "matches": 268,
+              "archives": 14,
+              "physical": 1303681,
+              "ordinary": 1329609,
+              "reach": 8493,
+              "selectedNextChecks": 35065,
               "mismatch": 0
             },
             "checkpoints": {
               "folder": "/麻雀LAB/特徴量v6再開チェックポイント20261126",
               "directoryId": "6b07940359508191b76665b04efc0eba",
-              "secondaryVolume": "libfile_c0fbc84bf45881918cb1b1cb0065c6f1",
-              "secondaryIndex": "libfile_34e545157df08191913c333ec730cd31",
-              "scoreVolume": "libfile_f16fd5acd0408191b598d66f8ba80990",
-              "scoreIndex": "libfile_f27199dde4c88191b87c365b355e8424",
+              "secondaryVolume": "libfile_54486f3a81d48191a033006ac54d7b3d",
+              "secondaryIndex": "libfile_7715c70ad62c81918fa9c772d29b2a79",
+              "scoreVolume": "libfile_bfb9b7ff3c0c819195746b8825ad16e5",
+              "scoreIndex": "libfile_48ad869217d48191bd241804421889fe",
+              "partsVolume": "libfile_d166ac3450c88191bceaf511c36618fe",
+              "partsIndex": "libfile_11c1009c98588191880367e64365cdf7",
               "localRoundTripVerified": true,
               "libraryReadbackVerified": false
             },
             "continuation": {
               "automationCreated": true,
+              "automationId": "Automation_14cd4c84cae08191929c0db6a0d24b04",
               "interval": "hourly",
-              "scope": "continue actual work if environment/checkpoints available; notify only actionable blockers; not continuous compute or guarantee",
+              "successfulRunVerified": false,
+              "scope": "bounded work if environment available; notify only actionable blockers",
               "localSweepsStopped": true
             },
             "confirmationUsed": false,
             "qaUsed": false,
             "paidCalls": 0,
             "training": false,
-            "gatePassed": false
+            "gatePassed": false,
+            "report": "handoff/learning-feature-completion-v6-resumable-20261126.md",
+            "reportCommit": "5e2120fa45aec6a7f3da685ce86df7ce6d2541f7",
+            "scoreParts": {
+              "matches": 24,
+              "decisions": 10660,
+              "physical": 115751,
+              "ordinary": 118021,
+              "reach": 713,
+              "selectedNextChecks": 3163,
+              "mismatch": 0
+            },
+            "join": {
+              "archives": 12,
+              "matches": 191,
+              "decisions": 85604,
+              "ordinary": 943250,
+              "reach": 6094,
+              "selectedChecks": 85604,
+              "mismatch": 0
+            },
+            "equivalence": {
+              "secondaryNew": 2383,
+              "scoringMatches": 13,
+              "scoringOrdinary": 60472,
+              "scoringReach": 477,
+              "mismatch": 0
+            },
+            "artifact": {
+              "name": "mahjong_feature_completion_v6_20261126.zip",
+              "bytes": 397192,
+              "sha256": "ffff5e918e3c1f1d9689aeb711e0fac08a4ba4be6c176990d7a5d8317541bfd1",
+              "libraryId": "libfile_d9a7432330c88191ac39d17eb15e2cd5",
+              "fileId": "file_000000001dc88206be34663ecd2a8f9e"
+            }
           }
         }
       }
