@@ -4,8 +4,34 @@
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
-    "sha": "4328f6099ba8438d94b51dbae034c16a9b0583de",
-    "coach_candidate_promoted": false
+    "sha": "d080cccc9a6bdf366da4862cee8a742d52602d5b",
+    "coach_candidate_promoted": false,
+    "rootGameSha": "4328f6099ba8438d94b51dbae034c16a9b0583de",
+    "personalPreview": {
+      "status": "ENCRYPTED_PERSONAL_SUBPATH_MERGED_PAGES_DEPLOY_PENDING",
+      "source": "a98dbef41cebfd6d5af1c6bdf42a029f25804937",
+      "reviewPR": 104,
+      "actualBrowserRun": 45829356591,
+      "deliveryPR": 107,
+      "deliveryHead": "e4409484ba0b45737a4157d4b6edf3811043ce81",
+      "encryptedGateRun": 45831018682,
+      "pagesRun": 45831498017,
+      "subpath": "personal-s42-v1/",
+      "modelBundled": false,
+      "rootUnchanged": true,
+      "privateKeyInRepo": false,
+      "paidCalls": 0,
+      "chromiumOffline": true,
+      "webkitServerOutageReload": true,
+      "actualIphoneTested": false,
+      "legacyCIIncompatible": true,
+      "localZip": {
+        "name": "mahjong_lab_s42_personal_preview_v1.zip",
+        "sha256": "574ea81d79b643719105370144dc3d8243c514d49e770dd85e7e193bba4853fb",
+        "libraryId": "libfile_76fc74b457e48191827ae84e9007036a"
+      },
+      "researchUnchanged": true
+    }
   },
   "active_task": {
     "phase": "P2a-v4.7 free-only known-case semantic diagnostic",
