@@ -1,12 +1,13 @@
 // Mahjong LAB PWA — v2.5.8: evidence-based coaching preview.
-const CACHE='mahjong-lab-iphone-v258';
+const CACHE='mahjong-lab-iphone-s42-personal-v1';
 const SHELL=['./','./index.html'];
 const RESOURCES=[
  './src/coach/phoenix-coach.mjs?v=258',
  './src/coach/strategy-curriculum.mjs?v=258',
  './src/coach/relative-instructions.mjs?v=258',
- './src/mortal/mjai-bridge.mjs?v=2561',
- './src/mortal/mortal-client.mjs?v=2561',
+ './src/mortal/mjai-bridge.mjs?v=2601',
+ './src/mortal/mortal-client.mjs?v=2601',
+ './src/mortal/mortal-cpu.mjs?v=2601',
  './src/mortal/sha256.mjs?v=2561',
  './src/mortal/s42-analytics.mjs?v=2561',
  './src/mortal/mortal-worker.mjs?v=2561',

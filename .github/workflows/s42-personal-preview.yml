@@ -1,0 +1,65 @@
+name: S42 personal preview verification
+on:
+  pull_request:
+    branches: [main]
+    paths: ['.github/workflows/s42-personal-preview.yml','index.html','src/mortal/**','tests/mortal/run-personal-preview.cjs']
+permissions:
+  contents: read
+  actions: read
+jobs:
+  unit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --test tests/mortal-cpu.test.mjs tests/mortal/*.test.mjs
+  real_browser:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - browser: chromium
+            length: '1'
+          - browser: chromium
+            length: '2'
+          - browser: webkit
+            length: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: lab
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/download-artifact@v4
+        with:
+          name: corrected-encoder
+          run-id: 44673093075
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/fixed-encoder
+      - name: Prepare hash-pinned local inference
+        run: |
+          set -euo pipefail
+          cp /tmp/fixed-encoder/encoder-pkg/encoder.js /tmp/fixed-encoder/encoder-pkg/encoder_bg.wasm lab/assets/mortal/
+          echo '886cb7abb09034dcdf348039d651d63a83cd7edb87d3337a452722c960b9d97a  lab/assets/mortal/encoder.js' | sha256sum -c -
+          echo '0e9dcc57545afb5769d42f372bbd82be5c26941d1e352245b225d62ce0c611bf  lab/assets/mortal/encoder_bg.wasm' | sha256sum -c -
+          mv lab /tmp/lab
+          curl --fail --location --retry 1 --silent --show-error --max-time 180 'https://huggingface.co/xzhe121/Mortal-S42-onnx/resolve/main/model.onnx' -o /tmp/lab/tests/mortal/model.onnx
+          echo '30381bf21389e2d25d3edf48fed11bf772336ef3daeee67d1bdae7fb9dd30cb4  /tmp/lab/tests/mortal/model.onnx' | sha256sum -c -
+          mkdir -p /tmp/probe && cd /tmp/probe
+          npm init -y >/dev/null
+          npm install --ignore-scripts --no-audit --no-fund playwright@1.57.0 >/dev/null
+          npx playwright install --with-deps ${{ matrix.browser }}
+      - name: Complete match with actual S42 and review
+        env:
+          BROWSER: ${{ matrix.browser }}
+          LENGTH: ${{ matrix.length }}
+        run: |
+          (cd /tmp/lab && python3 -m http.server 8788 --bind 127.0.0.1 >/tmp/http.log 2>&1) &
+          sleep 2
+          node /tmp/lab/tests/mortal/run-personal-preview.cjs

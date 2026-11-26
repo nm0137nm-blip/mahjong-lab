@@ -444,22 +444,22 @@
   <main id="startScreen" class="home">
     <div class="eyebrow"><span class="eyedot"></span> MAHJONG LAB</div>
     <h1 class="home-compact-title">対局設定</h1>
-    <p class="intro">練習・成績計測を選び、CPU3人と対局します。</p>
+    <p class="intro">個人利用先行版：Mortal S42の3人と対局し、選択後にS42の判断を比較します。統計・文章コーチは未搭載です。</p>
     <section class="start-card">
       <h2>新しい対局</h2>
-      <p class="hint">東風戦／半荘戦を選択してください。</p>
+      <p class="hint">天鳳準拠を目標とした赤あり・喰いタンあり。東風戦／東南戦を選択してください。</p>
       <div class="choose" role="group" aria-label="対局形式">
-        <label><input type="radio" name="length" value="1" checked><span><strong>東風戦</strong><small>東場のみ</small></span></label>
-        <label><input type="radio" name="length" value="2"><span><strong>半荘戦</strong><small>東場＋南場</small></span></label>
+        <label><input type="radio" name="length" value="1" checked><span><strong>東風戦</strong><small>南入あり</small></span></label>
+        <label><input type="radio" name="length" value="2"><span><strong>半荘戦</strong><small>西入あり</small></span></label>
       </div>
       <div class="rule-line"><span>4人打ち</span><span>赤ドラ各1枚</span><span>25,000点持ち</span></div>
-      <p class="hint">オーラスは親が単独トップならアガリ・テンパイやめ／0点未満でトビ終了（延長戦なし）</p>
-      <h3 class="section-subtitle">記録モード</h3>
+      <p class="hint">天鳳準拠を目標とした延長戦・親のアガリ／テンパイやめ・0点未満でトビ終了（完全な天鳳サーバー同一性は未認証）</p>
+      <h3 class="section-subtitle">対戦相手：Mortal S42 × 3</h3><p id="cpuSetupStatus" class="hint" role="status">モデル準備完了後に対局できます。推論失敗時は対局を中断し、標準CPUに切り替えません。</p><h3 class="section-subtitle">記録モード</h3>
       <div class="choose record-choose" role="group" aria-label="記録するか選択">
         <label><input type="radio" name="recordMode" value="practice" checked><span><strong>練習対局</strong><small>記録しない・コーチあり</small></span></label>
-        <label><input type="radio" name="recordMode" value="measure"><span><strong>計測用対局</strong><small>完走分を保存・コーチあり</small></span></label>
+        <label><input type="radio" name="recordMode" value="measure" disabled><span><strong>計測用対局</strong><small>先行版では無効</small></span></label>
       </div>
-      <button class="primary big" id="startBtn" type="button">対局をはじめる <span>→</span></button><div class="mortal-setup"><div class="mortal-setup-title"><span>Mortal-S42 AIコーチ</span><span id="mortalLive" class="mortal-live">準備中</span></div><div id="mortalStatus" class="mortal-help">端末内AIの準備中です</div><button id="mortalDownloadBtn" class="mortal-download" type="button">S42モデルを取得・設定（初回43.7MB）</button><input id="mortalModelFile" type="file" class="mortal-file" accept=".onnx,application/octet-stream" aria-label="S42学習済みモデルを選択"><div class="mortal-help">S42は学習済みモデルの設定後に使用可能です。上の自動取得がSafariで失敗した場合は、下の「モデル配布元」を開き、model.onnx（約43.7MB）をiPhoneの「ファイル」に保存して、このファイル選択欄から読み込んでください。モデルは端末内に保存され、次回以降はオフラインで推論します。対局情報は送信しません。未設定時は牌効率コーチのみ利用可能です。</div><div class="mortal-source">モデル配布元：<a href="https://huggingface.co/xzhe121/Mortal-S42-onnx/blob/main/model.onnx" target="_blank" rel="noopener noreferrer" style="color:#c4e988">Hugging Face / S42 ONNX</a>（取得後SHA-256を照合）。通信・容量の制限で自動取得できない場合は、配布ページからmodel.onnxをダウンロードし、手動選択してください。</div></div>
+      <div class="table-controls"><label for="tenhouRoom">評価卓 <select id="tenhouRoom"><option value="tokujou">特上卓</option><option value="houou">鳳凰卓</option></select></label><label for="tenhouDan">評価段位 <select id="tenhouDan"><option value="4">4段</option><option value="5">5段</option><option value="6" selected>6段</option><option value="7">7段</option><option value="8">8段</option><option value="9">9段</option><option value="10">10段</option></select></label></div><p class="hint">段位ptは固定段位でのローカル評価です。卓・段位でCPUの打ち方は変わりません。</p><button class="primary big" id="startBtn" type="button">対局をはじめる <span>→</span></button><div class="mortal-setup"><div class="mortal-setup-title"><span>Mortal-S42 AIコーチ</span><span id="mortalLive" class="mortal-live">準備中</span></div><div id="mortalStatus" class="mortal-help">端末内AIの準備中です</div><button id="mortalDownloadBtn" class="mortal-download" type="button">S42モデルを取得・設定（初回43.7MB）</button><input id="mortalModelFile" type="file" class="mortal-file" accept=".onnx,application/octet-stream" aria-label="S42学習済みモデルを選択"><div class="mortal-help">S42は学習済みモデルの設定後に使用可能です。上の自動取得がSafariで失敗した場合は、下の「モデル配布元」を開き、model.onnx（約43.7MB）をiPhoneの「ファイル」に保存して、このファイル選択欄から読み込んでください。モデルは端末内に保存され、次回以降はオフラインで推論します。対局情報は送信しません。モデル未設定時は対局できません。</div><div class="mortal-source">モデル配布元：<a href="https://huggingface.co/xzhe121/Mortal-S42-onnx/blob/main/model.onnx" target="_blank" rel="noopener noreferrer" style="color:#c4e988">Hugging Face / S42 ONNX</a>（取得後SHA-256を照合）。通信・容量の制限で自動取得できない場合は、配布ページからmodel.onnxをダウンロードし、手動選択してください。</div></div>
     </section>
     <section class="stat-card">
       <div class="section-heading"><h2>計測成績</h2><span>この端末だけに保存</span></div>
@@ -469,7 +469,7 @@
       </div>
       <div class="stats" id="homeStats"></div><div id="homeS42Stats"></div>
       <div id="detailStats" class="stats-content"></div>
-      <p class="stats-note">※ 計測用対局の完走分のみ。率は総局数を基準（ツモ率のみ自分の和了数を基準）。旧版の対局・練習・途中中断・自動テストは対象外です。牌効率とS42のQ値は別の評価です。S42指標は解析済みの新しい対局から集計します。</p>
+      <p class="stats-note">※ 計測用対局の完走分のみ。率は総局数を基準（ツモ率のみ自分の和了数を基準）。旧ルール成績は端末に保持し、天鳳版の集計には混ぜません。卓・固定段位・対局形式別に集計。練習・途中中断・自動テストは対象外です。牌効率とS42のQ値は別の評価です。S42指標は解析済みの新しい対局から集計します。</p>
     </section>
 
     <div class="home-footer">電脳麻将 / majiang-core / majiang-ai を利用 · MIT License</div>
@@ -1515,6 +1515,7 @@ module.exports = class Game {
 
         this._dapai = null;
         this._gang  = null;
+        this._tenhouPriorKan = false;
 
         this._lizhi     = [ 0, 0, 0, 0 ];
         this._yifa      = [ 0, 0, 0, 0 ];
@@ -1664,7 +1665,8 @@ module.exports = class Game {
         let paipu = { gang: { l: model.lunban, m: gang } };
         this.add_paipu(paipu);
 
-        if (this._gang) this.kaigang();
+        this._tenhouPriorKan = !!(this._rule['Tenhou研究ルール'] && this._gang && !gang.match(/^[mpsz]\d{4}$/));
+        if (this._gang && !this._tenhouPriorKan) this.kaigang();
 
         this._gang = gang;
         this._n_gang[model.lunban]++;
@@ -2178,10 +2180,20 @@ module.exports = class Game {
                                                 this._neng_rong[l] = false;
             }
         }
+        if (this._rule['Tenhou研究ルール'] && this._hule.length == 3 && this._rule['最大同時和了数'] == 2) {
+            let shoupai = ['','','',''];
+            for (let l of this._hule) shoupai[l] = model.shoupai[l].toString();
+            return this.delay(()=>this.pingju('三家和', shoupai));
+        }
         if (this._hule.length) {
             return this.delay(()=>this.hule());
         }
-
+        if (this._tenhouPriorKan) {
+            let current = this._gang;
+            this.kaigang();
+            this._gang = current;
+            this._tenhouPriorKan = false;
+        }
         this.delay(()=>this.gangzimo(), 0);
     }
 
@@ -3242,7 +3254,7 @@ function get_defen(fu, hupai, rongpai, param) {
         let h = hupai.find(h => h.baojia);
         if (h) {
             baojia2 = (menfeng + { '+': 1, '=': 2, '-': 3}[h.baojia]) % 4;
-            base2   = 8000 * Math.min(h.fanshu.length, damanguan);
+            base2   = param.rule['Tenhou研究ルール'] ? base : 8000 * Math.min(h.fanshu.length, damanguan);
         }
     }
     else {
@@ -3276,7 +3288,8 @@ function get_defen(fu, hupai, rongpai, param) {
                     : (menfeng + { '+': 1, '=': 2, '-': 3}[rongpai[2]]) % 4;
         defen  = Math.ceil(base * (menfeng == 0 ? 6 : 4) / 100) * 100;
         fenpei[menfeng] += defen + chang * 300 + lizhi * 1000;
-        fenpei[baojia]  -= defen + chang * 300;
+        fenpei[baojia]  -= defen;
+        fenpei[param.rule['Tenhou研究ルール'] && baojia2 != null ? baojia2 : baojia] -= chang * 300;
     }
     else {
         let zhuangjia = Math.ceil(base * 2 / 100) * 100;
@@ -4727,6 +4740,8 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
   }
   let referenceAI=null, referenceCurrent=null, referenceReaction=null;
   let mortalClient=null, mortalStatusText='初期化中',s42Analytics=null;
+  let cpuModule=null,MortalCpuClass=null,mortalCpus=[],cpuAudit=null;
+  function closeMortalCpus(){for(const cpu of mortalCpus)cpu.close();mortalCpus=[];}
   let s42ReviewRows=[],s42ReviewCursor=0,s42ReplayAll=false;
   const mirrorAudit={packets:0, errors:0, matchedSelf:0, selfMismatch:0, wallAccess:0};
   function safeReferenceEvent(msg) {
@@ -4825,13 +4840,34 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
   }
 
   // New versioned key: pre-v0.9 history is intentionally excluded from measured results.
-  const RECORD_KEY = 'mahjonglab-measured-v2';
+  // Official Tenhou rank-point schedule; local fixed-rank evaluation only.
+  const RECORD_KEY = 'mahjonglab-measured-tenhou-v1';
+  const RULE_PROFILE='tenhou-target-4p-red-v1';
+  let matchProfile={room:'tokujou',dan:6};
+  function tenhouRankPt(room,dan,length,rank){
+    if(!['tokujou','houou'].includes(room)||!Number.isInteger(dan)||dan<(room==='houou'?7:4)||dan>10||![1,2].includes(length)||![1,2,3,4].includes(rank))throw Error('invalid Tenhou evaluation profile');
+    const east=room==='houou'?[60,30,0,-(20+10*dan)]:[50,20,0,-(20+10*dan)];
+    return east[rank-1]*(length===2?1.5:1);
+  }
+  function readTenhouProfile(){
+    const room=$('tenhouRoom').value,dan=Number($('tenhouDan').value);
+    tenhouRankPt(room,dan,1,1);
+    return {room,dan};
+  }
+  function refreshTenhouDan(){
+    const select=$('tenhouDan'), previous=Number(select.value)||6;
+    const lower=$('tenhouRoom').value==='houou'?7:4;
+    select.replaceChildren();
+    for(let d=lower;d<=10;d++){const o=el('option','',d+'段');o.value=String(d);select.append(o);}
+    select.value=String(Math.max(lower,Math.min(10,previous)));
+  }
+  function signedPt(n){return (n>0?'+':'')+n+' pt';}
   const S42_REVIEW_KEY='mahjonglab-s42-reviews-last-v2';
   let recordMode = 'practice', statsMode = 1, debugUsed = false;
   function summarizeMatch(paipu) {
     const out={
       at:new Date().toISOString(),mode:Number(mode),rank:Number(paipu.rank?.[0]),
-      score:Number(paipu.defen?.[0]),hands:0,wins:0,tsumoWins:0,
+      score:Number(paipu.defen?.[0]),ruleProfile:RULE_PROFILE,room:matchProfile.room,dan:matchProfile.dan,rankPt:tenhouRankPt(matchProfile.room,matchProfile.dan,Number(mode),Number(paipu.rank?.[0])),hands:0,wins:0,tsumoWins:0,
       dealIns:0,openHands:0,riichiHands:0,winPoints:0
     };
     if(!Array.isArray(paipu.log))throw Error('牌譜の局記録がありません');
@@ -4859,7 +4895,8 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     return out;
   }
   function renderStats() {
-    const all=store.read(RECORD_KEY,[]).filter(x=>x?.mode===statsMode && x?.rank>=1 && x?.rank<=4);
+    const profile=readTenhouProfile();
+    const all=store.read(RECORD_KEY,[]).filter(x=>x?.ruleProfile===RULE_PROFILE && x?.room===profile.room && x?.dan===profile.dan && x?.mode===statsMode && x?.rank>=1 && x?.rank<=4);
     const total=all.length;
     const sum=k=>all.reduce((a,x)=>a+Number(x[k]||0),0);
     const hands=sum('hands'),wins=sum('wins');
@@ -4878,6 +4915,8 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     detail.append(rates);
     const grid=el('div','detail-stats');
     [
+      ['累計段位pt',signedPt(sum('rankPt'))],
+      ['平均段位pt',total?signedPt(Number((sum('rankPt')/total).toFixed(2))):'—'],
       ['総局数',fmt(hands)],
       ['和了率',rate(wins,hands)],
       ['放銃率',rate(sum('dealIns'),hands)],
@@ -4900,7 +4939,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
       ['悪手率（推奨度5%未満）',s42Analytics?s42Analytics.PERCENT(reviewed.badMoveRate):'—']
     ].forEach(([label,value])=>{const b=el('div','s42-review-metric');b.append(el('strong','',value),el('small','',label));statGrid.append(b);});
     statBox.append(statGrid);
-    statBox.append(el('p','s42-analysis-note','Mortal Rating対象 '+reviewed.ratingCount+' 判断（公式mjai-reviewer方式：各判断の相対Q評価を平均してから2乗）。S42一致率は旧対局も含む計 '+reviewed.count+' 判断。旧版の「判断指数」はRatingへ換算せず未集計です。悪手率＝推奨度5%未満 '+reviewed.badCount+'打牌 / 新基準で評価した '+reviewed.badReviewed+'打牌（Softmax温度0.1）。Ratingは天鳳などの実力レーティングではなく、カンの詳細・赤牌等で公式ツールと一致しない場合があります。'));
+    statBox.append(el('p','s42-analysis-note','Mortal Rating対象 '+reviewed.ratingCount+' 判断（公式mjai-reviewer方式：各判断の相対Q評価を平均してから2乗）。S42一致率は現在の評価プロファイルの計 '+reviewed.count+' 判断。旧版の「判断指数」はRatingへ換算せず未集計です。悪手率＝推奨度5%未満 '+reviewed.badCount+'打牌 / 新基準で評価した '+reviewed.badReviewed+'打牌（Softmax温度0.1）。Ratingは天鳳などの実力レーティングではなく、カンの詳細・赤牌等で公式ツールと一致しない場合があります。'));
     $('homeS42Stats').replaceChildren(statBox);
     $('statsEast').classList.toggle('active',statsMode===1);
     $('statsHalf').classList.toggle('active',statsMode===2);
@@ -4908,13 +4947,16 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     $('statsHalf').setAttribute('aria-pressed',String(statsMode===2));
   }
   function initGame() {
+    if(!MortalCpuClass||!mortalClient?.workerReady||!mortalClient.wasm||mortalClient.broken){$('cpuSetupStatus').textContent='Mortal-S42の準備完了後に開始してください。';return;}
+    closeMortalCpus();cpuAudit=null;
     if (game && !gameEnded) { try { game.stop(()=>{}); } catch {} }
     mode = document.querySelector('input[name="length"]:checked')?.value || '1';
-    recordMode = document.querySelector('input[name="recordMode"]:checked')?.value || 'practice';
+    recordMode = 'practice';
     debugUsed = false; matchSaved = false;
     recordedMatchId=String(Date.now())+'-'+Math.random().toString(36).slice(2);
     $('recordModeBadge').textContent=recordMode==='measure'?'計測中':'練習';
-    selectedRule = M.rule({'配給原点':25000,'赤牌':{m:1,p:1,s:1},'場数':Number(mode),'延長戦方式':0,'オーラス止めあり':true,'オーラス単独トップ止め':true,'トビ終了あり':true,'順位点':['0.0','0.0','0.0','0.0']});
+    matchProfile=readTenhouProfile();
+    selectedRule = M.rule({'配給原点':25000,'赤牌':{m:1,p:1,s:1},'場数':Number(mode),'延長戦方式':2,'オーラス止めあり':true,'オーラス単独トップ止め':false,'トビ終了あり':true,'順位点':['20.0','10.0','-10.0','-20.0'],'ダブル役満あり':false,'Tenhou研究ルール':true});
     human = new Human(); referenceAI = null;
     referenceCurrent=null;referenceReaction=null;
     Object.assign(mirrorAudit,{packets:0,errors:0,matchedSelf:0,selfMismatch:0,wallAccess:0});
@@ -4922,7 +4964,11 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     riichiMode = false; candidateInfo = []; lastCandidateInfo = []; lastFeedback = null;
     decisionLog = []; s42ReviewRows=[];s42ReplayAll=false; lastAction = ''; latestDiscard=null;calledDiscardNotes=Array.from({length:4},()=>[]);
     $('eventBanner').classList.add('hidden'); $('callTray').classList.add('hidden'); $('coachOverlay').classList.add('hidden');
-    const players = [human,new AI(),new AI(),new AI()];
+    cpuAudit=cpuModule.newCpuAudit();
+    mortalCpus=Array.from({length:3},()=>new MortalCpuClass(mortalClient,cpuAudit,reason=>{
+      goHome();$('cpuSetupStatus').textContent='S42推論停止：対局を中断しました（標準CPUに代替していません）。 '+String(reason).slice(0,120);
+    }));
+    const players=[human,...mortalCpus];
     game = new M.Game(players, onFinished, selectedRule, '麻雀LAB');
     game.model.player = NAMES.slice();
     game.dwell = speedValue(); game.wait = 500;
@@ -5493,7 +5539,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     const inReaction=pending?.type==='reaction';
     $('coachPanel').classList.toggle('reaction-quiet',inReaction);
     const flash=$('coachFlash');
-    flash.classList.toggle('reaction-quiet',inReaction);
+    flash.classList.remove('reaction-quiet');
     renderInlineCoach();
     const body=$('coachBody');body.classList.toggle('hidden',coachCollapsed);
     $('toggleCoach').textContent=coachCollapsed?'表示':'非表示';
@@ -5855,20 +5901,20 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     const tabs=el('div','s42-tabs'),effBtn=el('button','','牌効率・受け入れ'),qBtn=el('button','','S42の定量評価'),coachBtn=el('button','','AI解説');
     effBtn.type=qBtn.type=coachBtn.type='button';
     if(x.type==='discard')tabs.append(effBtn);
-    tabs.append(qBtn,coachBtn);body.append(tabs);
+    tabs.append(qBtn);body.append(tabs);
     const efficient=el('section',''),qpanel=el('section',''),coachpanel=el('section','');
     try{renderS42EfficiencyChoices(x,efficient);}catch(e){console.warn('牌効率詳細の表示失敗',e);efficient.append(el('p','s42-analysis-note','牌効率の詳細を表示できませんでした。'));}
-    try{renderS42QDetails(x,qpanel);}catch(e){console.warn('S42詳細の表示失敗',e);qpanel.append(el('p','s42-analysis-note','定量評価の詳細を表示できませんでした。AI解説は利用できます。'));}
+    try{renderS42QDetails(x,qpanel);}catch(e){console.warn('S42詳細の表示失敗',e);qpanel.append(el('p','s42-analysis-note','定量評価の詳細を表示できませんでした。'));}
     body.append(efficient,qpanel,coachpanel);
     let coachBuilt=false;
     const select=which=>{
       efficient.classList.toggle('s42-hidden',which!=='eff');
       qpanel.classList.toggle('s42-hidden',which!=='q');
-      coachpanel.classList.toggle('s42-hidden',which!=='coach');
+      coachpanel.classList.add('s42-hidden');
       effBtn.setAttribute('aria-selected',String(which==='eff'));
       qBtn.setAttribute('aria-selected',String(which==='q'));
       coachBtn.setAttribute('aria-selected',String(which==='coach'));
-      if(which==='coach'&&!coachBuilt){renderPhoenixCoach(x,coachpanel);coachBuilt=true;}
+      if(which==='coach'&&!coachBuilt){/* Text coach omitted in this preview. */coachBuilt=true;}
     };
     effBtn.addEventListener('click',()=>select('eff'));
     qBtn.addEventListener('click',()=>select('q'));
@@ -5948,7 +5994,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
         return projected.every((point,id)=>id===oya||projected[oya]>point);
       }
       let top=-1,topScore=-Infinity;
-      for(let i=0;i<4;i++)if(projected[i]>topScore){top=i;topScore=projected[i];}
+      for(let k=0;k<4;k++){let i=(model.qijia+k)%4;if(projected[i]>topScore){top=i;topScore=projected[i];}}
       return top===oya && champion;
     }
     return false;
@@ -6060,7 +6106,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     renderS42EfficiencyChoices(x,tiles);
     body.append(tiles);
     const coach=el('details','phoenix-details');coach.append(el('summary','','AI解説を依頼（鳳凰卓向け）'));
-    renderPhoenixCoach(x,coach);body.append(coach);
+    /* Text coach omitted in this preview. */body.append(coach);
     $('s42ReviewPrev').disabled=s42ReviewCursor===0;
     $('s42ReviewNext').disabled=s42ReviewCursor===s42ReviewRows.length-1;
   }
@@ -6075,18 +6121,19 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
 
   function showEnd(paipu) {
     $('resultOverlay').classList.add('hidden');
-    $('endTitle').textContent=`${paipu.rank[0]}着 · ${fmt(paipu.defen[0])}点`;
+    $('endTitle').textContent=`${paipu.rank[0]}着 · ${fmt(paipu.defen[0])}点 · ${signedPt(tenhouRankPt(matchProfile.room,matchProfile.dan,Number(mode),paipu.rank[0]))}`;
     const rows=paipu.defen.map((score,id)=>({id,score,rank:paipu.rank[id]})).sort((a,b)=>a.rank-b.rank);
     $('endScores').replaceChildren();
     for(const x of rows) {
       const row=el('div','result-score'+(x.id===0?' me':''));
-      row.append(el('span','',`${x.rank}着 · ${NAMES[x.id]}`),el('span','',fmt(x.score)+'点'));$('endScores').append(row);
+      row.append(el('span','',`${x.rank}着 · ${NAMES[x.id]}`),el('span','',fmt(x.score)+'点 / '+paipu.point[x.id]));$('endScores').append(row);
     }
     renderS42End();
     renderLastDecisionReview('endLastReview',false);
     $('endOverlay').classList.remove('hidden');
   }
   function goHome() {
+    closeMortalCpus();
     if(game && !gameEnded) {try{game.stop(()=>{});}catch{}}
     gameEnded=true;pending=null;readyToNext=false;
     $('gameScreen').classList.add('hidden');$('endOverlay').classList.add('hidden');$('resultOverlay').classList.add('hidden');
@@ -6095,6 +6142,8 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
   }
   $('statsEast').addEventListener('click',()=>{statsMode=1;renderStats();});
   $('statsHalf').addEventListener('click',()=>{statsMode=2;renderStats();});
+  $('tenhouRoom').addEventListener('change',()=>{refreshTenhouDan();renderStats();});
+  $('tenhouDan').addEventListener('change',renderStats);
   $('startBtn').addEventListener('click',initGame);
   $('speedSelect').addEventListener('change',()=>{if(game)game.dwell=speedValue();});
   $('coachDetailBtn').addEventListener('click',openCoachDetails);
@@ -6118,14 +6167,14 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
       const st=$('s42PlayStatus');
       if(st){
         const ready=Boolean(mortalClient?.workerReady) && !mortalClient?.broken;
-        st.textContent=ready?'S42：分析有効':/失敗|エラー|停止/.test(mortalStatusText)?'S42：停止中':'S42：未設定／準備中';
+        st.textContent=ready?'S42×3・比較有効':/失敗|エラー|停止/.test(mortalStatusText)?'S42：停止中':'S42：未設定／準備中';
         st.classList.toggle('ready',ready);
         st.title=mortalStatusText;
       }
     };
     // The page may be served before the new service worker activates. A
     // release-specific URL bypasses the older worker's unversioned cache.
-    Promise.all([import('./src/mortal/mortal-client.mjs?v=2561'),import('./src/mortal/s42-analytics.mjs?v=2561')]).then(async ([{MortalClient},analytics])=>{
+    Promise.all([import('./src/mortal/mortal-client.mjs?v=2601'),import('./src/mortal/s42-analytics.mjs?v=2561')]).then(async ([{MortalClient},analytics])=>{
       const required=['analyzeDecision','analyzeAction','riichiComparison','kanComparison','aggregateDecisions','combineAggregates','RATING_TEXT','PERCENT','RECOMMENDATION_TEXT'];
       if(required.some(k=>typeof analytics[k]!=='function')||analytics.RATING_VERSION!=='S42-mjai-reviewer-rating-v1'||analytics.BAD_MOVE_VERSION!=='S42-softmax-0.1-under5-v1'){
         setStatus('S42更新不整合：ページを再読み込みしてください（牌効率・対局は利用可能）');return;
@@ -6139,6 +6188,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
       try{await client.loadEncoder();}catch(e){setStatus('S42局面変換器の起動に失敗しました');return;}
       await client.restoreModel();
     }).catch(e=>{console.warn('S42コーチの起動失敗。牌効率は継続します',e);setStatus('S42未利用（基礎版コーチは使用できます）');});
+    import('./src/mortal/mortal-cpu.mjs?v=2601').then(mod=>{cpuModule=mod;MortalCpuClass=mod.createMortalCpuClass(AI);}).catch(e=>{$('cpuSetupStatus').textContent='S42 CPUモジュール起動失敗';console.warn(e);});
     $('mortalDownloadBtn').addEventListener('click',async ()=>{
       if(!mortalClient){setStatus('S42の初期化中です。もう一度お試しください');return;}
       const btn=$('mortalDownloadBtn');btn.disabled=true;
@@ -6197,6 +6247,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     wallPresent:!!(referenceAI?._model?.shan?._pai),
     lastReference:referenceCurrent
   });
+  window.MahjongLabMortalCpuAudit=()=>cpuAudit?JSON.parse(JSON.stringify({...cpuAudit,activeSeats:mortalCpus.length,sharedWorker:mortalCpus.every(c=>c.evalSeat.client===mortalClient)})):null;
   window.MahjongLabS42Debug=()=>({status:mortalStatusText,ready:!!mortalClient?.workerReady,broken:!!mortalClient?.broken,persisted:mortalClient?.modelPersisted??null,pending:mortalClient?.pending?.size??0,decision:mortalClient?.decision??0,latest:mortalClient?.current?.label||null,afterDiscard:lastFeedback?.mortalOpinion?.label||null,modelImported:!!mortalClient?.worker});
   window.MahjongLabDebug = {testScenario,testKanFixture,testKanObservation:()=>game?null:mortalClient?.current,parseMeld,visibleRiver,calledDiscardNote,state:()=>({started:!!game,phase:game?game._status:null,pending:pending?.type||null,round:game?.model?.jushu,turn:game?.model?.lunban,own:ownSeat(),decisions:decisionLog.length,finished:gameEnded}),choose:p=>chooseDiscard(p),answer:p=>answer(p),testStep:(randomize=false)=>{debugUsed=true;if(pending?.type==='turn'){if(pending.win&&randomize)return answer({hule:'-'});if(randomize&&pending.gang.length&&Math.random()<0.10)return answer({gang:pending.gang[0]});const choices=pending.options;const p=randomize?choices[Math.floor(Math.random()*choices.length)]:choices[0];if(randomize&&game.allow_lizhi(p)&&Math.random()<0.25)riichiMode=true;chooseDiscard(p);}else if(pending?.type==='reaction'){if(pending.win&&randomize)return answer({hule:'-'});const melds=[...pending.gang,...pending.peng,...pending.chi];if(randomize&&melds.length&&Math.random()<0.55)return answer({fulou:melds[0]});answer({});}},testDwell:ms=>{debugUsed=true;if(game)game.dwell=ms;},testContinue:()=>{debugUsed=true;if(game&&!gameEnded){readyToNext=false;game.start();}},testPaipu:()=>game?._paipu,inspect:()=>({latestDiscard,lastFeedback,hasReaction:!$('callTray').classList.contains('hidden'),speed:game?._dwell})};
 })();

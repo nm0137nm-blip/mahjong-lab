@@ -62,7 +62,7 @@ export class MortalMjaiBridge {
     if(!this.round||this.seat===null)return {events,reset:false};
     const item=packet.zimo||packet.gangzimo;
     const type=packet.zimo?'zimo':packet.gangzimo?'gangzimo':null;
-    if(this.pendingReach && (type||packet.fulou||packet.gang)) {
+    if(this.pendingReach!==null && (type||packet.fulou||packet.gang)) {
       events.push({type:'reach_accepted',actor:this.pendingReach});this.pendingReach=null;
     }
     if(item) {
