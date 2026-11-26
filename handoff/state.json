@@ -8,7 +8,7 @@
     "coach_candidate_promoted": false,
     "rootGameSha": "4328f6099ba8438d94b51dbae034c16a9b0583de",
     "personalPreview": {
-      "status": "ENCRYPTED_PERSONAL_SUBPATH_MERGED_PAGES_DEPLOY_PENDING",
+      "status": "ENCRYPTED_PERSONAL_PREVIEW_PAGES_DEPLOY_SUCCESS",
       "source": "a98dbef41cebfd6d5af1c6bdf42a029f25804937",
       "reviewPR": 104,
       "actualBrowserRun": 45829356591,
@@ -30,7 +30,33 @@
         "sha256": "574ea81d79b643719105370144dc3d8243c514d49e770dd85e7e193bba4853fb",
         "libraryId": "libfile_76fc74b457e48191827ae84e9007036a"
       },
-      "researchUnchanged": true
+      "researchUnchanged": true,
+      "pagesJobs": {
+        "build": "success",
+        "deploy": "success",
+        "report": "success",
+        "run": 45831498017
+      },
+      "deploymentURL": "https://nm0137nm-blip.github.io/mahjong-lab/personal-s42-v1/",
+      "encryptedGate": {
+        "chromium": {
+          "steps": 12,
+          "seen": 11,
+          "model": 35,
+          "fallbacks": 0,
+          "offlineReload": true
+        },
+        "webkit": {
+          "steps": 12,
+          "seen": 11,
+          "model": 34,
+          "fallbacks": 0,
+          "serverOutageReload": true
+        }
+      },
+      "publicSiteDirectHttpVerified": false,
+      "rootDiffOnlyPersonalSubdir": true,
+      "accessKeyDeliveredSeparately": true
     }
   },
   "active_task": {
