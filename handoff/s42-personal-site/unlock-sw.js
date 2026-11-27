@@ -1,6 +1,6 @@
 'use strict';
 const root=new URL(self.registration.scope), app=new URL('app/',root).pathname;
-const CACHE='mahjong-personal-s42-v1-ciphertext',DB='mahjong-personal-s42-v1-access';
+const CACHE='mahjong-personal-s42-v2-ciphertext',DB='mahjong-personal-s42-v2-access';
 const b64=s=>{let t=s.replace(/-/g,'+').replace(/_/g,'/');t+='='.repeat((4-t.length%4)%4);return Uint8Array.from(atob(t),x=>x.charCodeAt(0));};
 const enc=new TextEncoder();
 let currentKey=null,manifestPromise=null;
