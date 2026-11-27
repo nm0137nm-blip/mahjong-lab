@@ -1,4 +1,4 @@
-name: Personal encrypted S42 site build and validation
+name: Personal S42 UI v2 build and validation
 on:
   pull_request:
     branches: [project-handoff]
@@ -16,7 +16,7 @@ jobs:
           path: build
       - uses: actions/checkout@v4
         with:
-          ref: a98dbef41cebfd6d5af1c6bdf42a029f25804937
+          ref: 25b01ddb371cc1d6c7890c92821ec8492b8798c8
           path: preview
       - uses: actions/checkout@v4
         with:
@@ -24,7 +24,7 @@ jobs:
           path: audited
       - uses: actions/checkout@v4
         with:
-          ref: feat/s42-personal-site-v1-20261126
+          ref: feat/s42-personal-site-v2-20261127
           path: site
       - uses: actions/setup-node@v4
         with:
@@ -38,7 +38,7 @@ jobs:
       - name: Prepare source, verified encoder and synthetic test key
         run: |
           set -euo pipefail
-          mkdir -p /tmp/personal-source/NOTICE /tmp/gate-test/personal-s42-v1
+          mkdir -p /tmp/personal-source/NOTICE /tmp/gate-test/personal-s42-v2
           cp preview/index.html preview/service-worker.js /tmp/personal-source/
           cp -R preview/assets preview/src /tmp/personal-source/
           cp /tmp/fixed-encoder/encoder-pkg/encoder.js /tmp/fixed-encoder/encoder-pkg/encoder_bg.wasm /tmp/personal-source/assets/mortal/
@@ -51,8 +51,8 @@ jobs:
           openssl pkcs8 -topk8 -nocrypt -in /tmp/test-private.pem -outform DER -out /tmp/test-private.der
           openssl pkey -in /tmp/test-private.pem -pubout -outform DER -out /tmp/test-public.der
           D=build/handoff/s42-personal-site
-          cp "$D/index.html" "$D/unlock-sw.js" /tmp/gate-test/personal-s42-v1/
-          node "$D/pack.mjs" /tmp/personal-source /tmp/gate-test/personal-s42-v1 "$(base64 -w0 /tmp/test-public.der)"
+          cp "$D/index.html" "$D/unlock-sw.js" /tmp/gate-test/personal-s42-v2/
+          node "$D/pack.mjs" /tmp/personal-source /tmp/gate-test/personal-s42-v2 "$(base64 -w0 /tmp/test-public.der)"
           curl --fail --location --retry 1 --silent --show-error --max-time 180 'https://huggingface.co/xzhe121/Mortal-S42-onnx/resolve/main/model.onnx' -o /tmp/model.onnx
           echo '30381bf21389e2d25d3edf48fed11bf772336ef3daeee67d1bdae7fb9dd30cb4  /tmp/model.onnx' | sha256sum -c -
           mkdir -p /tmp/probe && cd /tmp/probe
@@ -71,16 +71,16 @@ jobs:
         run: |
           set -euo pipefail
           D=build/handoff/s42-personal-site
-          O=site/personal-s42-v1
+          O=site/personal-s42-v2
           mkdir -p "$O"
           cp "$D/index.html" "$D/unlock-sw.js" "$O/"
           node "$D/pack.mjs" /tmp/personal-source "$O" 'MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAETj3x0NhQvhRVwAUdShrbv2RVwMD8n1yR56Sulfuz4Bt1Uh5qyQQMTTdGLVZOv7IHGQM8Q4QurHoBIj4ZnOICrA=='
-          printf 'User-only encrypted preview. The executable application is not served as plaintext. The key is not in the repository. No model weights included. Source build: a98dbef41cebfd6d5af1c6bdf42a029f25804937.\n' > "$O/README.md"
+          printf 'User-only encrypted preview. The executable application is not served as plaintext. The key is not in the repository. No model weights included. Source build: 25b01ddb371cc1d6c7890c92821ec8492b8798c8.\n' > "$O/README.md"
           cd site
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git config user.name 'github-actions[bot]'
-          git add personal-s42-v1
-          git diff --cached --name-only | grep -v '^personal-s42-v1/' && exit 1 || true
+          git add personal-s42-v2
+          git diff --cached --name-only | grep -v '^personal-s42-v2/' && exit 1 || true
           git commit -m 'Add encrypted personal S42 preview only'
-          git push origin HEAD:feat/s42-personal-site-v1-20261126
+          git push origin HEAD:feat/s42-personal-site-v2-20261127
           git rev-parse HEAD
