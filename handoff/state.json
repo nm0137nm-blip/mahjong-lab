@@ -59,7 +59,7 @@
       "accessKeyDeliveredSeparately": true
     },
     "personalPreviewV2": {
-      "status": "ENCRYPTED_PERSONAL_UI_V2_MERGED_DEPLOY_PENDING",
+      "status": "ENCRYPTED_PERSONAL_UI_V2_PAGES_DEPLOY_SUCCESS",
       "source": "25b01ddb371cc1d6c7890c92821ec8492b8798c8",
       "buildPR": 108,
       "buildRun": 46008943091,
@@ -107,7 +107,13 @@
       "actualIphoneTested": false,
       "rootAndV1Unchanged": true,
       "paidCalls": 0,
-      "researchUnchanged": true
+      "researchUnchanged": true,
+      "deploymentURL": "https://nm0137nm-blip.github.io/mahjong-lab/personal-s42-v2/",
+      "pagesJobs": {
+        "build": "success",
+        "deploy": "success",
+        "report": "success"
+      }
     }
   },
   "active_task": {
