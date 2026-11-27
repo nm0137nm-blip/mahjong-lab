@@ -4,7 +4,7 @@
   "repository": "nm0137nm-blip/mahjong-lab",
   "production": {
     "ref": "main",
-    "sha": "d080cccc9a6bdf366da4862cee8a742d52602d5b",
+    "sha": "d8450680ebd7e4809faee9765a23ed5185e2ec5e",
     "coach_candidate_promoted": false,
     "rootGameSha": "4328f6099ba8438d94b51dbae034c16a9b0583de",
     "personalPreview": {
@@ -57,6 +57,57 @@
       "publicSiteDirectHttpVerified": false,
       "rootDiffOnlyPersonalSubdir": true,
       "accessKeyDeliveredSeparately": true
+    },
+    "personalPreviewV2": {
+      "status": "ENCRYPTED_PERSONAL_UI_V2_MERGED_DEPLOY_PENDING",
+      "source": "25b01ddb371cc1d6c7890c92821ec8492b8798c8",
+      "buildPR": 108,
+      "buildRun": 46008943091,
+      "deliveryPR": 109,
+      "deliveryHead": "51e05cc9b64fdf482877b2899046c6c57d31f820",
+      "pagesRun": 46009290149,
+      "subpath": "personal-s42-v2/",
+      "sameRecipientKey": true,
+      "changes": [
+        "seat oriented center scores, remove separate score row, preserve board aspect ratio",
+        "draw preview on table using public pingju.shoupai only, manually proceed to result"
+      ],
+      "browser": {
+        "chromium": {
+          "viewports": [
+            375,
+            393,
+            430
+          ],
+          "uniformScale": true,
+          "riverOverlap": 0,
+          "syntheticDraw": true,
+          "hiddenNonPublic": true,
+          "modelDecisions": 32,
+          "fallbacks": 0,
+          "offline": true
+        },
+        "webkit": {
+          "viewports": [
+            375,
+            393,
+            430
+          ],
+          "uniformScale": true,
+          "riverOverlap": 0,
+          "syntheticDraw": true,
+          "hiddenNonPublic": true,
+          "modelDecisions": 32,
+          "fallbacks": 0,
+          "serverOutageReload": true,
+          "resizeScaleStuckInHarness": true
+        }
+      },
+      "realExhaustiveDrawTested": false,
+      "actualIphoneTested": false,
+      "rootAndV1Unchanged": true,
+      "paidCalls": 0,
+      "researchUnchanged": true
     }
   },
   "active_task": {
