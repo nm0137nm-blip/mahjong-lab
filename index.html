@@ -436,6 +436,38 @@
 .s42-hidden{display:none!important}
 @media(max-width:375px){.s42-review-metric strong{font-size:17px}.s42-replay-hand img{width:20px;height:28px}}
  .phoenix-input,.phoenix-prompt{width:100%;box-sizing:border-box;font:inherit;font-size:16px;color:inherit;background:rgba(0,0,0,.15);border:1px solid #728a90;border-radius:8px;padding:8px;margin:6px 0;resize:vertical} .phoenix-prompt{font-size:13px;line-height:1.45} .phoenix-label{display:block;font-size:13px;font-weight:600} .phoenix-open{display:block;text-align:center;padding:12px;text-decoration:underline;color:inherit} .phoenix-details{margin-top:10px;border-top:1px solid #56727a;padding:10px 0} .phoenix-details summary{cursor:pointer;font-weight:600} .phoenix-open[aria-disabled=true]{opacity:.55} .phoenix-details li{margin:.5em 0}
+/* Personal preview v2: seat-oriented score display, uniformly scaled board. */
+#gameScreen .center-mark{width:112px;height:112px;top:215px;display:block;background:#113b32;border:1px solid #82a879;border-radius:10px}
+#gameScreen .center-info{position:absolute;left:50%;top:50%;width:60px;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:1px;line-height:1.1}
+#gameScreen .center-info #centerRound{font-size:15px;font-weight:900}
+#gameScreen .center-info #centerSticks{font-size:7px;white-space:nowrap}
+#gameScreen .center-info .indicator{display:flex;justify-content:center;flex-wrap:wrap;gap:1px;max-width:60px}
+#gameScreen .center-info .indicator img{width:10px;height:14px}
+#gameScreen .seat-score{position:absolute;width:74px;height:20px;display:flex;align-items:center;justify-content:center;gap:3px;white-space:nowrap;color:#e8f6dc;background:#1d4b3b;border:1px solid #567f65;border-radius:4px;line-height:1;box-sizing:border-box;font-variant-numeric:tabular-nums}
+#gameScreen .seat-score .score-num{font-size:14px;font-weight:850;line-height:1}
+#gameScreen .seat-score .score-name{font-size:8px;font-weight:700;color:inherit}
+#gameScreen .seat-score.me{border-color:#d2eb9e;color:#e8f8c3}
+#gameScreen .seat-score.active{background:#b8d995;color:#173b2c}
+#gameScreen .seat-score-top{left:50%;top:2px;transform:translateX(-50%) rotate(180deg)}
+#gameScreen .seat-score-bottom{left:50%;bottom:2px;transform:translateX(-50%)}
+#gameScreen .seat-score-left{left:11px;top:50%;transform:translate(-50%,-50%) rotate(90deg)}
+#gameScreen .seat-score-right{right:11px;top:50%;transform:translate(50%,-50%) rotate(-90deg)}
+#gameScreen .river-top,#gameScreen .table-felt.long-rivers .river-top{top:76px}
+#gameScreen .river-bottom,#gameScreen .table-felt.long-rivers .river-bottom{top:276px}
+#gameScreen .river-left{left:91px}
+#gameScreen .river-right{left:299px}
+#gameScreen .table-felt.long-rivers .river-left,#gameScreen .table-felt.long-rivers .river-right{top:215px}
+#gameScreen .seat-top .revealed-tile{width:13px;height:18px;flex:none;object-fit:fill;transform:rotate(180deg)}
+#gameScreen .seat-left .revealed-tile,#gameScreen .seat-right .revealed-tile{width:12px;height:16px;flex:none;object-fit:fill}
+#gameScreen .seat-left .revealed-tile{transform:rotate(90deg)}
+#gameScreen .seat-right .revealed-tile{transform:rotate(-90deg)}
+#gameScreen .draw-label{display:block;color:#e8f8c3;font-size:9px;line-height:1.15}
+#gameScreen .draw-preview{flex:0 0 auto;padding:4px 7px;background:#123e32;border:1px solid #a6c78c;border-radius:9px;display:flex;align-items:center;gap:6px;justify-content:space-between}
+#gameScreen .draw-preview.hidden{display:none}
+#gameScreen .draw-preview span{font-size:11px;line-height:1.25}
+#gameScreen #drawScoresBtn{min-height:44px;flex:0 0 auto;padding:6px 12px;font-size:12px}
+#gameScreen.draw-review .coach,#gameScreen.draw-review .coach-flash,#gameScreen.draw-review .actions{display:none!important}
+#gameScreen.draw-review .table-wrap{min-height:180px}
 </style>
   <title>麻雀LAB — Phase 2.5.8 AI COACH</title>
 </head>
@@ -477,7 +509,6 @@
 
   <main id="gameScreen" class="game hidden">
     <div class="game-head"><button class="text-btn" id="exitBtn" type="button">‹ 終了</button><div class="round" id="roundTitle">東1局</div><span id="recordModeBadge" aria-label="現在の記録モード">練習</span><div class="deck-count" id="deckCount">残り -- 枚</div></div>
-    <div class="score-row" id="scores"></div>
     <div class="table-controls">
       <label for="speedSelect">CPU速度 <select id="speedSelect"><option value="1400">ゆっくり</option><option value="850" selected>標準</option><option value="300">速い</option></select></label>
       <label for="callMode">鳴き <select id="callMode"><option value="ask" selected>毎回確認</option><option value="auto">自動スルー（ロン除く）</option></select></label>
@@ -497,10 +528,11 @@
         <div class="river-area river-left" id="river-left" aria-label="上家の河"></div>
         <div class="river-area river-right" id="river-right" aria-label="下家の河"></div>
         <div class="river-area river-bottom" id="river-bottom" aria-label="自分の河"></div>
-        <div class="center-mark"><span id="centerRound">東1</span><small id="centerSticks">0本場</small><div class="indicator" id="doraInd"></div></div>
+        <div class="center-mark" aria-label="卓中央の点数表示"><div id="score-top" class="seat-score seat-score-top"></div><div id="score-left" class="seat-score seat-score-left"></div><div class="center-info"><span id="centerRound">東1</span><small id="centerSticks">0本場</small><div class="indicator" id="doraInd"></div></div><div id="score-right" class="seat-score seat-score-right"></div><div id="score-bottom" class="seat-score seat-score-bottom"></div></div>
         <div class="event-banner hidden" id="eventBanner" role="status" aria-live="polite"></div>
       </div>
     </div>
+    <div id="drawPreview" class="draw-preview hidden" role="status"><span id="drawPreviewText"></span><button id="drawScoresBtn" class="primary" type="button" disabled>点数集計へ →</button></div>
     <div class="hand-zone"><div class="hand-header"><span id="turnHint">対局開始</span><span id="handInfo" class="hand-info"></span></div><div class="coach-flash hidden" id="coachFlash" aria-live="polite"><div id="coachFlashMain" class="coach-inline-main"></div><button type="button" id="coachDetailBtn" aria-label="打牌選択の詳細を確認">詳しく ›</button></div><div class="my-hand" id="myHand"></div><div class="call-tray hidden" id="callTray" aria-label="鳴き・ロンの選択"><div class="call-tray-head" id="callTrayHead"></div><div class="call-tray-options" id="callTrayOptions"></div></div><div class="actions" id="actionBar"></div></div>
     <div class="coach" id="coachPanel"><div class="coach-top"><div><span class="spark">✧</span> 牌効率メモ <span class="beta">基礎版</span></div><span id="s42PlayStatus" class="s42-play-status">S42：未設定</span><button id="toggleCoach" class="coach-toggle" type="button">非表示</button></div><div id="coachBody"><p>自分のツモ番になると、打牌候補の受け入れを表示します。</p></div></div>
     <div id="gameToast" role="status" aria-live="polite" class="toast"></div>
@@ -509,7 +541,7 @@
   <div id="decisionOverlay" class="hidden" aria-hidden="true"></div>
   <div class="overlay coach-overlay hidden" id="coachOverlay" role="dialog" aria-modal="true" aria-label="牌効率の解説"><div class="modal coach-modal"><div class="modal-label">牌効率メモ</div><h2>直前の打牌を確認</h2><div id="coachModalBody"></div><button class="primary" id="closeCoachBtn" type="button">対局に戻る</button></div></div>
   <div class="overlay hidden" id="resultOverlay" role="dialog" aria-modal="true" aria-labelledby="resultTitle"><div class="modal"><div class="modal-label" id="resultTag">局の結果</div><h2 id="resultTitle">流局</h2><p id="resultDetails"></p><div id="resultHandDetail" class="result-detail"></div><div id="resultDecisionReview" class="result-choice-review" hidden></div><div id="resultScores" class="result-scores"></div><button id="continueBtn" class="primary" type="button">次の局へ →</button></div></div>
-  <div class="overlay hidden" id="endOverlay" role="dialog" aria-modal="true" aria-labelledby="endTitle"><div class="modal"><div class="modal-label">FINISH</div><h2 id="endTitle">対局終了</h2><div id="endScores" class="result-scores"></div><div id="s42EndSummary" class="s42-review-pane"></div><div id="endLastReview" class="result-choice-review" hidden></div><button id="s42ReviewBtn" class="secondary" type="button" hidden>S42の大差候補局面を振り返る</button><button id="allReviewBtn" class="secondary" type="button" hidden>全判断を振り返る・AI解説</button><p class="end-note">Mortal Ratingは対戦レーティングではありません。低推奨度は重大なミスの確定判定ではありません。</p><button id="restartBtn" class="primary" type="button">もう一度対局する →</button><button id="homeBtn" class="secondary" type="button">トップに戻る</button></div></div>
+  <div class="overlay hidden" id="endOverlay" role="dialog" aria-modal="true" aria-labelledby="endTitle"><div class="modal"><div class="modal-label">FINISH</div><h2 id="endTitle">対局終了</h2><div id="endScores" class="result-scores"></div><div id="s42EndSummary" class="s42-review-pane"></div><div id="endLastReview" class="result-choice-review" hidden></div><button id="s42ReviewBtn" class="secondary" type="button" hidden>S42の大差候補局面を振り返る</button><button id="allReviewBtn" class="secondary" type="button" hidden>全判断を振り返る</button><p class="end-note">Mortal Ratingは対戦レーティングではありません。低推奨度は重大なミスの確定判定ではありません。</p><button id="restartBtn" class="primary" type="button">もう一度対局する →</button><button id="homeBtn" class="secondary" type="button">トップに戻る</button></div></div>
 <div class="overlay hidden" id="s42ReviewOverlay" role="dialog" aria-modal="true" aria-labelledby="s42ReviewTitle"><div class="modal"><div class="modal-label">S42 REVIEW</div><h2 id="s42ReviewTitle">局面の振り返り</h2><div id="s42ReviewBody"></div><div class="s42-review-control"><button id="s42ReviewPrev" class="secondary" type="button">← 前</button><button id="s42ReviewNext" class="secondary" type="button">次 →</button></div><button id="s42ReviewClose" class="primary" type="button">閉じる</button></div></div>
 <script>
 /* Original engine and CPU: Satoshi Kobayashi; MIT licensed. See vendor/*.txt */
@@ -4707,6 +4739,8 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
   let riichiMode = false, coachCollapsed = true, candidateInfo = [];
   let lastFeedback = null, decisionLog = [], gameEnded = false, matchSaved = false;
   let readyToNext = false, selectedRule = null, lastAction = '', recordedMatchId = null;
+  let drawPreview=null;
+  function clearDrawPreview(){drawPreview=null;$('drawPreview').classList.add('hidden');$('gameScreen').classList.remove('draw-review');$('drawScoresBtn').disabled=true;}
   let toastTimer = null, bannerTimer = null, latestDiscard = null;
   let calledDiscardNotes=Array.from({length:4},()=>[]);
   let phoenixV4=null,coachPublicEvents=null;
@@ -4960,7 +4994,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     human = new Human(); referenceAI = null;
     referenceCurrent=null;referenceReaction=null;
     Object.assign(mirrorAudit,{packets:0,errors:0,matchedSelf:0,selfMismatch:0,wallAccess:0});
-    pending = null; gameEnded = false; readyToNext = false;
+    pending = null; gameEnded = false; readyToNext = false;clearDrawPreview();
     riichiMode = false; candidateInfo = []; lastCandidateInfo = []; lastFeedback = null;
     decisionLog = []; s42ReviewRows=[];s42ReplayAll=false; lastAction = ''; latestDiscard=null;calledDiscardNotes=Array.from({length:4},()=>[]);
     $('eventBanner').classList.add('hidden'); $('callTray').classList.add('hidden'); $('coachOverlay').classList.add('hidden');
@@ -5000,7 +5034,11 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
           lastAction=`${userLabel(f.l)}：${kind}`;
           announce(lastAction,true,f.l);
         }
-        if(msg?.hule || msg?.pingju) { pending = null; readyToNext = false; $('continueBtn').disabled = true; game.stop(()=>{readyToNext = true; $('continueBtn').disabled = false;}); showResult(msg); }
+        if(msg?.hule || msg?.pingju) {
+          pending=null;readyToNext=false;$('continueBtn').disabled=true;$('drawScoresBtn').disabled=true;
+          game.stop(()=>{readyToNext=true;$('continueBtn').disabled=false;$('drawScoresBtn').disabled=false;redrawSoon();});
+          if(msg.pingju) beginDrawPreview(msg.pingju);else {clearDrawPreview();showResult(msg);}
+        }
         redrawSoon();
       },
       summary: paipu => { gameEnded = true; readyToNext = false; pending = null; onFinished(paipu); showEnd(paipu); redrawSoon(); }
@@ -5075,7 +5113,11 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     const m=game.model,l=m.player_id.indexOf(id), sh=m.shoupai[l], draw=sh?sh._zimo:null;
     const count=Math.max(0,13-3*(sh?sh._fulou.length:0)+(draw&&draw.length===2?1:0));
     const holder=$('hand-'+pos);holder.replaceChildren();
-    for(let i=0;i<count;i++) holder.append(el('div','back'));
+    const published=drawPreview?.shoupai[l];
+    if(published){
+      const sh=M.Shoupai.fromString(published);
+      for(const p of tileList(sh))holder.append(tileImg(p,'revealed-tile'));
+    }else for(let i=0;i<count;i++)holder.append(el('div','back'));
   }
   function meldTiles(m) {const suit=m[0];return [...m.slice(1).matchAll(/\d/g)].map(x=>suit+x[0]);}
   // Convert core's meld representation into player's local visual order.
@@ -5197,13 +5239,12 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     $('centerRound').textContent=`${F[m.zhuangfeng] || '東'}${m.jushu+1}`;
     $('centerSticks').textContent=`${m.changbang}本場 · 供託${m.lizhibang}本`;
     const d=$('doraInd');d.replaceChildren();for(const p of m.shan?.baopai || []) d.append(tileImg(p));
-    $('scores').replaceChildren();
-    for(let id=0;id<4;id++) {
-      const l=m.player_id.indexOf(id);
-      const c=el('div','score-card'+(id===0?' me':'')+(m.lunban===l?' active':''));
-      const name=el('div','score-name');name.textContent=NAMES[id]+' · ';
-      const w=el('span','score-wind',WINDS[l]||'');name.append(w);
-      const score=el('div','score-num',fmt(m.defen[id]));c.append(name,score);$('scores').append(c);
+    for(const [pos,id] of [['top',2],['left',3],['right',1],['bottom',0]]){
+      const l=m.player_id.indexOf(id),c=$('score-'+pos);
+      c.classList.toggle('me',id===0);c.classList.toggle('active',m.lunban===l);
+      c.dataset.player=String(id);c.dataset.wind=WINDS[l]||'';c.dataset.points=String(m.defen[id]);
+      c.setAttribute('aria-label',NAMES[id]+' '+WINDS[l]+' '+fmt(m.defen[id])+'点');
+      c.replaceChildren(el('span','score-name',WINDS[l]||''),el('strong','score-num',fmt(m.defen[id])));
     }
     const longest=Math.max(...m.he.map(h=>(h?._pai||[]).length));
     $('tableFelt').classList.toggle('long-rivers',longest>=19);
@@ -5215,9 +5256,11 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
         renderConcealed(pos,id);
         const label=$('op-'+pos+'-label');label.textContent=`${NAMES[id]} · ${WINDS[l]}`;
         if(isRiichi) label.append(el('span','riichi-chip','リーチ'));
+        if(drawPreview)label.append(el('span','draw-label',drawSeatLabel(l)));
       } else {
         const label=$('own-label');label.textContent=`あなた · ${WINDS[l]}`;
         if(isRiichi) label.append(el('span','riichi-chip','リーチ'));
+        if(drawPreview)label.append(el('span','draw-label',drawSeatLabel(l)));
       }
     }
     fitBoard();
@@ -5241,6 +5284,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     }
     const msg=$('turnHint');
     if(gameEnded) msg.textContent='対局終了';
+    else if(drawPreview) msg.textContent='流局・公開手牌確認中';
     else if(pending?.type==='turn') msg.textContent=riichiMode?'立直する牌を選択してください':'捨てる牌をタップ';
     else if(pending?.type==='reaction') msg.textContent='鳴くかどうかを選択してください';
     else msg.textContent='CPUの手番';
@@ -6017,6 +6061,19 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     btn.addEventListener('click',()=>{lastFeedback=found;openCoachDetails();});
     area.append(btn);
   }
+  function drawSeatLabel(l){
+    if(!drawPreview)return '';
+    const normal=['荒牌平局','流し満貫'].includes(drawPreview.name);
+    return drawPreview.shoupai[l]?(normal?'聴牌':'公開手牌'):(normal?'ノーテン／非公開':'非公開');
+  }
+  function beginDrawPreview(data){
+    // Only use the engine's publicly disclosed draw packet, never the hidden wall or concealed opponent state.
+    drawPreview={name:String(data.name||'流局'),shoupai:Array.from({length:4},(_,l)=>typeof data.shoupai?.[l]==='string'?data.shoupai[l]:''),fenpei:Array.from({length:4},(_,l)=>Number(data.fenpei?.[l]||0))};
+    const n=drawPreview.shoupai.filter(Boolean).length,normal=['荒牌平局','流し満貫'].includes(drawPreview.name);
+    $('drawPreviewText').textContent=drawPreview.name+' · '+(normal?'公開聴牌 '+n+'人': '公開手牌 '+n+'人')+'（点数集計前）';
+    $('gameScreen').classList.add('draw-review');$('drawPreview').classList.remove('hidden');
+    $('resultOverlay').classList.add('hidden');
+  }
   function showResult(msg) {
     const data=msg.hule||msg.pingju;
     $('resultTag').textContent=msg.hule?'和了':'流局';
@@ -6105,8 +6162,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     const tiles=el('div','s42-replay-candidates');
     renderS42EfficiencyChoices(x,tiles);
     body.append(tiles);
-    const coach=el('details','phoenix-details');coach.append(el('summary','','AI解説を依頼（鳳凰卓向け）'));
-    /* Text coach omitted in this preview. */body.append(coach);
+    // Text coach omitted in this preview.
     $('s42ReviewPrev').disabled=s42ReviewCursor===0;
     $('s42ReviewNext').disabled=s42ReviewCursor===s42ReviewRows.length-1;
   }
@@ -6135,7 +6191,7 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
   function goHome() {
     closeMortalCpus();
     if(game && !gameEnded) {try{game.stop(()=>{});}catch{}}
-    gameEnded=true;pending=null;readyToNext=false;
+    gameEnded=true;pending=null;readyToNext=false;clearDrawPreview();
     $('gameScreen').classList.add('hidden');$('endOverlay').classList.add('hidden');$('resultOverlay').classList.add('hidden');
     $('callTray').classList.add('hidden');$('coachOverlay').classList.add('hidden');
     $('startScreen').classList.remove('hidden');renderStats();
@@ -6150,7 +6206,8 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
   $('closeCoachBtn').addEventListener('click',()=>{ $('coachOverlay').classList.add('hidden'); });
   $('exitBtn').addEventListener('click',()=>{if(confirm('対局を中断してトップに戻りますか？（途中対局の成績は保存されません）'))goHome();});
   $('toggleCoach').addEventListener('click',()=>{coachCollapsed=!coachCollapsed;renderCoach();});
-  $('continueBtn').addEventListener('click',()=>{ if(!readyToNext)return; $('resultOverlay').classList.add('hidden');readyToNext=false;if(game&&!gameEnded)game.start();});
+  $('drawScoresBtn').addEventListener('click',()=>{if(!readyToNext||!drawPreview)return;const data=drawPreview;showResult({pingju:data});});
+  $('continueBtn').addEventListener('click',()=>{ if(!readyToNext)return; $('resultOverlay').classList.add('hidden');clearDrawPreview();readyToNext=false;if(game&&!gameEnded)game.start();});
   $('s42ReviewBtn').addEventListener('click',()=>openS42Replay(false));
   $('allReviewBtn').addEventListener('click',()=>openS42Replay(true));
   $('s42ReviewPrev').addEventListener('click',()=>{s42ReviewCursor--;renderS42Replay();});
