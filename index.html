@@ -6082,6 +6082,10 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
     $('resultDetails').textContent=msg.hule?`${NAMES[game.model.player_id[data.l]]} の和了 · ${data.fu||'-'}符 ${data.fanshu||'-'}翻${lim?` · ${lim}`:''} · ${resultPaymentLabel(data)}`:(willFinishAfterResult()?'この局で対局終了です':'次の局に進みます');
     $('resultHandDetail').replaceChildren();
     if(msg.hule) {try{renderResultDetails(data);}catch(e){console.error(e);$('resultHandDetail').textContent='和了詳細を表示できませんでした';}}
+    else if(drawPreview){
+      const area=$('resultHandDetail');const normal=['荒牌平局','流し満貫'].includes(data.name);
+      for(let l=0;l<4;l++){if(!data.shoupai[l])continue;const sh=M.Shoupai.fromString(data.shoupai[l]);area.append(el('h3','',NAMES[game.model.player_id[l]]+' · '+WINDS[l]+' · '+(normal?'聴牌':'公開手牌')));const line=el('div','winning-line');for(const p of tileList(sh))line.append(tileImg(p,'result-tile'));area.append(line);if(sh._fulou.length){const groups=el('div','result-meld-row');for(const meld of sh._fulou){const row=el('div','result-meld');appendMeldTiles(row,meld,'result');groups.append(row);}area.append(groups);}}
+    }
     $('resultScores').replaceChildren();
     for(let id=0;id<4;id++) {
       const l=game.model.player_id.indexOf(id),gain=Number(data.fenpei?.[l]||0);
@@ -6306,6 +6310,11 @@ window.MAHJONG_INLINE_IMAGES = {"p9":"data:image/gif;base64,R0lGODlhUABwAOYAAAQc
   });
   window.MahjongLabMortalCpuAudit=()=>cpuAudit?JSON.parse(JSON.stringify({...cpuAudit,activeSeats:mortalCpus.length,sharedWorker:mortalCpus.every(c=>c.evalSeat.client===mortalClient)})):null;
   window.MahjongLabS42Debug=()=>({status:mortalStatusText,ready:!!mortalClient?.workerReady,broken:!!mortalClient?.broken,persisted:mortalClient?.modelPersisted??null,pending:mortalClient?.pending?.size??0,decision:mortalClient?.decision??0,latest:mortalClient?.current?.label||null,afterDiscard:lastFeedback?.mortalOpinion?.label||null,modelImported:!!mortalClient?.worker});
+  if(new URLSearchParams(location.search).get('uiFixture')==='1')window.MahjongLabDrawFixture=(data)=>{
+    if(!game||gameEnded)throw Error('fixture requires a match');
+    debugUsed=true;game.stop(()=>{});pending=null;readyToNext=true;
+    beginDrawPreview(data);$('drawScoresBtn').disabled=false;$('continueBtn').disabled=false;redrawSoon();
+  };
   window.MahjongLabDebug = {testScenario,testKanFixture,testKanObservation:()=>game?null:mortalClient?.current,parseMeld,visibleRiver,calledDiscardNote,state:()=>({started:!!game,phase:game?game._status:null,pending:pending?.type||null,round:game?.model?.jushu,turn:game?.model?.lunban,own:ownSeat(),decisions:decisionLog.length,finished:gameEnded}),choose:p=>chooseDiscard(p),answer:p=>answer(p),testStep:(randomize=false)=>{debugUsed=true;if(pending?.type==='turn'){if(pending.win&&randomize)return answer({hule:'-'});if(randomize&&pending.gang.length&&Math.random()<0.10)return answer({gang:pending.gang[0]});const choices=pending.options;const p=randomize?choices[Math.floor(Math.random()*choices.length)]:choices[0];if(randomize&&game.allow_lizhi(p)&&Math.random()<0.25)riichiMode=true;chooseDiscard(p);}else if(pending?.type==='reaction'){if(pending.win&&randomize)return answer({hule:'-'});const melds=[...pending.gang,...pending.peng,...pending.chi];if(randomize&&melds.length&&Math.random()<0.55)return answer({fulou:melds[0]});answer({});}},testDwell:ms=>{debugUsed=true;if(game)game.dwell=ms;},testContinue:()=>{debugUsed=true;if(game&&!gameEnded){readyToNext=false;game.start();}},testPaipu:()=>game?._paipu,inspect:()=>({latestDiscard,lastFeedback,hasReaction:!$('callTray').classList.contains('hidden'),speed:game?._dwell})};
 })();
 
